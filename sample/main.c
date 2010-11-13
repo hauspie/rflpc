@@ -9,6 +9,8 @@ char test1 = 0xAB;
 void *add_data = &data;
 void *add_data2 = &test1;
 
+int a;
+
 int main()
 {
     INIT_LEDS();
@@ -18,6 +20,7 @@ int main()
     CLR_LED(LED1|LED2|LED3|LED4);
     
 
+    /* Check data section initialisation */
     if (data == (LED1 | LED2))
 	SET_LED(LED1);
 
@@ -32,6 +35,14 @@ int main()
     DELAY(100000);
     if (data2 == 0xfadebeef)
 	SET_LED(LED4);
+
+    
+    /* Check bss section initialisation */
+    DELAY(100000);
+    if (a == 0)
+	LED_VAL(LED1|LED4);
+    else
+	LED_VAL(LED2|LED3);
 
     return 0;
 }
