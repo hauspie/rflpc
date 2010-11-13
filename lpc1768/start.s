@@ -76,7 +76,10 @@ _stack_bottom:
 /* Thumb code function is mandadory for interrupt handler c.f. p 748 of LPC1768 user manual */
 .thumb_func
 _start:
-	b 	main /* branch inside C main program */
+	ldr	r0, =_low_level_init
+	blx	r0 /* initialize low level things such as zero bss, copy data... */
+	ldr 	r0, =main 		/* branch inside C main program */
+	blx	r0
 	b	.
 .thumb_func
 _default_handler:

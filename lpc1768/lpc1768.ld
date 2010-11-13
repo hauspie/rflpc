@@ -3,7 +3,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2010-11-13 01:55:53 (mickey)>
+  Time-stamp: <2010-11-13 15:47:42 (mickey)>
 */
 
 /* output format of the file.
@@ -40,8 +40,35 @@ SECTIONS
  appear first in the linker command line */
   .text : { 
   *(.interrupt_vector)
-  *(.text) 
+  *(.text)
+  . = ALIGN(8);
+  /* this declares a global constant which contains the address of the end of section text.
+     This will be used by the startup code to copy data from flash to ram */
+  _text_end = .;
 }
+ /* Data section is put in flash and will be copied in ram by startup script */
+ /* the > ram makes all the symbol referencing section .data to be relocated in ram (i.e. addresses used in code are in ram)
+    the AT>flash makes the section to be located in flash.
+    Thus, the startup script will just have to copy the data section from flash to ram
+  */
+ .data : { 
+ /* this declares a global constant _data_start which contains the address of the section in flash */
+ _data_start = .; 
+ *(.data) 
+ . = ALIGN(8);
+ /* declares a global constant _data_end which contains the address of the end of the section in flash */
+ _data_end = .; 
+} > ram AT>flash
+  
+  /* bss has to be located in ram */
+  .bss : { 
+  /* stores the start address of the bss so that the startup code can 0 it */
+  _bss_start = .;
+  *(.bss) 
+  . = ALIGN(8);
+  /* stores the end address of the bss so that the startup code can 0 it */
+  _bss_end = .;
+  } > ram
  /* Stack must be located in ram*/
  .stack : { *(.stack) } > ram
 }

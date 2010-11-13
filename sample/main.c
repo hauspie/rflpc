@@ -1,18 +1,37 @@
 #include <leds.h>
 
+
+#define DELAY(c) do { int i; for (i = 0 ; i < (c) ; ++i);} while(0)
+
+uint32_t data = (LED1|LED2);
+uint32_t data2 = 0xfadebeef;
+char test1 = 0xAB;
+void *add_data = &data;
+void *add_data2 = &test1;
+
 int main()
 {
-    int i = 0;
-    uint32_t leds = LED1|LED2;
     INIT_LEDS();
-    while (1)
-    {
-	i++;
-	if (i % 100000 == 0)
-	{
-	    leds = ~leds;
-	    LED_VAL(leds);
-	}
-    }
+
+    SET_LED(LED1|LED2|LED3|LED4);
+    DELAY(100000);
+    CLR_LED(LED1|LED2|LED3|LED4);
+    
+
+    if (data == (LED1 | LED2))
+	SET_LED(LED1);
+
+    DELAY(100000);
+    if (test1 == 0xAB)
+	SET_LED(LED2);
+
+    DELAY(100000);
+    if (add_data == &data)
+	SET_LED(LED3);
+
+    DELAY(100000);
+    if (data2 == 0xfadebeef)
+	SET_LED(LED4);
+
     return 0;
 }

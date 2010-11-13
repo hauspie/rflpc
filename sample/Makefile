@@ -3,29 +3,31 @@ LD=arm-none-eabi-ld
 AS=arm-none-eabi-as
 OBJCOPY=arm-none-eabi-objcopy
 OBJDUMP=arm-none-eabi-objdump
-LINK_SCRIPT=../lpc1768/lpc1768.ld
-START=../lpc1768/start.s
-START_OBJ=start.o
+
+LIB_DIR=../lpc1768
+LINK_SCRIPT=lpc1768.ld
+
 MBED_PATH=/media/MBED
 
 ELF=sample.elf
 BIN=sample.bin
 
-CFLAGS=-Wall -I../lpc1768
+CFLAGS=-g -O0 -Wall -I$(LIB_DIR)
+LDFLAGS=-L$(LIB_DIR) -llpc1768 -T $(LINK_SCRIPT)
 
 OBJS=main.o
 
 $(BIN): $(ELF)
 	$(OBJCOPY) -O binary -j .text -j .data $^ $@
 
-$(ELF): $(START_OBJ) $(OBJS)
-	$(LD) -T $(LINK_SCRIPT) -o $@ $^
-
-$(START_OBJ): $(START)
-	$(AS) -o $@ $^
+$(ELF): $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $^
 
 clean:
 	$(RM) *.o *~
+
+mrproper: clean
+	$(RM) $(ELF) $(BIN)
 
 program: $(BIN)
 	cp $+ $(MBED_PATH)
