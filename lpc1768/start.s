@@ -65,12 +65,7 @@ _stack_bottom:
 	.long	_default_handler	/* Repetitive Interrupt Timer */
 	.long	_default_handler	/* Motor Control PWM */
 	.long	_default_handler	/* Quadrature Encoder */
-	.long	_default_handler	/* PLL1 Lock */
-
-	/* Assemble section in thumb mode */
-	.thumb
-	
-	
+	.long	_default_handler	/* PLL1 Lock */	
 
 /********************************************/
 /* code section */

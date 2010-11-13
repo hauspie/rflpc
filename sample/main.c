@@ -2,14 +2,13 @@
 
 int main()
 {
-    int i;
-    int clr;
-    uint32_t leds = LED1|LED4;
+    int i = 0;
+    uint32_t leds = LED1|LED2;
     INIT_LEDS();
     while (1)
     {
 	i++;
-	if (i % 10000 == 0)
+	if (i % 100000 == 0)
 	{
 	    leds = ~leds;
 	    LED_VAL(leds);
