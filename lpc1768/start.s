@@ -17,7 +17,7 @@ _stack_bottom:
 	and table 50 p73 */
 	.section ".interrupt_vector"
 	.long	_stack_bottom 		/* initial value of SP */
-	.long	_reset 			/* address of the reset routine */
+	.long	_start 			/* address of the reset routine */
 	.long	_default_handler	/* Non Masquable Interrupt handler */
 	.long	_default_handler	/* Hardware Fault handler */
 	.long	_default_handler	/* Memory protection unit exception handler */
@@ -77,10 +77,12 @@ _stack_bottom:
 	.section ".text"
 	/* make start an external symbol */
 	.globl	_start
-_reset:
-	b	_start
+/* .thumb_func ensure that least significant bit of _start is set to 1, which indicates a thumb code func */
+/* Thumb code function is mandadory for interrupt handler c.f. p 748 of LPC1768 user manual */
+.thumb_func
 _start:
 	b 	main /* branch inside C main program */
 	b	.
+.thumb_func
 _default_handler:
 	b	.	/* infinite loop */

@@ -3,7 +3,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2010-11-12 18:38:35 (mickey)>
+  Time-stamp: <2010-11-13 01:55:53 (mickey)>
 */
 
 /* output format of the file.
@@ -25,9 +25,9 @@ MEMORY
  */
   flash(rx) : ORIGIN = 0, LENGTH = 512K
 /* on chip sram: starting at 0x10000000, 32kB available */
-  ram(!rx): ORIGIN = 0x10000000, LENGTH = 32K
+  ram(rwx): ORIGIN = 0x10000000, LENGTH = 32K
 /* outside chip sram (accessible via AHB matrix: starting at 0x2007C000, 32kB available */
-  out_ram(!rx): ORIGIN = 0x2007C00, LENGTH = 32K
+  out_ram(rwx): ORIGIN = 0x2007C00, LENGTH = 32K
 }
 
 
@@ -42,10 +42,6 @@ SECTIONS
   *(.interrupt_vector)
   *(.text) 
 }
- /* same for .data */
- .data : { *(.data) }
- /* and for .bss */
- .bss  : { *(.bss) }
- /* and for stack */
- .stack : { *(.stack) }
+ /* Stack must be located in ram*/
+ .stack : { *(.stack) } > ram
 }
