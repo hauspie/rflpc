@@ -17,6 +17,10 @@ LDFLAGS=-L$(LIB_DIR) -llpc1768 -T $(LINK_SCRIPT)
 
 OBJS=main.o
 
+.PHONY: $(LIB_DIR)
+
+all: $(LIB_DIR) $(BIN)
+
 $(BIN): $(ELF)
 	$(OBJCOPY) -O binary -j .text -j .data $^ $@
 
@@ -30,8 +34,10 @@ mrproper: clean
 	$(RM) $(ELF) $(BIN)
 
 program: $(BIN)
-	cp $+ $(MBED_PATH)
-	sync
+	cp $+ $(MBED_PATH) && sync
 
 dump: $(ELF)
 	$(OBJDUMP) -sSt $^
+
+$(LIB_DIR):
+	make -C $(LIB_DIR)

@@ -3,7 +3,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2010-11-13 15:47:42 (mickey)>
+  Time-stamp: <2010-11-13 23:45:28 (mickey)>
 */
 
 /* output format of the file.
@@ -51,14 +51,14 @@ SECTIONS
     the AT>flash makes the section to be located in flash.
     Thus, the startup script will just have to copy the data section from flash to ram
   */
- .data : { 
  /* this declares a global constant _data_start which contains the address of the section in flash */
+ .data : { 
  _data_start = .; 
  *(.data) 
  . = ALIGN(8);
+} > ram AT>flash
  /* declares a global constant _data_end which contains the address of the end of the section in flash */
  _data_end = .; 
-} > ram AT>flash
   
   /* bss has to be located in ram */
   .bss : { 
@@ -66,9 +66,9 @@ SECTIONS
   _bss_start = .;
   *(.bss) 
   . = ALIGN(8);
+  } > ram
   /* stores the end address of the bss so that the startup code can 0 it */
   _bss_end = .;
-  } > ram
  /* Stack must be located in ram*/
  .stack : { *(.stack) } > ram
 }

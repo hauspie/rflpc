@@ -7,6 +7,7 @@ OBJDUMP=arm-none-eabi-objdump
 LIB=liblpc1768.a
 
 OBJS=start.o init.o
+HEADERS=$(wildcard *.h)
 
 $(LIB): $(OBJS)
 	$(AR) rs $@ $^
@@ -14,8 +15,8 @@ $(LIB): $(OBJS)
 start.o: start.s
 	$(AS) -o $@ $^
 
-init.o: init.c
-	$(CC) -Wall -o $@ -c $^
+init.o: init.c $(HEADERS)
+	$(CC) -Wall -o $@ -c $<
 
 dump: $(LIB)
 	$(OBJDUMP) -sSt $(LIB)
