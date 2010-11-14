@@ -34,19 +34,22 @@ static void _copy_data_section(void)
 }
 
 /* Initialise clock to use main oscillator for PLL0.
-   CPU is set to 100Mhz using a 10Mhz source for PLL0.
-   As this setup is not suitable for USB, PLL1 must be used for USB clock.
-   This setup is the one given as Example 1, p. 43
 
-   M = 15 and N = 1 (multiplier and pre-divider) which implies to write 0xE in PLL0CFG
-   As a result, the output of the PLL0 will be:
-   Fcco = (2xMxFin)/N where Fin is the frequency of the source (10Mhz)
-   Fcco = 2x15x10/1 = 300Mhz
-   To get the 100Mhz CPU clock, we must set the cpu clock divider to 3.
+   CPU is set to 96Mhz using the 12Mhz source for PLL0. (see mbed schematic,
+   main oscillator is a 12Mhz crystal connected to pins XTAL1 and XTAL2)
+
+   As this setup is suitable for USB, so PPL0 can be used to clock USB (need a 48Mhz mutiple)
+
+   The output of the PLL0 is given by:
+   Fcco = (2xMxFin)/N where Fin is the frequency of the source (12Mhz), M the
+   multiplier and N the pre-divider (p.41)
+   Fcco = 2x12x12/1 = 288Mhz
+   We thus have M=12 and N=1, so we have to write 0xB in the PLL0CFG register (p. 37)
+   To get the 100Mhz CPU clock, we must set the cpu clock divider to 3 (288/3 = 96).
+   This is done by setting CCLKSEL register to 2 (p. 55)
 */
 static void _init_clock(void)
 {
-    uint32_t led = LED1|LED4;
     
     /* Disable IRQs so that the FEED sequence of the PLL is atomic */
     lpc_disable_irq();
@@ -80,8 +83,8 @@ static void _init_clock(void)
 
 
 
-    /* Configure PLL0 with N=1 and M=15. The value is then 0xE (p. 37) */
-    LPC_PLL0CFG = 0xE;
+    /* Configure PLL0 with N=1 and M=12. The value is then 0xB (p. 37) */
+    LPC_PLL0CFG = 0xB;
     /* validate the configuration */
     LPC_PLL0_DO_FEED();
     
@@ -109,7 +112,7 @@ static void _init_clock(void)
 void _low_level_init(void)
 {
     INIT_LEDS();
-/*    _init_clock();*/
+    _init_clock();
     _copy_data_section();
     _zero_bss();
 }
