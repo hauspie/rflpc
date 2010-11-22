@@ -45,7 +45,7 @@ static void _copy_data_section(void)
    multiplier and N the pre-divider (p.41)
    Fcco = 2x12x12/1 = 288Mhz
    We thus have M=12 and N=1, so we have to write 0xB in the PLL0CFG register (p. 37)
-   To get the 100Mhz CPU clock, we must set the cpu clock divider to 3 (288/3 = 96).
+   To get the 96Mhz CPU clock, we must set the cpu clock divider to 3 (288/3 = 96).
    This is done by setting CCLKSEL register to 2 (p. 55)
 */
 static void _init_clock(void)
@@ -93,7 +93,7 @@ static void _init_clock(void)
     LPC_PLL0_DO_FEED();
 
     /* Set the CPU Clock divider (p. 55) */
-    LPC_CCLKCFG = 2; /* 2 to divide PLL0 output frequency (300Mhz) by 3 */
+    LPC_CCLKCFG = 2; /* 2 to divide PLL0 output frequency (288Mhz) by 3 */
 
     /* Wait for PLL0 to lock desired frequency by monitoring bit 26 of register PLL0STAT (p. 39) */
     while (! (LPC_PLL0STAT & (1 << 26)));
@@ -104,7 +104,7 @@ static void _init_clock(void)
     LPC_PLL0_DO_FEED();
 
 
-    /* system is now working on PLL0, CPU at 100Mhz */
+    /* system is now working on PLL0, CPU at 96Mhz */
     /* Enables the IRQs */
     lpc_enable_irq();
 }
