@@ -3,7 +3,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2010-11-24 15:31:02 (mickey)>
+  Time-stamp: <2010-11-24 15:37:51 (mickey)>
 */
 
 /* output format of the file.
@@ -41,6 +41,8 @@ SECTIONS
   .text : { 
   *(.interrupt_vector)
   *(.text)
+  /* Constant data is also put in flash */
+  *(.rodata)
   . = ALIGN(8);
   /* this declares a global constant which contains the address of the end of section text.
      This will be used by the startup code to copy data from flash to ram */
@@ -55,7 +57,6 @@ SECTIONS
  .data : { 
  _data_start = .; 
  *(.data) 
- *(.rodata)
  . = ALIGN(8);
 } > ram AT>flash
  /* declares a global constant _data_end which contains the address of the end of the section in flash */

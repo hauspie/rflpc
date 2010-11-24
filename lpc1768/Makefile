@@ -1,5 +1,4 @@
 CC=arm-none-eabi-gcc
-LD=arm-none-eabi-ld
 AS=arm-none-eabi-as
 AR=arm-none-eabi-ar
 OBJDUMP=arm-none-eabi-objdump
@@ -7,10 +6,12 @@ CFLAGS=-Wall
 
 LIB=liblpc1768.a
 
-OBJS=start.o init.o uart.o
+ASOBJS=start.o
+CFILES=$(wildcard *.c)
+COBJS=$(CFILES:.c=.o)
 HEADERS=$(wildcard *.h)
 
-$(LIB): $(OBJS)
+$(LIB): $(ASOBJS) $(COBJS)
 	$(AR) rs $@ $^
 
 start.o: start.s
@@ -19,8 +20,15 @@ start.o: start.s
 init.o: init.c $(HEADERS)
 	$(CC) -Wall -o $@ -c $<
 
+makefile.dep: $(CFILES) $(HEADERS)
+	@echo "Generating dependencies"
+	@$(CC) $(CFLAGS) -MM $(CFILES) > $@
+
 dump: $(LIB)
 	$(OBJDUMP) -sSt $(LIB)
 
 clean:
-	$(RM) *.o *~
+	$(RM) *.o *~ *.dep
+
+# Dependencies rules so that compilation works well
+include makefile.dep

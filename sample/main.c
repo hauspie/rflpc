@@ -1,6 +1,8 @@
 #include <debug.h>
 #include <uart.h>
 
+#include <printf.h>
+
 uint32_t data = (LED1|LED2);
 uint32_t data2 = 0xfadebeef;
 char test1 = 0xAB;
@@ -8,6 +10,7 @@ void *add_data = &data;
 void *add_data2 = &test1;
 
 int a,b,c,d;
+
 
 
 void test_data_bss()
@@ -46,8 +49,6 @@ void test_data_bss()
 void test_uart()
 {
     char c = 'a';
-    if (lpc_uart0_init() == -1)
-	LPC_STOP(LED1 | LED3, 1000000);
 
     
     while (1)
@@ -64,12 +65,35 @@ void test_uart()
     
 }
 
+void test_printf()
+{
+    unsigned int a = 0xFFFFFFFF;
+    unsigned int b = 0xCAFED0CA;
+    unsigned char byte = 0xFF;
+    const char *str = "Pouet world!";
+    char c = 'J';
+
+    printf("Hello world\r\n");
+    printf("Hello int world: '%d'\r\n", a);
+    printf("Hello unsigned int world: '%u'\r\n", a);
+    printf("Hello char world: '%c'\r\n", c);
+    printf("Hello string world: '%s'\r\n", str);
+    printf("Hello hexa world: '%x'\r\n", b);
+    printf("Hello pointer world: '%p' '%P'\r\n", &b, str);
+    printf("Hello multiple world: '%x' '%x' '%X' '%s'\r\n", b, byte,b, str);
+}
+
 int main()
 {
     INIT_LEDS();
+    if (lpc_uart0_init() == -1)
+	LPC_STOP(LED1 | LED3, 1000000);
 
     test_data_bss();
-    test_uart();
+/*    test_uart();*/
+    test_printf();
+    
+    LPC_STOP(LED2 | LED3, 1000000);
 
     return 0;
 }
