@@ -3,7 +3,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2010-11-13 23:45:28 (mickey)>
+  Time-stamp: <2010-11-24 15:31:02 (mickey)>
 */
 
 /* output format of the file.
@@ -55,6 +55,7 @@ SECTIONS
  .data : { 
  _data_start = .; 
  *(.data) 
+ *(.rodata)
  . = ALIGN(8);
 } > ram AT>flash
  /* declares a global constant _data_end which contains the address of the end of the section in flash */
