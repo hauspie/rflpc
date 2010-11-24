@@ -35,13 +35,7 @@
 #define PUT_INT_NUMBER(i) do {					\
 	unsigned int max_pow = 1;				\
 	unsigned int val = i;					\
-	if (val > 1000000000)					\ /* prevent overflow */
-	    max_pow = 1000000000;				\
-	else							\
-	{							\
-	    while ((val) / (max_pow)) max_pow*=10;		\
-	    max_pow /= 10;					\
-	}							\
+	while ((val) / (max_pow) > 10) max_pow*=10;		\
 	for ( ; max_pow >= 1; max_pow /= 10)			\
 	{							\
 	    PUT_INT_DIGIT((val)/max_pow);			\

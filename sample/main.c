@@ -67,7 +67,7 @@ void test_uart()
 
 void test_printf()
 {
-    unsigned int a = 0xFFFFFFFF;
+    int a = -3;
     unsigned int b = 0xCAFED0CA;
     unsigned char byte = 0xFF;
     const char *str = "Pouet world!";
