@@ -15,6 +15,14 @@ extern uint32_t _bss_start;
 extern uint32_t _bss_end;
 
 
+static uint32_t _lpc_system_clock = 4000000;
+
+uint32_t lpc_get_system_clock()
+{
+    return _lpc_system_clock;
+}
+
+
 /* Set all bss to zero */
 static void _zero_bss(void)
 {
@@ -104,6 +112,8 @@ static void _init_clock(void)
     LPC_PLL0_DO_FEED();
 
 
+    _lpc_system_clock = 96000000;
+
     /* system is now working on PLL0, CPU at 96Mhz */
     /* Enables the IRQs */
     lpc_enable_irq();
@@ -112,7 +122,7 @@ static void _init_clock(void)
 void _low_level_init(void)
 {
     INIT_LEDS();
-    _init_clock();
     _copy_data_section();
     _zero_bss();
+    _init_clock();
 }

@@ -25,7 +25,7 @@ $(BIN): $(ELF)
 	$(OBJCOPY) -O binary -j .text -j .data $^ $@
 
 $(ELF): $(OBJS)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) -o $@ $^ $(LDFLAGS)
 
 clean:
 	$(RM) *.o *~

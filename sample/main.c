@@ -1,4 +1,5 @@
 #include <debug.h>
+#include <uart.h>
 
 uint32_t data = (LED1|LED2);
 uint32_t data2 = 0xfadebeef;
@@ -8,10 +9,9 @@ void *add_data2 = &test1;
 
 int a,b,c,d;
 
-int main()
-{
-    INIT_LEDS();
 
+void test_data_bss()
+{
     SET_LED(LED1|LED2|LED3|LED4);
     LPC_DELAY(1000000);
     CLR_LED(LED1|LED2|LED3|LED4);
@@ -40,6 +40,36 @@ int main()
 	LED_VAL(LED1|LED4);
     else
 	LED_VAL(LED2|LED3);
+    LPC_DELAY(1000000);
+}
+
+void test_uart()
+{
+    char c = 'a';
+    if (lpc_uart0_init() == -1)
+	LPC_STOP(LED1 | LED3, 1000000);
+
+    
+    while (1)
+    {
+	lpc_uart0_putchar(c);
+	++c;
+	if (c == 'z'+1)
+	{
+	    lpc_uart0_putchar('\n');
+	    lpc_uart0_putchar('\r');
+	    c = 'a';
+	}
+    }
+    
+}
+
+int main()
+{
+    INIT_LEDS();
+
+    test_data_bss();
+    test_uart();
 
     return 0;
 }

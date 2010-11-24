@@ -26,4 +26,7 @@
  */
 #define LPC_PLL0_DO_FEED() do { LPC_PLL0FEED = 0xAA; LPC_PLL0FEED = 0x55; }while(0)
 
+
+extern uint32_t lpc_get_system_clock();
+
 #endif

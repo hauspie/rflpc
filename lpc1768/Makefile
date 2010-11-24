@@ -3,10 +3,11 @@ LD=arm-none-eabi-ld
 AS=arm-none-eabi-as
 AR=arm-none-eabi-ar
 OBJDUMP=arm-none-eabi-objdump
+CFLAGS=-Wall
 
 LIB=liblpc1768.a
 
-OBJS=start.o init.o
+OBJS=start.o init.o uart.o
 HEADERS=$(wildcard *.h)
 
 $(LIB): $(OBJS)

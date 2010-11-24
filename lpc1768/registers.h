@@ -7,4 +7,8 @@
 /** Power Control Register (p. 63) */
 #define LPC_PCONP (*((uint32_t*) 0x400FC0C4UL))
 
+/** Peripheral clock selection (p. 56) */
+#define LPC_PCLKSEL0 (*((uint32_t*) 0x400FC1A8))
+#define LPC_PCLKSEL1 (*((uint32_t*) 0x400FC1AC))
+
 #endif
