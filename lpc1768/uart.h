@@ -34,6 +34,7 @@ static inline void lpc_uart0_putchar(char c)
     /* Wait for THR to be empty before sending byte (p. 307)*/
     
     while (!(LPC_U0LSR & (0x1UL << 5)));
+    /* Add byte to fifo */
     LPC_U0THR = c & 0xFF;
 }
 
