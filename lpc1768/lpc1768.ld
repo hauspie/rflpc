@@ -1,9 +1,25 @@
+/* This file is part of rfBareMbed.                        
+ *									 
+ * rfBareMbed is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by	 
+ * the Free Software Foundation, either version 3 of the License, or	 
+ * (at your option) any later version.					 
+ * 									 
+ * rfBareMbed is distributed in the hope that it will be useful,		 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
+ * GNU General Public License for more details.				 
+ * 									 
+ * You should have received a copy of the GNU General Public License	 
+ * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
+ */
+
 /*
   Linker script for lpc1768 mbed platform (http://www.mbed.org).
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2010-11-24 15:37:51 (mickey)>
+  Time-stamp: <2011-01-23 10:06:36 (mickey)>
 */
 
 /* output format of the file.
