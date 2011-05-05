@@ -26,7 +26,7 @@
    LED3 P1.21
    LED4 P1.23
 */
-#include "gpio.h"
+/* #include "gpio.h" */
 
 #define LED1 (1 << 18)
 #define LED2 (1 << 20)
@@ -35,13 +35,13 @@
 
 
 /* Init the leds. Sets the GPIO1 led pins to output pins */
-#define INIT_LEDS() do { LPC_GPIO1_DIR |= (LED1 | LED2 | LED3 | LED4);} while(0)
+#define INIT_LEDS() do { LPC_GPIO1->FIODIR |= (LED1 | LED2 | LED3 | LED4);} while(0)
 
 /** Sets the given led(s) on */
-#define SET_LED(l) do { LPC_GPIO1_MASK = ~(l); LPC_GPIO1_SET = (l);} while(0)
+#define SET_LED(l) do { LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOSET = (l);} while(0)
 /** Clears the given led(s) (turn them off) */
-#define CLR_LED(l) do { LPC_GPIO1_MASK = ~(l); LPC_GPIO1_CLR = (l);} while(0)
+#define CLR_LED(l) do { LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOCLR = (l);} while(0)
 
-#define LED_VAL(l) do { LPC_GPIO1_MASK = ~(LED1|LED2|LED3|LED4); LPC_GPIO1_PIN = (l);} while(0)
+#define LED_VAL(l) do { LPC_GPIO1->FIOMASK = ~(LED1|LED2|LED3|LED4); LPC_GPIO1->FIOPIN = (l);} while(0)
 
 #endif
