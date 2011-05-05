@@ -15,7 +15,6 @@
  */
 
 #include <stdint.h>
-#include "registers.h"
 #include "pll.h"
 #include "interrupt.h"
 #include "leds.h"
@@ -79,51 +78,51 @@ static void _init_clock(void)
     lpc_disable_irq();
 
     /* Lets follow the setup sequence p. 46 */
-    if (LPC_PLL0STAT & (1<<24)) /* if PLL0 connected, disconnect */
+    if (LPC_PLL0->STAT & (1<<24)) /* if PLL0 connected, disconnect */
     {
 	/* Disconnect PLL0, set bit 1 to 0 */
-	LPC_PLL0CON &= ~(1UL << 1);
+	LPC_PLL0->CON &= ~(1UL << 1);
 	/* send feed sequence to validate the disconnection */
 	LPC_PLL0_DO_FEED();
     }
     /* Disable PLL0, set bit 0 to 0 */
-    LPC_PLL0CON &= ~(1UL);
+    LPC_PLL0->CON &= ~(1UL);
     /* feed sequence to validate disable */
     LPC_PLL0_DO_FEED();
 
 
     /* Then, enable main oscillator and wait for it to be ready */
     /* Select its range, 1Mhz to 20Mhz, set 0 to bit 4 of SCS register (p. 28) */
-    LPC_SCS &= ~(1UL << 4);
+    LPC_SC->SCS &= ~(1UL << 4);
     /* Enables it, set 1 to bit 5 */
-    LPC_SCS |= (1UL << 5);
+    LPC_SC->SCS |= (1UL << 5);
 	
     /* Wait for it to be stable by waiting a 1 on bit 6 */
-    while ((LPC_SCS & (1UL << 6)) == 0);
+    while ((LPC_SC->SCS & (1UL << 6)) == 0);
 
     /* Main oscillator is stable. Can now be used as source for PLL0 */
     /* Select main oscillator as source for PLL0. Set bit 1:0 of CLKSRC register to 01 (p. 34) */
-    LPC_CLKSRCSEL  = ((LPC_CLKSRCSEL & ~(3UL)) | 1);
+    LPC_SC->CLKSRCSEL  = ((LPC_SC->CLKSRCSEL & ~(3UL)) | 1);
 
 
 
     /* Configure PLL0 with N=1 and M=12. The value is then 0xB (p. 37) */
-    LPC_PLL0CFG = 0xB;
+    LPC_PLL0->CFG = 0xB;
     /* validate the configuration */
     LPC_PLL0_DO_FEED();
     
     /* Enable PLL0 */
-    LPC_PLL0CON |= (1UL);
+    LPC_PLL0->CON |= (1UL);
     LPC_PLL0_DO_FEED();
 
     /* Set the CPU Clock divider (p. 55) */
-    LPC_CCLKCFG = 2; /* 2 to divide PLL0 output frequency (288Mhz) by 3 */
+    LPC_SC->CCLKCFG = 2; /* 2 to divide PLL0 output frequency (288Mhz) by 3 */
 
     /* Wait for PLL0 to lock desired frequency by monitoring bit 26 of register PLL0STAT (p. 39) */
-    while (! (LPC_PLL0STAT & (1 << 26)));
+    while (! (LPC_PLL0->STAT & (1 << 26)));
 
     /* Connect PLL0, set bit 1 to 1 */
-    LPC_PLL0CON |= (1UL << 1);
+    LPC_PLL0->CON |= (1UL << 1);
     /* validate connection */
     LPC_PLL0_DO_FEED();
 
