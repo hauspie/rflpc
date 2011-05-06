@@ -20,23 +20,11 @@
 #include "LPC17xx.h"
 
 
-typedef struct
-{
-    __IO uint32_t CON;
-    __IO uint32_t CFG;
-    __I uint32_t STAT;
-    __O uint32_t FEED;
-} LPC_PLL0_TypeDef;
-
-#define LPC_PLL0_BASE (0x400FC080UL)
-
-#define LPC_PLL0      ((LPC_PLL0_TypeDef *) LPC_PLL0_BASE)
-
 /** Send a feed sequence to the PLL0FEED register (p. 40) 
     This sequence validates the changes in the PLL0CON and PLL0CFG register
     @warning interrupts should be disabled to ensure that the sequence is atomic
  */
-#define LPC_PLL0_DO_FEED() do { LPC_PLL0->FEED = 0xAA; LPC_PLL0->FEED = 0x55; }while(0)
+#define LPC_PLL0_DO_FEED() do { LPC_SC->PLL0FEED = 0xAA; LPC_SC->PLL0FEED = 0x55; }while(0)
 
 
 extern uint32_t lpc_get_system_clock();

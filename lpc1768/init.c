@@ -78,15 +78,15 @@ static void _init_clock(void)
     lpc_disable_irq();
 
     /* Lets follow the setup sequence p. 46 */
-    if (LPC_PLL0->STAT & (1<<24)) /* if PLL0 connected, disconnect */
+    if (LPC_SC->PLL0STAT & (1<<24)) /* if PLL0 connected, disconnect */
     {
 	/* Disconnect PLL0, set bit 1 to 0 */
-	LPC_PLL0->CON &= ~(1UL << 1);
+	LPC_SC->PLL0CON &= ~(1UL << 1);
 	/* send feed sequence to validate the disconnection */
 	LPC_PLL0_DO_FEED();
     }
     /* Disable PLL0, set bit 0 to 0 */
-    LPC_PLL0->CON &= ~(1UL);
+    LPC_SC->PLL0CON &= ~(1UL);
     /* feed sequence to validate disable */
     LPC_PLL0_DO_FEED();
 
@@ -107,22 +107,22 @@ static void _init_clock(void)
 
 
     /* Configure PLL0 with N=1 and M=12. The value is then 0xB (p. 37) */
-    LPC_PLL0->CFG = 0xB;
+    LPC_SC->PLL0CFG = 0xB;
     /* validate the configuration */
     LPC_PLL0_DO_FEED();
     
     /* Enable PLL0 */
-    LPC_PLL0->CON |= (1UL);
+    LPC_SC->PLL0CON |= (1UL);
     LPC_PLL0_DO_FEED();
 
     /* Set the CPU Clock divider (p. 55) */
     LPC_SC->CCLKCFG = 2; /* 2 to divide PLL0 output frequency (288Mhz) by 3 */
 
     /* Wait for PLL0 to lock desired frequency by monitoring bit 26 of register PLL0STAT (p. 39) */
-    while (! (LPC_PLL0->STAT & (1 << 26)));
+    while (! (LPC_SC->PLL0STAT & (1 << 26)));
 
     /* Connect PLL0, set bit 1 to 1 */
-    LPC_PLL0->CON |= (1UL << 1);
+    LPC_SC->PLL0CON |= (1UL << 1);
     /* validate connection */
     LPC_PLL0_DO_FEED();
 

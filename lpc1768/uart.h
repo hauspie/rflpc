@@ -28,10 +28,19 @@ extern int lpc_uart0_init();
 /** Sends a byte to the uart0 */
 static inline void lpc_uart0_putchar(char c)
 {
-    /* Wait for THR to be empty before sending byte (p. 307)*/
+    /* Wait for THR to be empty before sending byte (p. 307) */
     while (!(LPC_UART0->LSR & (0x1UL << 5)));
     /* Add byte to fifo */
     LPC_UART0->THR = c & 0xFF;
+}
+
+/** reads a byte from the uart0 */
+static inline char lpc_uart0_getchar()
+{
+    /* Wait for the RBR register to receive a byte (p. 307) */
+    while (!(LPC_UART0->LSR & 0x1UL));
+    /* read the byte from the FIFO */
+    return LPC_UART0->RBR & 0xFF;
 }
 
 #endif

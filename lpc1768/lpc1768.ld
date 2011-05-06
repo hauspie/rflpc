@@ -55,7 +55,13 @@ SECTIONS
  /* for this to work fine, the start.o made from the assembly of start.s must
  appear first in the linker command line */
   .text : { 
+  /* The interrupt vector will be remapped in RAM so that it can be easily modified
+     and the one in flash will be copied at startup before performing the actual remap
+     by modifying the VTOR register (p. 75, user manual)
+  */
+  _remapped_interrupt_start = .;
   *(.interrupt_vector)
+  _remapped_interrupt_end = .;
   *(.text)
   /* Constant data is also put in flash */
   *(.rodata)
@@ -63,19 +69,23 @@ SECTIONS
   /* this declares a global constant which contains the address of the end of section text.
      This will be used by the startup code to copy data from flash to ram */
   _text_end = .;
-}
+  } 
+
  /* Data section is put in flash and will be copied in ram by startup script */
- /* the > ram makes all the symbol referencing section .data to be relocated in ram (i.e. addresses used in code are in ram)
-    the AT>flash makes the section to be located in flash.
-    Thus, the startup script will just have to copy the data section from flash to ram
-  */
- /* this declares a global constant _data_start which contains the address of the section in flash */
+
+ /* the > ram makes all the symbol referencing section .data to be relocated in
+    ram (i.e. addresses used in code are in ram) the AT>flash makes the section
+    to be located in flash.  Thus, the startup script will just have to copy
+    the data section from flash to ram */
+
+ /* this declares a global constant _data_start which contains the address of
+ the section in ram */
  .data : { 
- _data_start = .; 
- *(.data) 
+  _data_start = .; 
+  *(.data) 
  . = ALIGN(8);
 } > ram AT>flash
- /* declares a global constant _data_end which contains the address of the end of the section in flash */
+ /* declares a global constant _data_end which contains the address of the end of the section in ram */
  _data_end = .; 
   
   /* bss has to be located in ram */

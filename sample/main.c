@@ -81,6 +81,15 @@ void test_uart()
     
 }
 
+void test_echo()
+{
+    while (1)
+    {
+	char c = lpc_uart0_getchar();
+	printf("Received '%c'\n\r", c);
+    }
+}
+
 void test_printf()
 {
     int a = -3;
@@ -99,6 +108,12 @@ void test_printf()
     printf("Hello multiple world: '%x' '%x' '%X' '%s'\r\n", b, byte,b, str);
 }
 
+extern uint32_t _remapped_interrupt_start;
+extern uint32_t _remapped_interrupt_end;
+extern uint32_t _data_start;
+extern uint32_t _data_end;
+
+
 int main()
 {
     INIT_LEDS();
@@ -107,7 +122,10 @@ int main()
 
     test_data_bss();
 /*    test_uart();*/
-    test_printf();
+/*    test_printf();*/
+    printf("%p %p\r\n", &_remapped_interrupt_start, &_remapped_interrupt_end);
+    printf("%p %p\r\n", &_data_start, &_data_end);
+    test_echo();
     
     LPC_STOP(LED2 | LED3, 1000000);
 
