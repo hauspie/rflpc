@@ -20,7 +20,7 @@
 #include "uart.h"
 #include "printf.h"
 
-/* Interruption vector must be aligned to the number of interrupt entries (at least) */
+/* use a special section to put at start of ram (see link script) */
 static volatile lpc_interrupt_handler_t _interrupts[IRQn_COUNT] __attribute__ ((section(".ram_int_vector")));
 
 
