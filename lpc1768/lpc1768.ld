@@ -59,17 +59,28 @@ SECTIONS
      and the one in flash will be copied at startup before performing the actual remap
      by modifying the VTOR register (p. 75, user manual)
   */
-  _remapped_interrupt_start = .;
-  *(.interrupt_vector)
-  _remapped_interrupt_end = .;
-  *(.text)
+  _interrupt_start = .;
+  *(.interrupt_vector) ;
+  _interrupt_end = .;
+  *(.text) ;
   /* Constant data is also put in flash */
-  *(.rodata)
-  . = ALIGN(8);
+  *(.rodata) ;
+  } 
   /* this declares a global constant which contains the address of the end of section text.
      This will be used by the startup code to copy data from flash to ram */
   _text_end = .;
-  } 
+
+  /* bss has to be located in ram */
+  .bss (NOLOAD): { 
+  /* stores the start address of the bss so that the startup code can 0 it */
+  _bss_start = .;
+ /* This will enforce the relocated interrupt vector to be located at the start of the RAM */
+   KEEP(*(.ram_int_vector));
+   KEEP(*(.bss)) ;
+  } > ram AT>flash
+  /* stores the end address of the bss so that the startup code can 0 it */
+   _bss_end = .;
+
 
  /* Data section is put in flash and will be copied in ram by startup script */
 
@@ -82,21 +93,12 @@ SECTIONS
  the section in ram */
  .data : { 
   _data_start = .; 
-  *(.data) 
- . = ALIGN(8);
+  *(.data) ;
 } > ram AT>flash
- /* declares a global constant _data_end which contains the address of the end of the section in ram */
  _data_end = .; 
-  
-  /* bss has to be located in ram */
-  .bss : { 
-  /* stores the start address of the bss so that the startup code can 0 it */
-  _bss_start = .;
-  *(.bss) 
-  . = ALIGN(8);
-  } > ram
-  /* stores the end address of the bss so that the startup code can 0 it */
-  _bss_end = .;
+ /* declares a global constant _data_end which contains the address of the end of the section in ram */
+
+
  /* Stack must be located in ram*/
  .stack : { *(.stack) } > ram
 }

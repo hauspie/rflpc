@@ -29,18 +29,18 @@
 	    PUTCHAR((a_letter) + ((d) - 0xA));		\
     } while (0)
 
-#define PUT_HEXA_BYTE(b, a_letter, print_zero) do {		\
-	if ((print_zero) || (b) != 0)				\
-	{							\
-	    PUT_HEXA_DIGIT(((b)>>4), (a_letter));		\
-	    PUT_HEXA_DIGIT(((b) & 0xF), (a_letter));		\
-	}							\
+#define PUT_HEXA_BYTE(b, a_letter) do {		\
+	PUT_HEXA_DIGIT(((b)>>4), (a_letter));			\
+	PUT_HEXA_DIGIT(((b) & 0xF), (a_letter));		\
     } while (0)
 
 #define PUT_HEXA_VAL(val,a_letter,bits, print_zero) do {		\
 	int b = (bits) - 8;						\
-	for ( ; b >= 0 ; b -= 8)					\
-	    PUT_HEXA_BYTE(((val) >> b) & 0xFF, (a_letter), (print_zero)); \
+	if (!(print_zero))						\
+	    while ((b > 0) && (((val) >> b) & 0xFF) == 0)		\
+		b -=8;							\
+	    for ( ; b >= 0 ; b -= 8)					\
+		PUT_HEXA_BYTE(((val) >> b) & 0xFF, (a_letter));		\
     } while(0)
 
 

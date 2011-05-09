@@ -15,9 +15,12 @@
  */
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "uart.h"
 #include "pll.h"
+#include "interrupt.h"
 
+static lpc_uart_rx_callback_t _uart0_callback;
 
 /* For now, we suppose that the CCLK is 96 Mhz. Thus,
    we set PCLK to 12 Mhz by setting it to CCLK/8.
@@ -68,3 +71,34 @@ int lpc_uart0_init()
     return 0;
 }
 
+
+#include "leds.h"
+
+static LPC_IRQ_HANDLER _uart0_rx_handler()
+{
+    char c;
+    static int i = 1;
+    
+    LED_VAL(i);
+    i = (i + 1) % 16;
+
+    /* Wait for the RBR register to receive a byte (p. 307) */
+    while ((LPC_UART0->LSR & 0x1UL))
+    {
+	c = LPC_UART0->RBR & 0xFF; 
+	if (_uart0_callback != NULL)
+	    _uart0_callback(c);
+    }
+}
+
+void lpc_uart0_set_rx_callback(lpc_uart_rx_callback_t callback)
+{
+    _uart0_callback = callback;
+    /* set the uart0 interrupt handler */
+    lpc_set_handler(UART0_IRQn, _uart0_rx_handler);
+    /* enable the interrupt vector */
+    lpc_enable_interrupt(UART0_IRQn);
+    lpc_enable_irq();
+    /* enable the uart0 irq generation (user manual p. 302) */
+    LPC_UART0->IER |= 1;
+}

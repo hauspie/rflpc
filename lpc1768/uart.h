@@ -43,4 +43,10 @@ static inline char lpc_uart0_getchar()
     return LPC_UART0->RBR & 0xFF;
 }
 
+/* Type for uart rx callback. Parameter is the received char */
+typedef void (*lpc_uart_rx_callback_t)(char c);
+
+/** set the uart0 rx callback. This enables the uart0 interrupt and set the handler accordingly */
+extern void lpc_uart0_set_rx_callback(lpc_uart_rx_callback_t callback);
+
 #endif

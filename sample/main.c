@@ -18,6 +18,7 @@
 #include <uart.h>
 
 #include <printf.h>
+#include <interrupt.h>
 
 uint32_t data = (LED1|LED2);
 uint32_t data2 = 0xfadebeef;
@@ -26,6 +27,7 @@ void *add_data = &data;
 void *add_data2 = &test1;
 
 int a,b,c,d;
+char e;
 
 
 
@@ -108,11 +110,43 @@ void test_printf()
     printf("Hello multiple world: '%x' '%x' '%X' '%s'\r\n", b, byte,b, str);
 }
 
-extern uint32_t _remapped_interrupt_start;
-extern uint32_t _remapped_interrupt_end;
+void uart0_rx(char c)
+{
+    printf("Received '%c' via interrupt\r\n", c);
+}
+
+void test_echo_irq()
+{
+    lpc_uart0_set_rx_callback(uart0_rx);
+    while (1)
+	;
+}
+
+extern uint32_t _interrupt_start;
+extern uint32_t _interrupt_end;
 extern uint32_t _data_start;
 extern uint32_t _data_end;
+extern uint32_t _bss_start;
+extern uint32_t _bss_end;
+extern uint32_t _text_end;
 
+
+LPC_IRQ_HANDLER rit_handler()
+{
+    static int i = 0;
+
+    ++i;
+    LED_VAL(i % 16);
+}
+
+
+void test_rit()
+{
+    lpc_set_handler(RIT_IRQn, rit_handler);
+    lpc_enable_interrupt(RIT_IRQn);
+    LPC_RIT->RICOMPVAL = 10000;
+    LPC_RIT->RICTRL |= 2; /* reset counter every time an interrupt is raised */
+}
 
 int main()
 {
@@ -120,12 +154,20 @@ int main()
     if (lpc_uart0_init() == -1)
 	LPC_STOP(LED1 | LED3, 1000000);
 
+    lpc_init_interrupts();
+
     test_data_bss();
 /*    test_uart();*/
 /*    test_printf();*/
-    printf("%p %p\r\n", &_remapped_interrupt_start, &_remapped_interrupt_end);
-    printf("%p %p\r\n", &_data_start, &_data_end);
-    test_echo();
+    printf("Interrupt vector: %p %p\r\n", &_interrupt_start, &_interrupt_end);
+    printf(".text: 0x00 %p\r\n", &_text_end);
+    printf(".data: %p %p\r\n", &_data_start, &_data_end);
+    printf(".bss: %p %p %x %x\r\n", &_bss_start, &_bss_end, _bss_start, _bss_end);
+    printf("%d %d %d %d\r\n", a, b, c, d);
+    printf("%p %p %p %p\r\n", &a, &b, &c, &d);
+/*    test_echo();*/
+/*    test_rit();*/
+    test_echo_irq();
     
     LPC_STOP(LED2 | LED3, 1000000);
 

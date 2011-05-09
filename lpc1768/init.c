@@ -23,11 +23,11 @@
 /* These symbols are defined by the linker script.
    They are used to find bounds of text, data and bss sections in flash/ram
 */
-extern uint32_t _data_start;
-extern uint32_t _data_end;
-extern uint32_t _text_end;
-extern uint32_t _bss_start;
-extern uint32_t _bss_end;
+extern char _data_start;
+extern char _data_end;
+extern char _text_end;
+extern char _bss_start;
+extern char _bss_end;
 
 
 static uint32_t _lpc_system_clock = 4000000;
@@ -41,7 +41,7 @@ uint32_t lpc_get_system_clock()
 /* Set all bss to zero */
 static void _zero_bss(void)
 {
-    uint32_t *dst = &_bss_start;
+    char *dst = &_bss_start;
     while (dst < &_bss_end)
 	*dst++ = 0;
 }
@@ -49,8 +49,8 @@ static void _zero_bss(void)
 /* Copy data section from flash to ram */
 static void _copy_data_section(void)
 {
-    uint32_t *src = &_text_end;
-    uint32_t *dst = &_data_start;
+    char *src = &_text_end;
+    char *dst = &_data_start;
 
     while (dst < &_data_end)
 	*dst++ = *src++;

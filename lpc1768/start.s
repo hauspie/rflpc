@@ -44,7 +44,7 @@ _stack_bottom:
 	.long	0			/* Reserved */
 	.long	0			/* Reserved */
 	.long	_default_handler	/* Supervisor mode call handler */
-	.long	0			/* Reserved for debug */
+	.long	_default_handler	/* Debug Monitor */
 	.long	_default_handler	/* pend sv handler (c.f. p746 of user manual) */
 	.long	_default_handler	/* system timer tick handler (generated when the timer reaches 0) */
 
@@ -97,6 +97,3 @@ _start:
 	ldr 	r0, =main 		/* branch inside C main program */
 	blx	r0
 	b	.
-.thumb_func
-_default_handler:
-	b	.	/* infinite loop */
