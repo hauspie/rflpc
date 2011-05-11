@@ -37,8 +37,6 @@ static inline void lpc_enable_interrupt(IRQn_Type irq)
 {
     int bit = irq - WDT_IRQn;
 
-    printf("setting bit %d for IRQ %d\r\n", bit, irq);
-    
     NVIC->ISER[bit >> 5] |= (1 << bit);
 }
 

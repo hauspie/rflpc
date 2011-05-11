@@ -27,9 +27,20 @@ static volatile lpc_interrupt_handler_t _interrupts[IRQn_COUNT] __attribute__ ((
 extern char _interrupt_start;
 extern char _interrupt_end;
 
-LPC_IRQ_HANDLER _default_handler()
+LPC_IRQ_HANDLER _default_exception_handler()
+{
+    lpc_uart0_putchar('E');
+    lpc_uart0_putchar('I');
+    lpc_uart0_putchar('N');
+    lpc_uart0_putchar('T');
+    lpc_uart0_putchar('\r');
+    lpc_uart0_putchar('\n');
+}
+
+LPC_IRQ_HANDLER _default_peripheral_handler()
 {
     /* empty default handler */
+    lpc_uart0_putchar('P');
     lpc_uart0_putchar('I');
     lpc_uart0_putchar('N');
     lpc_uart0_putchar('T');
@@ -53,7 +64,6 @@ void lpc_init_interrupts()
 
 void lpc_set_handler(IRQn_Type irq, lpc_interrupt_handler_t handler)
 {
-    printf("Setting handler for %d (%p)\r\n", irq, _interrupts[irq]);
     _interrupts[irq] = handler;
 }
 

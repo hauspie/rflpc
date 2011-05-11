@@ -34,54 +34,55 @@ _stack_bottom:
 	.section ".interrupt_vector"
 	.long	_stack_bottom 		/* initial value of SP */
 	.long	_start 			/* address of the reset routine */
-	.long	_default_handler	/* Non Masquable Interrupt handler */
-	.long	_default_handler	/* Hardware Fault handler */
-	.long	_default_handler	/* Memory protection unit exception handler */
-	.long	_default_handler	/* Bus fault handler */
-	.long	_default_handler	/* Usage fault handler */
+	.long	_default_exception_handler	/* Non Masquable Interrupt handler */
+	.long	_default_exception_handler	/* Hardware Fault handler */
+	.long	_default_exception_handler	/* Memory protection unit exception handler */
+	.long	_default_exception_handler	/* Bus fault handler */
+	.long	_default_exception_handler	/* Usage fault handler */
 	.long	0			/* Reserved */
 	.long	0			/* Reserved */
 	.long	0			/* Reserved */
 	.long	0			/* Reserved */
-	.long	_default_handler	/* Supervisor mode call handler */
-	.long	_default_handler	/* Debug Monitor */
-	.long	_default_handler	/* pend sv handler (c.f. p746 of user manual) */
-	.long	_default_handler	/* system timer tick handler (generated when the timer reaches 0) */
+	.long	_default_exception_handler	/* Supervisor mode call handler */
+	.long	0			/* Reserved */
+	.long	0			/* Reserved */
+	.long	_default_exception_handler	/* pend sv handler (c.f. p746 of user manual) */
+	.long	_default_exception_handler	/* system timer tick handler (generated when the timer reaches 0) */
 
 	/* From now, all interrupts are external IRQ for peripherals */
-	.long	_default_handler	/* Watchdog timer */
-	.long	_default_handler	/* Timer0 */
-	.long	_default_handler	/* Timer1 */
-	.long	_default_handler	/* Timer2 */
-	.long	_default_handler	/* Timer3 */
-	.long	_default_handler	/* UART0 */
-	.long	_default_handler	/* UART1 */
-	.long	_default_handler	/* UART2 */
-	.long	_default_handler	/* UART3 */
-	.long	_default_handler	/* PWM1 */
-	.long	_default_handler	/* I2C0 */
-	.long	_default_handler	/* I2C1 */
-	.long	_default_handler	/* I2C2 */
-	.long	_default_handler	/* SPI */
-	.long	_default_handler	/* SSP0 */
-	.long	_default_handler	/* SSP1 */
-	.long	_default_handler	/* PLL0 Lock */
-	.long	_default_handler	/* Real Time Clock */
-	.long	_default_handler	/* External Interrupt 0 */
-	.long	_default_handler	/* External Interrupt 1 */
-	.long	_default_handler	/* External Interrupt 2 */
-	.long	_default_handler	/* External Interrupt 3 */
-	.long	_default_handler	/* Analogic Digital Converter */
-	.long	_default_handler	/* Brown-Out detect */
-	.long	_default_handler	/* USB */
-	.long	_default_handler	/* CAN */
-	.long	_default_handler	/* General Purpose DMA */
-	.long	_default_handler	/* I2S */
-	.long 	_default_handler	/* Ethernet */
-	.long	_default_handler	/* Repetitive Interrupt Timer */
-	.long	_default_handler	/* Motor Control PWM */
-	.long	_default_handler	/* Quadrature Encoder */
-	.long	_default_handler	/* PLL1 Lock */	
+	.long	_default_peripheral_handler	/* Watchdog timer */
+	.long	_default_peripheral_handler	/* Timer0 */
+	.long	_default_peripheral_handler	/* Timer1 */
+	.long	_default_peripheral_handler	/* Timer2 */
+	.long	_default_peripheral_handler	/* Timer3 */
+	.long	_default_peripheral_handler	/* UART0 */
+	.long	_default_peripheral_handler	/* UART1 */
+	.long	_default_peripheral_handler	/* UART2 */
+	.long	_default_peripheral_handler	/* UART3 */
+	.long	_default_peripheral_handler	/* PWM1 */
+	.long	_default_peripheral_handler	/* I2C0 */
+	.long	_default_peripheral_handler	/* I2C1 */
+	.long	_default_peripheral_handler	/* I2C2 */
+	.long	_default_peripheral_handler	/* SPI */
+	.long	_default_peripheral_handler	/* SSP0 */
+	.long	_default_peripheral_handler	/* SSP1 */
+	.long	_default_peripheral_handler	/* PLL0 Lock */
+	.long	_default_peripheral_handler	/* Real Time Clock */
+	.long	_default_peripheral_handler	/* External Interrupt 0 */
+	.long	_default_peripheral_handler	/* External Interrupt 1 */
+	.long	_default_peripheral_handler	/* External Interrupt 2 */
+	.long	_default_peripheral_handler	/* External Interrupt 3 */
+	.long	_default_peripheral_handler	/* Analogic Digital Converter */
+	.long	_default_peripheral_handler	/* Brown-Out detect */
+	.long	_default_peripheral_handler	/* USB */
+	.long	_default_peripheral_handler	/* CAN */
+	.long	_default_peripheral_handler	/* General Purpose DMA */
+	.long	_default_peripheral_handler	/* I2S */
+	.long 	_default_peripheral_handler	/* Ethernet */
+	.long	_default_peripheral_handler	/* Repetitive Interrupt Timer */
+	.long	_default_peripheral_handler	/* Motor Control PWM */
+	.long	_default_peripheral_handler	/* Quadrature Encoder */
+	.long	_default_peripheral_handler	/* PLL1 Lock */	
 
 /********************************************/
 /* code section */

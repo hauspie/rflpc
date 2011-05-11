@@ -72,15 +72,9 @@ int lpc_uart0_init()
 }
 
 
-#include "leds.h"
-
 static LPC_IRQ_HANDLER _uart0_rx_handler()
 {
     char c;
-    static int i = 1;
-    
-    LED_VAL(i);
-    i = (i + 1) % 16;
 
     /* Wait for the RBR register to receive a byte (p. 307) */
     while ((LPC_UART0->LSR & 0x1UL))

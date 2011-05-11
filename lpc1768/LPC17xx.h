@@ -40,8 +40,8 @@ typedef enum IRQn
   UsageFault_IRQn               ,      /*!< 6 Cortex-M3 Usage Fault Interrupt                */
   SVCall_IRQn                   = 11,       /*!< 11 Cortex-M3 SV Call Interrupt                   */
   DebugMonitor_IRQn             = 12,       /*!< 12 Cortex-M3 Debug Monitor Interrupt             */
-  PendSV_IRQn                   = 13,       /*!< 14 Cortex-M3 Pend SV Interrupt                   */
-  SysTick_IRQn                  = 14,       /*!< 15 Cortex-M3 System Tick Interrupt               */
+  PendSV_IRQn                   = 14,       /*!< 14 Cortex-M3 Pend SV Interrupt                   */
+  SysTick_IRQn                  = 15,       /*!< 15 Cortex-M3 System Tick Interrupt               */
 
 /******  LPC17xx Specific Interrupt Numbers *******************************************************/
   WDT_IRQn                      ,        /*!< Watchdog Timer Interrupt                         */

@@ -77,7 +77,7 @@ void test_uart()
 	{
 	    lpc_uart0_putchar('\n');
 	    lpc_uart0_putchar('\r');
-	    c = 'a';
+	    break;
 	}
     }
     
@@ -85,10 +85,14 @@ void test_uart()
 
 void test_echo()
 {
+    printf("Testing uart0 polling\r\n");
+    printf("Press Q to quit test\r\n");
     while (1)
     {
 	char c = lpc_uart0_getchar();
 	printf("Received '%c'\n\r", c);
+	if (c == 'Q')
+	    break;
     }
 }
 
@@ -110,16 +114,27 @@ void test_printf()
     printf("Hello multiple world: '%x' '%x' '%X' '%s'\r\n", b, byte,b, str);
 }
 
+
+void print_interrupts(const uint32_t *addr)
+{
+    int i;
+    for (i = 0; i < IRQn_COUNT ; ++i)
+    {
+	printf("%p: 0x%x\r\n", addr+i, addr[i]);
+    }
+}
+
 void uart0_rx(char c)
 {
     printf("Received '%c' via interrupt\r\n", c);
 }
-
 void test_echo_irq()
 {
+    printf("Testing uart0 reception via interruption\r\n");
     lpc_uart0_set_rx_callback(uart0_rx);
     while (1)
-	;
+    {
+    }
 }
 
 extern uint32_t _interrupt_start;
@@ -131,21 +146,12 @@ extern uint32_t _bss_end;
 extern uint32_t _text_end;
 
 
-LPC_IRQ_HANDLER rit_handler()
+void print_sections()
 {
-    static int i = 0;
-
-    ++i;
-    LED_VAL(i % 16);
-}
-
-
-void test_rit()
-{
-    lpc_set_handler(RIT_IRQn, rit_handler);
-    lpc_enable_interrupt(RIT_IRQn);
-    LPC_RIT->RICOMPVAL = 10000;
-    LPC_RIT->RICTRL |= 2; /* reset counter every time an interrupt is raised */
+    printf("Interrupt vector: %p %p\r\n", &_interrupt_start, &_interrupt_end);
+    printf(".text: 0x00 %p\r\n", &_text_end);
+    printf(".data: %p %p\r\n", &_data_start, &_data_end);
+    printf(".bss: %p %p %x %x\r\n", &_bss_start, &_bss_end, _bss_start, _bss_end);
 }
 
 int main()
@@ -154,19 +160,14 @@ int main()
     if (lpc_uart0_init() == -1)
 	LPC_STOP(LED1 | LED3, 1000000);
 
+    printf("rfBareMbed sample test\r\n");
+
     lpc_init_interrupts();
 
     test_data_bss();
-/*    test_uart();*/
-/*    test_printf();*/
-    printf("Interrupt vector: %p %p\r\n", &_interrupt_start, &_interrupt_end);
-    printf(".text: 0x00 %p\r\n", &_text_end);
-    printf(".data: %p %p\r\n", &_data_start, &_data_end);
-    printf(".bss: %p %p %x %x\r\n", &_bss_start, &_bss_end, _bss_start, _bss_end);
-    printf("%d %d %d %d\r\n", a, b, c, d);
-    printf("%p %p %p %p\r\n", &a, &b, &c, &d);
-/*    test_echo();*/
-/*    test_rit();*/
+    test_uart();
+    test_printf();
+    test_echo();
     test_echo_irq();
     
     LPC_STOP(LED2 | LED3, 1000000);
