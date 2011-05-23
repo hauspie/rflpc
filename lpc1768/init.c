@@ -43,6 +43,9 @@ static unsigned char _stack[STACK_SIZE] __attribute__((section(".stack")));
 
 /** This array is the rom interrupt vector. It is force to be located in the
  * .interrupt_vector section so that the linker script puts it at address 0 */
+
+/* see section 34.3.3 p 745 of the user manual */
+
 void* _rom_interrupts[IRQn_COUNT] __attribute__ ((section(".interrupt_vector"))) = {
     &_stack[STACK_SIZE],   /* initial SP value */
     _low_level_init, /* address of the reset routine */
