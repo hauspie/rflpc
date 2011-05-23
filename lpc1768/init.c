@@ -15,10 +15,11 @@
  */
 
 #include <stdint.h>
-#include "pll.h"
+#include "clock.h"
 #include "interrupt.h"
 #include "leds.h"
 #include "debug.h"
+#include "config.h"
 
 /* These symbols are defined by the linker script.
    They are used to find bounds of text, data and bss sections in flash/ram
@@ -29,13 +30,71 @@ extern char _text_end;
 extern char _bss_start;
 extern char _bss_end;
 
+/* reset routine */
+void _low_level_init(void);
+/* default handlers */
+extern LPC_IRQ_HANDLER _default_exception_handler();
+extern LPC_IRQ_HANDLER _default_peripheral_handler();
 
-static uint32_t _lpc_system_clock = 4000000;
 
-uint32_t lpc_get_system_clock()
-{
-    return _lpc_system_clock;
-}
+/** This array will contain the stack. It is forced to be in the .stack section
+ * so that the linker script can locate it where we want */
+static unsigned char _stack[STACK_SIZE] __attribute__((section(".stack")));
+
+/** This array is the rom interrupt vector. It is force to be located in the
+ * .interrupt_vector section so that the linker script puts it at address 0 */
+void* _rom_interrupts[IRQn_COUNT] __attribute__ ((section(".interrupt_vector"))) = {
+    &_stack[STACK_SIZE],   /* initial SP value */
+    _low_level_init, /* address of the reset routine */
+    _default_exception_handler,	/* Non Masquable Interrupt handler, */
+    _default_exception_handler,	/* Hardware Fault handler, */
+    _default_exception_handler,	/* Memory protection unit exception handler, */
+    _default_exception_handler,	/* Bus fault handler, */
+    _default_exception_handler,	/* Usage fault handler, */
+    0,			/* Reserved */
+    0,			/* Reserved */
+    0,			/* Reserved */
+    0,			/* Reserved */
+    _default_exception_handler,	/* Supervisor mode call handler, */
+    0,			/* Reserved */
+    0,			/* Reserved */
+    _default_exception_handler,	/* pend sv handler (c.f. p746 of user manual) */
+    _default_exception_handler,	/* system timer tick handler (generated when the timer reaches 0) */
+/* From	now, all interrupts are external IRQ for peripherals */
+    _default_peripheral_handler,	/* Watchdog timer */
+    _default_peripheral_handler,	/* Timer0 */
+    _default_peripheral_handler,	/* Timer1 */
+    _default_peripheral_handler,	/* Timer2 */
+    _default_peripheral_handler,	/* Timer3 */
+    _default_peripheral_handler,	/* UART0 */
+    _default_peripheral_handler,	/* UART1 */
+    _default_peripheral_handler,	/* UART2 */
+    _default_peripheral_handler,	/* UART3 */
+    _default_peripheral_handler,	/* PWM1 */
+    _default_peripheral_handler,	/* I2C0 */
+    _default_peripheral_handler,	/* I2C1 */
+    _default_peripheral_handler,	/* I2C2 */
+    _default_peripheral_handler,	/* SPI */
+    _default_peripheral_handler,	/* SSP0 */
+    _default_peripheral_handler,	/* SSP1 */
+    _default_peripheral_handler,	/* PLL0 Lock */
+    _default_peripheral_handler,	/* Real Time Clock */
+    _default_peripheral_handler,	/* External Interrupt 0 */
+    _default_peripheral_handler,	/* External Interrupt 1 */
+    _default_peripheral_handler,	/* External Interrupt 2 */
+    _default_peripheral_handler,	/* External Interrupt 3 */
+    _default_peripheral_handler,	/* Analogic Digital Converter */
+    _default_peripheral_handler,	/* Brown-Out detect */
+    _default_peripheral_handler,	/* USB */
+    _default_peripheral_handler,	/* CAN */
+    _default_peripheral_handler,	/* General Purpose DMA */
+    _default_peripheral_handler,	/* I2S */
+    _default_peripheral_handler,	/* Ethernet */
+    _default_peripheral_handler,	/* Repetitive Interrupt Timer */
+    _default_peripheral_handler,	/* Motor Control PWM */
+    _default_peripheral_handler,	/* Quadrature Encoder */
+    _default_peripheral_handler,	/* PLL1 Lock */	
+};
 
 
 /* Set all bss to zero */
@@ -56,88 +115,19 @@ static void _copy_data_section(void)
 	*dst++ = *src++;
 }
 
-/* Initialise clock to use main oscillator for PLL0.
-
-   CPU is set to 96Mhz using the 12Mhz source for PLL0. (see mbed schematic,
-   main oscillator is a 12Mhz crystal connected to pins XTAL1 and XTAL2)
-
-   As this setup is suitable for USB, so PPL0 can be used to clock USB (need a 48Mhz mutiple)
-
-   The output of the PLL0 is given by:
-   Fcco = (2xMxFin)/N where Fin is the frequency of the source (12Mhz), M the
-   multiplier and N the pre-divider (p.41)
-   Fcco = 2x12x12/1 = 288Mhz
-   We thus have M=12 and N=1, so we have to write 0xB in the PLL0CFG register (p. 37)
-   To get the 96Mhz CPU clock, we must set the cpu clock divider to 3 (288/3 = 96).
-   This is done by setting CCLKSEL register to 2 (p. 55)
-*/
-static void _init_clock(void)
-{
-    
-    /* Disable IRQs so that the FEED sequence of the PLL is atomic */
-    lpc_disable_irq();
-
-    /* Lets follow the setup sequence p. 46 */
-    if (LPC_SC->PLL0STAT & (1<<24)) /* if PLL0 connected, disconnect */
-    {
-	/* Disconnect PLL0, set bit 1 to 0 */
-	LPC_SC->PLL0CON &= ~(1UL << 1);
-	/* send feed sequence to validate the disconnection */
-	LPC_PLL0_DO_FEED();
-    }
-    /* Disable PLL0, set bit 0 to 0 */
-    LPC_SC->PLL0CON &= ~(1UL);
-    /* feed sequence to validate disable */
-    LPC_PLL0_DO_FEED();
 
 
-    /* Then, enable main oscillator and wait for it to be ready */
-    /* Select its range, 1Mhz to 20Mhz, set 0 to bit 4 of SCS register (p. 28) */
-    LPC_SC->SCS &= ~(1UL << 4);
-    /* Enables it, set 1 to bit 5 */
-    LPC_SC->SCS |= (1UL << 5);
-	
-    /* Wait for it to be stable by waiting a 1 on bit 6 */
-    while ((LPC_SC->SCS & (1UL << 6)) == 0);
-
-    /* Main oscillator is stable. Can now be used as source for PLL0 */
-    /* Select main oscillator as source for PLL0. Set bit 1:0 of CLKSRC register to 01 (p. 34) */
-    LPC_SC->CLKSRCSEL  = ((LPC_SC->CLKSRCSEL & ~(3UL)) | 1);
-
-
-
-    /* Configure PLL0 with N=1 and M=12. The value is then 0xB (p. 37) */
-    LPC_SC->PLL0CFG = 0xB;
-    /* validate the configuration */
-    LPC_PLL0_DO_FEED();
-    
-    /* Enable PLL0 */
-    LPC_SC->PLL0CON |= (1UL);
-    LPC_PLL0_DO_FEED();
-
-    /* Set the CPU Clock divider (p. 55) */
-    LPC_SC->CCLKCFG = 2; /* 2 to divide PLL0 output frequency (288Mhz) by 3 */
-
-    /* Wait for PLL0 to lock desired frequency by monitoring bit 26 of register PLL0STAT (p. 39) */
-    while (! (LPC_SC->PLL0STAT & (1 << 26)));
-
-    /* Connect PLL0, set bit 1 to 1 */
-    LPC_SC->PLL0CON |= (1UL << 1);
-    /* validate connection */
-    LPC_PLL0_DO_FEED();
-
-
-    _lpc_system_clock = 96000000;
-
-    /* system is now working on PLL0, CPU at 96Mhz */
-    /* Enables the IRQs */
-    lpc_enable_irq();
-}
+extern void main(void);
 
 void _low_level_init(void)
 {
-    INIT_LEDS();
+    lpc_init_leds();
     _copy_data_section();
     _zero_bss();
-    _init_clock();
+    /* set the clock to 96 Mhz */
+    lpc_init_clock();
+    /* Copy the rom interrupt vector to ram and relocate it */
+    lpc_init_interrupts();
+    /* start main program */
+    main();
 }

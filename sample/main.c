@@ -33,34 +33,34 @@ char e;
 
 void test_data_bss()
 {
-    SET_LED(LED1|LED2|LED3|LED4);
+    lpc_set_led(LED1|LED2|LED3|LED4);
     LPC_DELAY(1000000);
-    CLR_LED(LED1|LED2|LED3|LED4);
+    lpc_clr_led(LED1|LED2|LED3|LED4);
     
 
     /* Check data section initialisation */
     if (data == (LED1 | LED2))
-	SET_LED(LED1);
+	lpc_set_led(LED1);
 
     LPC_DELAY(1000000);
     if (test1 == 0xAB)
-	SET_LED(LED2);
+	lpc_set_led(LED2);
 
     LPC_DELAY(1000000);
     if (add_data == &data)
-	SET_LED(LED3);
+	lpc_set_led(LED3);
 
     LPC_DELAY(1000000);
     if (data2 == 0xfadebeef)
-	SET_LED(LED4);
+	lpc_set_led(LED4);
 
     
     /* Check bss section initialisation */
     LPC_DELAY(1000000);
     if (a == 0 && b == 0 && c == 0 && d == 0)
-	LED_VAL(LED1|LED4);
+	lpc_led_val(LED1 | LED4);
     else
-	LED_VAL(LED2|LED3);
+	lpc_led_val(LED2 | LED3);
     LPC_DELAY(1000000);
 }
 
@@ -130,10 +130,16 @@ void uart0_rx(char c)
 }
 void test_echo_irq()
 {
+    int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
+    int i = 0;
     printf("Testing uart0 reception via interruption\r\n");
     lpc_uart0_set_rx_callback(uart0_rx);
     while (1)
     {
+	LPC_DELAY(1000000);
+	lpc_led_val(led[i++]);
+	if (i >= 6)
+	    i = 0;
     }
 }
 
@@ -156,13 +162,10 @@ void print_sections()
 
 int main()
 {
-    INIT_LEDS();
     if (lpc_uart0_init() == -1)
 	LPC_STOP(LED1 | LED3, 1000000);
 
     printf("rfBareMbed sample test\r\n");
-
-    lpc_init_interrupts();
 
     test_data_bss();
     test_uart();

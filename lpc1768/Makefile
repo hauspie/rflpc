@@ -6,16 +6,13 @@ CFLAGS=-Wall
 
 LIB=liblpc1768.a
 
-ASOBJS=start.o
 CFILES=$(wildcard *.c)
 COBJS=$(CFILES:.c=.o)
 HEADERS=$(wildcard *.h)
 
-$(LIB): $(ASOBJS) $(COBJS)
+$(LIB): $(COBJS)
 	$(AR) rs $@ $^
 
-start.o: start.s
-	$(AS) -o $@ $^
 
 init.o: init.c $(HEADERS)
 	$(CC) -Wall -o $@ -c $<

@@ -27,6 +27,7 @@
    LED4 P1.23
 */
 #include "LPC17xx.h"
+#include "printf.h"
 
 #define LED1 (1 << 18)
 #define LED2 (1 << 20)
@@ -34,14 +35,32 @@
 #define LED4 (1 << 23)
 
 
-/* Init the leds. Sets the GPIO1 led pins to output pins */
-#define INIT_LEDS() do { LPC_GPIO1->FIODIR |= (LED1 | LED2 | LED3 | LED4);} while(0)
+/** Inits the GPIO port to use the leds. Sets the GPIO1 led pins to output
+ * pins */
+static inline void lpc_init_leds()
+{
+    LPC_GPIO1->FIODIR |= (LED1 | LED2 | LED3 | LED4);
+}
 
-/** Sets the given led(s) on */
-#define SET_LED(l) do { LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOSET = (l);} while(0)
+/** Turns the given led on */
+static inline void lpc_set_led(uint32_t l)
+{
+    LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOSET = (l);
+}
+
+
 /** Clears the given led(s) (turn them off) */
-#define CLR_LED(l) do { LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOCLR = (l);} while(0)
+static inline void lpc_clr_led(uint32_t l)
+{
+    LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOCLR = (l);
+}
 
-#define LED_VAL(l) do { LPC_GPIO1->FIOMASK = ~(LED1|LED2|LED3|LED4); LPC_GPIO1->FIOPIN = (l);} while(0)
+
+/** Turns the leds included in the mask*/
+static inline void lpc_led_val(uint32_t l)
+{
+    LPC_GPIO1->FIOMASK = ~(LED1|LED2|LED3|LED4);
+    LPC_GPIO1->FIOPIN = l;
+}
 
 #endif
