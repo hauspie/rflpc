@@ -14,8 +14,8 @@
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 
-#ifndef __LPC_CLOCK_H__
-#define __LPC_CLOCK_H__
+#ifndef __RFLPC_CLOCK_H__
+#define __RFLPC_CLOCK_H__
 
 #include "LPC17xx.h"
 

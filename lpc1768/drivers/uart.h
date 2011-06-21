@@ -14,8 +14,8 @@
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 
-#ifndef __LPC1768_UART_H__
-#define __LPC1768_UART_H__
+#ifndef __RFLPC_UART_H__
+#define __RFLPC_UART_H__
 
 #include "../LPC17xx.h"
 

@@ -13,8 +13,8 @@
  * You should have received a copy of the GNU General Public License	 
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
-#ifndef __LPC_SPI_H__
-#define __LPC_SPI_H__
+#ifndef __RFLPC_SPI_H__
+#define __RFLPC_SPI_H__
 
 
 

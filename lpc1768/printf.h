@@ -14,8 +14,8 @@
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 
-#ifndef __LPC_PRINTF_H__
-#define __LPC_PRINTF_H__
+#ifndef __RFLPC_PRINTF_H__
+#define __RFLPC_PRINTF_H__
 
 
 

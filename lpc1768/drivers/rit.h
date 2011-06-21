@@ -17,8 +17,8 @@
   This files defines the driver for the Repetitive Interrupt Timer (user manual, p. 501)
  */
 
-#ifndef __LPC_RIT_H__
-#define __LPC_RIT_H__
+#ifndef __RFLPC_RIT_H__
+#define __RFLPC_RIT_H__
 
 #include "../LPC17xx.h"
 #include "../interrupt.h"

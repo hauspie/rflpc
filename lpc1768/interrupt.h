@@ -14,8 +14,8 @@
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 
-#ifndef __LPC_INTERRUPT_H__
-#define __LPC_INTERRUPT_H__
+#ifndef __RFLPC_INTERRUPT_H__
+#define __RFLPC_INTERRUPT_H__
 
 #include "LPC17xx.h"
 #include "printf.h"
