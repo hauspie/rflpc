@@ -16,6 +16,8 @@
 
 #include <debug.h>
 #include <drivers/uart.h>
+#include <drivers/rit.h>
+
 
 #include <printf.h>
 #include <interrupt.h>
@@ -130,17 +132,20 @@ void uart0_rx(char c)
 }
 void test_echo_irq()
 {
-    int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
-    int i = 0;
     printf("Testing uart0 reception via interruption\r\n");
     lpc_uart0_set_rx_callback(uart0_rx);
-    while (1)
-    {
-	LPC_DELAY(1000000);
-	lpc_led_val(led[i++]);
-	if (i >= 6)
-	    i = 0;
-    }
+}
+
+
+LPC_IRQ_HANDLER _rit_callback()
+{
+    printf("RIT INTERRUPT: %x\r\n", lpc_rit_get_counter_value());
+    lpc_rit_clear_pending_interrupt();
+}
+void test_rit()
+{
+    lpc_rit_enable();
+    lpc_rit_set_callback(10000000, 0, 1, _rit_callback);
 }
 
 extern uint32_t _interrupt_start;
@@ -162,6 +167,9 @@ void print_sections()
 
 int main()
 {
+    int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
+    int i = 0;
+
     if (lpc_uart0_init() == -1)
 	LPC_STOP(LED1 | LED3, 1000000);
 
@@ -170,9 +178,18 @@ int main()
     test_data_bss();
     test_uart();
     test_printf();
-    test_echo();
+/*    test_echo();*/
     test_echo_irq();
+    test_rit();
     
+    while (1)
+    {
+	LPC_DELAY(1000000);
+	lpc_led_val(led[i++]);
+	if (i >= 6)
+	    i = 0;
+    }
+
     LPC_STOP(LED2 | LED3, 1000000);
 
     return 0;

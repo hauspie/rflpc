@@ -35,7 +35,7 @@ static lpc_uart_rx_callback_t _uart0_callback;
 
 int lpc_uart0_init()
 {
-    /* Enable UART */
+    /* Enable UART (user manual, p. 63) */
     LPC_SC->PCONP |= (1UL << 3);
     
     /* set the peripheral clock to 12 Mhz */

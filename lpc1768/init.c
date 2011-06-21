@@ -32,7 +32,7 @@ extern char _bss_start;
 extern char _bss_end;
 
 /* reset routine */
-void _low_level_init(void);
+void _start(void);
 /* default handlers */
 extern LPC_IRQ_HANDLER _default_exception_handler();
 extern LPC_IRQ_HANDLER _default_peripheral_handler();
@@ -49,7 +49,7 @@ static unsigned char _stack[STACK_SIZE] __attribute__((section(".stack")));
 
 void* _rom_interrupts[IRQn_COUNT] __attribute__ ((section(".interrupt_vector"))) = {
     &_stack[STACK_SIZE],   /* initial SP value */
-    _low_level_init, /* address of the reset routine */
+    _start, /* address of the reset routine */
     _default_exception_handler,	/* Non Masquable Interrupt handler, */
     _default_exception_handler,	/* Hardware Fault handler, */
     _default_exception_handler,	/* Memory protection unit exception handler, */
@@ -123,7 +123,7 @@ static void _copy_data_section(void)
 
 extern void main(void);
 
-void _low_level_init(void)
+void _start(void)
 {
     lpc_init_leds();
     _copy_data_section();
