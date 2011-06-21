@@ -15,9 +15,10 @@
  */
 
 #include <stdint.h>
+#include "drivers/leds.h"
+
 #include "clock.h"
 #include "interrupt.h"
-#include "leds.h"
 #include "debug.h"
 #include "config.h"
 

@@ -17,7 +17,7 @@
 #ifndef __LPC_DEBUG_H__
 #define __LPC_DEBUG_H__
 
-#include "leds.h"
+#include "drivers/leds.h"
 
 /** wait until a counter reaches c. Used to wait some time. Depends on CPU frequency */
 #define LPC_DELAY(c) do {int i; for (i=0 ; i < (c) ; ++i); } while (0)

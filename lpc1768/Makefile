@@ -7,8 +7,10 @@ CFLAGS=-Wall
 LIB=liblpc1768.a
 
 CFILES=$(wildcard *.c)
+CFILES+=$(wildcard drivers/*.c)
 COBJS=$(CFILES:.c=.o)
 HEADERS=$(wildcard *.h)
+HEADERS+=$(wildcard drivers/*.h)
 
 $(LIB): $(COBJS)
 	$(AR) rs $@ $^
@@ -25,7 +27,7 @@ dump: $(LIB)
 	$(OBJDUMP) -sSt $(LIB)
 
 clean:
-	$(RM) *.o *~ *.dep
+	$(RM) $(COBJS) *~ *.dep
 
 # Dependencies rules so that compilation works well
 include makefile.dep

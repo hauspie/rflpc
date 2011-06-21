@@ -15,7 +15,7 @@
  */
 
 #include <debug.h>
-#include <uart.h>
+#include <drivers/uart.h>
 
 #include <printf.h>
 #include <interrupt.h>

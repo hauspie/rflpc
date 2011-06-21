@@ -16,9 +16,10 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "../pll.h"
+#include "../interrupt.h"
+
 #include "uart.h"
-#include "pll.h"
-#include "interrupt.h"
 
 static lpc_uart_rx_callback_t _uart0_callback;
 

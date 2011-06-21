@@ -14,7 +14,7 @@
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 
-#include "uart.h"
+#include "drivers/uart.h"
 
 #include <stdarg.h>
 

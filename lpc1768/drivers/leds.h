@@ -26,8 +26,7 @@
    LED3 P1.21
    LED4 P1.23
 */
-#include "LPC17xx.h"
-#include "printf.h"
+#include "../LPC17xx.h"
 
 #define LED1 (1 << 18)
 #define LED2 (1 << 20)

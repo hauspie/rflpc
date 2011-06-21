@@ -17,7 +17,7 @@
 #ifndef __LPC1768_UART_H__
 #define __LPC1768_UART_H__
 
-#include "LPC17xx.h"
+#include "../LPC17xx.h"
 
 /* Inits the UART, using 115200 baud, 8 bits data, no parity and 1 stop bit */
 
