@@ -129,7 +129,7 @@ void _start(void)
     _copy_data_section();
     _zero_bss();
     /* set the clock to 96 Mhz */
-    lpc_init_clock();
+    rflpc_init_clock();
     /* Copy the rom interrupt vector to ram and relocate it */
     lpc_init_interrupts();
     /* start main program */

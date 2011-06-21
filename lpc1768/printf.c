@@ -18,7 +18,9 @@
 
 #include <stdarg.h>
 
-#define PUTCHAR(c) do { ++count; lpc_uart0_putchar((c)); } while(0)
+extern int putchar(int c);
+
+#define PUTCHAR(c) do { ++count; putchar((c)); } while(0)
 #define PUTS(s) do {const char *str=s; while (*str) PUTCHAR(*str++);}while(0)
 
 
@@ -59,7 +61,7 @@
 	}							\
     } while(0);
 
-int lpc_printf(const char *format, ...)
+int rflpc_printf(const char *format, ...)
 {
     va_list args;
     int count = 0; /* number of char printed to uart */

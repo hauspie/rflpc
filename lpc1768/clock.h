@@ -20,7 +20,9 @@
 #include "LPC17xx.h"
 
 
-extern uint32_t lpc_get_system_clock();
-extern void lpc_init_clock(void);
+/** get the system clock in Hz */
+extern uint32_t rflpc_get_system_clock();
+/** init the PLL so that the board is clocked at 96MHz */
+extern void rflpc_init_clock(void);
 
 #endif

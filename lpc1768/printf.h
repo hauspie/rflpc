@@ -32,12 +32,15 @@
     argument, but nothing is printed unless LPC_VERBOSE_PRINTF
     is defined when compiling liblpc1768.a
 
+    It uses the putchar function to output all characters. You have to define
+    this function in your code so that the link works
+
 */
-extern int lpc_printf(const char *format,...);
+extern int rflpc_printf(const char *format,...);
 
 #ifdef printf
 #undef printf
 #endif
-#define printf lpc_printf
+#define printf rflpc_printf
 
 #endif

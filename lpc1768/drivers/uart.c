@@ -16,7 +16,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include "../pll.h"
+#include "../clock.h"
 #include "../interrupt.h"
 
 #include "uart.h"
@@ -40,7 +40,7 @@ int lpc_uart0_init()
     
     /* set the peripheral clock to 12 Mhz */
     /* First, check if system clock is 96 Mhz */
-    if (lpc_get_system_clock() != 96000000)
+    if (rflpc_get_system_clock() != 96000000)
 	return -1;
 
     /* set UART CLOCK to 12 Mhz */

@@ -17,14 +17,14 @@
 #include "clock.h"
 #include "interrupt.h"
 
-static uint32_t _lpc_system_clock = 4000000;
+static uint32_t _rflpc_system_clock = 4000000;
 
 
 /** Send a feed sequence to the PLL0FEED register (p. 40) 
     This sequence validates the changes in the PLL0CON and PLL0CFG register
     @warning interrupts should be disabled to ensure that the sequence is atomic
  */
-#define LPC_PLL0_DO_FEED() do { LPC_SC->PLL0FEED = 0xAA; LPC_SC->PLL0FEED = 0x55; }while(0)
+#define RFLPC_PLL0_DO_FEED() do { LPC_SC->PLL0FEED = 0xAA; LPC_SC->PLL0FEED = 0x55; }while(0)
 
 
 /* Initialise clock to use main oscillator for PLL0.
@@ -42,7 +42,7 @@ static uint32_t _lpc_system_clock = 4000000;
    To get the 96Mhz CPU clock, we must set the cpu clock divider to 3 (288/3 = 96).
    This is done by setting CCLKSEL register to 2 (p. 55)
 */
-void lpc_init_clock(void)
+void rflpc_init_clock(void)
 {
     
     /* Disable IRQs so that the FEED sequence of the PLL is atomic */
@@ -54,12 +54,12 @@ void lpc_init_clock(void)
 	/* Disconnect PLL0, set bit 1 to 0 */
 	LPC_SC->PLL0CON &= ~(1UL << 1);
 	/* send feed sequence to validate the disconnection */
-	LPC_PLL0_DO_FEED();
+	RFLPC_PLL0_DO_FEED();
     }
     /* Disable PLL0, set bit 0 to 0 */
     LPC_SC->PLL0CON &= ~(1UL);
     /* feed sequence to validate disable */
-    LPC_PLL0_DO_FEED();
+    RFLPC_PLL0_DO_FEED();
 
 
     /* Then, enable main oscillator and wait for it to be ready */
@@ -80,11 +80,11 @@ void lpc_init_clock(void)
     /* Configure PLL0 with N=1 and M=12. The value is then 0xB (p. 37) */
     LPC_SC->PLL0CFG = 0xB;
     /* validate the configuration */
-    LPC_PLL0_DO_FEED();
+    RFLPC_PLL0_DO_FEED();
     
     /* Enable PLL0 */
     LPC_SC->PLL0CON |= (1UL);
-    LPC_PLL0_DO_FEED();
+    RFLPC_PLL0_DO_FEED();
 
     /* Set the CPU Clock divider (p. 55) */
     LPC_SC->CCLKCFG = 2; /* 2 to divide PLL0 output frequency (288Mhz) by 3 */
@@ -95,10 +95,10 @@ void lpc_init_clock(void)
     /* Connect PLL0, set bit 1 to 1 */
     LPC_SC->PLL0CON |= (1UL << 1);
     /* validate connection */
-    LPC_PLL0_DO_FEED();
+    RFLPC_PLL0_DO_FEED();
 
 
-    _lpc_system_clock = 96000000;
+    _rflpc_system_clock = 96000000;
 
     /* system is now working on PLL0, CPU at 96Mhz */
     /* Enables the IRQs */
@@ -106,7 +106,7 @@ void lpc_init_clock(void)
 }
 
 
-uint32_t lpc_get_system_clock()
+uint32_t rflpc_get_system_clock()
 {
-    return _lpc_system_clock;
+    return _rflpc_system_clock;
 }

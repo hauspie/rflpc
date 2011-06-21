@@ -33,6 +33,12 @@ char e;
 
 
 
+int putchar(int c)
+{
+    lpc_uart0_putchar(c);
+    return c;
+}
+
 void test_data_bss()
 {
     lpc_set_led(LED1|LED2|LED3|LED4);
