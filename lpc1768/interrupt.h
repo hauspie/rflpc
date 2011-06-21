@@ -21,19 +21,19 @@
 #include "printf.h"
 
 /** Enables interrupts (p. 716) */
-static inline void lpc_enable_irq()
+static inline void rflpc_irq_global_enable()
 {
     __asm volatile("cpsie i");
 }
 
 /** Disable interrupts (p. 716) */
-static inline void lpc_disable_irq()
+static inline void rflpc_irq_global_disable()
 {
     __asm volatile("cpsid i");
 }
 
 /** Enables a specific interrupt */
-static inline void lpc_enable_interrupt(IRQn_Type irq)
+static inline void rflpc_irq_enable(IRQn_Type irq)
 {
     int bit = irq - WDT_IRQn;
 
@@ -41,7 +41,7 @@ static inline void lpc_enable_interrupt(IRQn_Type irq)
 }
 
 /** Disables a specific interrupt */
-static inline void lpc_disable_interrupt(IRQn_Type irq)
+static inline void rflpc_irq_disable(IRQn_Type irq)
 {
     int bit = irq - WDT_IRQn;
 
@@ -49,16 +49,16 @@ static inline void lpc_disable_interrupt(IRQn_Type irq)
 }
 
 /* Interrupt handler type */
-typedef void (*lpc_interrupt_handler_t)();
+typedef void (*rflpc_irq_handler_t)();
 
 /* Define to use to declare a IRQ handler */
-#define LPC_IRQ_HANDLER void __attribute__((interrupt("IRQ")))
+#define RFLPC_IRQ_HANDLER void __attribute__((interrupt("IRQ")))
 
 /* Inits the interruption by relocating the interrupt vector to ram */
-void lpc_init_interrupts();
+void rflpc_irq_init();
 
 /* Sets an handler for the given IRQ */
-void lpc_set_handler(IRQn_Type irq, lpc_interrupt_handler_t handler);
+void rflpc_irq_set_handler(IRQn_Type irq, rflpc_irq_handler_t handler);
 
 
 #endif

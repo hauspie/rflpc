@@ -34,8 +34,8 @@ extern char _bss_end;
 /* reset routine */
 void _start(void);
 /* default handlers */
-extern LPC_IRQ_HANDLER _default_exception_handler();
-extern LPC_IRQ_HANDLER _default_peripheral_handler();
+extern RFLPC_IRQ_HANDLER _default_exception_handler();
+extern RFLPC_IRQ_HANDLER _default_peripheral_handler();
 
 
 /** This array will contain the stack. It is forced to be in the .stack section
@@ -131,7 +131,7 @@ void _start(void)
     /* set the clock to 96 Mhz */
     rflpc_clock_init();
     /* Copy the rom interrupt vector to ram and relocate it */
-    lpc_init_interrupts();
+    rflpc_irq_init();
     /* start main program */
     main();
 }

@@ -143,15 +143,15 @@ void test_echo_irq()
 }
 
 
-LPC_IRQ_HANDLER _rit_callback()
+RFLPC_IRQ_HANDLER _rit_callback()
 {
-    printf("RIT INTERRUPT: %x\r\n", lpc_rit_get_counter_value());
-    lpc_rit_clear_pending_interrupt();
+    printf("RIT INTERRUPT: %x\r\n", rflpc_rit_get_counter_value());
+    rflpc_rit_clear_pending_interrupt();
 }
 void test_rit()
 {
-    lpc_rit_enable();
-    lpc_rit_set_callback(10000000, 0, 1, _rit_callback);
+    rflpc_rit_enable();
+    rflpc_rit_set_callback(10000000, 0, 1, _rit_callback);
 }
 
 extern uint32_t _interrupt_start;

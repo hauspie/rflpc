@@ -73,7 +73,7 @@ int rflpc_uart0_init()
 }
 
 
-static LPC_IRQ_HANDLER _uart0_rx_handler()
+static RFLPC_IRQ_HANDLER _uart0_rx_handler()
 {
     char c;
 
@@ -90,10 +90,9 @@ void rflpc_uart0_set_rx_callback(rflpc_uart_rx_callback_t callback)
 {
     _uart0_callback = callback;
     /* set the uart0 interrupt handler */
-    lpc_set_handler(UART0_IRQn, _uart0_rx_handler);
+    rflpc_irq_set_handler(UART0_IRQn, _uart0_rx_handler);
     /* enable the interrupt vector */
-    lpc_enable_interrupt(UART0_IRQn);
-    lpc_enable_irq();
+    rflpc_irq_enable(UART0_IRQn);
     /* enable the uart0 irq generation (user manual p. 302) */
     LPC_UART0->IER |= 1;
 }

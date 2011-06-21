@@ -15,13 +15,13 @@
  */
 #include "rit.h"
 
-void lpc_rit_set_callback(uint32_t comp_value, uint32_t mask, char reset_on_match, lpc_interrupt_handler_t c)
+void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, char reset_on_match, rflpc_irq_handler_t c)
 {
     LPC_RIT->RIMASK = mask;
     LPC_RIT->RICOMPVAL = comp_value;
     if (reset_on_match) /* Timer enable clear */
 	LPC_RIT->RICTRL |= 1 << 1;
 
-    lpc_set_handler(RIT_IRQn, c);
-    lpc_enable_interrupt(RIT_IRQn);
+    rflpc_irq_set_handler(RIT_IRQn, c);
+    rflpc_irq_enable(RIT_IRQn);
 }

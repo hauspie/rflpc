@@ -18,38 +18,38 @@
 #include "interrupt.h"
 #include "debug.h"
 /* use a special section to put at start of ram (see link script) */
-static volatile lpc_interrupt_handler_t _ram_interrupts[IRQn_COUNT] __attribute__ ((section(".ram_int_vector")));
+static volatile rflpc_irq_handler_t _ram_interrupts[IRQn_COUNT] __attribute__ ((section(".ram_int_vector")));
 /* this array is defined in init.c and is the rom interrupt vector */
 extern void* _rom_interrupts[IRQn_COUNT];
 
-LPC_IRQ_HANDLER _default_exception_handler()
+RFLPC_IRQ_HANDLER _default_exception_handler()
 {
     /* stops the execution with a O--O <-> -OO- led pattern. */
     RFLPC_STOP(LED1|LED4, 2000000);
 }
 
-LPC_IRQ_HANDLER _default_peripheral_handler()
+RFLPC_IRQ_HANDLER _default_peripheral_handler()
 {
     /* stops the execution with a --OO <-> OO-- led pattern. */
     RFLPC_STOP(LED1|LED2, 2000000);
 }
 
-void lpc_init_interrupts()
+void rflpc_irq_init()
 {
     /* copy the interrupt vector */
     int i;
     for (i = 0 ; i < IRQn_COUNT ; ++i)
     {
-	_ram_interrupts[i] = (lpc_interrupt_handler_t) _rom_interrupts[i];
+	_ram_interrupts[i] = (rflpc_irq_handler_t) _rom_interrupts[i];
     }
 
     /* Set the VTOR register to remap the interrupt vector */
-    lpc_disable_irq();
+    rflpc_irq_global_disable();
     SCB->VTOR = (uint32_t) _ram_interrupts;
-    lpc_enable_irq();
+    rflpc_irq_global_enable();
 }
 
-void lpc_set_handler(IRQn_Type irq, lpc_interrupt_handler_t handler)
+void rflpc_irq_set_handler(IRQn_Type irq, rflpc_irq_handler_t handler)
 {
     _ram_interrupts[irq] = handler;
 }

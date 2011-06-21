@@ -46,7 +46,7 @@ void rflpc_clock_init(void)
 {
     
     /* Disable IRQs so that the FEED sequence of the PLL is atomic */
-    lpc_disable_irq();
+    rflpc_irq_global_disable();
 
     /* Lets follow the setup sequence p. 46 */
     if (LPC_SC->PLL0STAT & (1<<24)) /* if PLL0 connected, disconnect */
@@ -102,7 +102,7 @@ void rflpc_clock_init(void)
 
     /* system is now working on PLL0, CPU at 96Mhz */
     /* Enables the IRQs */
-    lpc_enable_irq();
+    rflpc_irq_global_enable();
 }
 
 
