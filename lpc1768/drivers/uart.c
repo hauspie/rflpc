@@ -75,14 +75,11 @@ int rflpc_uart0_init()
 
 static RFLPC_IRQ_HANDLER _uart0_rx_handler()
 {
-    char c;
-
     /* Wait for the RBR register to receive a byte (p. 307) */
     while ((LPC_UART0->LSR & 0x1UL))
     {
-	c = LPC_UART0->RBR & 0xFF; 
 	if (_uart0_callback != NULL)
-	    _uart0_callback(c);
+	    _uart0_callback(LPC_UART0->RBR & 0xFF);
     }
 }
 
