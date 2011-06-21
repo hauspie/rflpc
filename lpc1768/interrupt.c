@@ -25,13 +25,13 @@ extern void* _rom_interrupts[IRQn_COUNT];
 LPC_IRQ_HANDLER _default_exception_handler()
 {
     /* stops the execution with a O--O <-> -OO- led pattern. */
-    LPC_STOP(LED1|LED4, 2000000);
+    RFLPC_STOP(LED1|LED4, 2000000);
 }
 
 LPC_IRQ_HANDLER _default_peripheral_handler()
 {
     /* stops the execution with a --OO <-> OO-- led pattern. */
-    LPC_STOP(LED1|LED2, 2000000);
+    RFLPC_STOP(LED1|LED2, 2000000);
 }
 
 void lpc_init_interrupts()

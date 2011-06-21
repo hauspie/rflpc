@@ -21,8 +21,8 @@
 
 
 /** get the system clock in Hz */
-extern uint32_t rflpc_get_system_clock();
+extern uint32_t rflpc_clock_get_system_clock();
 /** init the PLL so that the board is clocked at 96MHz */
-extern void rflpc_init_clock(void);
+extern void rflpc_clock_init(void);
 
 #endif

@@ -42,7 +42,7 @@ static uint32_t _rflpc_system_clock = 4000000;
    To get the 96Mhz CPU clock, we must set the cpu clock divider to 3 (288/3 = 96).
    This is done by setting CCLKSEL register to 2 (p. 55)
 */
-void rflpc_init_clock(void)
+void rflpc_clock_init(void)
 {
     
     /* Disable IRQs so that the FEED sequence of the PLL is atomic */
@@ -106,7 +106,7 @@ void rflpc_init_clock(void)
 }
 
 
-uint32_t rflpc_get_system_clock()
+uint32_t rflpc_clock_get_system_clock()
 {
     return _rflpc_system_clock;
 }

@@ -35,41 +35,41 @@ char e;
 
 int putchar(int c)
 {
-    lpc_uart0_putchar(c);
+    rflpc_uart0_putchar(c);
     return c;
 }
 
 void test_data_bss()
 {
-    lpc_set_led(LED1|LED2|LED3|LED4);
-    LPC_DELAY(1000000);
-    lpc_clr_led(LED1|LED2|LED3|LED4);
+    rflpc_led_set(LED1|LED2|LED3|LED4);
+    RFLPC_DELAY(1000000);
+    rflpc_led_clr(LED1|LED2|LED3|LED4);
     
 
     /* Check data section initialisation */
     if (data == (LED1 | LED2))
-	lpc_set_led(LED1);
+	rflpc_led_set(LED1);
 
-    LPC_DELAY(1000000);
+    RFLPC_DELAY(1000000);
     if (test1 == 0xAB)
-	lpc_set_led(LED2);
+	rflpc_led_set(LED2);
 
-    LPC_DELAY(1000000);
+    RFLPC_DELAY(1000000);
     if (add_data == &data)
-	lpc_set_led(LED3);
+	rflpc_led_set(LED3);
 
-    LPC_DELAY(1000000);
+    RFLPC_DELAY(1000000);
     if (data2 == 0xfadebeef)
-	lpc_set_led(LED4);
+	rflpc_led_set(LED4);
 
     
     /* Check bss section initialisation */
-    LPC_DELAY(1000000);
+    RFLPC_DELAY(1000000);
     if (a == 0 && b == 0 && c == 0 && d == 0)
-	lpc_led_val(LED1 | LED4);
+	rflpc_led_val(LED1 | LED4);
     else
-	lpc_led_val(LED2 | LED3);
-    LPC_DELAY(1000000);
+	rflpc_led_val(LED2 | LED3);
+    RFLPC_DELAY(1000000);
 }
 
 void test_uart()
@@ -79,12 +79,12 @@ void test_uart()
     
     while (1)
     {
-	lpc_uart0_putchar(c);
+	rflpc_uart0_putchar(c);
 	++c;
 	if (c == 'z'+1)
 	{
-	    lpc_uart0_putchar('\n');
-	    lpc_uart0_putchar('\r');
+	    rflpc_uart0_putchar('\n');
+	    rflpc_uart0_putchar('\r');
 	    break;
 	}
     }
@@ -97,7 +97,7 @@ void test_echo()
     printf("Press Q to quit test\r\n");
     while (1)
     {
-	char c = lpc_uart0_getchar();
+	char c = rflpc_uart0_getchar();
 	printf("Received '%c'\n\r", c);
 	if (c == 'Q')
 	    break;
@@ -139,7 +139,7 @@ void uart0_rx(char c)
 void test_echo_irq()
 {
     printf("Testing uart0 reception via interruption\r\n");
-    lpc_uart0_set_rx_callback(uart0_rx);
+    rflpc_uart0_set_rx_callback(uart0_rx);
 }
 
 
@@ -176,8 +176,8 @@ int main()
     int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
     int i = 0;
 
-    if (lpc_uart0_init() == -1)
-	LPC_STOP(LED1 | LED3, 1000000);
+    if (rflpc_uart0_init() == -1)
+	RFLPC_STOP(LED1 | LED3, 1000000);
 
     printf("rfBareMbed sample test\r\n");
 
@@ -190,13 +190,13 @@ int main()
     
     while (1)
     {
-	LPC_DELAY(1000000);
-	lpc_led_val(led[i++]);
+	RFLPC_DELAY(1000000);
+	rflpc_led_val(led[i++]);
 	if (i >= 6)
 	    i = 0;
     }
 
-    LPC_STOP(LED2 | LED3, 1000000);
+    RFLPC_STOP(LED2 | LED3, 1000000);
 
     return 0;
 }

@@ -21,7 +21,7 @@
 
 #include "uart.h"
 
-static lpc_uart_rx_callback_t _uart0_callback;
+static rflpc_uart_rx_callback_t _uart0_callback;
 
 /* For now, we suppose that the CCLK is 96 Mhz. Thus,
    we set PCLK to 12 Mhz by setting it to CCLK/8.
@@ -33,14 +33,14 @@ static lpc_uart_rx_callback_t _uart0_callback;
    UART rate will then be set to 115384
 */
 
-int lpc_uart0_init()
+int rflpc_uart0_init()
 {
     /* Enable UART (user manual, p. 63) */
     LPC_SC->PCONP |= (1UL << 3);
     
     /* set the peripheral clock to 12 Mhz */
     /* First, check if system clock is 96 Mhz */
-    if (rflpc_get_system_clock() != 96000000)
+    if (rflpc_clock_get_system_clock() != 96000000)
 	return -1;
 
     /* set UART CLOCK to 12 Mhz */
@@ -86,7 +86,7 @@ static LPC_IRQ_HANDLER _uart0_rx_handler()
     }
 }
 
-void lpc_uart0_set_rx_callback(lpc_uart_rx_callback_t callback)
+void rflpc_uart0_set_rx_callback(rflpc_uart_rx_callback_t callback)
 {
     _uart0_callback = callback;
     /* set the uart0 interrupt handler */

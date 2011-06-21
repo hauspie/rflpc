@@ -125,11 +125,11 @@ extern void main(void);
 
 void _start(void)
 {
-    lpc_init_leds();
+    rflpc_led_init();
     _copy_data_section();
     _zero_bss();
     /* set the clock to 96 Mhz */
-    rflpc_init_clock();
+    rflpc_clock_init();
     /* Copy the rom interrupt vector to ram and relocate it */
     lpc_init_interrupts();
     /* start main program */

@@ -23,10 +23,10 @@
 
 /* returns 0 if successful, -1 otherwise */
 
-extern int lpc_uart0_init();
+extern int rflpc_uart0_init();
 
 /** Sends a byte to the uart0 */
-static inline void lpc_uart0_putchar(char c)
+static inline void rflpc_uart0_putchar(char c)
 {
     /* Wait for THR to be empty before sending byte (p. 307) */
     while (!(LPC_UART0->LSR & (0x1UL << 5)));
@@ -35,7 +35,7 @@ static inline void lpc_uart0_putchar(char c)
 }
 
 /** reads a byte from the uart0 */
-static inline char lpc_uart0_getchar()
+static inline char rflpc_uart0_getchar()
 {
     /* Wait for the RBR register to receive a byte (p. 307) */
     while (!(LPC_UART0->LSR & 0x1UL));
@@ -44,9 +44,9 @@ static inline char lpc_uart0_getchar()
 }
 
 /* Type for uart rx callback. Parameter is the received char */
-typedef void (*lpc_uart_rx_callback_t)(char c);
+typedef void (*rflpc_uart_rx_callback_t)(char c);
 
 /** set the uart0 rx callback. This enables the uart0 interrupt and set the handler accordingly */
-extern void lpc_uart0_set_rx_callback(lpc_uart_rx_callback_t callback);
+extern void rflpc_uart0_set_rx_callback(rflpc_uart_rx_callback_t callback);
 
 #endif

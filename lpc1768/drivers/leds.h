@@ -14,8 +14,8 @@
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 
-#ifndef __LPC1768_LEDS_H__
-#define __LPC1768_LEDS_H__
+#ifndef __RFLPC_LEDS_H__
+#define __RFLPC_LEDS_H__
 
 /* Leds control.
    See schematic p. 3 for pin number
@@ -36,27 +36,27 @@
 
 /** Inits the GPIO port to use the leds. Sets the GPIO1 led pins to output
  * pins */
-static inline void lpc_init_leds()
+static inline void rflpc_led_init()
 {
     LPC_GPIO1->FIODIR |= (LED1 | LED2 | LED3 | LED4);
 }
 
 /** Turns the given led on */
-static inline void lpc_set_led(uint32_t l)
+static inline void rflpc_led_set(uint32_t l)
 {
     LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOSET = (l);
 }
 
 
 /** Clears the given led(s) (turn them off) */
-static inline void lpc_clr_led(uint32_t l)
+static inline void rflpc_led_clr(uint32_t l)
 {
     LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOCLR = (l);
 }
 
 
 /** Turns the leds included in the mask*/
-static inline void lpc_led_val(uint32_t l)
+static inline void rflpc_led_val(uint32_t l)
 {
     LPC_GPIO1->FIOMASK = ~(LED1|LED2|LED3|LED4);
     LPC_GPIO1->FIOPIN = l;

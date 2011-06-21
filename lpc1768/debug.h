@@ -14,15 +14,15 @@
  * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 
-#ifndef __LPC_DEBUG_H__
-#define __LPC_DEBUG_H__
+#ifndef __RFLPC_DEBUG_H__
+#define __RFLPC_DEBUG_H__
 
 #include "drivers/leds.h"
 
 /** wait until a counter reaches c. Used to wait some time. Depends on CPU frequency */
-#define LPC_DELAY(c) do {int i; for (i=0 ; i < (c) ; ++i); } while (0)
+#define RFLPC_DELAY(c) do {int i; for (i=0 ; i < (c) ; ++i); } while (0)
 
 /** Stops execution by an infinite loop, switching between led pattern l and its opposite */
-#define LPC_STOP(l,c) do {uint32_t leds = (l); while(1){lpc_led_val(leds);LPC_DELAY((c));leds=~leds;}} while(0)
+#define RFLPC_STOP(l,c) do {uint32_t leds = (l); while(1){rflpc_led_val(leds);RFLPC_DELAY((c));leds=~leds;}} while(0)
 
 #endif
