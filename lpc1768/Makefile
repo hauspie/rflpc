@@ -2,7 +2,7 @@ CC=arm-none-eabi-gcc
 AS=arm-none-eabi-as
 AR=arm-none-eabi-ar
 OBJDUMP=arm-none-eabi-objdump
-CFLAGS=-Wall
+CFLAGS=-Os -Wall
 
 LIB=liblpc1768.a
 
@@ -15,9 +15,6 @@ HEADERS+=$(wildcard drivers/*.h)
 $(LIB): $(COBJS)
 	$(AR) rs $@ $^
 
-
-init.o: init.c $(HEADERS)
-	$(CC) -Wall -o $@ -c $<
 
 makefile.dep: $(CFILES) $(HEADERS)
 	@echo "Generating dependencies"

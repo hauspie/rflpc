@@ -21,6 +21,7 @@
 
 #include <printf.h>
 #include <interrupt.h>
+#include <clock.h>
 
 uint32_t data = (LED1|LED2);
 uint32_t data2 = 0xfadebeef;
@@ -180,6 +181,7 @@ int main()
 	RFLPC_STOP(LED1 | LED3, 1000000);
 
     printf("rfBareMbed sample test\r\n");
+    printf("System clock is %d Hz\r\n", rflpc_clock_get_system_clock());
 
     test_data_bss();
     test_uart();

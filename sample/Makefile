@@ -11,7 +11,7 @@ MBED_PATH=/media/MBED
 ELF=sample.elf
 BIN=sample.bin
 
-CFLAGS=-Wall -I$(LIB_DIR)
+CFLAGS=-Os -Wall -I$(LIB_DIR)
 LDFLAGS=-L$(LIB_DIR) -llpc1768 -T $(LINK_SCRIPT)
 
 OBJS=main.o
