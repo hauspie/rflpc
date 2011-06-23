@@ -52,8 +52,8 @@ void rflpc_sys_timer_set_tick_period(uint32_t ticks)
     SysTick->CTRL &= ~1UL;
 
     /* Set the current timer value and the reload value */
-    SysTick->VAL = value;
-    SysTick->LOAD = value;
+    SysTick->VAL = ticks;
+    SysTick->LOAD = ticks;
 
     /* And back on */
     SysTick->CTRL |= 1;
