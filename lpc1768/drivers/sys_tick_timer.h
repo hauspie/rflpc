@@ -37,6 +37,18 @@
 /** initializes the system timer */
 extern void rflpc_sys_timer_init();
 
+/** starts the system timer */
+static inline void rflpc_sys_timer_start()
+{
+    SysTick->CTRL |= 1;
+}
+
+/** stops the system timer */
+static inline void rflpc_sys_timer_stop()
+{
+    SysTick->CTRL &= ~1UL;
+}
+
 /** sets the callback for the timer interrupt */
 static inline void rflpc_sys_timer_set_callback(rflpc_irq_handler_t c)
 {
@@ -46,10 +58,14 @@ static inline void rflpc_sys_timer_set_callback(rflpc_irq_handler_t c)
     rflpc_irq_set_handler(SysTick_IRQn, c);
 }
 
-/** initializes the timer with a given period (in µs) */
+/** initializes the timer with a given period (in µs) 
+    This automatically starts the timer even if it was stopped.
+ */
 extern void rflpc_sys_timer_set_period(uint32_t micros_time);
 
-/** initializes the timer with a given tick count */
+/** initializes the timer with a given tick count 
+    This automatically starts the timer even if it was stopped.
+ */
 extern void rflpc_sys_timer_set_tick_period(uint32_t ticks);
 
 #endif

@@ -158,10 +158,18 @@ void test_rit()
 RFLPC_IRQ_HANDLER _sys_timer_callback()
 {
     static int count = 0;
+    static int count2 = 0;
     if (++count == 10)
     {
 	count = 0;
-	printf("Systimer interrupt\r\n");
+	++count2;
+	if (count2 == 10)
+	{
+	    printf("10s elapsed\r\n");
+	    rflpc_sys_timer_stop();
+	}
+	else
+	    printf("Systimer interrupt\r\n");
     }
 }
 
@@ -207,7 +215,7 @@ int main()
 /*    test_echo();*/
     test_echo_irq();
 /*    test_rit();*/
-/*    test_sys_timer();*/
+    test_sys_timer();
 
     while (1)
     {
