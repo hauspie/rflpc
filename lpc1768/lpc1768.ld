@@ -51,9 +51,10 @@ SECTIONS
 {	
  /* .text sections starts at address 0 */
  . = 0x0;
- /* output .text section is the concatenation of all .text section of all object files */
- /* for this to work fine, the start.o made from the assembly of start.s must
- appear first in the linker command line */
+ /* output .text section is the concatenation of all .text section of all object files
+    However, the special sections defined in init.c which contains interrupt vector
+    need to be put first
+  */
   .text : { 
   /* The interrupt vector will be remapped in RAM so that it can be easily modified
      and the one in flash will be copied at startup before performing the actual remap
@@ -64,7 +65,7 @@ SECTIONS
   _interrupt_end = .;
   *(.text) ;
   /* Constant data is also put in flash */
-  *(.rodata) ;
+  *(.rodata*) ;
   } 
   /* this declares a global constant which contains the address of the end of section text.
      This will be used by the startup code to copy data from flash to ram */
@@ -76,7 +77,7 @@ SECTIONS
   _bss_start = .;
  /* This will enforce the relocated interrupt vector to be located at the start of the RAM */
    KEEP(*(.ram_int_vector));
-   KEEP(*(.bss)) ;
+   KEEP(*(.bss*)) ;
   } > ram AT>flash
   /* stores the end address of the bss so that the startup code can 0 it */
    _bss_end = .;
