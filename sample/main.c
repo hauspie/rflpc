@@ -17,7 +17,7 @@
 #include <debug.h>
 #include <drivers/uart.h>
 #include <drivers/rit.h>
-
+#include <drivers/sys_tick_timer.h>
 
 #include <printf.h>
 #include <interrupt.h>
@@ -152,7 +152,24 @@ RFLPC_IRQ_HANDLER _rit_callback()
 void test_rit()
 {
     rflpc_rit_enable();
-    rflpc_rit_set_callback(10000000, 0, 1, _rit_callback);
+    rflpc_rit_set_callback(20000000, 0, 1, _rit_callback);
+}
+
+RFLPC_IRQ_HANDLER _sys_timer_callback()
+{
+    static int count = 0;
+    if (++count == 10)
+    {
+	count = 0;
+	printf("Systimer interrupt\r\n");
+    }
+}
+
+void test_sys_timer()
+{
+    rflpc_sys_timer_init();
+    rflpc_sys_timer_set_period(100000);
+    rflpc_sys_timer_set_callback(_sys_timer_callback);
 }
 
 extern uint32_t _interrupt_start;
@@ -177,19 +194,21 @@ int main()
     int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
     int i = 0;
 
+    test_data_bss();
+
     if (rflpc_uart0_init() == -1)
 	RFLPC_STOP(LED1 | LED3, 1000000);
+    test_uart();
 
     printf("rfBareMbed sample test\r\n");
     printf("System clock is %d Hz\r\n", rflpc_clock_get_system_clock());
 
-    test_data_bss();
-    test_uart();
     test_printf();
 /*    test_echo();*/
     test_echo_irq();
-    test_rit();
-    
+/*    test_rit();*/
+/*    test_sys_timer();*/
+
     while (1)
     {
 	RFLPC_DELAY(1000000);

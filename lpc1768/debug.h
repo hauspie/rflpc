@@ -20,7 +20,7 @@
 #include "drivers/leds.h"
 
 /** wait until a counter reaches c. Used to wait some time. Depends on CPU frequency */
-#define RFLPC_DELAY(c) do {int i; for (i=0 ; i < (c) ; ++i); } while (0)
+#define RFLPC_DELAY(c) do {int i;uint32_t j; for (i=0 ; i < (c) ; ++i) j = LPC_SC->SCS; } while (0)
 
 /** Stops execution by an infinite loop, switching between led pattern l and its opposite */
 #define RFLPC_STOP(l,c) do {uint32_t leds = (l); while(1){rflpc_led_val(leds);RFLPC_DELAY((c));leds=~leds;}} while(0)

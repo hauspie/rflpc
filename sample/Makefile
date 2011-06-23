@@ -12,7 +12,7 @@ ELF=sample.elf
 BIN=sample.bin
 
 CFLAGS=-Os -Wall -I$(LIB_DIR)
-LDFLAGS=-L$(LIB_DIR) -llpc1768 -T $(LINK_SCRIPT)
+LDFLAGS=-nostdlib -L$(LIB_DIR) -llpc1768 -T $(LINK_SCRIPT)
 
 OBJS=main.o
 
