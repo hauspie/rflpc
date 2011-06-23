@@ -1,0 +1,55 @@
+/* This file is part of rfBareMbed.                        
+ *									 
+ * rfBareMbed is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by	 
+ * the Free Software Foundation, either version 3 of the License, or	 
+ * (at your option) any later version.					 
+ * 									 
+ * rfBareMbed is distributed in the hope that it will be useful,		 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
+ * GNU General Public License for more details.				 
+ * 									 
+ * You should have received a copy of the GNU General Public License	 
+ * along with rfBareMbed.  If not, see <http://www.gnu.org/licenses/>.	 
+ */
+#ifndef __RFLPC_SYS_TICK_TIMER_H__
+#define __RFLPC_SYS_TICK_TIMER_H__
+
+/* This driver allows the use of the system tick timer.
+   
+   This timer is intended to generate a precise 10ms timer, however it can be
+   used to count different times. But, the tick count is only on 24bits so, 
+   at 96Mhz, the maximum wait time is 2^24 ticks (around 170ms)
+
+   Its counter is decremented at each clock tick, and when the counter reaches
+   0, an interrupt can be generated. The time between interrupts thus depends
+   on the counter value and the clock speed.
+
+   This driver uses the cpu clock as the reference clock for the timer. 
+
+   user manual p. 504
+*/
+
+#include "../interrupt.h"
+#include "../LPC17xx.h"
+
+/** initializes the system timer */
+extern void rflpc_sys_timer_init();
+
+/** sets the callback for the timer interrupt */
+static inline void rflpc_sys_timer_set_callback(rflpc_irq_handler_t c)
+{
+    /* Enable systick interrupt */
+    SysTick->CTRL |= (1 << 1);
+    
+    rflpc_irq_set_handler(SysTick_IRQn, c);
+}
+
+/** initializes the timer with a given period (in µs) */
+extern void rflpc_sys_timer_set_period(uint32_t micros_time);
+
+/** initializes the timer with a given tick count */
+extern void rflpc_sys_timer_set_tick_period(uint32_t ticks);
+
+#endif
