@@ -133,8 +133,9 @@ void print_interrupts(const uint32_t *addr)
     }
 }
 
-void uart0_rx(char c)
+RFLPC_IRQ_HANDLER uart0_rx()
 {
+    char c = rflpc_uart0_getchar();
     printf("Received '%c' via interrupt\r\n", c);
 }
 void test_echo_irq()

@@ -21,8 +21,6 @@
 
 #include "uart.h"
 
-static rflpc_uart_rx_callback_t _uart0_callback;
-
 /* For now, we suppose that the CCLK is 96 Mhz. Thus,
    we set PCLK to 12 Mhz by setting it to CCLK/8.
    Then, (p. 315) we have to set 
@@ -72,22 +70,10 @@ int rflpc_uart0_init()
     return 0;
 }
 
-
-static RFLPC_IRQ_HANDLER _uart0_rx_handler()
+void rflpc_uart0_set_rx_callback(rflpc_irq_handler_t  callback)
 {
-    /* Wait for the RBR register to receive a byte (p. 307) */
-    while ((LPC_UART0->LSR & 0x1UL))
-    {
-	if (_uart0_callback != NULL)
-	    _uart0_callback(LPC_UART0->RBR & 0xFF);
-    }
-}
-
-void rflpc_uart0_set_rx_callback(rflpc_uart_rx_callback_t callback)
-{
-    _uart0_callback = callback;
     /* set the uart0 interrupt handler */
-    rflpc_irq_set_handler(UART0_IRQn, _uart0_rx_handler);
+    rflpc_irq_set_handler(UART0_IRQn, callback);
     /* enable the interrupt vector */
     rflpc_irq_enable(UART0_IRQn);
     /* enable the uart0 irq generation (user manual p. 302) */

@@ -18,6 +18,7 @@
 #define __RFLPC_UART_H__
 
 #include "../LPC17xx.h"
+#include "../interrupt.h"
 
 /* Inits the UART, using 115200 baud, 8 bits data, no parity and 1 stop bit */
 
@@ -43,10 +44,8 @@ static inline char rflpc_uart0_getchar()
     return LPC_UART0->RBR & 0xFF;
 }
 
-/* Type for uart rx callback. Parameter is the received char */
-typedef void (*rflpc_uart_rx_callback_t)(char c);
-
-/** set the uart0 rx callback. This enables the uart0 interrupt and set the handler accordingly */
-extern void rflpc_uart0_set_rx_callback(rflpc_uart_rx_callback_t callback);
+/** set the uart0 rx callback. This enables the uart0 interrupt and set the
+ * handler accordingly */
+extern void rflpc_uart0_set_rx_callback(rflpc_irq_handler_t callback);
 
 #endif
