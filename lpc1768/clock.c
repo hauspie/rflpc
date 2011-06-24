@@ -32,7 +32,7 @@ static uint32_t _rflpc_system_clock = 4000000;
    CPU is set to 96Mhz using the 12Mhz source for PLL0. (see mbed schematic,
    main oscillator is a 12Mhz crystal connected to pins XTAL1 and XTAL2)
 
-   As this setup is suitable for USB, so PPL0 can be used to clock USB (need a 48Mhz mutiple)
+   As this setup is suitable for USB, PPL0 can be used to clock USB (need a 48Mhz mutiple)
 
    The output of the PLL0 is given by:
    Fcco = (2xMxFin)/N where Fin is the frequency of the source (12Mhz), M the
