@@ -22,6 +22,7 @@
 
 #include "ethernet.h"
 #include "../LPC17xx.h"
+#include "../clock.h"
 
 #define PCENET_BIT (1 << 30)
 #define PINSEL2_BITS_MASK (0xF03F030F)
@@ -83,7 +84,7 @@
 				   * +   12 bytes for minimum interframe gap */
 #define ETH_MAX_CLOCK 2500000 /* Maximum allowed clock frequency for MII, defined by IEEE 802.3, see p. 154 */
 
-static const uint8_t clock_dividers = {4, 6, 8, 10, 14, 20, 28, 36, 40, 44};
+static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40, 44};
 
 int rflpc_eth_init()
 {
@@ -117,7 +118,7 @@ int rflpc_eth_init()
 
     /* Reset datapaths (p. 158) (includes tx and rx DMA manager, tx retry and
      * flow control module, rw filter module (p. 143)*/
-    LPC_EMAC->Control = CTRL_REG_RESET;
+    LPC_EMAC->Command = CTRL_REG_RESET;
 
     /* wait a bit for ethernet to finish reset
        number of iteration of the loop is empirical
@@ -150,7 +151,7 @@ int rflpc_eth_init()
     /* Now follow initialization procedure (p. 181) */
     /* Remove Soft reset condition from the MAC (p. 150 for the MAC1 register
      * description) */
-    LPC_EMAC->MAC1 &= ~(SOFT_RESET_BIT);
+    LPC_EMAC->MAC1 &= ~(MAC1_SOFT_RESET);
 
     
 
