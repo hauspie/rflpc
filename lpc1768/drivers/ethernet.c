@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-06-30 23:17:25 (mickey)>
+  Time-stamp: <2011-07-02 22:50:54 (mickey)>
 */
 
 #include "ethernet.h"
@@ -86,6 +86,19 @@
 
 static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40, 44};
 
+static void _eth_50mhz_osc_enable()
+{
+    /* Turn on the 50 Mhz oscillator that clocks the PHY (a DP83848J)
+       This oscillator is enabled using P1.27 as GPIO (p. 110)
+    */
+    LPC_PINCON->PINSEL3 &= ~(3 << 22);
+    /* Set pin to output pin */
+    LPC_GPIO1->FIODIR |= (1 << 27);
+    /* Set pin value to 1 */
+    LPC_GPIO1->FIOMASK = ~(1 << 27);
+    LPC_GPIO1->FIOSET = (1 << 27);
+}
+
 int rflpc_eth_init()
 {
     int i;
@@ -94,8 +107,8 @@ int rflpc_eth_init()
     /* Power the ethernet device
        Set bit PCENET in PCONP register (p. 141 and 64) */
     LPC_SC->PCONP |= PCENET_BIT;
-    
-    /* Configure Ethernet PINS through PINSEL2 register (p.141 and 109) 
+
+    /* Configure Ethernet MAC PINS through PINSEL2 register (p.141 and 109) 
        We use RMII interface to connect MAC to PHY.
        Thus, the needed pins are:
        ENET_TXD[0:1]   (0101 to bits  3:0)
@@ -109,7 +122,14 @@ int rflpc_eth_init()
      */
     LPC_PINCON->PINSEL2 &= ~PINSEL2_BITS_MASK; /* clear needed bits */
     LPC_PINCON->PINSEL2 |= PINSEL2_BITS;
+
     
+    /* Turn on oscillator to clock the PHY */
+    _eth_50mhz_osc_enable();
+
+    /* MAC is powerd, PHY is clocked and arm pins are configured as connected
+       to the MAC. Initialization can start
+    */
 
     /* Reset all components (needed if function is called after a previous
      * initialization, no need to keep other bits value, put them to 0 so that 
@@ -124,6 +144,11 @@ int rflpc_eth_init()
        number of iteration of the loop is empirical
     */
     for (i = 100 ; i != 0 ; --i);
+
+    /* Now follow initialization procedure (p. 181) */
+    /* Remove Soft reset condition from the MAC (p. 150 for the MAC1 register
+     * description). Set all other options to 0 */
+    LPC_EMAC->MAC1 = 0;
 
     /* Initialize MAC control register to enable padding of small frames
      * (i.e. frame < 64 bytes) and the appending of CRC at the end of the frame
@@ -146,14 +171,11 @@ int rflpc_eth_init()
     /* set the clock and reset MII to use new parameters */
     LPC_EMAC->MCFG = (i & 0xF) << 2 | MCFG_RESET_MIIM;
 
-    /* To be continued... */
+    /* Clear the MII reset state */
+    LPC_EMAC->MCFG &= ~(MCFG_RESET_MIIM);
 
-    /* Now follow initialization procedure (p. 181) */
-    /* Remove Soft reset condition from the MAC (p. 150 for the MAC1 register
-     * description) */
-    LPC_EMAC->MAC1 &= ~(MAC1_SOFT_RESET);
-
+    /* Enable RMII interface */
+    LPC_EMAC->Command |= CTRL_RMII;
     
-
     return 1;
 }

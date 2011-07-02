@@ -18,6 +18,7 @@
 #include <drivers/uart.h>
 #include <drivers/rit.h>
 #include <drivers/sys_tick_timer.h>
+#include <drivers/ethernet.h>
 
 #include <printf.h>
 #include <interrupt.h>
@@ -198,6 +199,11 @@ void print_sections()
     printf(".bss: %p %p %x %x\r\n", &_bss_start, &_bss_end, _bss_start, _bss_end);
 }
 
+void test_ethernet()
+{
+    rflpc_eth_init();
+}
+
 int main()
 {
     int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
@@ -217,6 +223,7 @@ int main()
     test_echo_irq();
 /*    test_rit();*/
     test_sys_timer();
+    test_ethernet();
 
     while (1)
     {
