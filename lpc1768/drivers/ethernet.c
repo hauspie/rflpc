@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-02 22:50:54 (mickey)>
+  Time-stamp: <2011-07-02 23:03:05 (mickey)>
 */
 
 #include "ethernet.h"
@@ -163,7 +163,7 @@ int rflpc_eth_init()
     divider = rflpc_clock_get_system_clock() / ETH_MAX_CLOCK;
     for (i = 0 ; i < sizeof(clock_dividers); ++i)
     {
-	if (clock_dividers[i] > divider)
+	if (clock_dividers[i] >= divider)
 	    break;
     }
     ++i; /* after the incrementation, i hold the value to store in the MII
