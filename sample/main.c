@@ -201,7 +201,20 @@ void print_sections()
 
 void test_ethernet()
 {
+    int old_link_state = 10;
     rflpc_eth_init();
+
+    rflpc_eth_print_infos();
+
+    while (1)
+    {
+	int current_link_state = rflpc_eth_link_state();
+	if (current_link_state != old_link_state)
+	{
+	    old_link_state = current_link_state;
+	    printf("Eth link is : %s\r\n", current_link_state ? "Up" : "Down");
+	}
+    }
 }
 
 int main()
@@ -218,11 +231,11 @@ int main()
     printf("rfBareMbed sample test\r\n");
     printf("System clock is %d Hz\r\n", rflpc_clock_get_system_clock());
 
-    test_printf();
+/*    test_printf();*/
 /*    test_echo();*/
-    test_echo_irq();
+/*    test_echo_irq();*/
 /*    test_rit();*/
-    test_sys_timer();
+/*    test_sys_timer();*/
     test_ethernet();
 
     while (1)

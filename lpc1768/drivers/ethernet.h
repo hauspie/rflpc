@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-06-28 21:49:21 (mickey)>
+  Time-stamp: <2011-07-03 00:32:33 (mickey)>
 */ 
 
 
@@ -27,8 +27,13 @@
 extern int rflpc_eth_init();
 
 /** Returns the link state
-    @return 1 if link is up, 0 if link is down
+    @return true if link is up, false if link is down
 */
 extern int rflpc_eth_link_state();
+
+/** functions that print information on chip and link.
+    Will be removed when driver is functional, only used as debug function
+*/
+extern void rflpc_eth_print_infos();
 
 #endif

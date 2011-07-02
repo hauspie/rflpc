@@ -17,12 +17,13 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-02 23:03:05 (mickey)>
+  Time-stamp: <2011-07-03 01:19:51 (mickey)>
 */
 
 #include "ethernet.h"
 #include "../LPC17xx.h"
 #include "../clock.h"
+#include "../printf.h"
 
 #define PCENET_BIT (1 << 30)
 #define PINSEL2_BITS_MASK (0xF03F030F)
@@ -84,7 +85,40 @@
 				   * +   12 bytes for minimum interframe gap */
 #define ETH_MAX_CLOCK 2500000 /* Maximum allowed clock frequency for MII, defined by IEEE 802.3, see p. 154 */
 
-static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40, 44};
+/** Address of the PHY device.
+    Used to talk to PHY D83848J through RMII interface.
+    Defined as already shifted to right position to use in MADR register (p.155)
+*/
+
+#define PHY_ADDR (0x01 << 8)
+
+/* Address of the DP83848J PHY registers */
+#define PHY_BMCR     (0x0)
+#define PHY_BMSR     (0x1)
+#define PHY_PHYIDR1  (0x2)
+#define PHY_PHYIDR2  (0x3)
+#define PHY_ANAR     (0x4)
+#define PHY_ANLPAR   (0x5)
+#define PHY_ANLPARNP (0x5) /* Not a bug, it IS the same addr (p. 36 of the DP83848J datasheet */
+#define PHY_ANER     (0x6)
+#define PHY_ANNPTR   (0x7)
+#define PHY_PHYSTS   (0x10)
+#define PHY_FCSCR    (0x14)
+#define PHY_RECR     (0x15)
+#define PHY_PCSR     (0x16)
+#define PHY_RBR      (0x17)
+#define PHY_LEDCR    (0x18)
+#define PHY_PHYCR    (0x19)
+#define PHY_10BTSCR  (0x1A)
+#define PHY_CDCTRL1  (0x1B)
+#define PHY_EDCR     (0x1D)
+
+/* PHY register bits */
+#define BMCR_RESET (1 << 15)
+
+#define MBSR_LINK_STATUS (1 << 2)
+
+static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40};
 
 static void _eth_50mhz_osc_enable()
 {
@@ -97,6 +131,34 @@ static void _eth_50mhz_osc_enable()
     /* Set pin value to 1 */
     LPC_GPIO1->FIOMASK = ~(1 << 27);
     LPC_GPIO1->FIOSET = (1 << 27);
+}
+
+/* This function allows to write value to a PHY register through the RMII
+ * interface 
+ */
+static void _write_to_phy_register(uint8_t reg, uint16_t value)
+{
+    LPC_EMAC->MADR = PHY_ADDR | reg;
+    /* request a write cycle */
+    LPC_EMAC->MWTD = value;
+
+    /* Wait for write operation to end */
+    while (LPC_EMAC->MIND & 1);
+}
+
+/* This function allows to read a value from a PHY register through the RMII
+ * interface
+ */
+
+static uint16_t _read_from_phy_register(uint8_t reg)
+{
+    LPC_EMAC->MADR = PHY_ADDR | reg;
+    /* request a read cycle */
+    LPC_EMAC->MCMD = 0;
+
+    while (LPC_EMAC->MIND & 1);
+    
+    return LPC_EMAC->MRDD & 0xFFFF;
 }
 
 int rflpc_eth_init()
@@ -126,6 +188,9 @@ int rflpc_eth_init()
     
     /* Turn on oscillator to clock the PHY */
     _eth_50mhz_osc_enable();
+
+    /* wait a bit for clock to stabilize */
+    for (i = 100 ; i != 0 ; --i);
 
     /* MAC is powerd, PHY is clocked and arm pins are configured as connected
        to the MAC. Initialization can start
@@ -163,19 +228,67 @@ int rflpc_eth_init()
     divider = rflpc_clock_get_system_clock() / ETH_MAX_CLOCK;
     for (i = 0 ; i < sizeof(clock_dividers); ++i)
     {
-	if (clock_dividers[i] >= divider)
+	if (rflpc_clock_get_system_clock() / clock_dividers[i] <= ETH_MAX_CLOCK)
 	    break;
     }
     ++i; /* after the incrementation, i hold the value to store in the MII
 	  * configuration register (p. 154) */
     /* set the clock and reset MII to use new parameters */
-    LPC_EMAC->MCFG = (i & 0xF) << 2 | MCFG_RESET_MIIM;
+    printf("divider: %d %d\r\n", i, clock_dividers[i-1]);
+    LPC_EMAC->MCFG = ((i & 0xF) << 2) | MCFG_RESET_MIIM;
 
     /* Clear the MII reset state */
     LPC_EMAC->MCFG &= ~(MCFG_RESET_MIIM);
 
-    /* Enable RMII interface */
-    LPC_EMAC->Command |= CTRL_RMII;
+    /* Enable RMII interface and allow reception of RUNT frames (less than 64 bytes)*/
+    LPC_EMAC->Command = CTRL_RMII | CTRL_PASS_RUNT_FRAMES;
+
+
+    /* Reset Reduced MII Logic. */
+    LPC_EMAC->SUPP = 0x00000800;
+
+    for (i = 100; i; --i);
+    LPC_EMAC->SUPP = 0;
+
+    /* Reset the PHY chip, (p.35, PHY datasheet) */
+    _write_to_phy_register(PHY_BMCR, BMCR_RESET);
+    
+    /* wait for PHY to become ready again */
+    while ( _read_from_phy_register(PHY_BMCR) & BMCR_RESET);
     
     return 1;
 }
+
+int rflpc_eth_link_state()
+{
+    return (_read_from_phy_register(PHY_BMSR) & MBSR_LINK_STATUS) == MBSR_LINK_STATUS;
+}
+
+
+#define PRINT_REG_VALUE(reg) printf(#reg"  \t%x\r\n", _read_from_phy_register(reg));
+
+void rflpc_eth_print_infos()
+{
+    printf("%x\r\n", LPC_EMAC->MIND);
+
+    PRINT_REG_VALUE(PHY_BMCR);
+    PRINT_REG_VALUE(PHY_BMSR);
+    PRINT_REG_VALUE(PHY_PHYIDR1);
+    PRINT_REG_VALUE(PHY_PHYIDR2);
+    PRINT_REG_VALUE(PHY_ANAR);
+    PRINT_REG_VALUE(PHY_ANLPAR);
+    PRINT_REG_VALUE(PHY_ANLPARNP);
+    PRINT_REG_VALUE(PHY_ANER);
+    PRINT_REG_VALUE(PHY_ANNPTR);
+    PRINT_REG_VALUE(PHY_PHYSTS);
+    PRINT_REG_VALUE(PHY_FCSCR);
+    PRINT_REG_VALUE(PHY_RECR);
+    PRINT_REG_VALUE(PHY_PCSR);
+    PRINT_REG_VALUE(PHY_RBR);
+    PRINT_REG_VALUE(PHY_LEDCR);
+    PRINT_REG_VALUE(PHY_PHYCR);
+    PRINT_REG_VALUE(PHY_10BTSCR);
+    PRINT_REG_VALUE(PHY_CDCTRL1);
+    PRINT_REG_VALUE(PHY_EDCR);
+}
+
