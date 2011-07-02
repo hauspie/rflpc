@@ -38,6 +38,12 @@
  * pins */
 static inline void rflpc_led_init()
 {
+    /* Connect GPIO1 to physical pins */
+    LPC_PINCON->PINSEL3 &= ~(3 << 4); /* clear bits 5:4 for LED 1 */
+    LPC_PINCON->PINSEL3 &= ~(3 << 8); /* clear bits 9:8 for LED2 */
+    LPC_PINCON->PINSEL3 &= ~(3 << 10); /* clear bits 11:10 for LED3 */
+    LPC_PINCON->PINSEL3 &= ~(3 << 14); /* clear bits 15:14 for LED4 */
+    /* Connect LED pins */
     LPC_GPIO1->FIODIR |= (LED1 | LED2 | LED3 | LED4);
 }
 
