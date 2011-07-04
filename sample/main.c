@@ -217,11 +217,24 @@ void test_ethernet()
     }
 }
 
+void test_led()
+{
+    rflpc_led_set(LED1);
+    RFLPC_DELAY(1000000);
+    rflpc_led_set(LED2);
+    RFLPC_DELAY(1000000);
+    rflpc_led_set(LED3);
+    RFLPC_DELAY(1000000);
+    rflpc_led_set(LED4);
+    RFLPC_DELAY(1000000);
+}
+
 int main()
 {
     int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
     int i = 0;
 
+    /* test_led(); */
     test_data_bss();
 
     if (rflpc_uart0_init() == -1)

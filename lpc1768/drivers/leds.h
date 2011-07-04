@@ -27,45 +27,52 @@
    LED4 P1.23
 */
 #include "../LPC17xx.h"
+#include "gpio.h"
+
+#define LED1_PIN (18)
+#define LED2_PIN (20)
+#define LED3_PIN (21)
+#define LED4_PIN (23)
 
 #define LED1 (1 << 18)
 #define LED2 (1 << 20)
 #define LED3 (1 << 21)
 #define LED4 (1 << 23)
 
-
 /** Inits the GPIO port to use the leds. Sets the GPIO1 led pins to output
  * pins */
 static inline void rflpc_led_init()
 {
     /* Connect GPIO1 to physical pins */
-    LPC_PINCON->PINSEL3 &= ~(3 << 4); /* clear bits 5:4 for LED 1 */
-    LPC_PINCON->PINSEL3 &= ~(3 << 8); /* clear bits 9:8 for LED2 */
-    LPC_PINCON->PINSEL3 &= ~(3 << 10); /* clear bits 11:10 for LED3 */
-    LPC_PINCON->PINSEL3 &= ~(3 << 14); /* clear bits 15:14 for LED4 */
+    rflpc_gpio_use_pin(1, LED1_PIN);
+    rflpc_gpio_use_pin(1, LED2_PIN);
+    rflpc_gpio_use_pin(1, LED3_PIN);
+    rflpc_gpio_use_pin(1, LED4_PIN);
     /* Connect LED pins */
-    LPC_GPIO1->FIODIR |= (LED1 | LED2 | LED3 | LED4);
+    rflpc_gpio_set_pin_mode_output(1, LED1_PIN);
+    rflpc_gpio_set_pin_mode_output(1, LED2_PIN);
+    rflpc_gpio_set_pin_mode_output(1, LED3_PIN);
+    rflpc_gpio_set_pin_mode_output(1, LED4_PIN);
 }
 
-/** Turns the given led on */
+/** Turns the given led(s) on */
 static inline void rflpc_led_set(uint32_t l)
 {
-    LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOSET = (l);
+    rflpc_gpio_set_pins_from_mask(1, l);
 }
 
 
 /** Clears the given led(s) (turn them off) */
 static inline void rflpc_led_clr(uint32_t l)
 {
-    LPC_GPIO1->FIOMASK = ~(l); LPC_GPIO1->FIOCLR = (l);
+    rflpc_gpio_clr_pins_from_mask(1, l);
 }
 
 
 /** Turns the leds included in the mask*/
 static inline void rflpc_led_val(uint32_t l)
 {
-    LPC_GPIO1->FIOMASK = ~(LED1|LED2|LED3|LED4);
-    LPC_GPIO1->FIOPIN = l;
+    rflpc_gpio_set_val(1, l, ~(LED1 | LED2 | LED3 | LED4));
 }
 
 #endif
