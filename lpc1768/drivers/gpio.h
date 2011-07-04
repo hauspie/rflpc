@@ -17,13 +17,15 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-04 16:31:36 (mickey)>
+  Time-stamp: <2011-07-04 17:04:16 (mickey)>
 
   GPIO driver for LPC.
 */
 #ifndef __RFLPC_GPIO_H__
 #define __RFLPC_GPIO_H__
 
+#include <stdint.h>
+#include "../LPC17xx.h"
 #include "../tools.h"
 
 /** @brief Configures the multi-purpose pins of the CM3 so that it uses a given GPIO pin 
