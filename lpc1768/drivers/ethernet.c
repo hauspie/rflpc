@@ -130,7 +130,7 @@
 
 #define ETH_DELAY do { int d = 100; for ( ; d != 0 ; --d); } while(0)
 
-static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28};
+static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40};
 
 /* This function allows to write value to a PHY register through the RMII
  * interface 
@@ -193,10 +193,13 @@ int rflpc_eth_init()
     LPC_SC->PCONP |= PCENET_BIT;
 
 
-    /* Reset datapaths */
-    LPC_EMAC->Command = CMD_REG_RESET;
+    /* Perform a full reset of the ethernet block.
+       Procedure p. 207
+    */
     /* Reset mac modules */
     LPC_EMAC->MAC1 = MAC1_SOFT_RESET;
+    /* Reset datapaths */
+    LPC_EMAC->Command = CMD_REG_RESET;
     /* wait for reset to perform */
     ETH_DELAY;
     /* Clear reset bit */
