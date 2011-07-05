@@ -203,8 +203,9 @@ void test_ethernet()
 {
     int old_link_state = 10;
     rflpc_eth_init();
-
     rflpc_eth_print_infos();
+
+    rflpc_led_val(0);
 
     while (1)
     {
@@ -213,6 +214,10 @@ void test_ethernet()
 	{
 	    old_link_state = current_link_state;
 	    printf("Eth link is : %s\r\n", current_link_state ? "Up" : "Down");
+	    if (current_link_state)
+		rflpc_led_set(LED1);
+	    else
+		rflpc_led_clr(LED1);
 	}
     }
 }
