@@ -75,4 +75,21 @@ static inline void rflpc_led_val(uint32_t l)
     rflpc_gpio_set_val(1, l, ~(LED1 | LED2 | LED3 | LED4));
 }
 
+/** Turns the led to reflect a binary 4 digit number 
+    LED4 is LSB, LED1 MSB
+ */
+static inline void rflpc_led_binary_value(uint8_t v)
+{
+    uint32_t leds = 0;
+    if (v & 1)
+	leds |= LED4;
+    if (v & 2)
+	leds |= LED3;
+    if (v & 4)
+	leds |= LED2;
+    if (v & 8)
+	leds |= LED1;
+    rflpc_led_val(leds);
+}
+
 #endif
