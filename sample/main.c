@@ -219,6 +219,7 @@ void test_ethernet()
 
 void test_led()
 {
+    int i;
     rflpc_led_set(LED1);
     RFLPC_DELAY(1000000);
     rflpc_led_set(LED2);
@@ -227,6 +228,12 @@ void test_led()
     RFLPC_DELAY(1000000);
     rflpc_led_set(LED4);
     RFLPC_DELAY(1000000);
+
+    for (i = 0 ; i < 16 ; ++i)
+    {
+	rflpc_led_binary_value(i);
+	RFLPC_DELAY(1000000);
+    }
 }
 
 int main()
