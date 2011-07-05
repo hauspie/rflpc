@@ -22,15 +22,23 @@
 
 #include "ethernet.h"
 #include "gpio.h"
+#include "leds.h"
 #include "../LPC17xx.h"
 #include "../clock.h"
 #include "../printf.h"
 
 #define PCENET_BIT (1 << 30)
-#define PINSEL2_BITS_MASK (0xF03F030F)
-#define PINSEL2_BITS (0x50150105)
-#define PINSEL3_BITS_MASK (0xF)
-#define PINSEL3_BITS (0x5)
+
+#define ETH_PIN_TXD0      0
+#define ETH_PIN_TXD1      1
+#define ETH_PIN_TX_EN     4
+#define ETH_PIN_CRS       8
+#define ETH_PIN_RXD0      9
+#define ETH_PIN_RXD1     10
+#define ETH_PIN_RX_ER    14
+#define ETH_PIN_REF_CLK  15
+#define ETH_PIN_MDC      16
+#define ETH_PIN_MDIO     17
 
 
 /* MAC Configuration Register 1, bits definition */
@@ -63,16 +71,16 @@
 
 
 /* MAC Control register bits */
-#define CTRL_RX_ENABLE        (1 << 0)
-#define CTRL_TX_ENABLE        (1 << 1)
-#define CTRL_REG_RESET        (1 << 3)
-#define CTRL_TX_RESET         (1 << 4)
-#define CTRL_RX_RESET         (1 << 5)
-#define CTRL_PASS_RUNT_FRAMES (1 << 6)
-#define CTRL_PASS_RX_FILTER   (1 << 7)
-#define CTRL_TX_FLOW_CONTROL  (1 << 8)
-#define CTRL_RMII             (1 << 9)
-#define CTRL_FULL_DUPLEX      (1 << 10)
+#define CMD_RX_ENABLE        (1 << 0)
+#define CMD_TX_ENABLE        (1 << 1)
+#define CMD_REG_RESET        (1 << 3)
+#define CMD_TX_RESET         (1 << 4)
+#define CMD_RX_RESET         (1 << 5)
+#define CMD_PASS_RUNT_FRAMES (1 << 6)
+#define CMD_PASS_RX_FILTER   (1 << 7)
+#define CMD_TX_FLOW_CONTROL  (1 << 8)
+#define CMD_RMII             (1 << 9)
+#define CMD_FULL_DUPLEX      (1 << 10)
 
 /* MII control register bits */
 #define MCFG_SCAN_INCREMENT    (1 << 0)
@@ -120,33 +128,9 @@
 
 #define MBSR_LINK_STATUS (1 << 2)
 
-static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40};
+#define ETH_DELAY do { int d = 100; for ( ; d != 0 ; --d); } while(0)
 
-static void _eth_50mhz_osc_enable()
-{
-    int i;
-    /* Turn on the 50 Mhz oscillator that clocks the PHY (a DP83848J)
-       This oscillator is enabled using P1.27 as GPIO (p. 110)
-    */
-    rflpc_gpio_set_pin_mode_output(1, 27);
-    rflpc_gpio_set_pin(1, 27);
-    for (i = 100000 ; i != 0 ; --i); /* wait a bit (at least 1µs) */
-}
-
-static void _eth_stop_phy_reset()
-{
-    int i;
-    /* The ETH_RST pin is connected on GPIO1 P1.28 */
-    /* "Asserting this pin low for at least 1 μs will force a reset process to
-       occur." (DP83848J datasheet, p. 11)
-       Thus, let's put a 1 on the pin
-    */
-    rflpc_gpio_set_pin_mode_output(1, 28);
-    rflpc_gpio_clr_pin(1, 28); /* Reset PHY */
-    for (i = 100000 ; i != 0 ; --i); /* wait a bit (at least 1µs) */
-    rflpc_gpio_set_pin(1, 28);
-    for (i = 100000 ; i != 0 ; --i); /* wait a bit (at least 1µs) */
-}
+static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28};
 
 /* This function allows to write value to a PHY register through the RMII
  * interface 
@@ -178,57 +162,49 @@ static uint16_t _read_from_phy_register_with_addr(uint8_t addr, uint8_t reg)
     return LPC_EMAC->MRDD;
 }
 
+static void _eth_setup_pins()
+{
+    
+    rflpc_pin_set(1, ETH_PIN_TXD0, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_TXD1, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_TX_EN, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_CRS, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_RXD0, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_RXD1, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_RX_ER, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_REF_CLK, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_MDC, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_MDIO, 1, 0, 0);
+}
+
 #define _read_from_phy_register(reg) _read_from_phy_register_with_addr(PHY_ADDR, (reg))
 #define _write_to_phy_register(reg, val) _write_to_phy_register_with_addr(PHY_ADDR, (reg), (val))
 
 int rflpc_eth_init()
 {
     int i;
+    int dbg = 0;
     uint32_t divider;
 
-
-    /* Configure Ethernet MAC PINS through PINSEL2 register (p.141 and 109) 
-       ENET_TXD[0:1]   (0101 to bits  3:0)
-       ENET_TX_EN      (01 to bits    9:8)
-       ENET_CRS        (01 to bits   17:16)
-       ENET_RXD[0:1]   (0101 to bits 21:18)
-       ENET_RX_ER      (01 to bits   29:28)
-       ENET_REF_CLK    (01 to bits   31:30)
-       Value to set -> 0101 xxxx xx01 0101 xxxx xx01 xxxx 0101 (0x50150105)
-       Mask         -> 1111 0000 0011 1111 0000 0011 0000 1111 (0xF03F030F)
-     */
-    LPC_PINCON->PINSEL2 = (LPC_PINCON->PINSEL2 & (~PINSEL2_BITS_MASK)) | PINSEL2_BITS;
-    /* Configure pins to interface ENET with PHY in PINSEL3
-       ENET_MDC  (01 to bits 1:0)
-       ENET_MDIO (01 to bits 3:2)
-       Value to set -> 0101 (0x5)
-       Mask ->         1111 (0xF)
-    */
-    LPC_PINCON->PINSEL3 = (LPC_PINCON->PINSEL3 & (~PINSEL3_BITS_MASK)) | PINSEL3_BITS;
-
-    /* Turn on oscillator OSC2 to clock the PHY */
-    _eth_50mhz_osc_enable();
-    /* Set the ETH_RST pin to high to stop PHY reset */
-    _eth_stop_phy_reset();
-
+    _eth_setup_pins(); 
 
     /* Power the ethernet device
        Set bit PCENET in PCONP register (p. 141 and 64) */
     LPC_SC->PCONP |= PCENET_BIT;
 
-    /* MAC is powered, PHY is clocked and arm pins are configured as connected
-       to the MAC. Initialization can start
-    */
 
-    /* Follow initialization procedure (p. 181) */
-    /* Remove Soft reset condition from the MAC (p. 150 for the MAC1 register
-     * description). Set all other options to 0 */
+    /* Reset datapaths */
+    LPC_EMAC->Command = CMD_REG_RESET;
+    /* Reset mac modules */
+    LPC_EMAC->MAC1 = MAC1_SOFT_RESET;
+    /* wait for reset to perform */
+    ETH_DELAY;
+    /* Clear reset bit */
     LPC_EMAC->MAC1 = 0;
 
-    /* Initialize MAC control register to enable padding of small frames
-     * (i.e. frame < 64 bytes) and the appending of CRC at the end of the frame
-     */
+    /* Append CRC to the frame and PAD short frames (<64 bytes) */
     LPC_EMAC->MAC2 = MAC2_CRC_ENABLE | MAC2_PAD_ENABLE;
+    /* Set max frame length */
     LPC_EMAC->MAXF = ETH_MAX_FRAME_LENGTH;
 
     /* Set MIIM clock multiplier to a value compatible with system clock
@@ -238,20 +214,25 @@ int rflpc_eth_init()
     divider = rflpc_clock_get_system_clock() / ETH_MAX_CLOCK;
     for (i = 0 ; i < sizeof(clock_dividers); ++i)
     {
-	if (rflpc_clock_get_system_clock() / clock_dividers[i] <= ETH_MAX_CLOCK)
+	if (clock_dividers[i] >= divider)
 	    break;
     }
     ++i; /* after the incrementation, i hold the value to store in the MII
 	  * configuration register (p. 154) */
     /* set the clock and reset MII to use new parameters */
-    printf("divider: %d %d\r\n", i, clock_dividers[i-1]);
     LPC_EMAC->MCFG = ((i & 0xF) << 2) | MCFG_RESET_MIIM;
-    for (i = 100 ; i != 0 ; --i);
     LPC_EMAC->MCFG &= ~(MCFG_RESET_MIIM);
 
+    /* TODO set CLRT and IPGR registers */
+
     /* Enable RMII interface and allow reception of RUNT frames (less than 64 bytes)*/
-    LPC_EMAC->Command = CTRL_RMII | CTRL_PASS_RUNT_FRAMES;
+    LPC_EMAC->Command = CMD_RMII | CMD_PASS_RUNT_FRAMES;
     
+    /* Put the PHY in reset */
+    _write_to_phy_register(PHY_BMCR, BMCR_RESET);
+
+    /* Wait for PHY to finish reset */
+    while (_read_from_phy_register(PHY_BMCR) & BMCR_RESET);
 
     return 1;
 }
@@ -266,15 +247,6 @@ int rflpc_eth_link_state()
 
 void rflpc_eth_print_infos()
 {
-    int i;
-    printf("MIND: %x\r\n", LPC_EMAC->MIND);
-    for (i = 1 ; i < 32 ; ++i)
-    {
-	uint16_t val = _read_from_phy_register_with_addr(i, PHY_BMSR);
-	printf("MIND: %x\r\n", LPC_EMAC->MIND);
-	printf("PHY_BMSR(%d): %x\r\n", i, val);
-    }
-
     PRINT_REG_VALUE(PHY_BMCR);
     PRINT_REG_VALUE(PHY_BMSR);
     PRINT_REG_VALUE(PHY_PHYIDR1);
