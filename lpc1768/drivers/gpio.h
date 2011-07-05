@@ -27,6 +27,7 @@
 #include <stdint.h>
 #include "../LPC17xx.h"
 #include "../tools.h"
+#include "../pinconf.h"
 
 /** @brief Configures the multi-purpose pins of the CM3 so that it uses a given GPIO pin 
     @param gpio the gpio port number
@@ -34,29 +35,8 @@
  */
 static inline void rflpc_gpio_use_pin(int gpio, int pin)
 {
-    volatile uint32_t *pinsel_register;
-    switch (gpio)
-    {
-	case 0: pinsel_register = (pin < 16) ? &(LPC_PINCON->PINSEL0) : &(LPC_PINCON->PINSEL1); 
-	    break;
-	case 1: pinsel_register = (pin < 16) ? &(LPC_PINCON->PINSEL2) : &(LPC_PINCON->PINSEL3); 
-	    break;
-	case 2: pinsel_register = (pin < 14) ? &(LPC_PINCON->PINSEL4) : ((uint32_t*)0);
-	    break;
-	case 3: if (pin < 25 || pin >26) 
-		return;
-	    pinsel_register = &(LPC_PINCON->PINSEL7);
-	    break;
-	case 4: 
-	    if (pin < 28 || pin > 29)
-		return;
-	    pinsel_register = &(LPC_PINCON->PINSEL9);
-	    break;
-	default: return;
-    }
-    if (!pinsel_register)
-	return;
-    *pinsel_register &= ~(1 << ((pin % 16)<<1));
+    /* Use GPIO function for pin */
+    rflpc_pin_set(gpio, pin, 0, 0, 0);
 }
 
 
