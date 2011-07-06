@@ -48,7 +48,7 @@ static unsigned char _stack[STACK_SIZE] __attribute__((section(".stack")));
 /* see section 34.3.3 p 745 of the user manual */
 
 void* _rom_interrupts[IRQn_COUNT] __attribute__ ((section(".interrupt_vector"))) = {
-    &_stack[STACK_SIZE],   /* initial SP value */
+    _stack + STACK_SIZE,   /* initial SP value */
     _start, /* address of the reset routine */
     _default_exception_handler,	/* Non Masquable Interrupt handler, */
     _default_exception_handler,	/* Hardware Fault handler, */
