@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-03 00:32:33 (mickey)>
+  Time-stamp: <2011-07-06 22:57:49 (mickey)>
 */ 
 #include <stdint.h>
 
@@ -32,15 +32,6 @@ extern int rflpc_eth_init();
 extern int rflpc_eth_link_state();
 
 
-
-/** Force the physical link to perform auto negociation of mode.
-
-    This function will start autonegociation, wait for it to finish and
-    reconfigure MAC/PHY if needed (100Mbps/10Mbps, half duplex/full duplex...)
- */
-extern void rflpc_eth_link_auto_negociate();
-
-
 /** Possible link modes */
 typedef enum
 {
@@ -50,14 +41,32 @@ typedef enum
     RFLPC_ETH_LINK_MODE_10HD,  /**<! 10Mbps  Half Duplex */
 } rfEthLinkMode;
 
-/** Sets the MAC and PHY devices to operate on the given mode
+/** Forces the MAC and PHY devices to operate on the given mode no matter the
+ * capability of the linked partner
 
-    @warning According to PHY datasheet, forcing the device to use full-duplex
-    without using auto-negociation the partner would not be able to detect
-    full-duplex and thus will use half-duplex. So it is always better to use
-    autonegociation.  
+    @warning According to PHY datasheet, when forcing the device to use
+    full-duplex without using auto-negociation the partner would not be able to
+    detect full-duplex and thus will use half-duplex. So it is always better to
+    use autonegociation. Verify which parameter is effectively set with
+    ::rflpc_eth_get_link_mode
+ */
+extern void rflpc_eth_set_link_mode(rfEthLinkMode mode);
+
+/** Force the physical link to perform auto negociation of mode.
+
+    This function will start autonegociation, wait for it to finish and
+    reconfigure MAC/PHY if needed (100Mbps/10Mbps, half duplex/full duplex...)
+    @param max_desired_mode see ::rfEthLinkMode
+ */
+extern void rflpc_eth_link_auto_negociate(rfEthLinkMode max_desired_mode);
+
+/** returns the current link mode. The information is extracted from the PHY
+    PHYSTS register.
+
+    @return ::rfEthLinkMode
 */
-extern void rflpc_eth_link_set_mode(rfEthLinkMode mode);
+extern rfEthLinkMode rflpc_eth_get_link_mode();
+
 
 /** functions that print information on chip and link.
     Will be removed when driver is functional, only used as debug function

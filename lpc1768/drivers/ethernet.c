@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-05 01:07:28 (mickey)>
+  Time-stamp: <2011-07-06 23:12:08 (mickey)>
 */
 
 #include "ethernet.h"
@@ -160,6 +160,31 @@
 #define BMSR_EXT_REGISTER_CAPS        (1 << 0)
 
 
+/* Auto negotiation advertisement register */
+#define ANAR_ASM_DIR (1 << 11)
+#define ANAR_PAUSE   (1 << 10)
+#define ANAR_T4      (1 << 9)
+#define ANAR_TX_FD   (1 << 8)
+#define ANAR_TX      (1 << 7)
+#define ANAR_10_FD   (1 << 6)
+#define ANAR_10      (1 << 5)
+
+/* PHY status register */
+#define PHYSTS_MDI_X                     (1 << 14)
+#define PHYSTS_RX_ERROR_LATCH            (1 << 13)
+#define PHYSTS_POLARITY_STATUS           (1 << 12)
+#define PHYSTS_FALSE_CARRIER_SENSE_LATCH (1 << 11)
+#define PHYSTS_SIGNAL_DETECT             (1 << 10)
+#define PHYSTS_DESCRAMBLER_LOCK          (1 << 9)
+#define PHYSTS_PAGE_RECEIVED             (1 << 8)
+#define PHYSTS_REMOTE_FAULT              (1 << 6)
+#define PHYSTS_JABBER_DETECT             (1 << 5)
+#define PHYSTS_AUTO_NEG_COMPLETE         (1 << 4)
+#define PHYSTS_LOOPBACK_STATUS           (1 << 3)
+#define PHYSTS_DUPLEX_STATUS             (1 << 2)
+#define PHYSTS_SPEED_STATUS              (1 << 1)
+#define PHYSTS_LINK_STATUS               (1 << 0)
+
 #define ETH_DELAY do { int d = 100; for ( ; d != 0 ; --d); } while(0)
 
 static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40};
@@ -279,7 +304,7 @@ int rflpc_eth_init()
     while (_read_from_phy_register(PHY_BMCR) & BMCR_RESET);
 
     /* Perform link autonegociation */
-    rflpc_eth_link_auto_negociate();
+    rflpc_eth_link_auto_negociate(RFLPC_ETH_LINK_MODE_100FD);
 
     /* Enable reception */
     LPC_EMAC->MAC1 |= MAC1_RECEIVE_ENABLE | MAC1_PASS_ALL_FRAMES;
@@ -321,9 +346,33 @@ void rflpc_eth_print_infos()
     PRINT_REG_VALUE(PHY_EDCR);
 }
 
-void rflpc_eth_link_auto_negociate()
+void rflpc_eth_link_auto_negociate(rfEthLinkMode max_desired_mode)
 {
-    uint16_t bmcr = _read_from_phy_register(PHY_BMCR);
+    uint16_t bmcr;
+    uint16_t anar;
+
+    /* To set maximum mode, we set the ANAR register with desired value */
+    anar = _read_from_phy_register(PHY_ANAR);
+    /* remove all caps */
+    anar &= ~(ANAR_10_FD | ANAR_TX | ANAR_TX_FD);
+    anar |= ANAR_10; /* minimum is 10 Mbps, half duplex */
+
+    switch (max_desired_mode)
+    {
+	case RFLPC_ETH_LINK_MODE_100FD:
+	    anar |= ANAR_TX_FD;
+	case RFLPC_ETH_LINK_MODE_100HD:
+	    anar |= ANAR_TX;
+	    break;
+	case RFLPC_ETH_LINK_MODE_10FD:
+	    anar |= ANAR_10_FD;
+	    break;
+	default:
+	    break;
+    }
+    _write_to_phy_register(PHY_ANAR, anar);
+
+    bmcr = _read_from_phy_register(PHY_BMCR);
     /* Enable auto-negociation */
     bmcr |= BMCR_ENABLE_AUTO_NEG;
     /* Start auto negociation */
@@ -350,7 +399,7 @@ void rflpc_eth_link_auto_negociate()
     }
 }
 
-void rflpc_eth_link_set_mode(rfEthLinkMode mode)
+void rflpc_eth_set_link_mode(rfEthLinkMode mode)
 {
     uint16_t bmcr = _read_from_phy_register(PHY_BMCR);
     uint32_t mac2 = LPC_EMAC->MAC2;
@@ -394,4 +443,21 @@ void rflpc_eth_link_set_mode(rfEthLinkMode mode)
     LPC_EMAC->MAC2 = mac2;
     LPC_EMAC->Command = cmd;
     LPC_EMAC->SUPP = supp;
+    while (!rflpc_eth_link_state());
+}
+
+rfEthLinkMode rflpc_eth_get_link_mode()
+{
+    uint16_t physts = _read_from_phy_register(PHY_PHYSTS);
+
+    if (physts & PHYSTS_SPEED_STATUS) /* 10 Mbps */
+    {
+	if (physts & PHYSTS_DUPLEX_STATUS) /* full duplex */
+	    return RFLPC_ETH_LINK_MODE_10FD;
+	return RFLPC_ETH_LINK_MODE_10HD;
+    }
+    /* 100 Mbps */
+    if (physts & PHYSTS_DUPLEX_STATUS) /* full duplex */
+	return RFLPC_ETH_LINK_MODE_100FD;
+    return RFLPC_ETH_LINK_MODE_100HD;
 }

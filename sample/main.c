@@ -217,7 +217,6 @@ void test_ethernet()
 {
     int old_link_state = 10;
     rflpc_eth_init();
-    rflpc_eth_link_set_mode(RFLPC_ETH_LINK_MODE_10FD);
     rflpc_eth_print_infos();
 
     rflpc_led_val(0);
@@ -236,9 +235,9 @@ void test_ethernet()
 	
 	if (request_autoneg)
 	{
-	    printf("Starting auto-negociation\r\n");
-	    rflpc_eth_link_auto_negociate();
-	    printf("Done\r\n");
+	    printf("Starting auto-negociation to 10Mbps Full duplex\r\n");
+	    rflpc_eth_link_auto_negociate(RFLPC_ETH_LINK_MODE_10FD);
+	    printf("Done -> %d\r\n", rflpc_eth_get_link_mode());
 	    request_autoneg = 0;
 	}
 
