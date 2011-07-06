@@ -31,6 +31,29 @@ extern int rflpc_eth_init();
 */
 extern int rflpc_eth_link_state();
 
+
+
+/** Force the physical link to perform auto negociation of mode.
+
+    This function will start autonegociation, wait for it to finish and
+    reconfigure MAC/PHY if needed (100Mbps/10Mbps, half duplex/full duplex...)
+ */
+extern void rflpc_eth_link_auto_negociate();
+
+
+/** Possible link modes */
+typedef enum
+{
+    RFLPC_ETH_LINK_MODE_100FD, /**<! 100Mbps Full Duplex */
+    RFLPC_ETH_LINK_MODE_100HD, /**<! 100Mbps Half Duplex */
+    RFLPC_ETH_LINK_MODE_10FD,  /**<! 10Mbps  Full Duplex */
+    RFLPC_ETH_LINK_MODE_10HD,  /**<! 10Mbps  Half Duplex */
+} rfEthLinkMode;
+
+/** Sets the MAC and PHY devices to operate on the given mode
+*/
+extern void rflpc_eth_link_set_mode(rfEthLinkMode mode);
+
 /** functions that print information on chip and link.
     Will be removed when driver is functional, only used as debug function
 */

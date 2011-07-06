@@ -69,6 +69,10 @@
 #define MAC2_BACK_PRESSURE          (1 << 13)
 #define MAC2_EXCESS_DEFER           (1 << 14)     
 
+/* RMII Support */
+#define SUPP_10MBPS          (0)
+#define SUPP_100MBPS         (1 << 8)
+
 
 /* MAC Control register bits */
 #define CMD_RX_ENABLE        (1 << 0)
@@ -81,6 +85,12 @@
 #define CMD_TX_FLOW_CONTROL  (1 << 8)
 #define CMD_RMII             (1 << 9)
 #define CMD_FULL_DUPLEX      (1 << 10)
+
+/* MIND Control register */
+#define MIND_BUSY            (1)
+#define MIND_SCANNING        (1 << 1)
+#define MIND_NOT_VALID       (1 << 2)
+#define MIND_MII_LINK_FAIL   (1 << 3)
 
 /* MII control register bits */
 #define MCFG_SCAN_INCREMENT    (1 << 0)
@@ -124,9 +134,31 @@
 #define PHY_EDCR     (0x1D)
 
 /* PHY register bits */
-#define BMCR_RESET (1 << 15)
+/* Basic Mode Control Register (BMSR) */
+#define BMCR_RESET            (1 << 15)
+#define BMCR_LOOPBACK         (1 << 14)
+#define BMCR_SPEED_SELECT     (1 << 13)
+#define BMCR_ENABLE_AUTO_NEG  (1 << 12)
+#define BMCR_POWER_DOWN       (1 << 11)
+#define BMCR_ISOLATE          (1 << 10)
+#define BMCR_RESTART_AUTO_NEG (1 << 9)
+#define BMCR_DUPLEX_MODE      (1 << 8)
+#define BMCR_COLLISION_TEST   (1 << 7)
 
-#define MBSR_LINK_STATUS (1 << 2)
+/* Basic Mode Status Register */
+#define BMSR_100BASET4                (1 << 15)
+#define BMSR_100BASETX_FULL           (1 << 14)
+#define BMSR_100BASETX_HALF           (1 << 13)
+#define BMSR_10BASET_FULL             (1 << 12)
+#define BMSR_10BASET_HALF             (1 << 11)
+#define BMSR_MF_PREAMBLE_SUPPRESSION  (1 << 6)
+#define BMSR_AUTO_NEG_COMPLETE        (1 << 5)
+#define BMSR_REMOTE_FAULT             (1 << 4)
+#define BMSR_CAN_AUTO_NEG             (1 << 3)
+#define BMSR_LINK_STATUS              (1 << 2)
+#define BMSR_JABBER_DETECT            (1 << 1)
+#define BMSR_EXT_REGISTER_CAPS        (1 << 0)
+
 
 #define ETH_DELAY do { int d = 100; for ( ; d != 0 ; --d); } while(0)
 
@@ -142,7 +174,7 @@ static void _write_to_phy_register_with_addr(uint8_t addr, uint8_t reg, uint16_t
     LPC_EMAC->MWTD = value;
 
     /* Wait for write operation to end */
-    while (LPC_EMAC->MIND & 1);
+    while (LPC_EMAC->MIND & MIND_BUSY);
 }
 
 /* This function allows to read a value from a PHY register through the RMII
@@ -157,7 +189,7 @@ static uint16_t _read_from_phy_register_with_addr(uint8_t addr, uint8_t reg)
     /* Request Read cycle */
     LPC_EMAC->MCMD = 1;
     /* Wait for valid value in MRDD */
-    while ((LPC_EMAC->MIND & 1) | (LPC_EMAC->MIND & (1 << 2)));
+    while ((LPC_EMAC->MIND & MIND_BUSY) | (LPC_EMAC->MIND & MIND_NOT_VALID));
     LPC_EMAC->MCMD = 0;
     return LPC_EMAC->MRDD;
 }
@@ -165,16 +197,16 @@ static uint16_t _read_from_phy_register_with_addr(uint8_t addr, uint8_t reg)
 static void _eth_setup_pins()
 {
     
-    rflpc_pin_set(1, ETH_PIN_TXD0, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_TXD1, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_TX_EN, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_CRS, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_RXD0, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_RXD1, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_RX_ER, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_TXD0,    1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_TXD1,    1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_TX_EN,   1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_CRS,     1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_RXD0,    1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_RXD1,    1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_RX_ER,   1, 0, 0);
     rflpc_pin_set(1, ETH_PIN_REF_CLK, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_MDC, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_MDIO, 1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_MDC,     1, 0, 0);
+    rflpc_pin_set(1, ETH_PIN_MDIO,    1, 0, 0);
 }
 
 #define _read_from_phy_register(reg) _read_from_phy_register_with_addr(PHY_ADDR, (reg))
@@ -183,7 +215,6 @@ static void _eth_setup_pins()
 int rflpc_eth_init()
 {
     int i;
-    int dbg = 0;
     uint32_t divider;
 
     _eth_setup_pins(); 
@@ -205,8 +236,20 @@ int rflpc_eth_init()
     /* Clear reset bit */
     LPC_EMAC->MAC1 = 0;
 
-    /* Append CRC to the frame and PAD short frames (<64 bytes) */
-    LPC_EMAC->MAC2 = MAC2_CRC_ENABLE | MAC2_PAD_ENABLE;
+    /* Append CRC to the frame and PAD short frames (<64 bytes) and operate in full-duplex */
+    LPC_EMAC->MAC2 = MAC2_FULL_DUPLEX | MAC2_CRC_ENABLE | MAC2_PAD_ENABLE;
+    
+    /* Back-to-back inter-packet gap. 0x15 is the recommended value in full-duplex (p. 152) */
+    LPC_EMAC->IPGT = 0x15;
+    /* Non Back-to-back inter-packet gap. 0x12 and 0xC are recommended values (p. 152) */
+    LPC_EMAC->IPGR = 0x12 | (0xC << 8);
+    
+    /* Collision window. 0xF and 0x37 are recommended values (p. 153) */
+    LPC_EMAC->CLRT = 0xF | (0x37 << 8);
+
+    /* Set the RMII interface to use 100Mbps mode */
+    LPC_EMAC->SUPP = SUPP_100MBPS;
+
     /* Set max frame length */
     LPC_EMAC->MAXF = ETH_MAX_FRAME_LENGTH;
 
@@ -226,8 +269,6 @@ int rflpc_eth_init()
     LPC_EMAC->MCFG = ((i & 0xF) << 2) | MCFG_RESET_MIIM;
     LPC_EMAC->MCFG &= ~(MCFG_RESET_MIIM);
 
-    /* TODO set CLRT and IPGR registers */
-
     /* Enable RMII interface and allow reception of RUNT frames (less than 64 bytes)*/
     LPC_EMAC->Command = CMD_RMII | CMD_PASS_RUNT_FRAMES;
     
@@ -237,12 +278,18 @@ int rflpc_eth_init()
     /* Wait for PHY to finish reset */
     while (_read_from_phy_register(PHY_BMCR) & BMCR_RESET);
 
+    /* Perform link autonegociation */
+    rflpc_eth_link_auto_negociate();
+
+    /* Enable reception */
+    LPC_EMAC->MAC1 |= MAC1_RECEIVE_ENABLE | MAC1_PASS_ALL_FRAMES;
+
     return 1;
 }
 
 int rflpc_eth_link_state()
 {
-    return (_read_from_phy_register(PHY_BMSR) & MBSR_LINK_STATUS) == MBSR_LINK_STATUS;
+    return (_read_from_phy_register(PHY_BMSR) & BMSR_LINK_STATUS) == BMSR_LINK_STATUS;
 }
 
 
@@ -250,6 +297,8 @@ int rflpc_eth_link_state()
 
 void rflpc_eth_print_infos()
 {
+    printf("Operating mode : %d Mbps %s duplex\r\n", LPC_EMAC->SUPP & SUPP_100MBPS ? 100 : 10, LPC_EMAC->MAC2 & MAC2_FULL_DUPLEX ? "full" : "half");
+
     PRINT_REG_VALUE(PHY_BMCR);
     PRINT_REG_VALUE(PHY_BMSR);
     PRINT_REG_VALUE(PHY_PHYIDR1);
@@ -271,3 +320,59 @@ void rflpc_eth_print_infos()
     PRINT_REG_VALUE(PHY_EDCR);
 }
 
+void rflpc_eth_link_auto_negociate()
+{
+    uint16_t bmcr = _read_from_phy_register(PHY_BMCR);
+    /* Enable auto-negociation */
+    bmcr |= BMCR_ENABLE_AUTO_NEG;
+    /* Start auto negociation */
+    bmcr |= BMCR_RESTART_AUTO_NEG;
+    _write_to_phy_register(PHY_BMCR, bmcr);
+    /* wait for auto-negociation to finish */
+    while (_read_from_phy_register(PHY_BMSR) & BMSR_AUTO_NEG_COMPLETE);
+
+    /* retrieve auto-negociated parameters */
+    bmcr = _read_from_phy_register(PHY_BMCR);
+    if (bmcr & BMCR_SPEED_SELECT) /* 100 Mbps */
+	LPC_EMAC->SUPP = SUPP_100MBPS;
+    else
+	LPC_EMAC->SUPP = SUPP_10MBPS;
+    if (bmcr & BMCR_DUPLEX_MODE) /* Full duplex */
+	LPC_EMAC->MAC2 |= MAC2_FULL_DUPLEX;
+    else
+	LPC_EMAC->MAC2 &= ~MAC2_FULL_DUPLEX;
+}
+
+void rflpc_eth_link_set_mode(rfEthLinkMode mode)
+{
+    uint16_t bmcr = _read_from_phy_register(PHY_BMCR);
+
+    /* duplex */
+    if (mode == RFLPC_ETH_LINK_MODE_100FD || mode == RFLPC_ETH_LINK_MODE_10FD)
+    {
+	/* full duplex */
+	LPC_EMAC->MAC2 |= MAC2_FULL_DUPLEX;
+	bmcr |= BMCR_DUPLEX_MODE;
+    }
+    else
+    {
+	/* half duplex */
+	LPC_EMAC->MAC2 &= ~MAC2_FULL_DUPLEX;
+	bmcr &= ~ BMCR_DUPLEX_MODE;
+    }
+    
+    /* speed */
+    if (mode == RFLPC_ETH_LINK_MODE_100FD || mode == RFLPC_ETH_LINK_MODE_100HD)
+    {
+	/* 100 Mbps */
+	LPC_EMAC->SUPP = SUPP_100MBPS;
+	bmcr |= BMCR_SPEED_SELECT;
+    }
+    else
+    {
+	/* 10 Mbps */
+	LPC_EMAC->SUPP = 0;
+	bmcr &= ~BMCR_SPEED_SELECT;
+    }
+    _write_to_phy_register(PHY_BMCR, bmcr);
+}
