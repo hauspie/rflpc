@@ -17,7 +17,8 @@
 #define __RFLPC_CONFIG_H__
 
 /** size of the stack in bytes */
+#ifndef STACK_SIZE
 #define STACK_SIZE 512
-
+#endif
 
 #endif
