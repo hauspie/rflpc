@@ -24,25 +24,26 @@ extern int putchar(int c);
 #define PUTS(s) do {const char *str=s; while (*str) PUTCHAR(*str++);}while(0)
 
 
-#define PUT_HEXA_DIGIT(d,a_letter) do {		\
+#define PUT_HEXA_DIGIT(d,a_letter) do {			\
 	if ((d) >=0 && (d) <= 9)			\
 	    PUTCHAR('0' + (d));				\
 	else						\
 	    PUTCHAR((a_letter) + ((d) - 0xA));		\
     } while (0)
 
-#define PUT_HEXA_BYTE(b, a_letter) do {		\
+#define PUT_HEXA_BYTE(b, a_letter) do {				\
 	PUT_HEXA_DIGIT(((b)>>4), (a_letter));			\
 	PUT_HEXA_DIGIT(((b) & 0xF), (a_letter));		\
     } while (0)
 
 #define PUT_HEXA_VAL(val,a_letter,bits, print_zero) do {		\
-	int b = (bits) - 8;						\
-	if (!(print_zero))						\
-	    while ((b > 0) && (((val) >> b) & 0xFF) == 0)		\
-		b -=8;							\
-	    for ( ; b >= 0 ; b -= 8)					\
-		PUT_HEXA_BYTE(((val) >> b) & 0xFF, (a_letter));		\
+	int b = (bits) - 4;						\
+	if (!(print_zero)) {						\
+	    while ((b > 0) && (((val) >> b) & 0xF) == 0)		\
+		b -=4;							\
+	}								\
+	for ( ; b >= 0 ; b -= 4)					\
+	    PUT_HEXA_DIGIT(((val) >> b) & 0xF, (a_letter));		\
     } while(0)
 
 
@@ -53,7 +54,7 @@ extern int putchar(int c);
 #define PUT_INT_NUMBER(i) do {					\
 	unsigned int max_pow = 1;				\
 	unsigned int val = i;					\
-	while ((val) / (max_pow) > 10) max_pow*=10;		\
+	while ((val) / (max_pow) >= 10) max_pow*=10;		\
 	for ( ; max_pow >= 1; max_pow /= 10)			\
 	{							\
 	    PUT_INT_DIGIT((val)/max_pow);			\
@@ -100,7 +101,7 @@ int rflpc_printf(const char *format, ...)
 			void *p = (void *)va_arg(args,void*);
 			PUTCHAR('0');
 			PUTCHAR('x');
-			PUT_HEXA_VAL((uint32_t)p,(*format - ('p' - 'a')), sizeof(void*)<<3, 0);
+			PUT_HEXA_VAL((uint32_t)p,(*format - ('p' - 'a')), sizeof(void*)<<3, 1);
 		    }
 		    break;
 		    case 'x':
