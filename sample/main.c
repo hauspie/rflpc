@@ -122,6 +122,10 @@ void test_printf()
     printf("Hello hexa world: '%x'\r\n", b);
     printf("Hello pointer world: '%p' '%P'\r\n", &b, str);
     printf("Hello multiple world: '%x' '%x' '%X' '%s'\r\n", b, byte,b, str);
+    for (a = 1 ; a <= 100000 ; a*=10)
+	printf("%d\r\n", a);
+    for (a = 1 ; a <= 0x100000 ; a *= 16)
+	printf("%x\r\n", a);
 }
 
 
