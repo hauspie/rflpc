@@ -21,7 +21,7 @@
   Created: Jun. 28 2011
   Time-stamp: <2011-07-03 00:32:33 (mickey)>
 */ 
-
+#include <stdint.h>
 
 /** Inits the ethernet device */
 extern int rflpc_eth_init();
@@ -51,9 +51,11 @@ typedef enum
 } rfEthLinkMode;
 
 /** Sets the MAC and PHY devices to operate on the given mode
+
     @warning According to PHY datasheet, forcing the device to use full-duplex
-    without using auto-negociation the partner would not be able to detect full-duplex
-    and thus will use half-duplex. So it is always better to use autonegociation.
+    without using auto-negociation the partner would not be able to detect
+    full-duplex and thus will use half-duplex. So it is always better to use
+    autonegociation.  
 */
 extern void rflpc_eth_link_set_mode(rfEthLinkMode mode);
 
@@ -63,6 +65,37 @@ extern void rflpc_eth_link_set_mode(rfEthLinkMode mode);
 extern void rflpc_eth_print_infos();
 
 
+/** This structure holds a descriptor which describes the fragment
+    received or sent by the ethernet DMA
+*/
+typedef struct
+{
+    uint8_t *packet;		/**< pointer to buffer where the ethernet frame
+				 * (or frame fragment) is stored */
+    uint32_t control;		/**< control word where we find data buffer
+				 * size and other information relative to
+				 * reception/emission of the buffer */
+} rfEthDescriptor;
 
+/** This structure holds the reception status associated to a descriptor.
+ */
+typedef struct
+{
+    uint32_t status_info;	/**< Receive status return flags */
+    uint32_t status_hash_crc;	/**< hash CRC calculated from source and
+				 * destination address */
+} rfEthRxStatus;
+
+
+/** This structure holds the transmit status associated to a descriptor.
+ */
+typedef struct
+{
+    uint32_t status_info;
+} rfEthTxStatus;
+
+
+/** sets rx descriptors and status base address */
+extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status);
 
 #endif
