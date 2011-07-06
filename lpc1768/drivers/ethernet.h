@@ -51,6 +51,9 @@ typedef enum
 } rfEthLinkMode;
 
 /** Sets the MAC and PHY devices to operate on the given mode
+    @warning According to PHY datasheet, forcing the device to use full-duplex
+    without using auto-negociation the partner would not be able to detect full-duplex
+    and thus will use half-duplex. So it is always better to use autonegociation.
 */
 extern void rflpc_eth_link_set_mode(rfEthLinkMode mode);
 
@@ -58,5 +61,8 @@ extern void rflpc_eth_link_set_mode(rfEthLinkMode mode);
     Will be removed when driver is functional, only used as debug function
 */
 extern void rflpc_eth_print_infos();
+
+
+
 
 #endif

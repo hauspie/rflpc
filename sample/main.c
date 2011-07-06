@@ -199,17 +199,46 @@ void print_sections()
     printf(".bss: %p %p %x %x\r\n", &_bss_start, &_bss_end, _bss_start, _bss_end);
 }
 
+volatile static int request_autoneg = 0;
+
+RFLPC_IRQ_HANDLER _test_ethernet_serial_handler()
+{
+    char c = rflpc_uart0_getchar();
+
+    if (c == 'a')
+	request_autoneg = 1;
+}
+
 void test_ethernet()
 {
     int old_link_state = 10;
     rflpc_eth_init();
+    rflpc_eth_link_set_mode(RFLPC_ETH_LINK_MODE_10FD);
     rflpc_eth_print_infos();
 
     rflpc_led_val(0);
 
+    printf("Waiting for link to be up\r\n");
+    while(!rflpc_eth_link_state());
+
+    printf("Ok. Press 'a' to perform a link capability auto-negociation\r\n");
+    rflpc_uart0_set_rx_callback(_test_ethernet_serial_handler);
+
+    
+
     while (1)
     {
-	int current_link_state = rflpc_eth_link_state();
+	int current_link_state;
+	
+	if (request_autoneg)
+	{
+	    printf("Starting auto-negociation\r\n");
+	    rflpc_eth_link_auto_negociate();
+	    printf("Done\r\n");
+	    request_autoneg = 0;
+	}
+
+	current_link_state = rflpc_eth_link_state();
 	if (current_link_state != old_link_state)
 	{
 	    old_link_state = current_link_state;

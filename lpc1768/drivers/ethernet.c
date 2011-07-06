@@ -270,7 +270,7 @@ int rflpc_eth_init()
     LPC_EMAC->MCFG &= ~(MCFG_RESET_MIIM);
 
     /* Enable RMII interface and allow reception of RUNT frames (less than 64 bytes)*/
-    LPC_EMAC->Command = CMD_RMII | CMD_PASS_RUNT_FRAMES;
+    LPC_EMAC->Command = CMD_RMII | CMD_FULL_DUPLEX | CMD_PASS_RUNT_FRAMES;
     
     /* Put the PHY in reset */
     _write_to_phy_register(PHY_BMCR, BMCR_RESET);
@@ -297,7 +297,8 @@ int rflpc_eth_link_state()
 
 void rflpc_eth_print_infos()
 {
-    printf("Operating mode : %d Mbps %s duplex\r\n", LPC_EMAC->SUPP & SUPP_100MBPS ? 100 : 10, LPC_EMAC->MAC2 & MAC2_FULL_DUPLEX ? "full" : "half");
+    uint32_t bmcr = _read_from_phy_register(PHY_BMCR);
+    printf("Operating mode : %d Mbps %s duplex\r\n", bmcr & BMCR_SPEED_SELECT ? 100 : 10, bmcr & BMCR_DUPLEX_MODE ? "full" : "half");
 
     PRINT_REG_VALUE(PHY_BMCR);
     PRINT_REG_VALUE(PHY_BMSR);
@@ -329,7 +330,7 @@ void rflpc_eth_link_auto_negociate()
     bmcr |= BMCR_RESTART_AUTO_NEG;
     _write_to_phy_register(PHY_BMCR, bmcr);
     /* wait for auto-negociation to finish */
-    while (_read_from_phy_register(PHY_BMSR) & BMSR_AUTO_NEG_COMPLETE);
+    while (!(_read_from_phy_register(PHY_BMSR) & BMSR_AUTO_NEG_COMPLETE));
 
     /* retrieve auto-negociated parameters */
     bmcr = _read_from_phy_register(PHY_BMCR);
@@ -338,26 +339,41 @@ void rflpc_eth_link_auto_negociate()
     else
 	LPC_EMAC->SUPP = SUPP_10MBPS;
     if (bmcr & BMCR_DUPLEX_MODE) /* Full duplex */
+    {
 	LPC_EMAC->MAC2 |= MAC2_FULL_DUPLEX;
+	LPC_EMAC->Command |= CMD_FULL_DUPLEX;
+    }
     else
+    {
 	LPC_EMAC->MAC2 &= ~MAC2_FULL_DUPLEX;
+	LPC_EMAC->Command &= ~CMD_FULL_DUPLEX;
+    }
 }
 
 void rflpc_eth_link_set_mode(rfEthLinkMode mode)
 {
     uint16_t bmcr = _read_from_phy_register(PHY_BMCR);
+    uint32_t mac2 = LPC_EMAC->MAC2;
+    uint32_t cmd = LPC_EMAC->Command;
+    uint32_t supp;
+    /* disable autonegociation */
+    bmcr &= ~BMCR_ENABLE_AUTO_NEG;
+    _write_to_phy_register(PHY_BMCR, bmcr);
+    bmcr = _read_from_phy_register(PHY_BMCR);
 
     /* duplex */
     if (mode == RFLPC_ETH_LINK_MODE_100FD || mode == RFLPC_ETH_LINK_MODE_10FD)
     {
 	/* full duplex */
-	LPC_EMAC->MAC2 |= MAC2_FULL_DUPLEX;
+	mac2 |= MAC2_FULL_DUPLEX;
+	cmd |= CMD_FULL_DUPLEX;
 	bmcr |= BMCR_DUPLEX_MODE;
     }
     else
     {
 	/* half duplex */
-	LPC_EMAC->MAC2 &= ~MAC2_FULL_DUPLEX;
+	mac2 &= ~MAC2_FULL_DUPLEX;
+	cmd &= ~CMD_FULL_DUPLEX;
 	bmcr &= ~ BMCR_DUPLEX_MODE;
     }
     
@@ -365,14 +381,17 @@ void rflpc_eth_link_set_mode(rfEthLinkMode mode)
     if (mode == RFLPC_ETH_LINK_MODE_100FD || mode == RFLPC_ETH_LINK_MODE_100HD)
     {
 	/* 100 Mbps */
-	LPC_EMAC->SUPP = SUPP_100MBPS;
+	supp = SUPP_100MBPS;
 	bmcr |= BMCR_SPEED_SELECT;
     }
     else
     {
 	/* 10 Mbps */
-	LPC_EMAC->SUPP = 0;
+	supp = 0;
 	bmcr &= ~BMCR_SPEED_SELECT;
     }
     _write_to_phy_register(PHY_BMCR, bmcr);
+    LPC_EMAC->MAC2 = mac2;
+    LPC_EMAC->Command = cmd;
+    LPC_EMAC->SUPP = supp;
 }
