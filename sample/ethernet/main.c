@@ -26,6 +26,7 @@
 #include "protocols.h"
 
 
+
 /* a good old duff's device for memcpy */
 void memcpy(void *dst, const void *src, unsigned int bytes)
 {
@@ -168,6 +169,7 @@ uint8_t txbuffers[TX_BUFFER_SIZE][TX_BUFFER_COUNT];
 
 
 EthAddr mac_addr;
+uint32_t my_ip = (192 << 24) | (168 << 16) | 200;
 
 void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 {
@@ -201,6 +203,8 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 	       (arp_rcv.sender_ip >> 16) & 0xff,
 	       (arp_rcv.sender_ip >> 8) & 0xff,
 	       (arp_rcv.sender_ip) & 0xff);
+	if (arp_rcv.target_ip != my_ip)
+	    return;
 	/* generate reply */
 	if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs))
 	{
@@ -233,7 +237,18 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
     }
     if (eth.type == TYPE_IP)
     {
-	dump_packet(rxd, rxs);
+	IpHead ip;
+	proto_ip_demangle(&ip, rxd->packet + PAYLOAD_OFFSET);
+	printf("IP: %x %d.%d.%d.%d -> %d.%d.%d.%d\r\n", 
+	       ip.version_length,
+	       (ip.src_addr >> 24) & 0xff,
+	       (ip.src_addr >> 16) & 0xff,
+	       (ip.src_addr >> 8) & 0xff,
+	       (ip.src_addr) & 0xff,
+	       (ip.dst_addr >> 24) & 0xff,
+	       (ip.dst_addr >> 16) & 0xff,
+	       (ip.dst_addr >> 8) & 0xff,
+	       (ip.dst_addr) & 0xff);
 	return;
     }
     dump_packet(rxd, rxs);

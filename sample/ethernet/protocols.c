@@ -17,7 +17,7 @@
   
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2011-07-04 11:30:46 (hauspie)>
+    Time-stamp: <2011-07-07 23:23:33 (mickey)>
 
  */
 #include "protocols.h"
@@ -46,6 +46,11 @@
     dst[idx++] = src[4];			\
     dst[idx++] = src[5]
 
+
+uint16_t checksum(uint8_t *buffer, unsigned int bytes_count)
+{
+    return 0;
+}
 
 void proto_eth_demangle(EthHead *eh, const uint8_t *data)
 {
@@ -105,15 +110,47 @@ void proto_arp_mangle(ArpHead *ah, uint8_t *data)
 void proto_ip_demangle(IpHead *ih, const uint8_t *data)
 {
     int idx = 0;
-    
+    ih->version_length = data[idx++];
+    ih->dscp_ecn = data[idx++];
+    GET_TWO(ih->total_length, data, idx);
+    GET_TWO(ih->identification, data, idx);
+    GET_TWO(ih->flags_frag_offset,data,idx);
+    ih->ttl = data[idx++];
+    ih->protocol = data[idx++];
+    GET_TWO(ih->header_checksum, data, idx);
+    GET_FOUR(ih->src_addr, data, idx);
+    GET_FOUR(ih->dst_addr, data, idx);
 }
 void proto_ip_mangle(IpHead *ih, uint8_t *data)
 {
+    int idx = 0;
+    data[idx++] = ih->version_length;
+    data[idx++] = ih->dscp_ecn;
+    PUT_TWO(data, idx, ih->total_length);
+    PUT_TWO(data, idx, ih->identification);
+    PUT_TWO(data, idx,ih->flags_frag_offset);
+    data[idx++] = ih->ttl;
+    data[idx++] = ih->protocol;
+    PUT_TWO(data, idx, 0); /* 0 first, will be replaced after computation */
+    PUT_FOUR(data, idx, ih->src_addr);
+    PUT_FOUR(data, idx, ih->dst_addr);
+    /* set checksum */
+    ih->header_checksum = checksum(data, ih->version_length & 0xF);
+    idx = 8;
+    PUT_TWO(data, idx, ih->header_checksum);
 }
 
 void proto_icmp_demangle(IcmpHead *ih, const uint8_t *data)
 {
+    int idx = 0;
+    ih->type = data[idx++];
+    ih->code = data[idx++];
+    GET_TWO(ih->checksum, data, idx);
 }
 void proto_icmp_mangle(IcmpHead *ih, uint8_t *data)
 {
+    int idx = 0;
+    data[idx++] = ih->type;
+    data[idx++] = ih->code;
+    PUT_TWO(data, idx, ih->checksum);
 }

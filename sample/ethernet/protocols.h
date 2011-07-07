@@ -17,7 +17,7 @@
   
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2011-07-04 11:30:46 (hauspie)>
+    Time-stamp: <2011-07-07 23:23:04 (mickey)>
 
     Basic protocol handling.  Not meant to be trully used, but just useful
     tools for basic protocol handling for the ethernet sample.
@@ -65,7 +65,7 @@ typedef struct
     uint8_t dscp_ecn;
     uint16_t total_length;
     uint16_t identification;
-    uint8_t flags_frag_offset;
+    uint16_t flags_frag_offset;
     uint8_t  ttl;
     uint8_t  protocol;
     uint16_t header_checksum;
