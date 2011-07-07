@@ -23,8 +23,6 @@
 */ 
 #include <stdint.h>
 
-#include "eth_const.h"
-
 /** Inits the ethernet device */
 extern int rflpc_eth_init();
 
@@ -114,9 +112,27 @@ typedef struct
 } rfEthTxStatus;
 
 
-/** sets rx descriptors and status base address */
-extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status);
+/** Sets rx descriptors and status base address 
 
+    @warning descriptors must be aligned on a word boundary. status must be
+    aligned on a double word boundaryx 
+*/
+extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status, int count);
+
+/** Returns the pointer on the current rx packet descriptor.
+
+    The returned descriptor is the one of the last received packet that has not
+    been marked as processed by ::rflpc_eth_done_process_rx_packet();
+    @return 0 if receive queue is empty, 1 if pointers are valid
+ */
+extern int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descriptor, rfEthRxStatus **status);
+
+/** This function has to be called when a packet (which descriptor is returned
+ * by ::rflpc_eth_get_current_rx_packet_descriptor) has been processed and can
+ * be discarded
+ */
+
+extern void rflpc_eth_done_process_rx_packet();
 
 
 #endif

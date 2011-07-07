@@ -21,6 +21,7 @@
 */
 
 #include "ethernet.h"
+#include "eth_const.h"
 #include "gpio.h"
 #include "leds.h"
 #include "../LPC17xx.h"
@@ -137,17 +138,14 @@ int rflpc_eth_init()
     LPC_EMAC->MCFG = ((i & 0xF) << 2) | RFLPC_ETH_MCFG_RESET_MIIM;
     LPC_EMAC->MCFG &= ~(RFLPC_ETH_MCFG_RESET_MIIM);
 
-    /* Enable RMII interface and allow reception of RUNT frames (less than 64 bytes)*/
-    LPC_EMAC->Command = RFLPC_ETH_CMD_RMII | RFLPC_ETH_CMD_FULL_DUPLEX | RFLPC_ETH_CMD_PASS_RUNT_FRAMES;
+    /* Enable RMII interface and disable rx filter */
+    LPC_EMAC->Command = RFLPC_ETH_CMD_RMII | RFLPC_ETH_CMD_FULL_DUPLEX | RFLPC_ETH_CMD_PASS_RX_FILTER;
     
     /* Put the PHY in reset */
     _write_to_phy_register(RFLPC_ETH_PHY_BMCR, RFLPC_ETH_BMCR_RESET);
 
     /* Wait for PHY to finish reset */
     while (_read_from_phy_register(RFLPC_ETH_PHY_BMCR) & RFLPC_ETH_BMCR_RESET);
-
-    /* Enable reception */
-    LPC_EMAC->MAC1 |= RFLPC_ETH_MAC1_RECEIVE_ENABLE | RFLPC_ETH_MAC1_PASS_ALL_FRAMES;
 
     return 1;
 }
@@ -310,4 +308,37 @@ int rflpc_eth_get_link_mode()
     if (physts & RFLPC_ETH_PHYSTS_DUPLEX_STATUS) /* full duplex */
 	return RFLPC_ETH_LINK_MODE_100FD ;
     return RFLPC_ETH_LINK_MODE_100HD;
+}
+
+void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status, int count)
+{
+    LPC_EMAC->RxDescriptor = (uint32_t) descriptors;
+    LPC_EMAC->RxStatus = (uint32_t) status;
+    LPC_EMAC->RxDescriptorNumber = count - 1; /* stored in -1 encoding */
+    LPC_EMAC->RxConsumeIndex = LPC_EMAC->RxProduceIndex; /* force the queue to be empty */
+
+    /* Now that the receive datapath is set, enable reception */
+    LPC_EMAC->Command |= RFLPC_ETH_CMD_RX_ENABLE;
+    LPC_EMAC->MAC1 |= RFLPC_ETH_MAC1_RECEIVE_ENABLE ; /*| RFLPC_ETH_MAC1_PASS_ALL_FRAMES;*/
+}
+
+void rflpc_eth_done_process_rx_packet()
+{
+    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* Queue is empty */
+	return;
+    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxDescriptorNumber) /* Wrap around */
+	LPC_EMAC->RxConsumeIndex = 0;
+    else
+	LPC_EMAC->RxConsumeIndex++;
+}
+
+int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descriptor, rfEthRxStatus **status)
+{
+    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* empty queue */
+	return 0;
+    if (descriptor)
+	*descriptor = ((rfEthDescriptor*)LPC_EMAC->RxDescriptor) + LPC_EMAC->RxConsumeIndex;
+    if (status)
+	*status = ((rfEthRxStatus*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
+    return 1;
 }

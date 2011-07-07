@@ -47,7 +47,7 @@ static inline void rflpc_rit_clear_pending_interrupt() { LPC_RIT->RICTRL |= 1; }
     - comp_value should be set to 1 << 7
     - mask should be set to ~(1 << 7)
 */
-extern void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, char reset_on_match,  rflpc_irq_handler_t c);
+extern void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, int reset_on_match,  rflpc_irq_handler_t c);
 
 
 #endif

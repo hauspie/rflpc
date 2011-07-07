@@ -15,7 +15,7 @@
  */
 #include "rit.h"
 
-void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, char reset_on_match, rflpc_irq_handler_t c)
+void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, int reset_on_match, rflpc_irq_handler_t c)
 {
     LPC_RIT->RIMASK = mask;
     LPC_RIT->RICOMPVAL = comp_value;

@@ -1,4 +1,4 @@
-DIRS=lpc1768 sample
+DIRS=lpc1768 sample/basic_tests sample/ethernet
 
 .PHONY: all $(DIRS)
 
@@ -7,7 +7,7 @@ clean: $(patsubst %, _clean_%, $(DIRS))
 dump: $(patsubst %, _dump_%, $(DIRS))
 
 program: all
-	make -C sample program
+	make -C sample/ethernet program
 
 
 $(patsubst %, _all_%, $(DIRS)):
