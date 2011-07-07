@@ -147,6 +147,9 @@ int rflpc_eth_init()
     /* Wait for PHY to finish reset */
     while (_read_from_phy_register(RFLPC_ETH_PHY_BMCR) & RFLPC_ETH_BMCR_RESET);
 
+    /* Read PHY Identifier to generate MAC address */
+    
+
     return 1;
 }
 
@@ -312,6 +315,10 @@ int rflpc_eth_get_link_mode()
 
 void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status, int count)
 {
+    /* Turn reception off while modifying descriptors */
+    LPC_EMAC->Command &= ~RFLPC_ETH_CMD_RX_ENABLE;
+    LPC_EMAC->MAC1 &= ~RFLPC_ETH_MAC1_RECEIVE_ENABLE ;
+    
     LPC_EMAC->RxDescriptor = (uint32_t) descriptors;
     LPC_EMAC->RxStatus = (uint32_t) status;
     LPC_EMAC->RxDescriptorNumber = count - 1; /* stored in -1 encoding */
@@ -319,7 +326,7 @@ void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus
 
     /* Now that the receive datapath is set, enable reception */
     LPC_EMAC->Command |= RFLPC_ETH_CMD_RX_ENABLE;
-    LPC_EMAC->MAC1 |= RFLPC_ETH_MAC1_RECEIVE_ENABLE ; /*| RFLPC_ETH_MAC1_PASS_ALL_FRAMES;*/
+    LPC_EMAC->MAC1 |= RFLPC_ETH_MAC1_RECEIVE_ENABLE ;
 }
 
 void rflpc_eth_done_process_rx_packet()
@@ -341,4 +348,66 @@ int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descriptor, rfE
     if (status)
 	*status = ((rfEthRxStatus*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
     return 1;
+}
+
+void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptors, rfEthTxStatus *status, int count)
+{
+    /* Turn transmission off while modifying descriptors */
+    LPC_EMAC->Command &= ~RFLPC_ETH_CMD_TX_ENABLE;
+
+    LPC_EMAC->TxDescriptor = (uint32_t) descriptors;
+    LPC_EMAC->TxStatus = (uint32_t) status;
+    LPC_EMAC->TxDescriptorNumber = count - 1; /* stored in -1 encoding */
+    LPC_EMAC->TxProduceIndex = LPC_EMAC->TxConsumeIndex; /* force the queue to be empty */
+
+    /* Turn transmission on */
+    LPC_EMAC->Command |= RFLPC_ETH_CMD_TX_ENABLE;
+}
+
+int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status)
+{
+    /* queue full */
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
+	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
+    {
+	return 0;
+    }
+    if (descriptor)
+	*descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + LPC_EMAC->TxProduceIndex;
+    if (status)
+	*status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + LPC_EMAC->TxProduceIndex;
+    return 1;
+}
+
+void rflpc_eth_done_process_tx_packet()
+{
+    /* queue full */
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
+	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
+    {
+	return;
+    }
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber)
+	LPC_EMAC->TxProduceIndex = 0;
+    else
+	LPC_EMAC->TxProduceIndex++;
+}
+
+void rflpc_eth_get_mac_address(uint8_t *addr)
+{
+    addr[0] = (LPC_EMAC->SA0 >> 8) & 0xFF;
+    addr[1] = (LPC_EMAC->SA0) & 0xFF;
+
+    addr[2] = (LPC_EMAC->SA1 >> 8) & 0xFF;
+    addr[3] = (LPC_EMAC->SA1) & 0xFF;
+
+    addr[4] = (LPC_EMAC->SA2 >> 8) & 0xFF;
+    addr[5] = (LPC_EMAC->SA2) & 0xFF;
+
+}
+void rflpc_eth_set_mac_address(uint8_t *addr)
+{
+    LPC_EMAC->SA0 = addr[0] << 8 | addr[1];
+    LPC_EMAC->SA1 = addr[2] << 8 | addr[3];
+    LPC_EMAC->SA2 = addr[4] << 8 | addr[5];
 }

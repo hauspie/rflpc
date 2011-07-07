@@ -119,7 +119,7 @@ typedef struct
 */
 extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status, int count);
 
-/** Returns the pointer on the current rx packet descriptor.
+/** Returns the pointers on the current rx packet descriptor.
 
     The returned descriptor is the one of the last received packet that has not
     been marked as processed by ::rflpc_eth_done_process_rx_packet();
@@ -134,5 +134,35 @@ extern int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descript
 
 extern void rflpc_eth_done_process_rx_packet();
 
+
+/** Sets tx descriptors and status base address
+
+    @warning descriptors and status must be aligned on a word boundary. 
+ */
+extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTxStatus *status, int count);
+
+/** returns the index of the current tx packet descriptor.
+
+    The return descriptor is the one that is prepared by software before
+    sending it. When ::rflpc_eth_done_process_tx_packet() is called, the packet 
+    will be owned by the hardware and sent as soon as possible.
+
+    @return 0 if no more descriptor are available (which means that all the
+    buffers are owned by the hardware and waiting to be sent). 1 if pointers are valid
+*/
+extern int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status);
+
+/** When the packet has been generated, calling this function will make it
+ * owned by the hardware and queued for emission
+ */
+extern void rflpc_eth_done_process_tx_packet();
+
+/** returns the device MAC address
+ */
+extern void rflpc_eth_get_mac_address(uint8_t *addr);
+
+/** sets the MAC address
+ */
+extern void rflpc_eth_set_mac_address(uint8_t *addr);
 
 #endif
