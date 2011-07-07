@@ -23,6 +23,8 @@
 */ 
 #include <stdint.h>
 
+#include "eth_const.h"
+
 /** Inits the ethernet device */
 extern int rflpc_eth_init();
 
@@ -114,5 +116,7 @@ typedef struct
 
 /** sets rx descriptors and status base address */
 extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status);
+
+
 
 #endif

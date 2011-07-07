@@ -27,163 +27,6 @@
 #include "../clock.h"
 #include "../printf.h"
 
-#define PCENET_BIT (1 << 30)
-
-#define ETH_PIN_TXD0      0
-#define ETH_PIN_TXD1      1
-#define ETH_PIN_TX_EN     4
-#define ETH_PIN_CRS       8
-#define ETH_PIN_RXD0      9
-#define ETH_PIN_RXD1     10
-#define ETH_PIN_RX_ER    14
-#define ETH_PIN_REF_CLK  15
-#define ETH_PIN_MDC      16
-#define ETH_PIN_MDIO     17
-
-
-/* MAC Configuration Register 1, bits definition */
-#define MAC1_RECEIVE_ENABLE  (1 << 0)      
-#define MAC1_PASS_ALL_FRAMES (1 << 1)  
-#define MAC1_RX_FLOW_CONTROL (1 << 2)  
-#define MAC1_TX_FLOW_CONTROL (1 << 3)  
-#define MAC1_LOOPBACK        (1 << 4)  
-#define MAC1_RESET_TX        (1 << 8)  
-#define MAC1_RESET_MCS_TX    (1 << 9)
-#define MAC1_RESET_RX        (1 << 10)
-#define MAC1_RESET_MCS_RX    (1 << 11)
-#define MAC1_SIM_RESET       (1 << 14)
-#define MAC1_SOFT_RESET      (1 << 15)
-
-/* MAC Configuration Register 2, bits definition */
-#define MAC2_FULL_DUPLEX            (1 << 0)
-#define MAC2_FRAME_LENGTH_CHK       (1 << 1)   
-#define MAC2_HUGE_FRAME_ENABLE      (1 << 2)    
-#define MAC2_DELAYED_CRC            (1 << 3)
-#define MAC2_CRC_ENABLE             (1 << 4)         
-#define MAC2_PAD_ENABLE             (1 << 5)         
-#define MAC2_VLAN_PAD_ENABLE        (1 << 6)    
-#define MAC2_AUTO_DETECT_PAD_ENABLE (1 << 7)   
-#define MAC2_PURE_PREAMBLE_ENFORCE  (1 << 8)     
-#define MAC2_LONG_PREAMBLE_ENFORCE  (1 << 9)     
-#define MAC2_NO_BACKOFF             (1 << 12)
-#define MAC2_BACK_PRESSURE          (1 << 13)
-#define MAC2_EXCESS_DEFER           (1 << 14)     
-
-/* RMII Support */
-#define SUPP_10MBPS          (0)
-#define SUPP_100MBPS         (1 << 8)
-
-
-/* MAC Control register bits */
-#define CMD_RX_ENABLE        (1 << 0)
-#define CMD_TX_ENABLE        (1 << 1)
-#define CMD_REG_RESET        (1 << 3)
-#define CMD_TX_RESET         (1 << 4)
-#define CMD_RX_RESET         (1 << 5)
-#define CMD_PASS_RUNT_FRAMES (1 << 6)
-#define CMD_PASS_RX_FILTER   (1 << 7)
-#define CMD_TX_FLOW_CONTROL  (1 << 8)
-#define CMD_RMII             (1 << 9)
-#define CMD_FULL_DUPLEX      (1 << 10)
-
-/* MIND Control register */
-#define MIND_BUSY            (1)
-#define MIND_SCANNING        (1 << 1)
-#define MIND_NOT_VALID       (1 << 2)
-#define MIND_MII_LINK_FAIL   (1 << 3)
-
-/* MII control register bits */
-#define MCFG_SCAN_INCREMENT    (1 << 0)
-#define MCFG_SUPPRESS_PREAMBLE (1 << 1)
-#define MCFG_RESET_MIIM        (1 << 15)
-
-#define ETH_MAX_FRAME_LENGTH 1538 /*   1500 bytes for payload 
-				   * +    8 bytes for preamble/sfd
-				   * +   12 bytes for src and dst address 
-				   * +    2 bytes for length 
-				   * +    4 bytes for CRC 
-				   * +   12 bytes for minimum interframe gap */
-#define ETH_MAX_CLOCK 2500000 /* Maximum allowed clock frequency for MII, defined by IEEE 802.3, see p. 154 */
-
-/** Address of the PHY device.
-    Used to talk to PHY D83848J through RMII interface.
-    Defined as already shifted to right position to use in MADR register (p.155)
-*/
-
-#define PHY_ADDR (0x01)
-
-/* Address of the DP83848J PHY registers */
-#define PHY_BMCR     (0x0)
-#define PHY_BMSR     (0x1)
-#define PHY_PHYIDR1  (0x2)
-#define PHY_PHYIDR2  (0x3)
-#define PHY_ANAR     (0x4)
-#define PHY_ANLPAR   (0x5)
-#define PHY_ANLPARNP (0x5) /* Not a bug, it IS the same addr (p. 36 of the DP83848J datasheet */
-#define PHY_ANER     (0x6)
-#define PHY_ANNPTR   (0x7)
-#define PHY_PHYSTS   (0x10)
-#define PHY_FCSCR    (0x14)
-#define PHY_RECR     (0x15)
-#define PHY_PCSR     (0x16)
-#define PHY_RBR      (0x17)
-#define PHY_LEDCR    (0x18)
-#define PHY_PHYCR    (0x19)
-#define PHY_10BTSCR  (0x1A)
-#define PHY_CDCTRL1  (0x1B)
-#define PHY_EDCR     (0x1D)
-
-/* PHY register bits */
-/* Basic Mode Control Register (BMSR) */
-#define BMCR_RESET            (1 << 15)
-#define BMCR_LOOPBACK         (1 << 14)
-#define BMCR_SPEED_SELECT     (1 << 13)
-#define BMCR_ENABLE_AUTO_NEG  (1 << 12)
-#define BMCR_POWER_DOWN       (1 << 11)
-#define BMCR_ISOLATE          (1 << 10)
-#define BMCR_RESTART_AUTO_NEG (1 << 9)
-#define BMCR_DUPLEX_MODE      (1 << 8)
-#define BMCR_COLLISION_TEST   (1 << 7)
-
-/* Basic Mode Status Register */
-#define BMSR_100BASET4                (1 << 15)
-#define BMSR_100BASETX_FULL           (1 << 14)
-#define BMSR_100BASETX_HALF           (1 << 13)
-#define BMSR_10BASET_FULL             (1 << 12)
-#define BMSR_10BASET_HALF             (1 << 11)
-#define BMSR_MF_PREAMBLE_SUPPRESSION  (1 << 6)
-#define BMSR_AUTO_NEG_COMPLETE        (1 << 5)
-#define BMSR_REMOTE_FAULT             (1 << 4)
-#define BMSR_CAN_AUTO_NEG             (1 << 3)
-#define BMSR_LINK_STATUS              (1 << 2)
-#define BMSR_JABBER_DETECT            (1 << 1)
-#define BMSR_EXT_REGISTER_CAPS        (1 << 0)
-
-
-/* Auto negotiation advertisement register */
-#define ANAR_ASM_DIR (1 << 11)
-#define ANAR_PAUSE   (1 << 10)
-#define ANAR_T4      (1 << 9)
-#define ANAR_TX_FD   (1 << 8)
-#define ANAR_TX      (1 << 7)
-#define ANAR_10_FD   (1 << 6)
-#define ANAR_10      (1 << 5)
-
-/* PHY status register */
-#define PHYSTS_MDI_X                     (1 << 14)
-#define PHYSTS_RX_ERROR_LATCH            (1 << 13)
-#define PHYSTS_POLARITY_STATUS           (1 << 12)
-#define PHYSTS_FALSE_CARRIER_SENSE_LATCH (1 << 11)
-#define PHYSTS_SIGNAL_DETECT             (1 << 10)
-#define PHYSTS_DESCRAMBLER_LOCK          (1 << 9)
-#define PHYSTS_PAGE_RECEIVED             (1 << 8)
-#define PHYSTS_REMOTE_FAULT              (1 << 6)
-#define PHYSTS_JABBER_DETECT             (1 << 5)
-#define PHYSTS_AUTO_NEG_COMPLETE         (1 << 4)
-#define PHYSTS_LOOPBACK_STATUS           (1 << 3)
-#define PHYSTS_DUPLEX_STATUS             (1 << 2)
-#define PHYSTS_SPEED_STATUS              (1 << 1)
-#define PHYSTS_LINK_STATUS               (1 << 0)
 
 #define ETH_DELAY do { int d = 100; for ( ; d != 0 ; --d); } while(0)
 
@@ -199,7 +42,7 @@ static void _write_to_phy_register_with_addr(uint8_t addr, uint8_t reg, uint16_t
     LPC_EMAC->MWTD = value;
 
     /* Wait for write operation to end */
-    while (LPC_EMAC->MIND & MIND_BUSY);
+    while (LPC_EMAC->MIND & RFLPC_ETH_MIND_BUSY);
 }
 
 /* This function allows to read a value from a PHY register through the RMII
@@ -214,7 +57,7 @@ static uint16_t _read_from_phy_register_with_addr(uint8_t addr, uint8_t reg)
     /* Request Read cycle */
     LPC_EMAC->MCMD = 1;
     /* Wait for valid value in MRDD */
-    while ((LPC_EMAC->MIND & MIND_BUSY) | (LPC_EMAC->MIND & MIND_NOT_VALID));
+    while ((LPC_EMAC->MIND & RFLPC_ETH_MIND_BUSY) | (LPC_EMAC->MIND & RFLPC_ETH_MIND_NOT_VALID));
     LPC_EMAC->MCMD = 0;
     return LPC_EMAC->MRDD;
 }
@@ -222,20 +65,20 @@ static uint16_t _read_from_phy_register_with_addr(uint8_t addr, uint8_t reg)
 static void _eth_setup_pins()
 {
     
-    rflpc_pin_set(1, ETH_PIN_TXD0,    1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_TXD1,    1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_TX_EN,   1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_CRS,     1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_RXD0,    1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_RXD1,    1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_RX_ER,   1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_REF_CLK, 1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_MDC,     1, 0, 0);
-    rflpc_pin_set(1, ETH_PIN_MDIO,    1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_TXD0,    1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_TXD1,    1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_TX_EN,   1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_CRS,     1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_RXD0,    1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_RXD1,    1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_RX_ER,   1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_REF_CLK, 1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_MDC,     1, 0, 0);
+    rflpc_pin_set(1, RFLPC_ETH_PIN_MDIO,    1, 0, 0);
 }
 
-#define _read_from_phy_register(reg) _read_from_phy_register_with_addr(PHY_ADDR, (reg))
-#define _write_to_phy_register(reg, val) _write_to_phy_register_with_addr(PHY_ADDR, (reg), (val))
+#define _read_from_phy_register(reg) _read_from_phy_register_with_addr(RFLPC_ETH_PHY_ADDR, (reg))
+#define _write_to_phy_register(reg, val) _write_to_phy_register_with_addr(RFLPC_ETH_PHY_ADDR, (reg), (val))
 
 int rflpc_eth_init()
 {
@@ -246,23 +89,23 @@ int rflpc_eth_init()
 
     /* Power the ethernet device
        Set bit PCENET in PCONP register (p. 141 and 64) */
-    LPC_SC->PCONP |= PCENET_BIT;
+    LPC_SC->PCONP |= RFLPC_ETH_PCENET_BIT;
 
 
     /* Perform a full reset of the ethernet block.
        Procedure p. 207
     */
     /* Reset mac modules */
-    LPC_EMAC->MAC1 = MAC1_SOFT_RESET;
+    LPC_EMAC->MAC1 = RFLPC_ETH_MAC1_SOFT_RESET;
     /* Reset datapaths */
-    LPC_EMAC->Command = CMD_REG_RESET;
+    LPC_EMAC->Command = RFLPC_ETH_CMD_REG_RESET;
     /* wait for reset to perform */
     ETH_DELAY;
     /* Clear reset bit */
     LPC_EMAC->MAC1 = 0;
 
     /* Append CRC to the frame and PAD short frames (<64 bytes) and operate in full-duplex */
-    LPC_EMAC->MAC2 = MAC2_FULL_DUPLEX | MAC2_CRC_ENABLE | MAC2_PAD_ENABLE;
+    LPC_EMAC->MAC2 = RFLPC_ETH_MAC2_FULL_DUPLEX | RFLPC_ETH_MAC2_CRC_ENABLE | RFLPC_ETH_MAC2_PAD_ENABLE;
     
     /* Back-to-back inter-packet gap. 0x15 is the recommended value in full-duplex (p. 152) */
     LPC_EMAC->IPGT = 0x15;
@@ -273,16 +116,16 @@ int rflpc_eth_init()
     LPC_EMAC->CLRT = 0xF | (0x37 << 8);
 
     /* Set the RMII interface to use 100Mbps mode */
-    LPC_EMAC->SUPP = SUPP_100MBPS;
+    LPC_EMAC->SUPP = RFLPC_ETH_SUPP_100MBPS;
 
     /* Set max frame length */
-    LPC_EMAC->MAXF = ETH_MAX_FRAME_LENGTH;
+    LPC_EMAC->MAXF = RFLPC_ETH_MAX_FRAME_LENGTH;
 
     /* Set MIIM clock multiplier to a value compatible with system clock
        (p. 154) 
        IEEE 802.3 defines the MII clock to be no faster than 2.5MHz
     */
-    divider = rflpc_clock_get_system_clock() / ETH_MAX_CLOCK;
+    divider = rflpc_clock_get_system_clock() / RFLPC_ETH_MAX_CLOCK;
     for (i = 0 ; i < sizeof(clock_dividers); ++i)
     {
 	if (clock_dividers[i] >= divider)
@@ -291,27 +134,27 @@ int rflpc_eth_init()
     ++i; /* after the incrementation, i hold the value to store in the MII
 	  * configuration register (p. 154) */
     /* set the clock and reset MII to use new parameters */
-    LPC_EMAC->MCFG = ((i & 0xF) << 2) | MCFG_RESET_MIIM;
-    LPC_EMAC->MCFG &= ~(MCFG_RESET_MIIM);
+    LPC_EMAC->MCFG = ((i & 0xF) << 2) | RFLPC_ETH_MCFG_RESET_MIIM;
+    LPC_EMAC->MCFG &= ~(RFLPC_ETH_MCFG_RESET_MIIM);
 
     /* Enable RMII interface and allow reception of RUNT frames (less than 64 bytes)*/
-    LPC_EMAC->Command = CMD_RMII | CMD_FULL_DUPLEX | CMD_PASS_RUNT_FRAMES;
+    LPC_EMAC->Command = RFLPC_ETH_CMD_RMII | RFLPC_ETH_CMD_FULL_DUPLEX | RFLPC_ETH_CMD_PASS_RUNT_FRAMES;
     
     /* Put the PHY in reset */
-    _write_to_phy_register(PHY_BMCR, BMCR_RESET);
+    _write_to_phy_register(RFLPC_ETH_PHY_BMCR, RFLPC_ETH_BMCR_RESET);
 
     /* Wait for PHY to finish reset */
-    while (_read_from_phy_register(PHY_BMCR) & BMCR_RESET);
+    while (_read_from_phy_register(RFLPC_ETH_PHY_BMCR) & RFLPC_ETH_BMCR_RESET);
 
     /* Enable reception */
-    LPC_EMAC->MAC1 |= MAC1_RECEIVE_ENABLE | MAC1_PASS_ALL_FRAMES;
+    LPC_EMAC->MAC1 |= RFLPC_ETH_MAC1_RECEIVE_ENABLE | RFLPC_ETH_MAC1_PASS_ALL_FRAMES;
 
     return 1;
 }
 
 int rflpc_eth_link_state()
 {
-    return (_read_from_phy_register(PHY_BMSR) & BMSR_LINK_STATUS) == BMSR_LINK_STATUS;
+    return (_read_from_phy_register(RFLPC_ETH_PHY_BMSR) & RFLPC_ETH_BMSR_LINK_STATUS) == RFLPC_ETH_BMSR_LINK_STATUS;
 }
 
 
@@ -319,28 +162,28 @@ int rflpc_eth_link_state()
 
 void rflpc_eth_print_infos()
 {
-    uint32_t bmcr = _read_from_phy_register(PHY_BMCR);
-    printf("Operating mode : %d Mbps %s duplex\r\n", bmcr & BMCR_SPEED_SELECT ? 100 : 10, bmcr & BMCR_DUPLEX_MODE ? "full" : "half");
+    uint32_t bmcr = _read_from_phy_register(RFLPC_ETH_PHY_BMCR);
+    printf("Operating mode : %d Mbps %s duplex\r\n", bmcr & RFLPC_ETH_BMCR_SPEED_SELECT ? 100 : 10, bmcr & RFLPC_ETH_BMCR_DUPLEX_MODE ? "full" : "half");
 
-    PRINT_REG_VALUE(PHY_BMCR);
-    PRINT_REG_VALUE(PHY_BMSR);
-    PRINT_REG_VALUE(PHY_PHYIDR1);
-    PRINT_REG_VALUE(PHY_PHYIDR2);
-    PRINT_REG_VALUE(PHY_ANAR);
-    PRINT_REG_VALUE(PHY_ANLPAR);
-    PRINT_REG_VALUE(PHY_ANLPARNP);
-    PRINT_REG_VALUE(PHY_ANER);
-    PRINT_REG_VALUE(PHY_ANNPTR);
-    PRINT_REG_VALUE(PHY_PHYSTS);
-    PRINT_REG_VALUE(PHY_FCSCR);
-    PRINT_REG_VALUE(PHY_RECR);
-    PRINT_REG_VALUE(PHY_PCSR);
-    PRINT_REG_VALUE(PHY_RBR);
-    PRINT_REG_VALUE(PHY_LEDCR);
-    PRINT_REG_VALUE(PHY_PHYCR);
-    PRINT_REG_VALUE(PHY_10BTSCR);
-    PRINT_REG_VALUE(PHY_CDCTRL1);
-    PRINT_REG_VALUE(PHY_EDCR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_BMCR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_BMSR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYIDR1);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYIDR2);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANAR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANLPAR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANLPARNP);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANER);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANNPTR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYSTS);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_FCSCR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_RECR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_PCSR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_RBR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_LEDCR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYCR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_10BTSCR);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_CDCTRL1);
+    PRINT_REG_VALUE(RFLPC_ETH_PHY_EDCR);
 }
 
 int rflpc_eth_link_auto_negociate(int max_desired_mode)
@@ -356,34 +199,34 @@ int rflpc_eth_link_auto_negociate(int max_desired_mode)
 	return -1;
 
     /* To set maximum mode, we set the ANAR register with desired value */
-    anar = _read_from_phy_register(PHY_ANAR);
+    anar = _read_from_phy_register(RFLPC_ETH_PHY_ANAR);
     /* remove all caps */
-    anar &= ~(ANAR_10_FD | ANAR_TX | ANAR_TX_FD);
-    anar |= ANAR_10; /* minimum is 10 Mbps, half duplex */
+    anar &= ~(RFLPC_ETH_ANAR_10_FD | RFLPC_ETH_ANAR_TX | RFLPC_ETH_ANAR_TX_FD);
+    anar |= RFLPC_ETH_ANAR_10; /* minimum is 10 Mbps, half duplex */
 
     switch (max_desired_mode)
     {
 	case RFLPC_ETH_LINK_MODE_100FD:
-	    anar |= ANAR_TX_FD;
+	    anar |= RFLPC_ETH_ANAR_TX_FD;
 	case RFLPC_ETH_LINK_MODE_100HD:
-	    anar |= ANAR_TX;
+	    anar |= RFLPC_ETH_ANAR_TX;
 	    break;
 	case RFLPC_ETH_LINK_MODE_10FD:
-	    anar |= ANAR_10_FD;
+	    anar |= RFLPC_ETH_ANAR_10_FD;
 	    break;
 	default:
 	    break;
     }
-    _write_to_phy_register(PHY_ANAR, anar);
+    _write_to_phy_register(RFLPC_ETH_PHY_ANAR, anar);
 
-    bmcr = _read_from_phy_register(PHY_BMCR);
+    bmcr = _read_from_phy_register(RFLPC_ETH_PHY_BMCR);
     /* Enable auto-negociation */
-    bmcr |= BMCR_ENABLE_AUTO_NEG;
-    /* Start auto negociation */
-    bmcr |= BMCR_RESTART_AUTO_NEG;
-    _write_to_phy_register(PHY_BMCR, bmcr);
-    /* wait for auto-negociation to finish or link to be down */
-    while ( !(_read_from_phy_register(PHY_BMSR) & BMSR_AUTO_NEG_COMPLETE) );
+    bmcr |= RFLPC_ETH_BMCR_ENABLE_AUTO_NEG;
+    /* force auto negociation restart */
+    bmcr |= RFLPC_ETH_BMCR_RESTART_AUTO_NEG;
+    _write_to_phy_register(RFLPC_ETH_PHY_BMCR, bmcr);
+    /* wait for auto-negociation to finish  */
+    while ( !(_read_from_phy_register(RFLPC_ETH_PHY_BMSR) & RFLPC_ETH_BMSR_AUTO_NEG_COMPLETE));
 
     if (!rflpc_eth_link_state())
 	return -1;
@@ -391,63 +234,63 @@ int rflpc_eth_link_auto_negociate(int max_desired_mode)
     /* retrieve auto-negociated parameters */
     mode = rflpc_eth_get_link_mode();
     if (mode & RFLPC_ETH_LINK_MODE_SPEED_BIT) /* 100 Mbps */
-	LPC_EMAC->SUPP = SUPP_100MBPS;
+	LPC_EMAC->SUPP = RFLPC_ETH_SUPP_100MBPS;
     else
-	LPC_EMAC->SUPP = SUPP_10MBPS;
+	LPC_EMAC->SUPP = RFLPC_ETH_SUPP_10MBPS;
     if (mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT) /* Full duplex */
     {
-	LPC_EMAC->MAC2 |= MAC2_FULL_DUPLEX;
-	LPC_EMAC->Command |= CMD_FULL_DUPLEX;
+	LPC_EMAC->MAC2 |= RFLPC_ETH_MAC2_FULL_DUPLEX;
+	LPC_EMAC->Command |= RFLPC_ETH_CMD_FULL_DUPLEX;
     }
     else
     {
-	LPC_EMAC->MAC2 &= ~MAC2_FULL_DUPLEX;
-	LPC_EMAC->Command &= ~CMD_FULL_DUPLEX;
+	LPC_EMAC->MAC2 &= ~RFLPC_ETH_MAC2_FULL_DUPLEX;
+	LPC_EMAC->Command &= ~RFLPC_ETH_CMD_FULL_DUPLEX;
     }
     return 0;
 }
 
 void rflpc_eth_set_link_mode(int mode)
 {
-    uint16_t bmcr = _read_from_phy_register(PHY_BMCR);
+    uint16_t bmcr = _read_from_phy_register(RFLPC_ETH_PHY_BMCR);
     uint32_t mac2 = LPC_EMAC->MAC2;
     uint32_t cmd = LPC_EMAC->Command;
     uint32_t supp;
     /* disable autonegociation */
-    bmcr &= ~BMCR_ENABLE_AUTO_NEG;
-    _write_to_phy_register(PHY_BMCR, bmcr);
-    bmcr = _read_from_phy_register(PHY_BMCR);
+    bmcr &= ~RFLPC_ETH_BMCR_ENABLE_AUTO_NEG;
+    _write_to_phy_register(RFLPC_ETH_PHY_BMCR, bmcr);
+    bmcr = _read_from_phy_register(RFLPC_ETH_PHY_BMCR);
 
     /* duplex */
     if (mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT)
     {
 	/* full duplex */
-	mac2 |= MAC2_FULL_DUPLEX;
-	cmd |= CMD_FULL_DUPLEX;
-	bmcr |= BMCR_DUPLEX_MODE;
+	mac2 |= RFLPC_ETH_MAC2_FULL_DUPLEX;
+	cmd |= RFLPC_ETH_CMD_FULL_DUPLEX;
+	bmcr |= RFLPC_ETH_BMCR_DUPLEX_MODE;
     }
     else
     {
 	/* half duplex */
-	mac2 &= ~MAC2_FULL_DUPLEX;
-	cmd &= ~CMD_FULL_DUPLEX;
-	bmcr &= ~ BMCR_DUPLEX_MODE;
+	mac2 &= ~RFLPC_ETH_MAC2_FULL_DUPLEX;
+	cmd &= ~RFLPC_ETH_CMD_FULL_DUPLEX;
+	bmcr &= ~RFLPC_ETH_BMCR_DUPLEX_MODE;
     }
     
     /* speed */
     if (mode & RFLPC_ETH_LINK_MODE_SPEED_BIT)
     {
 	/* 100 Mbps */
-	supp = SUPP_100MBPS;
-	bmcr |= BMCR_SPEED_SELECT;
+	supp = RFLPC_ETH_SUPP_100MBPS;
+	bmcr |= RFLPC_ETH_BMCR_SPEED_SELECT;
     }
     else
     {
 	/* 10 Mbps */
 	supp = 0;
-	bmcr &= ~BMCR_SPEED_SELECT;
+	bmcr &= ~RFLPC_ETH_BMCR_SPEED_SELECT;
     }
-    _write_to_phy_register(PHY_BMCR, bmcr);
+    _write_to_phy_register(RFLPC_ETH_PHY_BMCR, bmcr);
     LPC_EMAC->MAC2 = mac2;
     LPC_EMAC->Command = cmd;
     LPC_EMAC->SUPP = supp;
@@ -455,16 +298,16 @@ void rflpc_eth_set_link_mode(int mode)
 
 int rflpc_eth_get_link_mode()
 {
-    uint16_t physts = _read_from_phy_register(PHY_PHYSTS);
+    uint16_t physts = _read_from_phy_register(RFLPC_ETH_PHY_PHYSTS);
 
-    if (physts & PHYSTS_SPEED_STATUS) /* 10 Mbps */
+    if (physts & RFLPC_ETH_PHYSTS_SPEED_STATUS) /* 10 Mbps */
     {
-	if (physts & PHYSTS_DUPLEX_STATUS) /* full duplex */
+	if (physts & RFLPC_ETH_PHYSTS_DUPLEX_STATUS) /* full duplex */
 	    return RFLPC_ETH_LINK_MODE_10FD;
 	return RFLPC_ETH_LINK_MODE_10HD;
     }
     /* 100 Mbps */
-    if (physts & PHYSTS_DUPLEX_STATUS) /* full duplex */
+    if (physts & RFLPC_ETH_PHYSTS_DUPLEX_STATUS) /* full duplex */
 	return RFLPC_ETH_LINK_MODE_100FD ;
     return RFLPC_ETH_LINK_MODE_100HD;
 }
