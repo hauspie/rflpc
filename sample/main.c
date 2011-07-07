@@ -252,9 +252,13 @@ void test_ethernet()
 	{
 	    int mode;
 	    printf("Starting auto-negociation to %d Mbps %s duplex\r\n", autoneg_mode & RFLPC_ETH_LINK_MODE_SPEED_BIT ? 100 : 10, autoneg_mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT ? "Full" : "Half");
-	    rflpc_eth_link_auto_negociate(autoneg_mode);
-	    mode = rflpc_eth_get_link_mode();
-	    printf("Done -> now in %d Mbps %s duplex\r\n", mode & RFLPC_ETH_LINK_MODE_SPEED_BIT ? 100 : 10, mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT ? "Full" : "Half");
+	    if (rflpc_eth_link_auto_negociate(autoneg_mode) != -1)
+	    {
+		mode = rflpc_eth_get_link_mode();
+		printf("Done -> now in %d Mbps %s duplex\r\n", mode & RFLPC_ETH_LINK_MODE_SPEED_BIT ? 100 : 10, mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT ? "Full" : "Half");
+	    }
+	    else
+		printf("Failed auto-negociation\r\n");
 	    request_autoneg = 0;
 	}
 

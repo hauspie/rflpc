@@ -303,9 +303,6 @@ int rflpc_eth_init()
     /* Wait for PHY to finish reset */
     while (_read_from_phy_register(PHY_BMCR) & BMCR_RESET);
 
-    /* Perform link autonegociation */
-    rflpc_eth_link_auto_negociate(RFLPC_ETH_LINK_MODE_100FD);
-
     /* Enable reception */
     LPC_EMAC->MAC1 |= MAC1_RECEIVE_ENABLE | MAC1_PASS_ALL_FRAMES;
 
@@ -346,10 +343,17 @@ void rflpc_eth_print_infos()
     PRINT_REG_VALUE(PHY_EDCR);
 }
 
-void rflpc_eth_link_auto_negociate(int max_desired_mode)
+int rflpc_eth_link_auto_negociate(int max_desired_mode)
 {
+    int mode;
     uint16_t bmcr;
     uint16_t anar;
+
+   
+
+    /* Do not perform autonegociation if link is down */
+    if (!rflpc_eth_link_state())
+	return -1;
 
     /* To set maximum mode, we set the ANAR register with desired value */
     anar = _read_from_phy_register(PHY_ANAR);
@@ -378,16 +382,19 @@ void rflpc_eth_link_auto_negociate(int max_desired_mode)
     /* Start auto negociation */
     bmcr |= BMCR_RESTART_AUTO_NEG;
     _write_to_phy_register(PHY_BMCR, bmcr);
-    /* wait for auto-negociation to finish */
-    while (!(_read_from_phy_register(PHY_BMSR) & BMSR_AUTO_NEG_COMPLETE));
+    /* wait for auto-negociation to finish or link to be down */
+    while ( !(_read_from_phy_register(PHY_BMSR) & BMSR_AUTO_NEG_COMPLETE) );
+
+    if (!rflpc_eth_link_state())
+	return -1;
 
     /* retrieve auto-negociated parameters */
-    bmcr = _read_from_phy_register(PHY_BMCR);
-    if (bmcr & BMCR_SPEED_SELECT) /* 100 Mbps */
+    mode = rflpc_eth_get_link_mode();
+    if (mode & RFLPC_ETH_LINK_MODE_SPEED_BIT) /* 100 Mbps */
 	LPC_EMAC->SUPP = SUPP_100MBPS;
     else
 	LPC_EMAC->SUPP = SUPP_10MBPS;
-    if (bmcr & BMCR_DUPLEX_MODE) /* Full duplex */
+    if (mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT) /* Full duplex */
     {
 	LPC_EMAC->MAC2 |= MAC2_FULL_DUPLEX;
 	LPC_EMAC->Command |= CMD_FULL_DUPLEX;
@@ -397,6 +404,7 @@ void rflpc_eth_link_auto_negociate(int max_desired_mode)
 	LPC_EMAC->MAC2 &= ~MAC2_FULL_DUPLEX;
 	LPC_EMAC->Command &= ~CMD_FULL_DUPLEX;
     }
+    return 0;
 }
 
 void rflpc_eth_set_link_mode(int mode)
@@ -443,7 +451,6 @@ void rflpc_eth_set_link_mode(int mode)
     LPC_EMAC->MAC2 = mac2;
     LPC_EMAC->Command = cmd;
     LPC_EMAC->SUPP = supp;
-    while (!rflpc_eth_link_state());
 }
 
 int rflpc_eth_get_link_mode()

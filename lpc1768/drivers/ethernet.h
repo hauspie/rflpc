@@ -59,9 +59,14 @@ extern void rflpc_eth_set_link_mode(int mode);
 
     This function will start autonegociation, wait for it to finish and
     reconfigure MAC/PHY if needed (100Mbps/10Mbps, half duplex/full duplex...)
-    @param max_desired_mode bit 0 tells speed, bit 1 tells duplex
+    @param max_desired_mode bit 0 tells speed, bit 1 tells duplex 
+
+    @return 0 if auto-negociation performed successfully. -1 otherwise. If the
+    link is down when calling this function, -1 will be returned immediatly.
+
+    @warning This function is blocking and wait for the autonegociation to be complete. 
  */
-extern void rflpc_eth_link_auto_negociate(int max_desired_mode);
+extern int rflpc_eth_link_auto_negociate(int max_desired_mode);
 
 /** returns the current link mode. The information is extracted from the PHY
     PHYSTS register.
