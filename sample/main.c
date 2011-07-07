@@ -204,13 +204,24 @@ void print_sections()
 }
 
 volatile static int request_autoneg = 0;
+volatile static int autoneg_mode = RFLPC_ETH_LINK_MODE_100FD;
 
 RFLPC_IRQ_HANDLER _test_ethernet_serial_handler()
 {
     char c = rflpc_uart0_getchar();
 
-    if (c == 'a')
-	request_autoneg = 1;
+    switch (c)
+    {
+	case 's':
+	    request_autoneg = 1;
+	    autoneg_mode = autoneg_mode ^ RFLPC_ETH_LINK_MODE_SPEED_BIT;
+	    break;
+	case 'd':
+	    request_autoneg = 1;
+	    autoneg_mode = autoneg_mode ^ RFLPC_ETH_LINK_MODE_DUPLEX_BIT;
+
+	break;
+    }
 }
 
 void test_ethernet()
@@ -221,10 +232,14 @@ void test_ethernet()
 
     rflpc_led_val(0);
 
+    printf("Autonegociating to 100Mbps full duplex\r\n");
+    rflpc_eth_link_auto_negociate(RFLPC_ETH_LINK_MODE_100FD);
     printf("Waiting for link to be up\r\n");
     while(!rflpc_eth_link_state());
 
-    printf("Ok. Press 'a' to perform a link capability auto-negociation\r\n");
+    printf("Ok. Press:\r\n");
+    printf("- 's' to toggle speed\r\n");
+    printf("- 'd' to toggle duplex\r\n");
     rflpc_uart0_set_rx_callback(_test_ethernet_serial_handler);
 
     
@@ -235,9 +250,11 @@ void test_ethernet()
 	
 	if (request_autoneg)
 	{
-	    printf("Starting auto-negociation to 10Mbps Full duplex\r\n");
-	    rflpc_eth_link_auto_negociate(RFLPC_ETH_LINK_MODE_10FD);
-	    printf("Done -> %d\r\n", rflpc_eth_get_link_mode());
+	    int mode;
+	    printf("Starting auto-negociation to %d Mbps %s duplex\r\n", autoneg_mode & RFLPC_ETH_LINK_MODE_SPEED_BIT ? 100 : 10, autoneg_mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT ? "Full" : "Half");
+	    rflpc_eth_link_auto_negociate(autoneg_mode);
+	    mode = rflpc_eth_get_link_mode();
+	    printf("Done -> now in %d Mbps %s duplex\r\n", mode & RFLPC_ETH_LINK_MODE_SPEED_BIT ? 100 : 10, mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT ? "Full" : "Half");
 	    request_autoneg = 0;
 	}
 

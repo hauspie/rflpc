@@ -346,7 +346,7 @@ void rflpc_eth_print_infos()
     PRINT_REG_VALUE(PHY_EDCR);
 }
 
-void rflpc_eth_link_auto_negociate(rfEthLinkMode max_desired_mode)
+void rflpc_eth_link_auto_negociate(int max_desired_mode)
 {
     uint16_t bmcr;
     uint16_t anar;
@@ -399,7 +399,7 @@ void rflpc_eth_link_auto_negociate(rfEthLinkMode max_desired_mode)
     }
 }
 
-void rflpc_eth_set_link_mode(rfEthLinkMode mode)
+void rflpc_eth_set_link_mode(int mode)
 {
     uint16_t bmcr = _read_from_phy_register(PHY_BMCR);
     uint32_t mac2 = LPC_EMAC->MAC2;
@@ -411,7 +411,7 @@ void rflpc_eth_set_link_mode(rfEthLinkMode mode)
     bmcr = _read_from_phy_register(PHY_BMCR);
 
     /* duplex */
-    if (mode == RFLPC_ETH_LINK_MODE_100FD || mode == RFLPC_ETH_LINK_MODE_10FD)
+    if (mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT)
     {
 	/* full duplex */
 	mac2 |= MAC2_FULL_DUPLEX;
@@ -427,7 +427,7 @@ void rflpc_eth_set_link_mode(rfEthLinkMode mode)
     }
     
     /* speed */
-    if (mode == RFLPC_ETH_LINK_MODE_100FD || mode == RFLPC_ETH_LINK_MODE_100HD)
+    if (mode & RFLPC_ETH_LINK_MODE_SPEED_BIT)
     {
 	/* 100 Mbps */
 	supp = SUPP_100MBPS;
@@ -446,7 +446,7 @@ void rflpc_eth_set_link_mode(rfEthLinkMode mode)
     while (!rflpc_eth_link_state());
 }
 
-rfEthLinkMode rflpc_eth_get_link_mode()
+int rflpc_eth_get_link_mode()
 {
     uint16_t physts = _read_from_phy_register(PHY_PHYSTS);
 
@@ -458,6 +458,6 @@ rfEthLinkMode rflpc_eth_get_link_mode()
     }
     /* 100 Mbps */
     if (physts & PHYSTS_DUPLEX_STATUS) /* full duplex */
-	return RFLPC_ETH_LINK_MODE_100FD;
+	return RFLPC_ETH_LINK_MODE_100FD ;
     return RFLPC_ETH_LINK_MODE_100HD;
 }

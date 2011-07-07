@@ -32,14 +32,17 @@ extern int rflpc_eth_init();
 extern int rflpc_eth_link_state();
 
 
-/** Possible link modes */
-typedef enum
-{
-    RFLPC_ETH_LINK_MODE_100FD, /**<! 100Mbps Full Duplex */
-    RFLPC_ETH_LINK_MODE_100HD, /**<! 100Mbps Half Duplex */
-    RFLPC_ETH_LINK_MODE_10FD,  /**<! 10Mbps  Full Duplex */
-    RFLPC_ETH_LINK_MODE_10HD,  /**<! 10Mbps  Half Duplex */
-} rfEthLinkMode;
+/** Possible link modes 
+    Bit 0 is 1 if 100Mbps, 0 if 10Mbps
+    Bit 1 is 1 if Full Duplex, 0 if half
+ */
+#define RFLPC_ETH_LINK_MODE_SPEED_BIT   (1 << 0)
+#define RFLPC_ETH_LINK_MODE_DUPLEX_BIT  (1 << 1)
+
+#define RFLPC_ETH_LINK_MODE_100HD (RFLPC_ETH_LINK_MODE_SPEED_BIT)
+#define RFLPC_ETH_LINK_MODE_10HD  (0)
+#define RFLPC_ETH_LINK_MODE_100FD (RFLPC_ETH_LINK_MODE_SPEED_BIT | RFLPC_ETH_LINK_MODE_DUPLEX_BIT)
+#define RFLPC_ETH_LINK_MODE_10FD  (RFLPC_ETH_LINK_MODE_DUPLEX_BIT)
 
 /** Forces the MAC and PHY devices to operate on the given mode no matter the
  * capability of the linked partner
@@ -50,22 +53,22 @@ typedef enum
     use autonegociation. Verify which parameter is effectively set with
     ::rflpc_eth_get_link_mode
  */
-extern void rflpc_eth_set_link_mode(rfEthLinkMode mode);
+extern void rflpc_eth_set_link_mode(int mode);
 
 /** Force the physical link to perform auto negociation of mode.
 
     This function will start autonegociation, wait for it to finish and
     reconfigure MAC/PHY if needed (100Mbps/10Mbps, half duplex/full duplex...)
-    @param max_desired_mode see ::rfEthLinkMode
+    @param max_desired_mode bit 0 tells speed, bit 1 tells duplex
  */
-extern void rflpc_eth_link_auto_negociate(rfEthLinkMode max_desired_mode);
+extern void rflpc_eth_link_auto_negociate(int max_desired_mode);
 
 /** returns the current link mode. The information is extracted from the PHY
     PHYSTS register.
 
-    @return ::rfEthLinkMode
+    @return bit 0 tells speed, bit 1 tells duplex
 */
-extern rfEthLinkMode rflpc_eth_get_link_mode();
+extern int rflpc_eth_get_link_mode();
 
 
 /** functions that print information on chip and link.
