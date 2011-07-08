@@ -47,9 +47,23 @@
     dst[idx++] = src[5]
 
 
+#define NTOHS(v) ((((v) >> 8)&0xFF) | (((v)&0xFF)<<8))
+
 uint16_t checksum(uint8_t *buffer, unsigned int bytes_count)
 {
-    return 0;
+    uint32_t csum = 0;
+    while (bytes_count >= 2)
+    {
+	csum += NTOHS(*((uint16_t*)buffer));
+	buffer += 2;
+	bytes_count -= 2;
+    }
+    if (bytes_count)
+	csum += (*buffer << 8);
+    /* add carry */
+    while (csum & 0xFFFF0000)
+	csum = (csum & 0xFFFF) + ((csum >> 16) & 0xFFFF);
+    return (~csum) & 0xFFFF;
 }
 
 void proto_eth_demangle(EthHead *eh, const uint8_t *data)
@@ -131,13 +145,16 @@ void proto_ip_mangle(IpHead *ih, uint8_t *data)
     PUT_TWO(data, idx,ih->flags_frag_offset);
     data[idx++] = ih->ttl;
     data[idx++] = ih->protocol;
-    PUT_TWO(data, idx, 0); /* 0 first, will be replaced after computation */
+    PUT_TWO(data, idx, ih->header_checksum);
     PUT_FOUR(data, idx, ih->src_addr);
     PUT_FOUR(data, idx, ih->dst_addr);
     /* set checksum */
-    ih->header_checksum = checksum(data, ih->version_length & 0xF);
-    idx = 8;
-    PUT_TWO(data, idx, ih->header_checksum);
+    if (ih->header_checksum  == 0) /* need to compute checksum */
+    {
+	ih->header_checksum = checksum(data, (ih->version_length & 0xF)<<2);
+	idx = 10;
+	PUT_TWO(data, idx, ih->header_checksum);
+    }
 }
 
 void proto_icmp_demangle(IcmpHead *ih, const uint8_t *data)
@@ -146,6 +163,14 @@ void proto_icmp_demangle(IcmpHead *ih, const uint8_t *data)
     ih->type = data[idx++];
     ih->code = data[idx++];
     GET_TWO(ih->checksum, data, idx);
+    if (ih->type == PROTO_ICMP_ECHO_REQUEST || ih->type == PROTO_ICMP_ECHO_REPLY)
+    {
+	GET_TWO(ih->data.echo.identifier, data, idx);
+	GET_TWO(ih->data.echo.sn, data, idx);
+	return;
+    }
+    GET_FOUR(ih->data.raw, data, idx);
+    
 }
 void proto_icmp_mangle(IcmpHead *ih, uint8_t *data)
 {
@@ -153,4 +178,11 @@ void proto_icmp_mangle(IcmpHead *ih, uint8_t *data)
     data[idx++] = ih->type;
     data[idx++] = ih->code;
     PUT_TWO(data, idx, ih->checksum);
+    if (ih->type == PROTO_ICMP_ECHO_REQUEST || ih->type == PROTO_ICMP_ECHO_REPLY)
+    {
+	PUT_TWO(data, idx, ih->data.echo.identifier);
+	PUT_TWO(data, idx, ih->data.echo.sn);
+	return;
+    }
+    PUT_FOUR(data, idx, ih->data.raw);
 }

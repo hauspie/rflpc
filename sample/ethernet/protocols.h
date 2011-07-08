@@ -28,13 +28,25 @@
 #define __PROTOCOLS_H__
 #include <stdint.h>
 
+
+#define PROTO_MAC_HLEN  14
+#define PROTO_ARP_HLEN  28
+#define PROTO_ICMP_HLEN  8
+#define PROTO_ICMP_CSUM_OFFSET 2
+
+#define PROTO_ARP 0x0806
+#define PROTO_IP  0x0800
+
+#define PROTO_ICMP 1
+#define PROTO_ICMP_ECHO_REQUEST 8
+#define PROTO_ICMP_ECHO_REPLY   0
+
 typedef struct
 {
     uint8_t addr[6];
 } EthAddr;
 
 
-#define ETH_HEADER_SIZE 14
 
 typedef struct
 {
@@ -43,8 +55,6 @@ typedef struct
     uint16_t type;
 } EthHead;
 
-
-#define ARP_HEADER_SIZE 28
 
 typedef struct
 {
@@ -78,6 +88,15 @@ typedef struct
     uint8_t type;
     uint8_t code;
     uint16_t checksum;
+    union
+    {
+	struct
+	{
+	    uint16_t identifier;
+	    uint16_t sn;
+	} echo;
+	uint32_t raw;
+    } data;
 }IcmpHead;
 
 void proto_eth_demangle(EthHead *eh, const uint8_t *data);
@@ -92,5 +111,7 @@ void proto_ip_mangle(IpHead *ih, uint8_t *data);
 void proto_icmp_demangle(IcmpHead *ih, const uint8_t *data);
 void proto_icmp_mangle(IcmpHead *ih, uint8_t *data);
 
+/* 16 bits checksum */
+uint16_t checksum(uint8_t *buffer, unsigned int bytes_count);
 
 #endif

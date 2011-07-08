@@ -25,10 +25,8 @@
 
 #include "protocols.h"
 
-
-
 /* a good old duff's device for memcpy */
-void memcpy(void *dst, const void *src, unsigned int bytes)
+void *memcpy(void *dst, const void *src, unsigned int bytes)
 {
    unsigned char *to = (unsigned char *)dst;
    const unsigned char *from = (const unsigned char *)src;
@@ -44,6 +42,7 @@ void memcpy(void *dst, const void *src, unsigned int bytes)
          case 1:      *to++ = *from++;
       } while (--n > 0);
    }
+   return dst;
 }
 
 
@@ -154,18 +153,6 @@ rfEthTxStatus _tx_status[TX_BUFFER_COUNT];
 uint8_t rxbuffers[RX_BUFFER_SIZE][RX_BUFFER_COUNT];
 uint8_t txbuffers[TX_BUFFER_SIZE][TX_BUFFER_COUNT];
 
-#define TYPE_OFFSET    12
-#define PAYLOAD_OFFSET 14
-
-#define TYPE_ARP               0x0806
-#define ARP_OPCODE_OFFSET           6
-#define ARP_OPCODE_REQUEST     0x0001
-#define ARP_SENDER_MAC_OFFSET       8
-#define ARP_SENDER_IP_OFFSET       14
-#define ARP_TARGET_MAC_OFFSET      18
-#define ARP_TARGET_IP_OFFSET       24
-
-#define TYPE_IP 0x0800
 
 
 EthAddr mac_addr;
@@ -181,28 +168,12 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 
     /* demangle ethernet frame*/
     proto_eth_demangle(&eth, rxd->packet);
-    if (eth.type == TYPE_ARP)
+    if (eth.type == PROTO_ARP)
     {
 	ArpHead arp_rcv;
 	ArpHead arp_send;
 	
-	proto_arp_demangle(&arp_rcv, rxd->packet + PAYLOAD_OFFSET);
-
-	printf("ARP: From: %x:%x:%x:%x:%x:%x. Who has %d.%d.%d.%d?, tell %d.%d.%d.%d\r\n", 
-	       arp_rcv.sender_mac.addr[0],
-	       arp_rcv.sender_mac.addr[1],
-	       arp_rcv.sender_mac.addr[2],
-	       arp_rcv.sender_mac.addr[3],
-	       arp_rcv.sender_mac.addr[4],
-	       arp_rcv.sender_mac.addr[5],
-	       (arp_rcv.target_ip >> 24) & 0xff,
-	       (arp_rcv.target_ip >> 16) & 0xff,
-	       (arp_rcv.target_ip >> 8) & 0xff,
-	       (arp_rcv.target_ip) & 0xff,
-	       (arp_rcv.sender_ip >> 24) & 0xff,
-	       (arp_rcv.sender_ip >> 16) & 0xff,
-	       (arp_rcv.sender_ip >> 8) & 0xff,
-	       (arp_rcv.sender_ip) & 0xff);
+	proto_arp_demangle(&arp_rcv, rxd->packet + PROTO_MAC_HLEN);
 	if (arp_rcv.target_ip != my_ip)
 	    return;
 	/* generate reply */
@@ -217,7 +188,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 	eth_reply.dst = eth.src;
 	/* ARP  */
 	arp_send.hard_type = 1;
-	arp_send.protocol_type = 0x0800;
+	arp_send.protocol_type = PROTO_IP;
 	arp_send.hlen = 6;
 	arp_send.plen = 4;
 	arp_send.opcode = 2; /* reply */
@@ -227,28 +198,67 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 	arp_send.target_ip = arp_rcv.sender_ip;
 
 	proto_eth_mangle(&eth_reply, txd->packet);
-	proto_arp_mangle(&arp_send, txd->packet + PAYLOAD_OFFSET);
+	proto_arp_mangle(&arp_send, txd->packet + PROTO_MAC_HLEN);
 	
 	/* Set control bits in descriptor with  size, enable padding, crc, and last fragment */
-	txd->control = (ETH_HEADER_SIZE + ARP_HEADER_SIZE) | (1 << 18) | (1 << 29) | (1 << 30);
+	txd->control = (PROTO_MAC_HLEN + PROTO_ARP_HLEN) | (1 << 18) | (1 << 29) | (1 << 30);
 	/* send packet */
 	rflpc_eth_done_process_tx_packet();
 	return;
     }
-    if (eth.type == TYPE_IP)
+    if (eth.type == PROTO_IP)
     {
 	IpHead ip;
-	proto_ip_demangle(&ip, rxd->packet + PAYLOAD_OFFSET);
-	printf("IP: %x %d.%d.%d.%d -> %d.%d.%d.%d\r\n", 
-	       ip.version_length,
-	       (ip.src_addr >> 24) & 0xff,
-	       (ip.src_addr >> 16) & 0xff,
-	       (ip.src_addr >> 8) & 0xff,
-	       (ip.src_addr) & 0xff,
-	       (ip.dst_addr >> 24) & 0xff,
-	       (ip.dst_addr >> 16) & 0xff,
-	       (ip.dst_addr >> 8) & 0xff,
-	       (ip.dst_addr) & 0xff);
+	proto_ip_demangle(&ip, rxd->packet + PROTO_MAC_HLEN);
+	if (ip.dst_addr != my_ip)
+	    return;
+	switch (ip.protocol)
+	{
+	    case PROTO_ICMP:
+	    {
+		IcmpHead icmp;
+		proto_icmp_demangle(&icmp, rxd->packet + PROTO_MAC_HLEN + ((ip.version_length & 0xF)<<2));
+		if (icmp.type == PROTO_ICMP_ECHO_REQUEST)
+		{
+		    uint32_t tmp;
+		    uint32_t icmp_start;
+		    /* generate reply */
+		    /* change IP header */
+		    ip.header_checksum = 0;
+		    tmp = ip.src_addr;
+		    ip.src_addr = ip.dst_addr;
+		    ip.dst_addr = tmp;
+		    /* change icmp header */
+		    icmp.type = PROTO_ICMP_ECHO_REPLY;
+		    icmp.checksum = 0;
+		    eth_reply.type = eth.type;
+		    eth_reply.src = mac_addr;
+		    eth_reply.dst = eth.src;
+
+		    if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs))
+		    {
+			printf("No available TX buffers, can't generate icmp reply\r\n");
+			return;
+		    }
+		    
+
+		    proto_eth_mangle(&eth_reply, txd->packet);
+		    proto_ip_mangle(&ip, txd->packet + PROTO_MAC_HLEN);
+		    proto_icmp_mangle(&icmp, txd->packet + PROTO_MAC_HLEN + ((ip.version_length & 0xF) << 2));
+		    icmp_start = PROTO_MAC_HLEN + ((ip.version_length & 0xF) << 2);
+		    memcpy(txd->packet + icmp_start + PROTO_ICMP_HLEN, rxd->packet + icmp_start + PROTO_ICMP_HLEN, ip.total_length - ((ip.version_length&0xf)<<2) - PROTO_ICMP_HLEN);
+		    /* compute icmp checksum */
+		    tmp = checksum(txd->packet + icmp_start, ip.total_length - ((ip.version_length&0xf)<<2));
+		    txd->packet[icmp_start + PROTO_ICMP_CSUM_OFFSET] = (tmp >> 8) & 0xFF;
+		    txd->packet[icmp_start + PROTO_ICMP_CSUM_OFFSET+1] = (tmp ) & 0xFF;
+		    /* fill control word (size, padding, crc, last fragment) */
+		    txd->control = (PROTO_MAC_HLEN + ip.total_length) | (1 << 18) | (1 << 29) | (1 << 30);
+		    /* send packet */
+		    rflpc_eth_done_process_tx_packet();
+		}
+	    }
+	    break;
+	}
 	return;
     }
     dump_packet(rxd, rxs);
