@@ -22,6 +22,8 @@
   Time-stamp: <2011-07-06 22:57:49 (mickey)>
 */ 
 #include <stdint.h>
+#include "../LPC17xx.h"
+#include "../interrupt.h"
 
 /** Inits the ethernet device */
 extern int rflpc_eth_init();
@@ -164,5 +166,58 @@ extern void rflpc_eth_get_mac_address(uint8_t *addr);
 /** sets the MAC address
  */
 extern void rflpc_eth_set_mac_address(uint8_t *addr);
+
+/** sets the interrupt handler */
+static inline void rflpc_eth_set_irq_handler(rflpc_irq_handler_t c)
+{
+    rflpc_irq_disable(ENET_IRQn);
+    rflpc_irq_set_handler(ENET_IRQn, c);
+    rflpc_irq_enable(ENET_IRQn);
+}
+
+/** enable eth interrupts 
+
+    This function will ADD new irq enable, not set all enable irqs to the ones given.
+
+    @param irqs a bitwise ORed combination of RFLPC_ETH_IRQ_EN_* bits
+ */
+static inline void rflpc_eth_irq_enable(uint32_t irqs)
+{
+    LPC_EMAC->IntEnable |= irqs;
+}
+
+/** disable eth interrupts 
+    This function will remove irq enable bits.
+    
+    @param irqs a bitwise ORed combination of RFLPC_ETH_IRQ_EN_* bits
+*/
+static inline void rflpc_eth_irq_disable(uint32_t irqs)
+{
+    LPC_EMAC->IntEnable &= ~irqs;
+}
+
+/** sets the irq enable register
+    This function will disable all irqs and then only enable those given.
+
+    @param irqs a bitwise ORed combination of RFLPC_ETH_IRQ_EN_* bits
+*/
+static inline void rflpc_eth_irq_enable_set(uint32_t irqs)
+{
+    LPC_EMAC->IntEnable = irqs;
+}
+
+/** clear given pending interrupts */
+static inline void rflpc_eth_irq_clear(uint32_t irqs)
+{
+    LPC_EMAC->IntClear = irqs;
+}
+
+/** gets the interrupt status.
+    @return a bitwise ORed of eth pending interrupt bits
+ */
+static inline uint32_t rflpc_eth_irq_get_status()
+{
+    return LPC_EMAC->IntStatus;
+}
 
 #endif

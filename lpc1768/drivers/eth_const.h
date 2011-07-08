@@ -184,4 +184,16 @@
 #define RFLPC_ETH_PHYSTS_LINK_STATUS               (1 << 0)
 
 
+/* Interrupt enable bits */
+#define RFLPC_ETH_IRQ_EN_RX_OVERRUN  (1 << 0)
+#define RFLPC_ETH_IRQ_EN_RX_ERROR    (1 << 1)
+#define RFLPC_ETH_IRQ_EN_RX_FINISHED (1 << 2)
+#define RFLPC_ETH_IRQ_EN_RX_DONE     (1 << 3)
+#define RFLPC_ETH_IRQ_EN_TX_UNDERRUN (1 << 4)
+#define RFLPC_ETH_IRQ_EN_TX_ERROR    (1 << 5)
+#define RFLPC_ETH_IRQ_EN_TX_FINISHED (1 << 6)
+#define RFLPC_ETH_IRQ_EN_TX_DONE     (1 << 7)
+#define RFLPC_ETH_IRQ_EN_SOFT        (1 << 12)
+#define RFLPC_ETH_IRQ_EN_WAKE_UP     (1 << 13)
+
 #endif

@@ -142,7 +142,7 @@ RFLPC_IRQ_HANDLER _rit_handler()
 #define RX_BUFFER_COUNT 8
 
 #define TX_BUFFER_SIZE  RFLPC_ETH_MAX_FRAME_LENGTH
-#define TX_BUFFER_COUNT 4
+#define TX_BUFFER_COUNT 8
 
 rfEthDescriptor _rx_desc[RX_BUFFER_COUNT];
 rfEthRxStatus _rx_status[RX_BUFFER_COUNT];
@@ -179,7 +179,6 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 	/* generate reply */
 	if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs))
 	{
-	    printf("No available TX buffers, can't generate answer\r\n");
 	    return;
 	}
 	/* Ethernet Header */
@@ -237,7 +236,6 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 
 		    if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs))
 		    {
-			printf("No available TX buffers, can't generate icmp reply\r\n");
 			return;
 		    }
 		    
@@ -264,6 +262,24 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
     dump_packet(rxd, rxs);
 }
 
+void eth_handler()
+{
+    if (rflpc_eth_irq_get_status() & RFLPC_ETH_IRQ_EN_RX_DONE) /* packet received */
+    {
+	rfEthDescriptor *d;
+	rfEthRxStatus *s;
+	while (rflpc_eth_get_current_rx_packet_descriptor(&d, &s))
+	{
+	    /* packet received */
+	    /*dump_packet(d, s);*/
+	    process_packet(d,s);
+	    /* done with it */
+	    rflpc_eth_done_process_rx_packet();
+	}
+    }
+    rflpc_eth_irq_clear(rflpc_eth_irq_get_status());
+}
+
 void ethernet()
 {
     int i;
@@ -284,7 +300,11 @@ void ethernet()
     printf("Waiting for link to be up\r\n");
     while(!rflpc_eth_link_state());
 
-    /* setting rit timer to periodicaly check for link state */
+ 
+    rflpc_eth_set_irq_handler(eth_handler);
+    rflpc_eth_irq_enable_set(RFLPC_ETH_IRQ_EN_RX_DONE);
+
+   /* setting rit timer to periodicaly check for link state */
     rflpc_rit_enable();
     rflpc_rit_set_callback(0xFFFFF, 0, 1, _rit_handler);
     
@@ -298,7 +318,7 @@ void ethernet()
     for (i = 0 ; i < RX_BUFFER_COUNT ; ++i)
     {
 	_rx_desc[i].packet = rxbuffers[i];
-	_rx_desc[i].control = RX_BUFFER_SIZE - 1; /* -1 encoding */
+	_rx_desc[i].control = (RX_BUFFER_SIZE - 1) | (1 << 31); /* -1 encoding */
     }
     rflpc_eth_set_rx_base_addresses(_rx_desc, _rx_status, RX_BUFFER_COUNT);
 
@@ -311,16 +331,16 @@ void ethernet()
 
     while (1)
     {
-	rfEthDescriptor *d;
-	rfEthRxStatus *s;
-	if (rflpc_eth_get_current_rx_packet_descriptor(&d, &s))
+	if (request_autoneg)
 	{
-	    /* packet received */
-	    /*dump_packet(d, s);*/
-	    process_packet(d,s);
-	    /* done with it */
-	    rflpc_eth_done_process_rx_packet();
+	    int mode;
+	    printf("Starting auto-negociation\r\n");
+	    rflpc_eth_link_auto_negociate(autoneg_mode);
+	    mode = rflpc_eth_get_link_mode();
+	    printf("Done: new mode %d Mbps %s duplex\r\n", mode & RFLPC_ETH_LINK_MODE_SPEED_BIT ? 100 : 10, mode & RFLPC_ETH_LINK_MODE_DUPLEX_BIT ? "Full" : "Half");
+	    request_autoneg = 0;
 	}
+
 
     }
 }
