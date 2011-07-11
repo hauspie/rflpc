@@ -16,6 +16,37 @@
 #ifndef __RFLPC_CONFIG_H__
 #define __RFLPC_CONFIG_H__
 
+
+/*
+  
+    Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+    Created: 2011-07-04
+    Time-stamp: <2011-07-04 11:30:46 (hauspie)>
+
+    This files permits the configuration of the platform.
+    It includes a platform-dependent config file for your target.
+
+    Only mbed is available, but you can create one for your LPC17xx platform.
+
+ */
+
+/* */
+#ifdef RFLPC_USE_MBED
+/* If you want to use the library on another LPC17xx based platform, create a
+   config-xxx.h file for it (copy the config-mbed.h as a starting base). The file
+   should define some pin connections and the activation/deactivation macro for
+   parts of the library.
+*/
+#include "config-mbed.h"
+#endif
+
+
+
+#ifndef RFLPC_PLATFORM_CONFIGURED
+#error "Please create a config file for your platform and include it in config.h and/or define the RFLPC_USE_* macro to enable the right platform in the makefile"
+#endif
+
+
 /** size of the stack in bytes */
 #ifndef STACK_SIZE
 #define STACK_SIZE 512
