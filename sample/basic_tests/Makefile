@@ -11,7 +11,7 @@ MBED_PATH=/media/MBED
 ELF=basic_test.elf
 BIN=basic_test.bin
 
-CFLAGS=-Os -Wall -I$(LIB_DIR)
+CFLAGS=-Os -Wall -I$(LIB_DIR) -DRFLPC_PLATFORM_MBED
 LDFLAGS=-nostdlib -L$(LIB_DIR) -llpc1768 -T $(LINK_SCRIPT)
 
 OBJS=main.o

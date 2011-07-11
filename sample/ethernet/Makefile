@@ -11,7 +11,7 @@ MBED_PATH=/media/MBED
 ELF=ethernet.elf
 BIN=ethernet.bin
 
-CFLAGS=-Os -Wall -I$(LIB_DIR)
+CFLAGS=-Os -Wall -I$(LIB_DIR) -DRFLPC_PLATFORM_MBED
 LDFLAGS=-nostdlib -L$(LIB_DIR) -llpc1768 -T $(LINK_SCRIPT)
 
 OBJS=main.o protocols.o
