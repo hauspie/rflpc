@@ -411,8 +411,3 @@ void rflpc_eth_set_mac_address(uint8_t *addr)
     LPC_EMAC->SA1 = addr[2] << 8 | addr[3];
     LPC_EMAC->SA2 = addr[4] << 8 | addr[5];
 }
-
-void rflpc_eth_set_irq_handler(rflpc_irq_handler_t c)
-{
-    
-}

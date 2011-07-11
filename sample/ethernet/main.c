@@ -156,7 +156,7 @@ uint8_t txbuffers[TX_BUFFER_SIZE][TX_BUFFER_COUNT];
 
 
 EthAddr mac_addr;
-uint32_t my_ip = (192 << 24) | (168 << 16) | 200;
+uint32_t my_ip = (192 << 24) | (168 << 16) | (100 << 8)| 200;
 
 void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 {
