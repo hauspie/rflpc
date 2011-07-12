@@ -1,4 +1,4 @@
-DIRS=lpc1768 sample/basic_tests sample/ethernet
+DIRS=rflpc17xx sample/basic_tests sample/ethernet
 
 .PHONY: all $(DIRS)
 

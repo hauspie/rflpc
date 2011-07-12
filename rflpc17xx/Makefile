@@ -4,7 +4,7 @@ AR=arm-none-eabi-ar
 OBJDUMP=arm-none-eabi-objdump
 CFLAGS=-Os -Wall -DRFLPC_PLATFORM_MBED
 
-LIB=liblpc1768.a
+LIB=librflpc17xx.a
 
 CFILES=$(wildcard *.c)
 CFILES+=$(wildcard drivers/*.c)
