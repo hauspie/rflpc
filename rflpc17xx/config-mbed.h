@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-13 11:14:06 (hauspie)>
+  Time-stamp: <2011-07-13 11:19:13 (hauspie)>
 
   This files provides the configuration of the lib for the mbed platform
 
@@ -30,7 +30,7 @@
 /**************************************
  *          Clock configuration       *
  **************************************/
-//#define RFLPC_CLOCK_USE_MAIN_OSCILLATOR
+#define RFLPC_CLOCK_USE_MAIN_OSCILLATOR
 
 
 #ifdef RFLPC_CLOCK_USE_MAIN_OSCILLATOR
@@ -50,6 +50,9 @@
     With the given configuration (INPUT_DIVIDER=1, PLL_MULTIPLIER=12, CPU_DIVIDER=3),
     PLL ouput is 2*12*12000000/1 = 288Mhz
     Divided by 3 -> CPU is at 96 Mhz
+
+    @warning Be carefull when modifing these parameters. Clock the ARM at more
+    than 100Mhz is a bad idea...
 */
 #define RFLPC_CLOCK_INPUT_DIVIDER                    1
 #define RFLPC_CLOCK_PLL_MULTIPLIER                  12
