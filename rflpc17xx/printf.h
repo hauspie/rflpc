@@ -16,7 +16,11 @@
 
 #ifndef __RFLPC_PRINTF_H__
 #define __RFLPC_PRINTF_H__
-
+/*
+  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Created: 
+  Time-stamp: <2011-07-13 14:20:45 (hauspie)>
+*/
 
 
 /** This function is similar to stdio's printf.
@@ -30,7 +34,7 @@
 
     If another format char is used, int is assumed to skip
     argument, but nothing is printed unless LPC_VERBOSE_PRINTF
-    is defined when compiling liblpc1768.a
+    is defined when compiling lib.
 
     It uses the putchar function to output all characters. You have to define
     this function in your code so that the link works

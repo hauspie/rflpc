@@ -15,11 +15,13 @@
  */
 #ifndef __RFLPC_SPI_H__
 #define __RFLPC_SPI_H__
-
-
-/** inits the SPI interface.
-    Configure the LPC pins to use DIP11, DIP12 and DIP13 (on the mbed) as SPI
+/*
+  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Created: 
+  Time-stamp: <2011-07-13 14:24:40 (hauspie)>
 */
+
+/** inits the SPI interface.*/
 /* extern void rflpc_spi_init(); */
 
 

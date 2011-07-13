@@ -13,7 +13,12 @@
  * You should have received a copy of the GNU General Public License	 
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
  */
+/*
 
+  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Created: 
+  Time-stamp: <2011-07-13 14:18:48 (hauspie)>
+*/
 #include <stdint.h>
 #include "drivers/leds.h"
 

@@ -13,7 +13,11 @@
  * You should have received a copy of the GNU General Public License	 
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
  */
-
+/*
+  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Created: 
+  Time-stamp: <2011-07-13 14:18:30 (hauspie)>
+*/
 #ifndef __RFLPC_CLOCK_H__
 #define __RFLPC_CLOCK_H__
 

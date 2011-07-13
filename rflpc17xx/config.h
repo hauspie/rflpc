@@ -18,10 +18,9 @@
 
 
 /*
-  
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 2011-07-04
-    Time-stamp: <2011-07-13 10:08:35 (hauspie)>
+    Time-stamp: <2011-07-13 14:22:20 (hauspie)>
 
     This files permits the configuration of the platform.
     It includes a platform-dependent config file for your target.
@@ -30,7 +29,6 @@
 
  */
 
-/* */
 #ifdef RFLPC_PLATFORM_MBED
 /* If you want to use the library on another LPC17xx based platform, create a
    config-xxx.h file for it (copy the config-mbed.h as a starting base). The file

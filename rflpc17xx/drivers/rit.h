@@ -14,6 +14,10 @@
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
  */
 /*
+    Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+    Created: 
+    Time-stamp: <2011-07-13 14:24:13 (hauspie)>
+
   This files defines the driver for the Repetitive Interrupt Timer (user manual, p. 501)
  */
 
