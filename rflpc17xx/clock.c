@@ -16,7 +16,9 @@
 
 #include "clock.h"
 #include "interrupt.h"
+#include "config.h"
 
+/* Internal RC Oscillator is 4Mhz. */
 static uint32_t _rflpc_system_clock = 4000000;
 
 
@@ -28,19 +30,6 @@ static uint32_t _rflpc_system_clock = 4000000;
 
 
 /* Initialise clock to use main oscillator for PLL0.
-
-   CPU is set to 96Mhz using the 12Mhz source for PLL0. (see mbed schematic,
-   main oscillator is a 12Mhz crystal connected to pins XTAL1 and XTAL2)
-
-   As this setup is suitable for USB, PPL0 can be used to clock USB (need a 48Mhz mutiple)
-
-   The output of the PLL0 is given by:
-   Fcco = (2xMxFin)/N where Fin is the frequency of the source (12Mhz), M the
-   multiplier and N the pre-divider (p.41)
-   Fcco = 2x12x12/1 = 288Mhz
-   We thus have M=12 and N=1, so we have to write 0xB in the PLL0CFG register (p. 37)
-   To get the 96Mhz CPU clock, we must set the cpu clock divider to 3 (288/3 = 96).
-   This is done by setting CCLKSEL register to 2 (p. 55)
 */
 void rflpc_clock_init(void)
 {
@@ -63,8 +52,12 @@ void rflpc_clock_init(void)
 
 
     /* Then, enable main oscillator and wait for it to be ready */
-    /* Select its range, 1Mhz to 20Mhz, set 0 to bit 4 of SCS register (p. 28) */
-    LPC_SC->SCS &= ~(1UL << 4);
+    /* Select its range, if 1Mhz to 20Mhz, set 0 to bit 4 of SCS register
+     * otherwise, set to 1 (p. 28)*/
+    if (RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY >= 1000000 && RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY <= 20000000)
+	LPC_SC->SCS &= ~(1UL << 4);
+    else
+	LPC_SC->SCS |= 1UL << 4;
     /* Enables it, set 1 to bit 5 */
     LPC_SC->SCS |= (1UL << 5);
 	
@@ -77,8 +70,8 @@ void rflpc_clock_init(void)
 
 
 
-    /* Configure PLL0 with N=1 and M=12. The value is then 0xB (p. 37) */
-    LPC_SC->PLL0CFG = 0xB;
+    /* Configure PLL0 with N= INPUT_DIVIDER and M=PLL_MULTIPLIER (p. 37) */
+    LPC_SC->PLL0CFG = (((RFLPC_CLOCK_INPUT_DIVIDER-1) << 16) | (RFLPC_CLOCK_PLL_MULTIPLIER-1));
     /* validate the configuration */
     RFLPC_PLL0_DO_FEED();
     
@@ -87,7 +80,7 @@ void rflpc_clock_init(void)
     RFLPC_PLL0_DO_FEED();
 
     /* Set the CPU Clock divider (p. 55) */
-    LPC_SC->CCLKCFG = 2; /* 2 to divide PLL0 output frequency (288Mhz) by 3 */
+    LPC_SC->CCLKCFG = RFLPC_CLOCK_CPU_DIVIDER - 1; /* divide PLL0 output frequency */
 
     /* Wait for PLL0 to lock desired frequency by monitoring bit 26 of register PLL0STAT (p. 39) */
     while (! (LPC_SC->PLL0STAT & (1 << 26)));
@@ -98,7 +91,7 @@ void rflpc_clock_init(void)
     RFLPC_PLL0_DO_FEED();
 
 
-    _rflpc_system_clock = 96000000;
+    _rflpc_system_clock = (2*RFLPC_CLOCK_PLL_MULTIPLIER*(RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY/RFLPC_CLOCK_INPUT_DIVIDER))/RFLPC_CLOCK_CPU_DIVIDER;
 
     /* system is now working on PLL0, CPU at 96Mhz */
     /* Enables the IRQs */

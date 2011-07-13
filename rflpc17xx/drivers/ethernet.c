@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-06 23:12:08 (mickey)>
+  Time-stamp: <2011-07-13 10:33:53 (hauspie)>
 */
 
 #include "ethernet.h"
@@ -158,47 +158,20 @@ int rflpc_eth_link_state()
     return (_read_from_phy_register(RFLPC_ETH_PHY_BMSR) & RFLPC_ETH_BMSR_LINK_STATUS) == RFLPC_ETH_BMSR_LINK_STATUS;
 }
 
-
-#define PRINT_REG_VALUE(reg) printf(#reg"  \t%x\r\n", _read_from_phy_register(reg));
-
-void rflpc_eth_print_infos()
-{
-    uint32_t bmcr = _read_from_phy_register(RFLPC_ETH_PHY_BMCR);
-    printf("Operating mode : %d Mbps %s duplex\r\n", bmcr & RFLPC_ETH_BMCR_SPEED_SELECT ? 100 : 10, bmcr & RFLPC_ETH_BMCR_DUPLEX_MODE ? "full" : "half");
-
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_BMCR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_BMSR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYIDR1);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYIDR2);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANAR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANLPAR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANLPARNP);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANER);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_ANNPTR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYSTS);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_FCSCR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_RECR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_PCSR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_RBR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_LEDCR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_PHYCR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_10BTSCR);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_CDCTRL1);
-    PRINT_REG_VALUE(RFLPC_ETH_PHY_EDCR);
-}
-
 int rflpc_eth_link_auto_negociate(int max_desired_mode)
 {
     int mode;
     uint16_t bmcr;
+#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
     uint16_t anar;
-
+#endif
    
 
     /* Do not perform autonegociation if link is down */
     if (!rflpc_eth_link_state())
 	return -1;
 
+#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
     /* To set maximum mode, we set the ANAR register with desired value */
     anar = _read_from_phy_register(RFLPC_ETH_PHY_ANAR);
     /* remove all caps */
@@ -219,6 +192,7 @@ int rflpc_eth_link_auto_negociate(int max_desired_mode)
 	    break;
     }
     _write_to_phy_register(RFLPC_ETH_PHY_ANAR, anar);
+#endif
 
     bmcr = _read_from_phy_register(RFLPC_ETH_PHY_BMCR);
     /* Enable auto-negociation */
@@ -299,6 +273,7 @@ void rflpc_eth_set_link_mode(int mode)
 
 int rflpc_eth_get_link_mode()
 {
+#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
     uint16_t physts = _read_from_phy_register(RFLPC_ETH_PHY_PHYSTS);
 
     if (physts & RFLPC_ETH_PHYSTS_SPEED_STATUS) /* 10 Mbps */
@@ -311,6 +286,19 @@ int rflpc_eth_get_link_mode()
     if (physts & RFLPC_ETH_PHYSTS_DUPLEX_STATUS) /* full duplex */
 	return RFLPC_ETH_LINK_MODE_100FD ;
     return RFLPC_ETH_LINK_MODE_100HD;
+#else /* detect mode from BMCR register (not accurate) */
+    uint16_t bmcr = _read_from_phy_register(RFLPC_ETH_PHY_BMCR);
+    if (bmcr & RFLPC_ETH_BMCR_SPEED_SELECT) /* 100 Mbps */
+    {
+	if (bmcr & RFLPC_ETH_BMCR_DUPLEX_MODE) /* full duplex */
+	    return RFLPC_ETH_LINK_MODE_100FD;
+	return RFLPC_ETH_LINK_MODE_100HD; /* half */
+    }
+    /* 10 Mbps */
+    if (bmcr & RFLPC_ETH_BMCR_DUPLEX_MODE) /* full duplex */
+	return RFLPC_ETH_LINK_MODE_10FD;
+    return RFLPC_ETH_LINK_MODE_10HD;
+#endif
 }
 
 void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status, int count)

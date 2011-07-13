@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-04 11:30:46 (hauspie)>
+  Time-stamp: <2011-07-13 10:32:55 (hauspie)>
 
   all ethernet constants, register definition, bits etc..
 
@@ -24,6 +24,7 @@
 #ifndef __RFLPC_ETH_CONST_H__
 #define __RFLPC_ETH_CONST_H__
 
+#include "../config.h"
 
 #define RFLPC_ETH_PCENET_BIT (1 << 30)
 
@@ -103,16 +104,13 @@
 				   * +   12 bytes for minimum interframe gap */
 #define RFLPC_ETH_MAX_CLOCK 2500000 /* Maximum allowed clock frequency for MII, defined by IEEE 802.3, see p. 154 */
 
-/** Address of the PHY device.
-    Used to talk to PHY D83848J through RMII interface.
-    Defined as already shifted to right position to use in MADR register (p.155)
-*/
-
-#define RFLPC_ETH_PHY_ADDR (0x01)
 
 /* Address of the DP83848J PHY registers */
 #define RFLPC_ETH_PHY_BMCR     (0x0)
 #define RFLPC_ETH_PHY_BMSR     (0x1)
+
+/* Phy extented registers */
+#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
 #define RFLPC_ETH_PHY_PHYIDR1  (0x2)
 #define RFLPC_ETH_PHY_PHYIDR2  (0x3)
 #define RFLPC_ETH_PHY_ANAR     (0x4)
@@ -130,6 +128,7 @@
 #define RFLPC_ETH_PHY_10BTSCR  (0x1A)
 #define RFLPC_ETH_PHY_CDCTRL1  (0x1B)
 #define RFLPC_ETH_PHY_EDCR     (0x1D)
+#endif /* extended registers */
 
 /* PHY register bits */
 /* Basic Mode Control Register (BMSR) */
@@ -158,6 +157,9 @@
 #define RFLPC_ETH_BMSR_EXT_REGISTER_CAPS        (1 << 0)
 
 
+
+/* Phy extented registers */
+#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
 /* Auto negotiation advertisement register */
 #define RFLPC_ETH_ANAR_ASM_DIR (1 << 11)
 #define RFLPC_ETH_ANAR_PAUSE   (1 << 10)
@@ -182,7 +184,7 @@
 #define RFLPC_ETH_PHYSTS_DUPLEX_STATUS             (1 << 2)
 #define RFLPC_ETH_PHYSTS_SPEED_STATUS              (1 << 1)
 #define RFLPC_ETH_PHYSTS_LINK_STATUS               (1 << 0)
-
+#endif /* extended registers */
 
 /* Interrupt enable bits */
 #define RFLPC_ETH_IRQ_EN_RX_OVERRUN  (1 << 0)

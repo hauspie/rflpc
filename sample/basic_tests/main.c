@@ -228,7 +228,6 @@ void test_ethernet()
 {
     int old_link_state = 10;
     rflpc_eth_init();
-    rflpc_eth_print_infos();
 
     rflpc_led_val(0);
 

@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-06 22:57:49 (mickey)>
+  Time-stamp: <2011-07-13 10:24:42 (hauspie)>
 */ 
 #include <stdint.h>
 #include "../LPC17xx.h"
@@ -70,18 +70,16 @@ extern void rflpc_eth_set_link_mode(int mode);
  */
 extern int rflpc_eth_link_auto_negociate(int max_desired_mode);
 
-/** returns the current link mode. The information is extracted from the PHY
-    PHYSTS register.
+/** returns the current link mode.  
+
+    The information is extracted from the PHY PHYSTS register if
+    ::RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS is defined. Otherwise, 
+    it uses the Control register which is less reliable and may return
+    wrong mode (especially for the duplex mode)
 
     @return bit 0 tells speed, bit 1 tells duplex
 */
 extern int rflpc_eth_get_link_mode();
-
-
-/** functions that print information on chip and link.
-    Will be removed when driver is functional, only used as debug function
-*/
-extern void rflpc_eth_print_infos();
 
 
 /** This structure holds a descriptor which describes the fragment
