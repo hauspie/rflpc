@@ -136,7 +136,7 @@ void test_printf()
 void print_interrupts(const uint32_t *addr)
 {
     int i;
-    for (i = 0; i < IRQn_COUNT ; ++i)
+    for (i = 0; i < RFLPC_IRQn_COUNT ; ++i)
     {
 	printf("%p: 0x%x\r\n", addr+i, addr[i]);
     }
