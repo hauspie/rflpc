@@ -19,7 +19,8 @@
 #include "config.h"
 
 /* Internal RC Oscillator is 4Mhz. */
-static uint32_t _rflpc_system_clock = 4000000;
+#define RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY 4000000
+static uint32_t _rflpc_system_clock = RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY;
 
 
 /** Send a feed sequence to the PLL0FEED register (p. 40) 
@@ -51,6 +52,8 @@ void rflpc_clock_init(void)
     RFLPC_PLL0_DO_FEED();
 
 
+/* If we use the main oscillator */
+#ifdef RFLPC_CLOCK_USE_MAIN_OSCILLATOR
     /* Then, enable main oscillator and wait for it to be ready */
     /* Select its range, if 1Mhz to 20Mhz, set 0 to bit 4 of SCS register
      * otherwise, set to 1 (p. 28)*/
@@ -67,7 +70,7 @@ void rflpc_clock_init(void)
     /* Main oscillator is stable. Can now be used as source for PLL0 */
     /* Select main oscillator as source for PLL0. Set bit 1:0 of CLKSRC register to 01 (p. 34) */
     LPC_SC->CLKSRCSEL  = ((LPC_SC->CLKSRCSEL & ~(3UL)) | 1);
-
+#endif
 
 
     /* Configure PLL0 with N= INPUT_DIVIDER and M=PLL_MULTIPLIER (p. 37) */
@@ -90,10 +93,12 @@ void rflpc_clock_init(void)
     /* validate connection */
     RFLPC_PLL0_DO_FEED();
 
-
+#ifdef RFLPC_CLOCK_USE_MAIN_OSCILLATOR
     _rflpc_system_clock = (2*RFLPC_CLOCK_PLL_MULTIPLIER*(RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY/RFLPC_CLOCK_INPUT_DIVIDER))/RFLPC_CLOCK_CPU_DIVIDER;
-
-    /* system is now working on PLL0, CPU at 96Mhz */
+#else
+    _rflpc_system_clock = (2*RFLPC_CLOCK_PLL_MULTIPLIER*(RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY/RFLPC_CLOCK_INPUT_DIVIDER))/RFLPC_CLOCK_CPU_DIVIDER;
+#endif
+    /* system is now working on PLL0 */
     /* Enables the IRQs */
     rflpc_irq_global_enable();
 }

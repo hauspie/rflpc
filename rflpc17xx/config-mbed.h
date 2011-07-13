@@ -17,9 +17,10 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-13 11:03:33 (hauspie)>
+  Time-stamp: <2011-07-13 11:14:06 (hauspie)>
 
   This files provides the configuration of the lib for the mbed platform
+
 */
 
 #ifndef __RFLPC_CONFIG_MBED_H__
@@ -29,6 +30,14 @@
 /**************************************
  *          Clock configuration       *
  **************************************/
+//#define RFLPC_CLOCK_USE_MAIN_OSCILLATOR
+
+
+#ifdef RFLPC_CLOCK_USE_MAIN_OSCILLATOR
+/** The frequency of the main oscillator if used */
+#define RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY 12000000
+#endif
+
 /** The PLL output clock frequency is given by:
     (2*PLL_MULTIPLIER*MAIN_OSCILLATOR_FREQUENCY)/INPUT_DIVIDER
     This clock is then dividef by CPU_DIVIDER to clock the CPU.
@@ -42,11 +51,9 @@
     PLL ouput is 2*12*12000000/1 = 288Mhz
     Divided by 3 -> CPU is at 96 Mhz
 */
-#define RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY 12000000
 #define RFLPC_CLOCK_INPUT_DIVIDER                    1
 #define RFLPC_CLOCK_PLL_MULTIPLIER                  12
 #define RFLPC_CLOCK_CPU_DIVIDER                      3
-
 /**************************************
  *          LEDS configuration        *
  **************************************/
