@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include "../clock.h"
 #include "../interrupt.h"
+#include "../pinconf.h"
 
 #include "uart.h"
 
@@ -30,6 +31,10 @@
    DLL = 4
    UART rate will then be set to 115384
 */
+
+#define RFLPC_UART0_PORT    0
+#define RFLPC_UART0_TXD_PIN 2
+#define RFLPC_UART0_RXD_PIN 3
 
 int rflpc_uart0_init()
 {
@@ -61,7 +66,8 @@ int rflpc_uart0_init()
     LPC_UART0->FCR = 7;
 
     /* Set pin mode to UART0 (TXD0, RXD0) (p. 108 and p. 299) */
-    LPC_PINCON->PINSEL0 = (LPC_PINCON->PINSEL0 & ~(0xFUL << 4)) | (5 << 4);
+    rflpc_pin_set(0, RFLPC_UART0_RXD_PIN, 1, 0, 0);
+    rflpc_pin_set(0, RFLPC_UART0_TXD_PIN, 1, 0, 0);
 
     /* Reset the DLAB bit in U0LCR to enable access to transmit and receive
      * registers (p. 301) */
