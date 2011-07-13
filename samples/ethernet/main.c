@@ -23,14 +23,14 @@
 #include <drivers/uart.h>
 #include <drivers/ethernet.h>
 #include <drivers/rit.h> /* timer for link status */
-#include <printf.h>
 #include <interrupt.h>
 #include <drivers/eth_const.h>
-
+#include <string.h> /* for memcpy */
+#include <printf.h>
 #include "protocols.h"
 
 /* a good old duff's device for memcpy */
-void *memcpy(void *dst, const void *src, unsigned int bytes)
+/*void *memcpy(void *dst, const void *src, unsigned int bytes)
 {
    unsigned char *to = (unsigned char *)dst;
    const unsigned char *from = (const unsigned char *)src;
@@ -48,7 +48,7 @@ void *memcpy(void *dst, const void *src, unsigned int bytes)
    }
    return dst;
 }
-
+*/
 
 /* For printf */
 int putchar(int c)

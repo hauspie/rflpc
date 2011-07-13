@@ -1,5 +1,5 @@
 CC=arm-none-eabi-gcc
-LD=arm-none-eabi-ld
+LD=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
 OBJDUMP=arm-none-eabi-objdump
 
@@ -12,7 +12,7 @@ ELF=ethernet.elf
 BIN=ethernet.bin
 
 CFLAGS=-Os -Wall -I$(LIB_DIR) -DRFLPC_PLATFORM_MBED
-LDFLAGS=-nostdlib -L$(LIB_DIR) -lrflpc17xx -T $(LINK_SCRIPT)
+LDFLAGS=-nostartfiles -static -L$(LIB_DIR) -lrflpc17xx -Wl,-T,$(LINK_SCRIPT),-L$(LIB_DIR)
 
 OBJS=main.o protocols.o
 
