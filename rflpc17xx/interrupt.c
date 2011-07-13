@@ -27,9 +27,9 @@
 #endif
 
 /* use a special section to put at start of ram (see link script) */
-static volatile rflpc_irq_handler_t _ram_interrupts[IRQn_COUNT] __attribute__ ((section(".ram_int_vector")));
+static volatile rflpc_irq_handler_t _ram_interrupts[RFLPC_IRQn_COUNT] __attribute__ ((section(".ram_int_vector")));
 /* this array is defined in init.c and is the rom interrupt vector */
-extern void* _rom_interrupts[IRQn_COUNT];
+extern void* _rom_interrupts[RFLPC_IRQn_COUNT];
 
 RFLPC_IRQ_HANDLER _default_exception_handler()
 {
@@ -51,7 +51,7 @@ void rflpc_irq_init()
 {
     /* copy the interrupt vector */
     int i;
-    for (i = 0 ; i < IRQn_COUNT ; ++i)
+    for (i = 0 ; i < RFLPC_IRQn_COUNT ; ++i)
     {
 	_ram_interrupts[i] = (rflpc_irq_handler_t) _rom_interrupts[i];
     }
