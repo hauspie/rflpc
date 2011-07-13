@@ -1,2 +1,3 @@
 - Modify uart initialization to allow the choice of baud rate, and configure its peripheral clock depending on the cpu clock
 - Add flash memory interface driver
+- Add real documentation and user guide
