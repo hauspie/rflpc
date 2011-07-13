@@ -1,4 +1,4 @@
-/* This file is part of rflpc.                        
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
  *									 
  * rflpc is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by	 
@@ -13,7 +13,11 @@
  * You should have received a copy of the GNU General Public License	 
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
  */
-
+/*
+  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Created: 
+  Time-stamp: <2011-07-13 14:12:18 (hauspie)>
+*/
 #ifndef __RFLPC_DEBUG_H__
 #define __RFLPC_DEBUG_H__
 
