@@ -12,3 +12,10 @@ What is needed?
 This release includes the LPC17xx.h from NXP and core_m3.h from ARM header
 files. This files include the definition of structures for mapping the CPU and
 the peripheral registers.
+
+Folder description
+------------------
+- docs: Datasheets which have been used to develop the library
+- rflpc17xx: library source folder
+- samples: some samples used to test and/or demonstrate some functionalities of
+  the library
