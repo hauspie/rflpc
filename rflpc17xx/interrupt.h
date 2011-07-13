@@ -16,12 +16,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:29:41 (hauspie)>
+  Time-stamp: <2011-07-13 14:35:39 (hauspie)>
 */
 #ifndef __RFLPC_INTERRUPT_H__
 #define __RFLPC_INTERRUPT_H__
 
-#include "LPC17xx.h"
+#include "nxp/LPC17xx.h"
 #include "printf.h"
 
 /** Enables interrupts (p. 716) */
@@ -39,17 +39,13 @@ static inline void rflpc_irq_global_disable()
 /** Enables a specific interrupt */
 static inline void rflpc_irq_enable(IRQn_Type irq)
 {
-    int bit = irq - WDT_IRQn;
-
-    NVIC->ISER[bit >> 5] |= (1 << bit);
+    NVIC->ISER[irq >> 5] |= (1 << irq);
 }
 
 /** Disables a specific interrupt */
 static inline void rflpc_irq_disable(IRQn_Type irq)
 {
-    int bit = irq - WDT_IRQn;
-
-    NVIC->ICER[bit >> 5] |= (1 << bit);
+    NVIC->ICER[irq >> 5] |= (1 << irq);
 }
 
 /* Interrupt handler type */

@@ -1,0 +1,14 @@
+What is it?
+-----------
+This library allows development on a LPC17xx board from NXP.
+The release includes configuration for the MBED platform which uses a LPC1768.
+
+It includes:
+- Linker script and board initialization code
+- Drivers for several peripherals
+
+What is needed?
+---------------
+This release includes the LPC17xx.h from NXP and core_m3.h from ARM header
+files. This files include the definition of structures for mapping the CPU and
+the peripheral registers.

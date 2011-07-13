@@ -16,12 +16,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:18:30 (hauspie)>
+  Time-stamp: <2011-07-13 14:38:07 (hauspie)>
 */
 #ifndef __RFLPC_CLOCK_H__
 #define __RFLPC_CLOCK_H__
 
-#include "LPC17xx.h"
+#include "nxp/LPC17xx.h"
 
 
 /** get the system clock in Hz */

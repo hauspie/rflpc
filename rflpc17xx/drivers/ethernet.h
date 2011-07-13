@@ -19,10 +19,10 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-13 10:24:42 (hauspie)>
+  Time-stamp: <2011-07-13 14:39:06 (hauspie)>
 */ 
 #include <stdint.h>
-#include "../LPC17xx.h"
+#include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
 
 /** Inits the ethernet device */

@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:23:35 (hauspie)>
+  Time-stamp: <2011-07-13 14:39:33 (hauspie)>
 */
 #ifndef __RFLPC_LEDS_H__
 #define __RFLPC_LEDS_H__
@@ -30,7 +30,6 @@
    LED3 P1.21
    LED4 P1.23
 */
-#include "../LPC17xx.h"
 #include "../config.h"
 #include "gpio.h"
 

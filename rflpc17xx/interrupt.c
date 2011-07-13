@@ -16,9 +16,9 @@
 /* 
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:19:09 (hauspie)>
+  Time-stamp: <2011-07-13 14:59:47 (hauspie)>
 */
-#include "LPC17xx.h" /* for IRQn enum */
+#include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "config.h"
 #include "interrupt.h"
 
@@ -64,5 +64,6 @@ void rflpc_irq_init()
 
 void rflpc_irq_set_handler(IRQn_Type irq, rflpc_irq_handler_t handler)
 {
-    _ram_interrupts[irq] = handler;
+    /* +16 because of the system exception handler enum starting at -14 */
+    _ram_interrupts[irq+16] = handler;
 }

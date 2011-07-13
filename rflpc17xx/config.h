@@ -20,7 +20,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 2011-07-04
-    Time-stamp: <2011-07-13 14:22:20 (hauspie)>
+    Time-stamp: <2011-07-13 14:44:45 (hauspie)>
 
     This files permits the configuration of the platform.
     It includes a platform-dependent config file for your target.
@@ -53,5 +53,8 @@
 /** If this constant is defined, then freeze the device on unhandled interrupt
  */
 #define RFLPC_IRQ_DEBUG_ENABLE
+
+/** This is the size of the interrupt vector */
+#define IRQn_COUNT (PLL1_IRQn + 16 +1)
 
 #endif

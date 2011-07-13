@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:25:39 (hauspie)>
+  Time-stamp: <2011-07-13 14:38:48 (hauspie)>
 */
 #ifndef __RFLPC_SYS_TICK_TIMER_H__
 #define __RFLPC_SYS_TICK_TIMER_H__
@@ -37,7 +37,7 @@
 */
 
 #include "../interrupt.h"
-#include "../LPC17xx.h"
+#include "../nxp/LPC17xx.h"
 
 /** initializes the system timer */
 extern void rflpc_sys_timer_init();

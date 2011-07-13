@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:28:04 (hauspie)>
+  Time-stamp: <2011-07-13 14:47:45 (hauspie)>
 */
 #include <debug.h>
 #include <drivers/leds.h>
@@ -319,6 +319,8 @@ void ethernet()
     printf("- 's' to toggle speed\r\n");
     printf("- 'd' to toggle duplex\r\n");
     rflpc_uart0_set_rx_callback(_serial_handler);
+
+    printf("hop\r\n");
 
     /* initialize rx descriptors */
     for (i = 0 ; i < RX_BUFFER_COUNT ; ++i)

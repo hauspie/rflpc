@@ -17,14 +17,14 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-13 10:33:53 (hauspie)>
+  Time-stamp: <2011-07-13 14:38:57 (hauspie)>
 */
 
 #include "ethernet.h"
 #include "eth_const.h"
 #include "gpio.h"
 #include "leds.h"
-#include "../LPC17xx.h"
+#include "../nxp/LPC17xx.h"
 #include "../clock.h"
 #include "../printf.h"
 

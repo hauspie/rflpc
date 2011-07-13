@@ -16,7 +16,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2011-07-13 14:24:13 (hauspie)>
+    Time-stamp: <2011-07-13 14:39:15 (hauspie)>
 
   This files defines the driver for the Repetitive Interrupt Timer (user manual, p. 501)
  */
@@ -24,7 +24,7 @@
 #ifndef __RFLPC_RIT_H__
 #define __RFLPC_RIT_H__
 
-#include "../LPC17xx.h"
+#include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
 
 /** Enables the RIT. By default, it is turned off. See PCONP register, user manual, p.63 */

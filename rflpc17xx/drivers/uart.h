@@ -16,12 +16,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:26:39 (hauspie)>
+  Time-stamp: <2011-07-13 14:39:46 (hauspie)>
 */
 #ifndef __RFLPC_UART_H__
 #define __RFLPC_UART_H__
 
-#include "../LPC17xx.h"
+#include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
 
 /* Inits the UART, using 115200 baud, 8 bits data, no parity and 1 stop bit */
