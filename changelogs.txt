@@ -1,3 +1,6 @@
+0.3:
+	- Refactored the library for public release (for using it for smews
+	  mbed_ethernet port)
 0.2:
 	- Ethernet support
 
