@@ -21,7 +21,7 @@
   
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 2011-07-04
-    Time-stamp: <2011-07-04 11:30:46 (hauspie)>
+    Time-stamp: <2011-07-13 10:08:35 (hauspie)>
 
     This files permits the configuration of the platform.
     It includes a platform-dependent config file for your target.
@@ -51,5 +51,9 @@
 #ifndef STACK_SIZE
 #define STACK_SIZE 512
 #endif
+
+/** If this constant is defined, then freeze the device on unhandled interrupt
+ */
+#define RFLPC_IRQ_DEBUG_ENABLE
 
 #endif

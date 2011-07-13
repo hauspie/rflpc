@@ -24,7 +24,7 @@
 #include <interrupt.h>
 #include <clock.h>
 
-uint32_t data = (LED1|LED2);
+uint32_t data = (RFLPC_LED_1|RFLPC_LED_2);
 uint32_t data2 = 0xfadebeef;
 char test1 = 0xAB;
 void *add_data = &data;
@@ -43,34 +43,34 @@ int putchar(int c)
 
 void test_data_bss()
 {
-    rflpc_led_set(LED1|LED2|LED3|LED4);
+    rflpc_led_set(RFLPC_LED_1|RFLPC_LED_2|RFLPC_LED_3|RFLPC_LED_4);
     RFLPC_DELAY(1000000);
-    rflpc_led_clr(LED1|LED2|LED3|LED4);
+    rflpc_led_clr(RFLPC_LED_1|RFLPC_LED_2|RFLPC_LED_3|RFLPC_LED_4);
     
 
     /* Check data section initialisation */
-    if (data == (LED1 | LED2))
-	rflpc_led_set(LED1);
+    if (data == (RFLPC_LED_1 | RFLPC_LED_2))
+	rflpc_led_set(RFLPC_LED_1);
 
     RFLPC_DELAY(1000000);
     if (test1 == 0xAB)
-	rflpc_led_set(LED2);
+	rflpc_led_set(RFLPC_LED_2);
 
     RFLPC_DELAY(1000000);
     if (add_data == &data)
-	rflpc_led_set(LED3);
+	rflpc_led_set(RFLPC_LED_3);
 
     RFLPC_DELAY(1000000);
     if (data2 == 0xfadebeef)
-	rflpc_led_set(LED4);
+	rflpc_led_set(RFLPC_LED_4);
 
     
     /* Check bss section initialisation */
     RFLPC_DELAY(1000000);
     if (a == 0 && b == 0 && c == 0 && d == 0)
-	rflpc_led_val(LED1 | LED4);
+	rflpc_led_val(RFLPC_LED_1 | RFLPC_LED_4);
     else
-	rflpc_led_val(LED2 | LED3);
+	rflpc_led_val(RFLPC_LED_2 | RFLPC_LED_3);
     RFLPC_DELAY(1000000);
 }
 
@@ -268,9 +268,9 @@ void test_ethernet()
 	    old_link_state = current_link_state;
 	    printf("Eth link is : %s\r\n", current_link_state ? "Up" : "Down");
 	    if (current_link_state)
-		rflpc_led_set(LED1);
+		rflpc_led_set(RFLPC_LED_1);
 	    else
-		rflpc_led_clr(LED1);
+		rflpc_led_clr(RFLPC_LED_1);
 	}
     }
 }
@@ -278,13 +278,13 @@ void test_ethernet()
 void test_led()
 {
     int i;
-    rflpc_led_set(LED1);
+    rflpc_led_set(RFLPC_LED_1);
     RFLPC_DELAY(1000000);
-    rflpc_led_set(LED2);
+    rflpc_led_set(RFLPC_LED_2);
     RFLPC_DELAY(1000000);
-    rflpc_led_set(LED3);
+    rflpc_led_set(RFLPC_LED_3);
     RFLPC_DELAY(1000000);
-    rflpc_led_set(LED4);
+    rflpc_led_set(RFLPC_LED_4);
     RFLPC_DELAY(1000000);
 
     for (i = 0 ; i < 16 ; ++i)
@@ -296,14 +296,14 @@ void test_led()
 
 int main()
 {
-    int led[6] = {LED1, LED2, LED3, LED4, LED3, LED2};
+    int led[6] = {RFLPC_LED_1, RFLPC_LED_2, RFLPC_LED_3, RFLPC_LED_4, RFLPC_LED_3, RFLPC_LED_2};
     int i = 0;
 
     /* test_led(); */
     test_data_bss();
 
     if (rflpc_uart0_init() == -1)
-	RFLPC_STOP(LED1 | LED3, 1000000);
+	RFLPC_STOP(RFLPC_LED_1 | RFLPC_LED_3, 1000000);
     test_uart();
 
     printf("rfBareMbed sample test\r\n");
@@ -324,7 +324,7 @@ int main()
 	    i = 0;
     }
 
-    RFLPC_STOP(LED2 | LED3, 1000000);
+    RFLPC_STOP(RFLPC_LED_2 | RFLPC_LED_3, 1000000);
 
     return 0;
 }

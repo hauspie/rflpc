@@ -27,68 +27,65 @@
    LED4 P1.23
 */
 #include "../LPC17xx.h"
+#include "../config.h"
 #include "gpio.h"
 
-#define LED1_PIN (18)
-#define LED2_PIN (20)
-#define LED3_PIN (21)
-#define LED4_PIN (23)
 
-#define LED1 (1 << 18)
-#define LED2 (1 << 20)
-#define LED3 (1 << 21)
-#define LED4 (1 << 23)
+#define RFLPC_LED_1 (1 << RFLPC_LED_1_PIN)
+#define RFLPC_LED_2 (1 << RFLPC_LED_2_PIN)
+#define RFLPC_LED_3 (1 << RFLPC_LED_3_PIN)
+#define RFLPC_LED_4 (1 << RFLPC_LED_4_PIN)
 
 /** Inits the GPIO port to use the leds. Sets the GPIO1 led pins to output
  * pins */
 static inline void rflpc_led_init()
 {
     /* Connect GPIO1 to physical pins */
-    rflpc_gpio_use_pin(1, LED1_PIN);
-    rflpc_gpio_use_pin(1, LED2_PIN);
-    rflpc_gpio_use_pin(1, LED3_PIN);
-    rflpc_gpio_use_pin(1, LED4_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_1_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_2_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_3_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_4_PIN);
     /* Connect LED pins */
-    rflpc_gpio_set_pin_mode_output(1, LED1_PIN);
-    rflpc_gpio_set_pin_mode_output(1, LED2_PIN);
-    rflpc_gpio_set_pin_mode_output(1, LED3_PIN);
-    rflpc_gpio_set_pin_mode_output(1, LED4_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_1_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_2_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_3_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_4_PIN);
 }
 
 /** Turns the given led(s) on */
 static inline void rflpc_led_set(uint32_t l)
 {
-    rflpc_gpio_set_pins_from_mask(1, l);
+    rflpc_gpio_set_pins_from_mask(RFLPC_LED_PORT, l);
 }
 
 
 /** Clears the given led(s) (turn them off) */
 static inline void rflpc_led_clr(uint32_t l)
 {
-    rflpc_gpio_clr_pins_from_mask(1, l);
+    rflpc_gpio_clr_pins_from_mask(RFLPC_LED_PORT, l);
 }
 
 
 /** Turns the leds included in the mask*/
 static inline void rflpc_led_val(uint32_t l)
 {
-    rflpc_gpio_set_val(1, l, ~(LED1 | LED2 | LED3 | LED4));
+    rflpc_gpio_set_val(RFLPC_LED_PORT, l, ~(RFLPC_LED_1 | RFLPC_LED_2 | RFLPC_LED_3 | RFLPC_LED_4));
 }
 
 /** Turns the led to reflect a binary 4 digit number 
-    LED4 is LSB, LED1 MSB
+    RFLPC_LED_4 is LSB, RFLPC_LED_1 MSB
  */
 static inline void rflpc_led_binary_value(uint8_t v)
 {
     uint32_t leds = 0;
     if (v & 1)
-	leds |= LED4;
+	leds |= RFLPC_LED_4;
     if (v & 2)
-	leds |= LED3;
+	leds |= RFLPC_LED_3;
     if (v & 4)
-	leds |= LED2;
+	leds |= RFLPC_LED_2;
     if (v & 8)
-	leds |= LED1;
+	leds |= RFLPC_LED_1;
     rflpc_led_val(leds);
 }
 

@@ -15,8 +15,13 @@
  */
 
 #include "LPC17xx.h" /* for IRQn enum */
+#include "config.h"
 #include "interrupt.h"
+
+#ifdef RFLPC_IRQ_DEBUG_ENABLE
 #include "debug.h"
+#endif
+
 /* use a special section to put at start of ram (see link script) */
 static volatile rflpc_irq_handler_t _ram_interrupts[IRQn_COUNT] __attribute__ ((section(".ram_int_vector")));
 /* this array is defined in init.c and is the rom interrupt vector */
@@ -24,14 +29,18 @@ extern void* _rom_interrupts[IRQn_COUNT];
 
 RFLPC_IRQ_HANDLER _default_exception_handler()
 {
+#ifdef RFLPC_IRQ_DEBUG_ENABLE
     /* stops the execution with a O--O <-> -OO- led pattern. */
-    RFLPC_STOP(LED1|LED4, 2000000);
+    RFLPC_STOP(RFLPC_LED_1|RFLPC_LED_4, 2000000);
+#endif
 }
 
 RFLPC_IRQ_HANDLER _default_peripheral_handler()
 {
+#ifdef RFLPC_IRQ_DEBUG_ENABLE
     /* stops the execution with a --OO <-> OO-- led pattern. */
-    RFLPC_STOP(LED1|LED2, 2000000);
+    RFLPC_STOP(RFLPC_LED_1|RFLPC_LED_2, 2000000);
+#endif
 }
 
 void rflpc_irq_init()

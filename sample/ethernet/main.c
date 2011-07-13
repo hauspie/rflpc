@@ -133,9 +133,9 @@ RFLPC_IRQ_HANDLER _rit_handler()
 {
     rflpc_rit_clear_pending_interrupt();
     if (rflpc_eth_link_state())
-	rflpc_led_set(LED1);
+	rflpc_led_set(RFLPC_LED_1);
     else
-	rflpc_led_clr(LED1);
+	rflpc_led_clr(RFLPC_LED_1);
 }
 
 #define RX_BUFFER_SIZE  RFLPC_ETH_MAX_FRAME_LENGTH
@@ -270,13 +270,13 @@ void eth_handler()
 	rfEthRxStatus *s;
 	while (rflpc_eth_get_current_rx_packet_descriptor(&d, &s))
 	{
-	    rflpc_led_set(LED2);
+	    rflpc_led_set(RFLPC_LED_2);
 	    /* packet received */
 	    /*dump_packet(d, s);*/
 	    process_packet(d,s);
 	    /* done with it */
 	    rflpc_eth_done_process_rx_packet();
-	    rflpc_led_clr(LED2);
+	    rflpc_led_clr(RFLPC_LED_2);
 	}
     }
     rflpc_eth_irq_clear(rflpc_eth_irq_get_status());
@@ -351,12 +351,12 @@ void ethernet()
 int main()
 {
     if (rflpc_uart0_init() == -1)
-	RFLPC_STOP(LED1 | LED3, 1000000);
+	RFLPC_STOP(RFLPC_LED_1 | RFLPC_LED_3, 1000000);
     printf("rfBareMbed ethernet sample\r\n");
 
     ethernet();
 
-    RFLPC_STOP(LED2 | LED3, 1000000);
+    RFLPC_STOP(RFLPC_LED_2 | RFLPC_LED_3, 1000000);
 
     return 0;
 }
