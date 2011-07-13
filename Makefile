@@ -7,7 +7,7 @@ clean: $(patsubst %, _clean_%, $(DIRS))
 dump: $(patsubst %, _dump_%, $(DIRS))
 
 program: all
-	make -C sample/ethernet program
+	make -C samples/ethernet program
 
 
 $(patsubst %, _all_%, $(DIRS)):

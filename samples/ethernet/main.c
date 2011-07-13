@@ -29,27 +29,6 @@
 #include <printf.h>
 #include "protocols.h"
 
-/* a good old duff's device for memcpy */
-/*void *memcpy(void *dst, const void *src, unsigned int bytes)
-{
-   unsigned char *to = (unsigned char *)dst;
-   const unsigned char *from = (const unsigned char *)src;
-   unsigned int n = (bytes + 7) / 8;
-   switch (bytes % 8) {
-      case 0: do { *to++ = *from++;
-         case 7:      *to++ = *from++;
-         case 6:      *to++ = *from++;
-         case 5:      *to++ = *from++;
-         case 4:      *to++ = *from++;
-         case 3:      *to++ = *from++;
-         case 2:      *to++ = *from++;
-         case 1:      *to++ = *from++;
-      } while (--n > 0);
-   }
-   return dst;
-}
-*/
-
 /* For printf */
 int putchar(int c)
 {
