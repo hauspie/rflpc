@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-13 14:38:57 (hauspie)>
+  Time-stamp: <2011-07-15 15:46:56 (hauspie)>
 */
 
 #include "ethernet.h"
@@ -317,27 +317,6 @@ void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus
     LPC_EMAC->MAC1 |= RFLPC_ETH_MAC1_RECEIVE_ENABLE ;
 }
 
-void rflpc_eth_done_process_rx_packet()
-{
-    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* Queue is empty */
-	return;
-    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxDescriptorNumber) /* Wrap around */
-	LPC_EMAC->RxConsumeIndex = 0;
-    else
-	LPC_EMAC->RxConsumeIndex++;
-}
-
-int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descriptor, rfEthRxStatus **status)
-{
-    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* empty queue */
-	return 0;
-    if (descriptor)
-	*descriptor = ((rfEthDescriptor*)LPC_EMAC->RxDescriptor) + LPC_EMAC->RxConsumeIndex;
-    if (status)
-	*status = ((rfEthRxStatus*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
-    return 1;
-}
-
 void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptors, rfEthTxStatus *status, int count)
 {
     /* Turn transmission off while modifying descriptors */
@@ -350,35 +329,6 @@ void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptors, rfEthTxStatus
 
     /* Turn transmission on */
     LPC_EMAC->Command |= RFLPC_ETH_CMD_TX_ENABLE;
-}
-
-int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status)
-{
-    /* queue full */
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
-	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
-    {
-	return 0;
-    }
-    if (descriptor)
-	*descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + LPC_EMAC->TxProduceIndex;
-    if (status)
-	*status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + LPC_EMAC->TxProduceIndex;
-    return 1;
-}
-
-void rflpc_eth_done_process_tx_packet()
-{
-    /* queue full */
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
-	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
-    {
-	return;
-    }
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber)
-	LPC_EMAC->TxProduceIndex = 0;
-    else
-	LPC_EMAC->TxProduceIndex++;
 }
 
 void rflpc_eth_get_mac_address(uint8_t *addr)

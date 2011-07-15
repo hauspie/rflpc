@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-13 14:39:06 (hauspie)>
+  Time-stamp: <2011-07-15 15:48:35 (hauspie)>
 */ 
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -125,14 +125,30 @@ extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthR
     been marked as processed by ::rflpc_eth_done_process_rx_packet();
     @return 0 if receive queue is empty, 1 if pointers are valid
  */
-extern int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descriptor, rfEthRxStatus **status);
+static inline int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descriptor, rfEthRxStatus **status)
+{
+    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* empty queue */
+	return 0;
+    *descriptor = ((rfEthDescriptor*)LPC_EMAC->RxDescriptor) + LPC_EMAC->RxConsumeIndex;
+    *status = ((rfEthRxStatus*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
+    return 1;
+}
+
 
 /** This function has to be called when a packet (which descriptor is returned
  * by ::rflpc_eth_get_current_rx_packet_descriptor) has been processed and can
  * be discarded
  */
 
-extern void rflpc_eth_done_process_rx_packet();
+static inline void rflpc_eth_done_process_rx_packet()
+{
+    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* Queue is empty */
+	return;
+    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxDescriptorNumber) /* Wrap around */
+	LPC_EMAC->RxConsumeIndex = 0;
+    else
+	LPC_EMAC->RxConsumeIndex++;
+}
 
 
 /** Sets tx descriptors and status base address
@@ -150,12 +166,35 @@ extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTx
     @return 0 if no more descriptor are available (which means that all the
     buffers are owned by the hardware and waiting to be sent). 1 if pointers are valid
 */
-extern int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status);
+static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status)
+{
+    /* queue full */
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
+	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
+    {
+	return 0;
+    }
+    *descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + LPC_EMAC->TxProduceIndex;
+    *status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + LPC_EMAC->TxProduceIndex;
+    return 1;
+}
 
 /** When the packet has been generated, calling this function will make it
  * owned by the hardware and queued for emission
  */
-extern void rflpc_eth_done_process_tx_packet();
+static inline void rflpc_eth_done_process_tx_packet()
+{
+    /* queue full */
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
+	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
+    {
+	return;
+    }
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber)
+	LPC_EMAC->TxProduceIndex = 0;
+    else
+	LPC_EMAC->TxProduceIndex++;
+}
 
 /** returns the device MAC address
  */
