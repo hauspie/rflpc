@@ -8,6 +8,7 @@ LIB=librflpc17xx.a
 
 CFILES=$(wildcard *.c)
 CFILES+=$(wildcard drivers/*.c)
+CFILES+=$(wildcard nxp/*.c)
 COBJS=$(CFILES:.c=.o)
 HEADERS=$(wildcard *.h)
 HEADERS+=$(wildcard drivers/*.h)
