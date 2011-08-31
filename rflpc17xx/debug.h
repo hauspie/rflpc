@@ -16,12 +16,19 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-08-30 17:13:16 (hauspie)>
+  Time-stamp: <2011-08-31 13:50:12 (hauspie)>
 */
 #ifndef __RFLPC_DEBUG_H__
 #define __RFLPC_DEBUG_H__
 
 #include "drivers/leds.h"
+
+#include "config.h"
+
+extern unsigned char _stack[RFLPC_STACK_SIZE];
+
+
+#define RFLPC_ASSERT_STACK() do {if (__get_MSP() < (uint32_t)_stack || __get_MSP() >= (uint32_t)(_stack + RFLPC_STACK_SIZE)) printf("SP out of stack in %s\r\n", __FUNCTION__);}while(0)
 
 /** wait until a counter reaches c. Used to wait some time. Depends on CPU frequency */
 #define RFLPC_DELAY(c) do {int i;uint32_t j; for (i=0 ; i < (c) ; ++i) j = LPC_SC->SCS; } while (0)

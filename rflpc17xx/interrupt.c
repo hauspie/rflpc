@@ -16,7 +16,7 @@
 /* 
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-08-31 11:29:14 (hauspie)>
+  Time-stamp: <2011-08-31 13:48:26 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "config.h"
@@ -35,6 +35,7 @@ extern void* _rom_interrupts[RFLPC_IRQn_COUNT];
 RFLPC_IRQ_HANDLER _default_exception_handler()
 {
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
+    RFLPC_ASSERT_STACK();
     printf("CFSR: %x\r\n", SCB->CFSR);
     printf("HFSR: %x\r\n", SCB->HFSR);
     printf("DFSR: %x\r\n", SCB->DFSR);

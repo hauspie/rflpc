@@ -17,7 +17,7 @@
 
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-08-30 17:32:59 (hauspie)>
+  Time-stamp: <2011-08-31 13:43:32 (hauspie)>
 */
 #include <stdint.h>
 #include "drivers/leds.h"
@@ -45,7 +45,7 @@ extern RFLPC_IRQ_HANDLER _default_peripheral_handler();
 
 /** This array will contain the stack. It is forced to be in the .stack section
  * so that the linker script can locate it where we want */
-static unsigned char _stack[RFLPC_STACK_SIZE] __attribute__((section(".stack")));
+unsigned char _stack[RFLPC_STACK_SIZE] __attribute__((section(".stack")));
 
 /** This array is the rom interrupt vector. It is force to be located in the
  * .interrupt_vector section so that the linker script puts it at address 0 */
