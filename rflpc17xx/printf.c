@@ -16,7 +16,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2011-07-13 14:19:30 (hauspie)>
+    Time-stamp: <2011-08-31 15:17:22 (hauspie)>
 */
 #include "drivers/uart.h"
 
@@ -71,6 +71,7 @@ int rflpc_printf(const char *format, ...)
     va_list args;
     int count = 0; /* number of char printed to uart */
     int print_zero = 0;
+    int ccount = sizeof(unsigned int);
     va_start(args, format);
     
 
@@ -83,6 +84,11 @@ int rflpc_printf(const char *format, ...)
 		if (*format == '0')
 		{
 		    print_zero = 1;
+		    ++format;
+		}
+		if (*format >= '2' && *format <= '4')
+		{
+		    ccount = (*format - '0') / 2;
 		    ++format;
 		}
 		switch(*format)
@@ -120,7 +126,7 @@ int rflpc_printf(const char *format, ...)
 			unsigned int val = (unsigned int) va_arg(args, unsigned int);
 			/* print the hexa val using lower case letter or upper
 			 * case letter depending on 'x' or 'X' */
-			PUT_HEXA_VAL(val,(*format - ('x' - 'a')),sizeof(unsigned int)<<3, print_zero);
+			PUT_HEXA_VAL(val,(*format - ('x' - 'a')),ccount<<3, print_zero);
 			print_zero = 0;
 		    }
 		    break;
