@@ -16,13 +16,14 @@
 /* 
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:59:47 (hauspie)>
+  Time-stamp: <2011-08-31 11:29:14 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "config.h"
 #include "interrupt.h"
 
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
+#include "printf.h"
 #include "debug.h"
 #endif
 
@@ -34,6 +35,10 @@ extern void* _rom_interrupts[RFLPC_IRQn_COUNT];
 RFLPC_IRQ_HANDLER _default_exception_handler()
 {
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
+    printf("CFSR: %x\r\n", SCB->CFSR);
+    printf("HFSR: %x\r\n", SCB->HFSR);
+    printf("DFSR: %x\r\n", SCB->DFSR);
+    RFLPC_DUMP_STACK();
     /* stops the execution with a O--O <-> -OO- led pattern. */
     RFLPC_STOP(RFLPC_LED_1|RFLPC_LED_4, 2000000);
 #endif

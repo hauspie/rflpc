@@ -20,7 +20,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 2011-07-04
-    Time-stamp: <2011-07-13 17:18:43 (hauspie)>
+    Time-stamp: <2011-07-14 23:24:30 (hauspie)>
 
     This files permits the configuration of the platform.
     It includes a platform-dependent config file for your target.
@@ -47,7 +47,7 @@
 
 /** size of the stack in bytes */
 #ifndef RFLPC_STACK_SIZE
-#define RFLPC_STACK_SIZE 512
+#define RFLPC_STACK_SIZE 1024
 #endif
 
 /** If this constant is defined, then freeze the device on unhandled interrupt

@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:12:18 (hauspie)>
+  Time-stamp: <2011-08-30 17:13:16 (hauspie)>
 */
 #ifndef __RFLPC_DEBUG_H__
 #define __RFLPC_DEBUG_H__
@@ -28,5 +28,17 @@
 
 /** Stops execution by an infinite loop, switching between led pattern l and its opposite */
 #define RFLPC_STOP(l,c) do {uint32_t leds = (l); while(1){rflpc_led_val(leds);RFLPC_DELAY((c));leds=~leds;}} while(0)
+
+#define RFLPC_DUMP_STACK() do {				\
+	register uint8_t *mstack = __get_MSP();		\
+	register int i;					\
+	for (i = 0 ; i < 64 ; ++i)			\
+	{						\
+	    if (i % 16 == 0)				\
+		printf("\n\r%p: ", mstack  + i);	\
+	    printf("%x ", mstack[i]);			\
+	}						\
+	printf("\n\r");					\
+    } while(0)
 
 #endif
