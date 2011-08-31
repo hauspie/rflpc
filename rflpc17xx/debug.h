@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-08-31 13:50:12 (hauspie)>
+  Time-stamp: <2011-08-31 16:16:02 (hauspie)>
 */
 #ifndef __RFLPC_DEBUG_H__
 #define __RFLPC_DEBUG_H__
@@ -37,13 +37,13 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
 #define RFLPC_STOP(l,c) do {uint32_t leds = (l); while(1){rflpc_led_val(leds);RFLPC_DELAY((c));leds=~leds;}} while(0)
 
 #define RFLPC_DUMP_STACK() do {				\
-	register uint8_t *mstack = __get_MSP();		\
+	register uint8_t *mstack =(uint8_t*) __get_MSP();	\
 	register int i;					\
 	for (i = 0 ; i < 64 ; ++i)			\
 	{						\
 	    if (i % 16 == 0)				\
 		printf("\n\r%p: ", mstack  + i);	\
-	    printf("%x ", mstack[i]);			\
+	    printf("%02x ", mstack[i]);			\
 	}						\
 	printf("\n\r");					\
     } while(0)

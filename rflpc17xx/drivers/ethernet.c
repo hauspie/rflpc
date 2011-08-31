@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-08-31 14:39:22 (hauspie)>
+  Time-stamp: <2011-08-31 17:09:37 (hauspie)>
 */
 
 #include "ethernet.h"
@@ -348,4 +348,29 @@ void rflpc_eth_set_mac_address(const uint8_t *addr)
     LPC_EMAC->SA0 = addr[0] << 8 | addr[1];
     LPC_EMAC->SA1 = addr[2] << 8 | addr[3];
     LPC_EMAC->SA2 = addr[4] << 8 | addr[5];
+}
+
+#define DUMP_REGISTER(a) printf("%s: %x\r\n", #a,a); 
+void rflpc_eth_dump_internals()
+{
+    DUMP_REGISTER(LPC_EMAC->Command);
+    DUMP_REGISTER(LPC_EMAC->MAC1);
+    DUMP_REGISTER(LPC_EMAC->MAC2);
+    DUMP_REGISTER(LPC_EMAC->SUPP);
+    DUMP_REGISTER(LPC_EMAC->IntStatus);
+
+
+
+    DUMP_REGISTER(LPC_EMAC->TxDescriptor);
+    DUMP_REGISTER(LPC_EMAC->TxStatus);
+    DUMP_REGISTER(LPC_EMAC->TxDescriptorNumber);
+    DUMP_REGISTER(LPC_EMAC->TxProduceIndex);
+    DUMP_REGISTER(LPC_EMAC->TxConsumeIndex);
+
+
+    DUMP_REGISTER(LPC_EMAC->RxDescriptor);
+    DUMP_REGISTER(LPC_EMAC->RxStatus);
+    DUMP_REGISTER(LPC_EMAC->RxDescriptorNumber);
+    DUMP_REGISTER(LPC_EMAC->RxProduceIndex);
+    DUMP_REGISTER(LPC_EMAC->RxConsumeIndex);
 }

@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-08-31 14:58:29 (hauspie)>
+  Time-stamp: <2011-08-31 17:09:31 (hauspie)>
 */ 
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -117,6 +117,11 @@ static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
     return (status_info & 0x7FF) + 1;
 }
 
+static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control)
+{
+    *control = (size_to_send & 0x7FF) | (1 << 18) | (1 << 29) | (1 << 30);
+}
+
 /** Sets rx descriptors and status base address 
 
     @warning descriptors must be aligned on a word boundary. status must be
@@ -177,6 +182,7 @@ static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **d
     if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
 	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
     {
+	printf("TxProduceIndex: %d TxConsumeIndex: %d TxDescriptorNumber: %d\r\n", LPC_EMAC->TxProduceIndex, LPC_EMAC->TxConsumeIndex, LPC_EMAC->TxDescriptorNumber);
 	return 0;
     }
     *descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + LPC_EMAC->TxProduceIndex;
@@ -261,5 +267,8 @@ static inline uint32_t rflpc_eth_irq_get_status()
 {
     return LPC_EMAC->IntStatus;
 }
+
+extern void rflpc_eth_dump_internals();
+
 
 #endif
