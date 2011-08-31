@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-15 15:46:56 (hauspie)>
+  Time-stamp: <2011-08-31 14:39:22 (hauspie)>
 */
 
 #include "ethernet.h"
@@ -343,7 +343,7 @@ void rflpc_eth_get_mac_address(uint8_t *addr)
     addr[5] = (LPC_EMAC->SA2) & 0xFF;
 
 }
-void rflpc_eth_set_mac_address(uint8_t *addr)
+void rflpc_eth_set_mac_address(const uint8_t *addr)
 {
     LPC_EMAC->SA0 = addr[0] << 8 | addr[1];
     LPC_EMAC->SA1 = addr[2] << 8 | addr[3];

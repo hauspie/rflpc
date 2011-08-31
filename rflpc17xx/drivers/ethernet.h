@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-07-15 15:48:35 (hauspie)>
+  Time-stamp: <2011-08-31 14:58:29 (hauspie)>
 */ 
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -112,6 +112,11 @@ typedef struct
 } rfEthTxStatus;
 
 
+static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
+{
+    return (status_info & 0x7FF) + 1;
+}
+
 /** Sets rx descriptors and status base address 
 
     @warning descriptors must be aligned on a word boundary. status must be
@@ -202,7 +207,7 @@ extern void rflpc_eth_get_mac_address(uint8_t *addr);
 
 /** sets the MAC address
  */
-extern void rflpc_eth_set_mac_address(uint8_t *addr);
+extern void rflpc_eth_set_mac_address(const uint8_t *addr);
 
 /** sets the interrupt handler */
 static inline void rflpc_eth_set_irq_handler(rflpc_irq_handler_t c)
