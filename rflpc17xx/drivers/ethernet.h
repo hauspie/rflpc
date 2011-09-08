@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-08-31 17:09:31 (hauspie)>
+  Time-stamp: <2011-09-08 16:07:43 (hauspie)>
 */ 
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -117,9 +117,9 @@ static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
     return (status_info & 0x7FF) + 1;
 }
 
-static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control)
+static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control, int trigger_it)
 {
-    *control = (size_to_send & 0x7FF) | (1 << 18) | (1 << 29) | (1 << 30);
+    *control = (size_to_send & 0x7FF) | (1 << 18) | (1 << 29) | (1 << 30) | ((trigger_it & 1) << 31);
 }
 
 /** Sets rx descriptors and status base address 
@@ -141,6 +141,19 @@ static inline int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **d
 	return 0;
     *descriptor = ((rfEthDescriptor*)LPC_EMAC->RxDescriptor) + LPC_EMAC->RxConsumeIndex;
     *status = ((rfEthRxStatus*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
+    return 1;
+}
+
+/** 
+ * Returns true if a packet has been received and not yet processed available
+ * 
+ * 
+ * @return true if a packet is available
+ */
+static inline int rflpc_eth_rx_available()
+{
+    if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* empty queue */
+	return 0;
     return 1;
 }
 
@@ -188,6 +201,14 @@ static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **d
     *descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + LPC_EMAC->TxProduceIndex;
     *status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + LPC_EMAC->TxProduceIndex;
     return 1;
+}
+
+static inline int rflpc_eth_get_last_sent_packet_idx()
+{
+    int idx = LPC_EMAC->TxConsumeIndex - 1;
+    if (idx < 0)
+	return LPC_EMAC->TxDescriptorNumber;
+    return idx;
 }
 
 /** When the packet has been generated, calling this function will make it
@@ -266,6 +287,11 @@ static inline void rflpc_eth_irq_clear(uint32_t irqs)
 static inline uint32_t rflpc_eth_irq_get_status()
 {
     return LPC_EMAC->IntStatus;
+}
+
+static inline void rflpc_eth_irq_trigger(uint32_t irqs)
+{
+    LPC_EMAC->IntSet = irqs;
 }
 
 extern void rflpc_eth_dump_internals();
