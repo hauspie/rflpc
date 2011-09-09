@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-08-31 17:09:37 (hauspie)>
+  Time-stamp: <2011-09-09 14:29:42 (hauspie)>
 */
 
 #include "ethernet.h"
@@ -350,7 +350,7 @@ void rflpc_eth_set_mac_address(const uint8_t *addr)
     LPC_EMAC->SA2 = addr[4] << 8 | addr[5];
 }
 
-#define DUMP_REGISTER(a) printf("%s: %x\r\n", #a,a); 
+#define DUMP_REGISTER(a) printf("%s: %x (%d)\r\n", #a,a,a); 
 void rflpc_eth_dump_internals()
 {
     DUMP_REGISTER(LPC_EMAC->Command);
