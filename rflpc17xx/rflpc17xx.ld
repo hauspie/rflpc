@@ -19,7 +19,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2011-07-13 14:21:49 (hauspie)>
+  Time-stamp: <2011-09-09 14:39:29 (hauspie)>
 */
 
 /* output format of the file.
@@ -43,7 +43,7 @@ MEMORY
 /* on chip sram: starting at 0x10000000, 32kB available */
   ram(rwx): ORIGIN = 0x10000000, LENGTH = 32K
 /* outside chip sram (accessible via AHB matrix: starting at 0x2007C000, 32kB available */
-  out_ram(rwx): ORIGIN = 0x2007C00, LENGTH = 32K
+  out_ram(rwx): ORIGIN = 0x2007C000, LENGTH = 32K
 }
 
 
@@ -102,4 +102,7 @@ SECTIONS
 
  /* Stack must be located in ram*/
  .stack : { *(.stack) } > ram
+
+ /* outram section must be located in out_ram */
+ .out_ram : { *(.out_ram) } > out_ram
 }
