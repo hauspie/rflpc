@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:09:24 (hauspie)>
+  Time-stamp: <2011-09-12 15:47:25 (hauspie)>
 */
 
 #include <stdint.h>
@@ -54,7 +54,7 @@ int rflpc_uart0_init()
 
     /* set UART CLOCK to 12 Mhz */
     /* Bits 6 and 7 are for UART0, 0x3 value is for CCLK/8 */
-    LPC_SC->PCLKSEL0 |= (0x3 << 6);
+    LPC_SC->PCLKSEL0 |= (RFLPC_CCLK_8 << 6);
     
     /* Set line control values (p. 306) */
     /* 8 data bits, no parity, 1 stopbit */

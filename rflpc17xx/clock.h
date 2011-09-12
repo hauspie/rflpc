@@ -16,13 +16,25 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:38:07 (hauspie)>
+  Time-stamp: <2011-09-12 15:47:02 (hauspie)>
 */
 #ifndef __RFLPC_CLOCK_H__
 #define __RFLPC_CLOCK_H__
 
 #include "nxp/LPC17xx.h"
 
+
+/**
+   This enums defines the different cpu clock dividers for use as peripheral
+   clocks
+ */
+typedef enum
+{
+    RFLPC_CCLK_4 = 0,		/**< CCLK/4 */
+    RFLPC_CCLK   = 1,           /**< CCLK   */
+    RFLPC_CCLK_2 = 2,           /**< CCLK/2 */
+    RFLPC_CCLK_8 = 3,           /**< CCLK/8 */
+} rflpc_clock_divider_t;
 
 /** get the system clock in Hz */
 extern uint32_t rflpc_clock_get_system_clock();
