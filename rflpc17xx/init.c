@@ -17,7 +17,7 @@
 
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-08-31 13:43:32 (hauspie)>
+  Time-stamp: <2011-09-12 17:14:03 (hauspie)>
 */
 #include <stdint.h>
 #include "drivers/leds.h"
@@ -127,9 +127,9 @@ static void _copy_data_section(void)
 void _init_stack()
 {
     static int i;
-    for (i = 0 ; i < RFLPC_STACK_SIZE ; ++i)
+    for (i = 0 ; i < RFLPC_STACK_SIZE/4 ; ++i)
     {
-	_stack[i] = 0xCD;
+	((uint32_t *)_stack)[i] = 0xFADEBEEF;
     }
 }
 
@@ -139,7 +139,6 @@ extern void main(void);
 void _start(void)
 {
     /* clear stack with magic */
-    _init_stack();
     rflpc_led_init();
     _copy_data_section();
     _zero_bss();
@@ -148,6 +147,6 @@ void _start(void)
     /* Copy the rom interrupt vector to ram and relocate it */
     rflpc_irq_init();
     /* start main program */
-    printf("Stack range: %p %p\r\n", _stack, _stack + RFLPC_STACK_SIZE);
+    _init_stack();
     main();
 }

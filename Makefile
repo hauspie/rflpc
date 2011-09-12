@@ -1,4 +1,4 @@
-DIRS=rflpc17xx samples/basic_tests samples/ethernet
+DIRS=rflpc17xx samples/basic_tests samples/ethernet samples/timer
 
 .PHONY: all $(DIRS)
 
@@ -7,7 +7,7 @@ clean: $(patsubst %, _clean_%, $(DIRS))
 dump: $(patsubst %, _dump_%, $(DIRS))
 
 program: all
-	make -C samples/ethernet program
+	make -C samples/timer program
 
 
 $(patsubst %, _all_%, $(DIRS)):

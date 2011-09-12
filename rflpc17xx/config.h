@@ -20,7 +20,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 2011-07-04
-    Time-stamp: <2011-07-14 23:24:30 (hauspie)>
+    Time-stamp: <2011-09-12 17:11:25 (hauspie)>
 
     This files permits the configuration of the platform.
     It includes a platform-dependent config file for your target.

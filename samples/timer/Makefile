@@ -8,8 +8,8 @@ LINK_SCRIPT=rflpc17xx.ld
 
 MBED_PATH=/media/MBED
 
-ELF=basic_test.elf
-BIN=basic_test.bin
+ELF=timer.elf
+BIN=timer.bin
 
 CFLAGS=-Os -Wall -I$(LIB_DIR) -DRFLPC_PLATFORM_MBED
 LDFLAGS=-nostartfiles -static -L$(LIB_DIR) -lrflpc17xx -Wl,-T,$(LINK_SCRIPT),-L$(LIB_DIR)
