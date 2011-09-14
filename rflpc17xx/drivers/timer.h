@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-09-14 15:24:58 (hauspie)>
+  Time-stamp: <2011-09-14 15:28:56 (hauspie)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
@@ -24,7 +24,7 @@
 #include "../nxp/LPC17xx.h"
 #include "../clock.h"
 #include "../tools.h"
-
+#include "../interrupt.h"
 
 
 /**
