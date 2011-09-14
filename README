@@ -9,6 +9,12 @@ It includes:
 
 What is needed?
 ---------------
+In order to compile, you will need a gcc version tuned to build bare metal binaries.
+I use the one which can be build by using the shell script available here: 
+
+https://github.com/esden/summon-arm-toolchain
+
+
 This release includes the LPC17xx.h from NXP and core_m3.h from ARM header
 files. This files include the definition of structures for mapping the CPU and
 the peripheral registers.
