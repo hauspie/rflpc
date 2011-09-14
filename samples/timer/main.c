@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-09-12 17:31:35 (hauspie)>
+  Time-stamp: <2011-09-14 15:01:31 (hauspie)>
 */
 #include <debug.h>
 #include <drivers/uart.h>
@@ -35,6 +35,21 @@ int putchar(int c)
 {
     rflpc_uart0_putchar(c);
     return c;
+}
+
+
+RFLPC_IRQ_HANDLER _timer_cb()
+{
+    if (rflpc_timer_test_irq(TIMER_TO_TEST, RFLPC_TIMER_MATCH0))
+    {
+	printf("Pouet on 0\r\n");
+	rflpc_timer_reset_irq(TIMER_TO_TEST, RFLPC_TIMER_MATCH0);
+    }
+    if (rflpc_timer_test_irq(TIMER_TO_TEST, RFLPC_TIMER_MATCH1))
+    {
+	printf("Pouet on 1\r\n");
+	rflpc_timer_reset_irq(TIMER_TO_TEST, RFLPC_TIMER_MATCH1);
+    }
 }
 
 RFLPC_IRQ_HANDLER _uart_cb()
@@ -75,6 +90,15 @@ int main()
 
     printf("Setting pre scale register 1\r\n");
     rflpc_timer_set_pre_scale_register(TIMER_TO_TEST, rflpc_clock_get_system_clock());
+
+
+    printf("Setting interrupt generation parameters\r\n");
+    rflpc_timer_set_callback(TIMER_TO_TEST, _timer_cb);
+    rflpc_timer_set_match_value(TIMER_TO_TEST, RFLPC_TIMER_MATCH0, 10);
+    rflpc_timer_set_irq_on_match(TIMER_TO_TEST, RFLPC_TIMER_MATCH0, RFLPC_TIMER_IRQ_ON_MATCH | RFLPC_TIMER_RESET_ON_MATCH);
+
+    rflpc_timer_set_match_value(TIMER_TO_TEST, RFLPC_TIMER_MATCH1, 5);
+    rflpc_timer_set_irq_on_match(TIMER_TO_TEST, RFLPC_TIMER_MATCH1, RFLPC_TIMER_IRQ_ON_MATCH);
 
     printf("Starting timers\r\n");
     rflpc_timer_start(TIMER_TO_TEST);

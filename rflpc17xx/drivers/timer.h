@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-09-12 17:29:01 (hauspie)>
+  Time-stamp: <2011-09-14 15:05:09 (hauspie)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
@@ -38,6 +38,24 @@ typedef enum
     RFLPC_TIMER3 = 3
 } rflpc_timer_t;
 
+
+/** Match registers for interrupt generation */
+typedef enum
+{
+    RFLPC_TIMER_MATCH0 = 0,
+    RFLPC_TIMER_MATCH1 = 1,
+    RFLPC_TIMER_MATCH2 = 2,
+    RFLPC_TIMER_MATCH3 = 3,
+} rflpc_timer_match_t;
+
+
+/** Options for interrupt generation */
+enum
+{
+    RFLPC_TIMER_IRQ_ON_MATCH = 1,
+    RFLPC_TIMER_RESET_ON_MATCH = 2,
+    RFLPC_TIMER_STOP_ON_MATCH = 4,
+}; 
 
 static inline LPC_TIM_TypeDef *rflpc_timer_base(rflpc_timer_t timer)
 {
@@ -250,6 +268,65 @@ static inline void rflpc_timer_set_pre_scale_counter(rflpc_timer_t timer, uint32
 static inline void rflpc_timer_set_pre_scale_register(rflpc_timer_t timer, uint32_t value)
 {
     rflpc_timer_base(timer)->PR = value;
+}
+
+/** 
+ * Set the match register value for a given timer. Interrupt can be generated
+ * when timer counter reaches a match register's value
+ * 
+ * @param timer 
+ * @param match_register 
+ * @param match_value 
+ * 
+ * @return 
+ */
+static inline void rflpc_timer_set_match_value(rflpc_timer_t timer, rflpc_timer_match_t match_register, uint32_t match_value)
+{
+    ((uint32_t *)&(rflpc_timer_base(timer)->MR0))[match_register] = match_value;
+    printf("MR0: %x\r\n", rflpc_timer_base(timer)->MR0);
+    printf("MR1: %x\r\n", rflpc_timer_base(timer)->MR1);
+    printf("MR2: %x\r\n", rflpc_timer_base(timer)->MR2);
+    printf("MR3: %x\r\n", rflpc_timer_base(timer)->MR3);
+}
+
+/** 
+ * Enable IRQ generation when the timer counter reaches the value of a match register
+ * 
+ * @param timer 
+ * @param match_register
+ * @param options a bitwise ORed value of ::RFLPC_TIMER_IRQ_ON_MATCH, ::RFLPC_TIMER_RESET_ON_MATCH and ::RFLPC_TIMER_STOP_ON_MATCH
+ * 
+ * @return 
+ */
+static inline void rflpc_timer_set_irq_on_match(rflpc_timer_t timer, rflpc_timer_match_t match_register, uint32_t options)
+{
+    rflpc_timer_base(timer)->MCR &= ~(7UL << (match_register*3)); /* clear old options */
+    rflpc_timer_base(timer)->MCR |= (options << (match_register*3)); /* set new */
+}
+
+
+/** 
+ * Reset the irq for a given match register
+ * 
+ * @param rflpc_timer_t 
+ * @param match_register 
+ */
+static inline void rflpc_timer_reset_irq(rflpc_timer_t timer, rflpc_timer_match_t match_register)
+{
+    rflpc_timer_base(timer)->IR |= (1 << match_register);
+}
+
+/** 
+ * Check if an interrupt has been generated for a given match register
+ * 
+ * @param timer 
+ * @param match_register 
+ * 
+ * @return true if an interrupt is pending for the given match register
+ */
+static inline int rflpc_timer_test_irq(rflpc_timer_t timer, rflpc_timer_match_t match_register)
+{
+    return rflpc_timer_base(timer)->IR & (1 << match_register);
 }
 
 #endif
