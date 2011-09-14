@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-09-14 15:05:09 (hauspie)>
+  Time-stamp: <2011-09-14 15:07:50 (hauspie)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
@@ -283,10 +283,6 @@ static inline void rflpc_timer_set_pre_scale_register(rflpc_timer_t timer, uint3
 static inline void rflpc_timer_set_match_value(rflpc_timer_t timer, rflpc_timer_match_t match_register, uint32_t match_value)
 {
     ((uint32_t *)&(rflpc_timer_base(timer)->MR0))[match_register] = match_value;
-    printf("MR0: %x\r\n", rflpc_timer_base(timer)->MR0);
-    printf("MR1: %x\r\n", rflpc_timer_base(timer)->MR1);
-    printf("MR2: %x\r\n", rflpc_timer_base(timer)->MR2);
-    printf("MR3: %x\r\n", rflpc_timer_base(timer)->MR3);
 }
 
 /** 

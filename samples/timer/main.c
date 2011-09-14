@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-09-14 15:01:31 (hauspie)>
+  Time-stamp: <2011-09-14 15:07:36 (hauspie)>
 */
 #include <debug.h>
 #include <drivers/uart.h>
@@ -72,8 +72,7 @@ RFLPC_IRQ_HANDLER _uart_cb()
 
 int main()
 {
-    uint32_t otc0, otc1, otc2, otc3;
-    const char *toto = "Enabling timers\r\n";
+    uint32_t otc0;
 
     if (rflpc_uart0_init() == -1)
 	RFLPC_STOP(RFLPC_LED_1 | RFLPC_LED_2, 1000000);
@@ -99,6 +98,10 @@ int main()
 
     rflpc_timer_set_match_value(TIMER_TO_TEST, RFLPC_TIMER_MATCH1, 5);
     rflpc_timer_set_irq_on_match(TIMER_TO_TEST, RFLPC_TIMER_MATCH1, RFLPC_TIMER_IRQ_ON_MATCH);
+
+    rflpc_timer_set_match_value(TIMER_TO_TEST, RFLPC_TIMER_MATCH2, 8);
+    rflpc_timer_set_irq_on_match(TIMER_TO_TEST, RFLPC_TIMER_MATCH2, RFLPC_TIMER_STOP_ON_MATCH);
+
 
     printf("Starting timers\r\n");
     rflpc_timer_start(TIMER_TO_TEST);
