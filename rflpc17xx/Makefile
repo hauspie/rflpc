@@ -25,7 +25,11 @@ dump: $(LIB)
 	$(OBJDUMP) -sSt $(LIB)
 
 clean:
-	$(RM) $(COBJS) *~ *.dep
+	$(RM) $(COBJS) *~ *.dep drivers/*~ nxp/*~
+
+mrproper: clean
+	$(RM) $(LIB)
+	
 
 # Dependencies rules so that compilation works well
 include makefile.dep
