@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-09-23 11:12:02 (hauspie)>
+  Time-stamp: <2011-09-23 13:10:11 (hauspie)>
 */
 #include <rflpc17xx/memcpy.h>
 #include <rflpc17xx/drivers/timer.h>
