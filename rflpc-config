@@ -17,7 +17,7 @@
 
 # Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
 # Created: 2011-09-23
-# Time-stamp: <2011-09-23 10:30:20 (hauspie)>
+# Time-stamp: <2011-09-23 13:55:38 (hauspie)>
 
 
 # This script makes writing of makefiles easier by giving cflags and ldflags
@@ -35,20 +35,24 @@ Options are:
 EOF
 }
 
-if [ $# -ne 1 ]
+if [ $# -eq 0 ]
 then
     usage $0
     exit 1
 fi
 
-case $1 in
-    --cflags)
-	echo -DRFLPC_PLATFORM_MBED -ffreestanding -Wall -Os -I$RFLPC_DIR
-	;;
-    --libs|--ldflags)
-	echo -nodefaultlibs -nostdlib -L$RFLPC_DIR/rflpc17xx -lrflpc17xx -Wl,-T,rflpc17xx.ld
-	;;
-    *)
-	usage $0
-	;;
-esac
+for arg in $*
+do
+    case $arg in
+	--cflags)
+	    echo -n "-DRFLPC_PLATFORM_MBED -ffreestanding -Wall -Os -I$RFLPC_DIR "
+	    ;;
+	--libs|--ldflags)
+	    echo -n "-nodefaultlibs -nostdlib -L$RFLPC_DIR/rflpc17xx -lrflpc17xx -Wl,-T,rflpc17xx.ld "
+	    ;;
+	*)
+	    usage $0
+	    ;;
+    esac
+done
+echo ""
