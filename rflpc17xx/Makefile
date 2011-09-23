@@ -2,7 +2,7 @@ CC=arm-none-eabi-gcc
 AS=arm-none-eabi-as
 AR=arm-none-eabi-ar
 OBJDUMP=arm-none-eabi-objdump
-CFLAGS=-Os -Wall -DRFLPC_PLATFORM_MBED
+CFLAGS=`../rflpc-config --cflags`
 
 LIB=librflpc17xx.a
 

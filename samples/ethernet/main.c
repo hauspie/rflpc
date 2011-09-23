@@ -16,17 +16,18 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:47:45 (hauspie)>
+  Time-stamp: <2011-09-23 10:55:08 (hauspie)>
 */
-#include <debug.h>
-#include <drivers/leds.h>
-#include <drivers/uart.h>
-#include <drivers/ethernet.h>
-#include <drivers/rit.h> /* timer for link status */
-#include <interrupt.h>
-#include <drivers/eth_const.h>
-#include <string.h> /* for memcpy */
-#include <printf.h>
+#include <rflpc17xx/debug.h>
+#include <rflpc17xx/memcpy.h>
+#include <rflpc17xx/drivers/leds.h>
+#include <rflpc17xx/drivers/uart.h>
+#include <rflpc17xx/drivers/ethernet.h>
+#include <rflpc17xx/drivers/rit.h> /* timer for link status */
+#include <rflpc17xx/interrupt.h>
+#include <rflpc17xx/drivers/eth_const.h>
+#include <rflpc17xx/printf.h>
+
 #include "protocols.h"
 
 /* For printf */

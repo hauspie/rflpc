@@ -16,17 +16,17 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:27:20 (hauspie)>
+  Time-stamp: <2011-09-23 10:37:27 (hauspie)>
 */
-#include <debug.h>
-#include <drivers/uart.h>
-#include <drivers/rit.h>
-#include <drivers/sys_tick_timer.h>
-#include <drivers/ethernet.h>
+#include <rflpc17xx/debug.h>
+#include <rflpc17xx/drivers/uart.h>
+#include <rflpc17xx/drivers/rit.h>
+#include <rflpc17xx/drivers/sys_tick_timer.h>
+#include <rflpc17xx/drivers/ethernet.h>
 
-#include <printf.h>
-#include <interrupt.h>
-#include <clock.h>
+#include <rflpc17xx/printf.h>
+#include <rflpc17xx/interrupt.h>
+#include <rflpc17xx/clock.h>
 
 uint32_t data = (RFLPC_LED_1|RFLPC_LED_2);
 uint32_t data2 = 0xfadebeef;

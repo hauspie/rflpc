@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
+#									 
+# rflpc is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by	 
+# the Free Software Foundation, either version 3 of the License, or	 
+# (at your option) any later version.					 
+# 									 
+# rflpc is distributed in the hope that it will be useful,		 
+# but WITHOUT ANY WARRANTY; without even the implied warranty of	 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
+# GNU General Public License for more details.				 
+# 									 
+# You should have received a copy of the GNU General Public License	 
+# along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+
+# Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+# Created: 2011-09-23
+# Time-stamp: <2011-09-23 10:30:20 (hauspie)>
+
+
+# This script makes writing of makefiles easier by giving cflags and ldflags
+
+RFLPC_DIR=`cd \`dirname $0\` && pwd`
+
+usage()
+{
+    cat 1>&2 <<EOF
+Usage: $1 <options>
+
+Options are:
+* --cflags : output the compiler flags on stdout
+* --libs|--ldflags : output the linker flags on stdout
+EOF
+}
+
+if [ $# -ne 1 ]
+then
+    usage $0
+    exit 1
+fi
+
+case $1 in
+    --cflags)
+	echo -DRFLPC_PLATFORM_MBED -ffreestanding -Wall -Os -I$RFLPC_DIR
+	;;
+    --libs|--ldflags)
+	echo -nodefaultlibs -nostdlib -L$RFLPC_DIR/rflpc17xx -lrflpc17xx -Wl,-T,rflpc17xx.ld
+	;;
+    *)
+	usage $0
+	;;
+esac

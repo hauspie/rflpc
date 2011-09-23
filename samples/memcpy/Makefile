@@ -7,7 +7,7 @@ LIB_DIR=../..
 
 MBED_PATH=/media/MBED
 
-OUTPUT_NAME=basic_test
+OUTPUT_NAME=memcpy
 
 ELF=$(OUTPUT_NAME).elf
 BIN=$(OUTPUT_NAME).bin

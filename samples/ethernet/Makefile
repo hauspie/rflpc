@@ -3,27 +3,26 @@ LD=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
 OBJDUMP=arm-none-eabi-objdump
 
-LIB_DIR=../../rflpc17xx
-LINK_SCRIPT=rflpc17xx.ld
+LIB_DIR=../..
 
 MBED_PATH=/media/MBED
 
-ELF=ethernet.elf
-BIN=ethernet.bin
+OUTPUT_NAME=ethernet
 
-CFLAGS=-Os -Wall -I$(LIB_DIR) -DRFLPC_PLATFORM_MBED
-LDFLAGS=-nostartfiles -static -L$(LIB_DIR) -lrflpc17xx -Wl,-T,$(LINK_SCRIPT),-L$(LIB_DIR)
+ELF=$(OUTPUT_NAME).elf
+BIN=$(OUTPUT_NAME).bin
+
+CFLAGS=`$(LIB_DIR)/rflpc-config --cflags`
+LDFLAGS=`$(LIB_DIR)/rflpc-config --libs`
 
 OBJS=main.o protocols.o
 
-.PHONY: $(LIB_DIR)
-
-all: $(LIB_DIR) $(BIN)
+all: $(BIN)
 
 $(BIN): $(ELF)
 	$(OBJCOPY) -O binary -j .text -j .data $^ $@
 
-$(ELF): $(OBJS) $(LIB_DIR)/librflpc17xx.a
+$(ELF): $(OBJS)
 	$(LD) -o $@ $(OBJS) $(LDFLAGS)
 
 clean:
