@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-09-23
-  Time-stamp: <2011-09-23 13:20:31 (hauspie)>
+  Time-stamp: <2011-09-23 16:45:19 (hauspie)>
 */
 #include <stdint.h>
 
@@ -57,6 +57,8 @@ void *memcpy(void *dest, const void *src, uint32_t n)
 	}
 	n = n % 4; /* remainder of copy */
     }
+    if (n == 0)
+	return dest;
     bdest = (uint8_t*) wdest;
     bsrc = (const uint8_t*) wsrc;
 

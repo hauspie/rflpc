@@ -16,18 +16,74 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-09-23 13:10:11 (hauspie)>
+  Time-stamp: <2011-09-23 16:40:00 (hauspie)>
 */
 #include <rflpc17xx/memcpy.h>
 #include <rflpc17xx/drivers/timer.h>
 #include <rflpc17xx/drivers/uart.h>
 
-#define ARRAY_SIZE 256
-#define TEST_SIZE (ARRAY_SIZE - 3)
+#define ARRAY_SIZE 512
 
 uint8_t src_buffer[ARRAY_SIZE];
 uint8_t dst_buffer[ARRAY_SIZE];
 
+
+int test(uint8_t *src, uint8_t *dst, uint32_t size)
+{
+    uint32_t i, before, after;
+    uint8_t val = 0;
+    
+    for (i = 0 ; i < size ; ++i)
+	src[i] = val++;
+
+    before = rflpc_timer_get_counter(RFLPC_TIMER0);
+    memcpy(dst, src, size);
+    after = rflpc_timer_get_counter(RFLPC_TIMER0);
+
+    for (i = 0 ; i < size ; ++i)
+    {
+	if (dst[i] != src[i])
+	{
+	    printf("Failed test for %d bytes at %d value is %d instead of %d\r\n", size, i, dst_buffer[i], val);
+	    return -1;
+	}
+    }
+    return after - before;
+}
+
+
+void fill_with_magic()
+{
+    uint32_t *ptr;
+    int i;
+    
+    ptr = (uint32_t*)src_buffer;
+    for (i = 0 ; i < ARRAY_SIZE / 4 ; ++i)
+	*ptr++ = 0xCAFEDECA;
+    ptr = (uint32_t*)dst_buffer;
+    for (i = 0 ; i < ARRAY_SIZE / 4 ; ++i)
+	*ptr++ = 0xFADEBEEF;
+}
+
+void dump()
+{
+    uint32_t *ptr;
+    int i;
+    ptr = (uint32_t*)src_buffer;
+    for (i = 0 ; i < ARRAY_SIZE / 4 ; ++i)
+    {
+	if (*ptr != 0xCAFEDECA)
+	    printf("s: %d %x\r\n", i, *ptr);
+	ptr++;
+    }
+    ptr = (uint32_t*)dst_buffer;
+    for (i = 0 ; i < ARRAY_SIZE / 4 ; ++i)
+    {
+	if (*ptr != 0xFADEBEEF)
+	    printf("d: %d %x\r\n", i, *ptr);
+	ptr++;
+    }
+ }
 
 void init_timer()
 {
@@ -46,53 +102,17 @@ int putchar(int c)
 int main()
 {
     int i;
-    uint32_t before;
-    uint32_t after;
 
     rflpc_uart0_init();
     init_timer();
 
+    fill_with_magic();
 
-    for (i = 0 ; i < TEST_SIZE ; ++i)
-	src_buffer[i] = i;
+    test(src_buffer, dst_buffer, 100);
 
-    printf("%p %p\r\n", src_buffer, dst_buffer);
 
-    /* test aligned copy */
-    before = rflpc_timer_get_counter(RFLPC_TIMER0);
-    memcpy(dst_buffer, src_buffer, TEST_SIZE);
-    after = rflpc_timer_get_counter(RFLPC_TIMER0);
+    dump();
 
-    printf("aligned copy time: %d\r\n", after - before);
-
-    for (i = 0 ; i < TEST_SIZE ; ++i)
-    {
-	if (dst_buffer[i] != i)
-	{
-	    printf("Bad copy starting at %d\r\n", i);
-	    break;
-		
-	}
-	dst_buffer[i] = 0; /* prepare for next test */
-    }
-    
-    
-    /* test unaligned copy */
-    before = rflpc_timer_get_counter(RFLPC_TIMER0);
-    memcpy(dst_buffer + 1, src_buffer + 1, TEST_SIZE-1);
-    after = rflpc_timer_get_counter(RFLPC_TIMER0);
-    printf("unaligned copy time: %d\r\n", after - before);
-
-    for (i = 1 ; i < TEST_SIZE ; ++i)
-    {
-	if (dst_buffer[i] != i)
-	{
-	    printf("Bad copy starting at %d\r\n", i);
-	    break;
-		
-	}
-	dst_buffer[i] = 0; /* prepare for next test */
-    }
 
 
     while (1);
