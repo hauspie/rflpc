@@ -19,7 +19,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2011-09-09 14:39:29 (hauspie)>
+  Time-stamp: <2011-09-27 16:44:45 (hauspie)>
 */
 
 /* output format of the file.
@@ -101,8 +101,8 @@ SECTIONS
 
 
  /* Stack must be located in ram*/
- .stack : { *(.stack) } > ram
+ .stack(NOLOAD) : { *(.stack) } > ram
 
  /* outram section must be located in out_ram */
- .out_ram : { *(.out_ram) } > out_ram
+ .out_ram(NOLOAD) : { *(.out_ram) } > out_ram
 }
