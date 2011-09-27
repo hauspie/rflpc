@@ -16,7 +16,7 @@
 /* 
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-08-31 13:48:26 (hauspie)>
+  Time-stamp: <2011-09-27 17:27:59 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "config.h"

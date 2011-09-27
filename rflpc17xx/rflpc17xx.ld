@@ -19,7 +19,7 @@
 
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Nov. 12 2010
-  Time-stamp: <2011-09-27 16:44:45 (hauspie)>
+  Time-stamp: <2011-09-27 17:25:11 (hauspie)>
 */
 
 /* output format of the file.
@@ -75,10 +75,9 @@ SECTIONS
   .bss (NOLOAD): { 
   /* stores the start address of the bss so that the startup code can 0 it */
   _bss_start = .;
- /* This will enforce the relocated interrupt vector to be located at the start of the RAM */
-   KEEP(*(.ram_int_vector));
-   KEEP(*(.bss*)) ;
-  } > ram AT>flash
+  _ram_start = .;
+   *(.bss*);
+  } > ram
   /* stores the end address of the bss so that the startup code can 0 it */
    _bss_end = .;
 
@@ -102,6 +101,14 @@ SECTIONS
 
  /* Stack must be located in ram*/
  .stack(NOLOAD) : { *(.stack) } > ram
+
+ /* ram int vector is put after stack */
+  /* This will enforce the relocated interrupt vector to be located at the start of the RAM */
+  .relocated_interrupt_vector(NOLOAD) : {
+    . = ALIGN(0x200);
+    *(.ram_int_vector);
+   } > ram
+
 
  /* outram section must be located in out_ram */
  .out_ram(NOLOAD) : { *(.out_ram) } > out_ram
