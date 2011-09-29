@@ -21,7 +21,7 @@
 #ifndef __RFLPC_PROFILING_H__
 #define __RFLPC_PROFILING_H__
 
-#ifdef RFLPC_ENABLE_PROFILE
+#ifdef RFLPC_ENABLE_PROFILING
 
 #include "drivers/timer.h"
 
@@ -31,13 +31,14 @@
 
 #define RFLPC_PROFILE_INIT(timer) do {rflpc_timer_enable(timer); rflpc_timer_set_clock(timer, RFLPC_CCLK); rflpc_timer_set_pre_scale_register(timer,RFLPC_PROFILE_PRESCALE); rflpc_timer_start(timer); } while(0)
 
-#define RFLPC_PROFILE_DECLARE_COUNTER(counter) uint32_t total_##counter;uint32_t start_##counter;
+#define RFLPC_PROFILE_DECLARE_COUNTER(counter) volatile uint32_t rflpc_profile_total_##counter; volatile uint32_t rflpc_profile_start_##counter;
+#define RFLPC_PROFILE_DECLARE_EXTERN_COUNTER(counter) extern volatile uint32_t rflpc_profile_total_##counter;extern volatile uint32_t rflpc_profile_start_##counter;
 
-#define RFLPC_PROFILE_START_COUNTER(counter,timer) do { start_##counter = rflpc_timer_get_counter(timer);} while(0)
+#define RFLPC_PROFILE_START_COUNTER(counter,timer) do { rflpc_profile_start_##counter = rflpc_timer_get_counter(timer);} while(0)
 
-#define RFLPC_PROFILE_STOP_COUNTER(counter,timer) do { total_##counter += rflpc_timer_get_counter(timer) - start_##counter;} while(0)
+#define RFLPC_PROFILE_STOP_COUNTER(counter,timer) do { rflpc_profile_total_##counter += rflpc_timer_get_counter(timer) - rflpc_profile_start_##counter;} while(0)
 
-#define RFLPC_PROFILE_GET_TOTAL(counter) total_##counter
+#define RFLPC_PROFILE_GET_TOTAL(counter) rflpc_profile_total_##counter
 
 #endif
 #endif
