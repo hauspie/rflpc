@@ -1,21 +1,21 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
- *									 
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
+ *
  * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by	 
- * the Free Software Foundation, either version 3 of the License, or	 
- * (at your option) any later version.					 
- * 									 
- * rflpc is distributed in the hope that it will be useful,		 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
- * GNU General Public License for more details.				 
- * 									 
- * You should have received a copy of the GNU General Public License	 
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * rflpc is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
-/* 
+/*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
-  Created: 
+  Created:
   Time-stamp: <2011-09-27 17:27:59 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
@@ -35,7 +35,6 @@ extern void* _rom_interrupts[RFLPC_IRQn_COUNT];
 RFLPC_IRQ_HANDLER _default_exception_handler()
 {
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
-    RFLPC_ASSERT_STACK();
     printf("CFSR: %x\r\n", SCB->CFSR);
     printf("HFSR: %x\r\n", SCB->HFSR);
     printf("DFSR: %x\r\n", SCB->DFSR);

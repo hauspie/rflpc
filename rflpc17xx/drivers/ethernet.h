@@ -1,17 +1,17 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
- *									 
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
+ *
  * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by	 
- * the Free Software Foundation, either version 3 of the License, or	 
- * (at your option) any later version.					 
- * 									 
- * rflpc is distributed in the hope that it will be useful,		 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
- * GNU General Public License for more details.				 
- * 									 
- * You should have received a copy of the GNU General Public License	 
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * rflpc is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef __RFLPC_ETHERNET_H__
 #define __RFLPC_ETHERNET_H__
@@ -20,7 +20,7 @@
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
   Time-stamp: <2011-09-08 16:07:43 (hauspie)>
-*/ 
+*/
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
@@ -34,7 +34,7 @@ extern int rflpc_eth_init();
 extern int rflpc_eth_link_state();
 
 
-/** Possible link modes 
+/** Possible link modes
     Bit 0 is 1 if 100Mbps, 0 if 10Mbps
     Bit 1 is 1 if Full Duplex, 0 if half
  */
@@ -61,19 +61,19 @@ extern void rflpc_eth_set_link_mode(int mode);
 
     This function will start autonegociation, wait for it to finish and
     reconfigure MAC/PHY if needed (100Mbps/10Mbps, half duplex/full duplex...)
-    @param max_desired_mode bit 0 tells speed, bit 1 tells duplex 
+    @param max_desired_mode bit 0 tells speed, bit 1 tells duplex
 
     @return 0 if auto-negociation performed successfully. -1 otherwise. If the
     link is down when calling this function, -1 will be returned immediatly.
 
-    @warning This function is blocking and wait for the autonegociation to be complete. 
+    @warning This function is blocking and wait for the autonegociation to be complete.
  */
 extern int rflpc_eth_link_auto_negociate(int max_desired_mode);
 
-/** returns the current link mode.  
+/** returns the current link mode.
 
     The information is extracted from the PHY PHYSTS register if
-    ::RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS is defined. Otherwise, 
+    ::RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS is defined. Otherwise,
     it uses the Control register which is less reliable and may return
     wrong mode (especially for the duplex mode)
 
@@ -108,7 +108,7 @@ typedef struct
  */
 typedef struct
 {
-    uint32_t status_info;
+   uint32_t status_info; /**< Transmission status info. */
 } rfEthTxStatus;
 
 
@@ -122,10 +122,10 @@ static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t
     *control = (size_to_send & 0x7FF) | (1 << 18) | (1 << 29) | (1 << 30) | ((trigger_it & 1) << 31);
 }
 
-/** Sets rx descriptors and status base address 
+/** Sets rx descriptors and status base address
 
     @warning descriptors must be aligned on a word boundary. status must be
-    aligned on a double word boundaryx 
+    aligned on a double word boundaryx
 */
 extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status, int count);
 
@@ -144,10 +144,10 @@ static inline int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **d
     return 1;
 }
 
-/** 
+/**
  * Returns true if a packet has been received and not yet processed available
- * 
- * 
+ *
+ *
  * @return true if a packet is available
  */
 static inline int rflpc_eth_rx_available()
@@ -176,14 +176,14 @@ static inline void rflpc_eth_done_process_rx_packet()
 
 /** Sets tx descriptors and status base address
 
-    @warning descriptors and status must be aligned on a word boundary. 
+    @warning descriptors and status must be aligned on a word boundary.
  */
 extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTxStatus *status, int count);
 
 /** returns the index of the current tx packet descriptor.
 
     The return descriptor is the one that is prepared by software before
-    sending it. When ::rflpc_eth_done_process_tx_packet() is called, the packet 
+    sending it. When ::rflpc_eth_done_process_tx_packet() is called, the packet
     will be owned by the hardware and sent as soon as possible.
 
     @return 0 if no more descriptor are available (which means that all the
@@ -192,10 +192,9 @@ extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTx
 static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status)
 {
     /* queue full */
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 ||
 	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
     {
-	printf("TxProduceIndex: %d TxConsumeIndex: %d TxDescriptorNumber: %d\r\n", LPC_EMAC->TxProduceIndex, LPC_EMAC->TxConsumeIndex, LPC_EMAC->TxDescriptorNumber);
 	return 0;
     }
     *descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + LPC_EMAC->TxProduceIndex;
@@ -217,7 +216,7 @@ static inline int rflpc_eth_get_last_sent_packet_idx()
 static inline void rflpc_eth_done_process_tx_packet()
 {
     /* queue full */
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 || 
+    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 ||
 	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
     {
 	return;
@@ -244,7 +243,7 @@ static inline void rflpc_eth_set_irq_handler(rflpc_irq_handler_t c)
     rflpc_irq_enable(ENET_IRQn);
 }
 
-/** enable eth interrupts 
+/** enable eth interrupts
 
     This function will ADD new irq enable, not set all enable irqs to the ones given.
 
@@ -255,9 +254,9 @@ static inline void rflpc_eth_irq_enable(uint32_t irqs)
     LPC_EMAC->IntEnable |= irqs;
 }
 
-/** disable eth interrupts 
+/** disable eth interrupts
     This function will remove irq enable bits.
-    
+
     @param irqs a bitwise ORed combination of RFLPC_ETH_IRQ_EN_* bits
 */
 static inline void rflpc_eth_irq_disable(uint32_t irqs)

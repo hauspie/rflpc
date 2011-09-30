@@ -1,21 +1,21 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
- *									 
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
+ *
  * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by	 
- * the Free Software Foundation, either version 3 of the License, or	 
- * (at your option) any later version.					 
- * 									 
- * rflpc is distributed in the hope that it will be useful,		 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
- * GNU General Public License for more details.				 
- * 									 
- * You should have received a copy of the GNU General Public License	 
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * rflpc is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
-  Created: 
+  Created:
   Time-stamp: <2011-07-13 14:18:07 (hauspie)>
 */
 #include "clock.h"
@@ -27,7 +27,7 @@
 static uint32_t _rflpc_system_clock = RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY;
 
 
-/** Send a feed sequence to the PLL0FEED register (p. 40) 
+/** Send a feed sequence to the PLL0FEED register (p. 40)
     This sequence validates the changes in the PLL0CON and PLL0CFG register
     @warning interrupts should be disabled to ensure that the sequence is atomic
  */
@@ -38,7 +38,7 @@ static uint32_t _rflpc_system_clock = RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY;
 */
 void rflpc_clock_init(void)
 {
-    
+
     /* Disable IRQs so that the FEED sequence of the PLL is atomic */
     rflpc_irq_global_disable();
 
@@ -67,7 +67,7 @@ void rflpc_clock_init(void)
 	LPC_SC->SCS |= 1UL << 4;
     /* Enables it, set 1 to bit 5 */
     LPC_SC->SCS |= (1UL << 5);
-	
+
     /* Wait for it to be stable by waiting a 1 on bit 6 */
     while ((LPC_SC->SCS & (1UL << 6)) == 0);
 
@@ -81,7 +81,7 @@ void rflpc_clock_init(void)
     LPC_SC->PLL0CFG = (((RFLPC_CLOCK_INPUT_DIVIDER-1) << 16) | (RFLPC_CLOCK_PLL_MULTIPLIER-1));
     /* validate the configuration */
     RFLPC_PLL0_DO_FEED();
-    
+
     /* Enable PLL0 */
     LPC_SC->PLL0CON |= (1UL);
     RFLPC_PLL0_DO_FEED();
