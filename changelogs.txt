@@ -1,3 +1,6 @@
+0.5:
+	- Fixed lots of bugs while porting Smews to the MBED using this library
+	- Added a full doxygen documentation
 0.4:
 	- Added support for timer 0/1/2/3
 0.3:
