@@ -13,8 +13,15 @@
  * You should have received a copy of the GNU General Public License
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
+/** @file
+ * Ethernet peripheral driver
+ */
 #ifndef __RFLPC_ETHERNET_H__
 #define __RFLPC_ETHERNET_H__
+
+/** @addtogroup eth
+ * @{
+ */
 
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
@@ -34,17 +41,24 @@ extern int rflpc_eth_init();
 extern int rflpc_eth_link_state();
 
 
-/** Possible link modes
-    Bit 0 is 1 if 100Mbps, 0 if 10Mbps
-    Bit 1 is 1 if Full Duplex, 0 if half
+/** @{
+ * @name Link modes
+ * These constants can be used to get or set the link mode using
+ * ::rflpc_eth_get_link_mode and ::rflpc_eth_set_link_mode.
  */
+/** This bit indicates 100Mbps/10Mbps speed */
 #define RFLPC_ETH_LINK_MODE_SPEED_BIT   (1 << 0)
+/** This bit indicates Full/Half duplex mode */
 #define RFLPC_ETH_LINK_MODE_DUPLEX_BIT  (1 << 1)
-
+/** 100Mbps, Half Duplex */
 #define RFLPC_ETH_LINK_MODE_100HD (RFLPC_ETH_LINK_MODE_SPEED_BIT)
+/** 10Mbps, Half Duplex */
 #define RFLPC_ETH_LINK_MODE_10HD  (0)
+/** 100Mbps, Full Duplex */
 #define RFLPC_ETH_LINK_MODE_100FD (RFLPC_ETH_LINK_MODE_SPEED_BIT | RFLPC_ETH_LINK_MODE_DUPLEX_BIT)
+/** 10Mbps, Full Duplex */
 #define RFLPC_ETH_LINK_MODE_10FD  (RFLPC_ETH_LINK_MODE_DUPLEX_BIT)
+/** @} */
 
 /** Forces the MAC and PHY devices to operate on the given mode no matter the
  * capability of the linked partner
@@ -89,18 +103,51 @@ typedef struct
 {
     uint8_t *packet;		/**< pointer to buffer where the ethernet frame
 				 * (or frame fragment) is stored */
-    uint32_t control;		/**< control word where we find data buffer
-				 * size and other information relative to
-				 * reception/emission of the buffer */
+   /** Control word where we find data buffer size and other information relative to reception/emission
+    *  of the buffer.
+    * Word format for reception:
+    * - Bits 10:0 : Size of the buffer pointed by packet (-1 encoded)
+    * - Bit 31 : IRQ on reception enabled/disabled
+    *
+    * Word format for transmission:
+    * - Bits 10:0 : Size of the buffer to transmit (-1 encoded)
+    * - Bit 26 : Override. If true, bits 30:27 will override the default values in MAC registers. Otherwise, bits 29:27 will be ignored
+    * - Bit 27 : Huge (jumbo) frame
+    * - Bit 28 : Pad short frame to 64 bytes
+    * - Bit 29 : Append CRC to the frame
+    * - Bit 30 : Last fragment
+    * - Bit 31 : IRQ on transmission enabled/disabled
+    */
+    uint32_t control;
 } rfEthDescriptor;
 
 /** This structure holds the reception status associated to a descriptor.
  */
 typedef struct
 {
-    uint32_t status_info;	/**< Receive status return flags */
-    uint32_t status_hash_crc;	/**< hash CRC calculated from source and
-				 * destination address */
+   /** Receive status return flags.
+    * - Bits 10:0 : Size of the received data (-1 encoded)
+    * - Bit 18 : Control frame
+    * - Bit 19 : VLAN frame
+    * - Bit 20 : Fail frame filter. The remainder of the frame will be discarded
+    * - Bit 21 : Multicast frame
+    * - Bit 22 : Broadcast frame
+    * - Bit 23 : CRC error
+    * - Bit 24 : Symbol error reported by PHY
+    * - Bit 25 : Length Error
+    * - Bit 26 : Range error
+    * - Bit 27 : Alignement erro
+    * - Bit 28 : Receive overrun
+    * - Bit 29 : No more descriptor and the frame is to big to fit in the data buffer
+    * - Bit 30 : Last flag. This is the last fragment of the frame
+    * - Bit 31 : Error occured.
+    */
+    uint32_t status_info;
+    /** hash CRC calculated from source and destination address.
+     * - Bits 8:0 : CRC calcultated from the source address
+     * - Bits 24:16 : CRC calcultated from the destination address
+     */
+    uint32_t status_hash_crc;
 } rfEthRxStatus;
 
 
@@ -108,18 +155,41 @@ typedef struct
  */
 typedef struct
 {
-   uint32_t status_info; /**< Transmission status info. */
+   /** Transmission status info.
+    * - Bits 24:21 : Collision count (number of retransmission that were needed to send the packet)
+    * - Bit 25 : This packet incurred deferral (not a problem if not excessive defer)
+    * - Bit 26 : Excessive defer. Packet was aborted due to excessive defer
+    * - Bit 27 : Excessive collision. Packet was aborted due to excessive collision
+    * - Bit 28 : Late collision. Packet aborted due to Out of window Collision
+    * - Bit 29 : TX Underrun due to adapter not producing transmit data
+    * - Bit 30 : No descriptor. Transmit stream interrupted because not enough descriptor
+    * - Bit 31 : Error occurred during transmission.
+    */
+   uint32_t status_info;
 } rfEthTxStatus;
 
 
+/**
+ * @brief Returns the size of a packet from the status_info field of a ::rfEthTxStatus or ::rfEthRxStatus
+ *
+ * @param [in] status_info The corresponding field in ::rfEthTxStatus or ::rfEthTxStatus
+ * @return The size of the corresponding buffer
+ **/
 static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
 {
     return (status_info & 0x7FF) + 1;
 }
 
+/**
+ * @brief Sets the transmission control word of a ::rfEthDescriptor struct.
+ * @note This function is only a small helper. It will set the last frame bit. If you want more control, DIY :)
+ * @param [in]  size_to_send Size of the buffer to send
+ * @param [out] control Pointer to the control word to send
+ * @param [in] trigger_it Should the transmission of this buffer produce an interrupt
+ **/
 static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control, int trigger_it)
 {
-    *control = (size_to_send & 0x7FF) | (1 << 18) | (1 << 29) | (1 << 30) | ((trigger_it & 1) << 31);
+    *control = (size_to_send & 0x7FF) | (1 << 30) | ((trigger_it & 1) << 31);
 }
 
 /** Sets rx descriptors and status base address
@@ -202,6 +272,11 @@ static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **d
     return 1;
 }
 
+/**
+ * @brief Returns the index of the last send buffer
+ *
+ * @return int
+ **/
 static inline int rflpc_eth_get_last_sent_packet_idx()
 {
     int idx = LPC_EMAC->TxConsumeIndex - 1;
@@ -231,11 +306,11 @@ static inline void rflpc_eth_done_process_tx_packet()
  */
 extern void rflpc_eth_get_mac_address(uint8_t *addr);
 
-/** sets the MAC address
+/** sets the device MAC address
  */
 extern void rflpc_eth_set_mac_address(const uint8_t *addr);
 
-/** sets the interrupt handler */
+/** sets the interrupt handler of the ethernet peripheral */
 static inline void rflpc_eth_set_irq_handler(rflpc_irq_handler_t c)
 {
     rflpc_irq_disable(ENET_IRQn);
@@ -288,12 +363,26 @@ static inline uint32_t rflpc_eth_irq_get_status()
     return LPC_EMAC->IntStatus;
 }
 
+/**
+ * @brief Force the generation of the given interrupt.
+ * This can be used for triggering an interrupt by software
+ *
+ * @param irqs a bitwise ORed combination of RFLPC_ETH_IRQ_EN_* bits
+ * @return void
+ **/
 static inline void rflpc_eth_irq_trigger(uint32_t irqs)
 {
     LPC_EMAC->IntSet = irqs;
 }
 
+/**
+ * @brief Use the ::rflpc_printf function to dump the values of the MAC registers
+ *
+ * @return void
+ **/
 extern void rflpc_eth_dump_internals();
 
+
+/** @} */
 
 #endif

@@ -19,7 +19,9 @@
   Time-stamp: <2011-07-13 14:35:39 (hauspie)>
 */
 
-/** @file */
+/** @file
+ * Interrupt handling functions.
+ */
 
 #ifndef __RFLPC_INTERRUPT_H__
 #define __RFLPC_INTERRUPT_H__

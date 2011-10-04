@@ -18,16 +18,7 @@
   Created:
   Time-stamp: <2011-09-14 15:07:36 (hauspie)>
 */
-#include <debug.h>
-#include <drivers/uart.h>
-#include <drivers/timer.h>
-#include <memcpy.h>
-
-#include <printf.h>
-#include <interrupt.h>
-#include <clock.h>
-
-#include <nxp/LPC17xx.h>
+#include <rflpc17xx/rflpc17xx.h>
 
 
 #define TIMER_TO_TEST RFLPC_TIMER3

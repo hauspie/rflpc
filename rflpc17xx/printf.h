@@ -21,10 +21,26 @@
   Created:
   Time-stamp: <2011-07-13 14:20:45 (hauspie)>
 */
-/** @file */
+/** @file
+ * An implementation of formated output
+ */
 
 /** @addtogroup libc
  * @{ */
+
+/**
+ * @brief Ouputs a single character.
+ * Used by ::rflpc_printf() to output its formating
+ *
+ * @note This function is NOT provided by the library.
+ * It is meant to be implemented by each specific application
+ * so that it can choose how and where to ouput messages
+ *
+ * @param [in] c character to print
+ * @return the printed character
+ **/
+
+extern int putchar(int c);
 
 /** Formated output function.
  * This function is similar to stdio's printf.
@@ -39,16 +55,20 @@
     argument, but nothing is printed unless LPC_VERBOSE_PRINTF
     is defined when compiling lib.
 
-    @warning It uses the putchar function to output all characters. You have to define
+    @warning It uses the ::putchar function to output all characters. You have to define
     this function in your code so that the link works
 
+   @param [in] format The format string. Prefer to use constant string
+   instead of user supplied string to be sure that some escape characters are not put for wrong purpose.
 */
 extern int rflpc_printf(const char *format,...);
 
-/** @} */
-
-#ifndef printf
+/** Maccro to be able to use printf.
+ * @note The main reason why the lib defines ::rflpc_printf instead of printf is to avoid
+ * many weird problems when gcc tries to use its builtin function where it should not.
+ */
 #define printf rflpc_printf
-#endif
+
+/** @} */
 
 #endif

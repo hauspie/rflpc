@@ -1,32 +1,24 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
- *									 
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
+ *
  * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by	 
- * the Free Software Foundation, either version 3 of the License, or	 
- * (at your option) any later version.					 
- * 									 
- * rflpc is distributed in the hope that it will be useful,		 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
- * GNU General Public License for more details.				 
- * 									 
- * You should have received a copy of the GNU General Public License	 
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * rflpc is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
-  Created: 
+  Created:
   Time-stamp: <2011-09-23 10:37:27 (hauspie)>
 */
-#include <rflpc17xx/debug.h>
-#include <rflpc17xx/drivers/uart.h>
-#include <rflpc17xx/drivers/rit.h>
-#include <rflpc17xx/drivers/sys_tick_timer.h>
-#include <rflpc17xx/drivers/ethernet.h>
-
-#include <rflpc17xx/printf.h>
-#include <rflpc17xx/interrupt.h>
-#include <rflpc17xx/clock.h>
+#include <rflpc17xx/rflpc17xx.h>
 
 uint32_t data = (RFLPC_LED_1|RFLPC_LED_2);
 uint32_t data2 = 0xfadebeef;
@@ -50,7 +42,7 @@ void test_data_bss()
     rflpc_led_set(RFLPC_LED_1|RFLPC_LED_2|RFLPC_LED_3|RFLPC_LED_4);
     RFLPC_DELAY(1000000);
     rflpc_led_clr(RFLPC_LED_1|RFLPC_LED_2|RFLPC_LED_3|RFLPC_LED_4);
-    
+
 
     /* Check data section initialisation */
     if (data == (RFLPC_LED_1 | RFLPC_LED_2))
@@ -68,7 +60,7 @@ void test_data_bss()
     if (data2 == 0xfadebeef)
 	rflpc_led_set(RFLPC_LED_4);
 
-    
+
     /* Check bss section initialisation */
     RFLPC_DELAY(1000000);
     if (a == 0 && b == 0 && c == 0 && d == 0)
@@ -82,7 +74,7 @@ void test_uart()
 {
     char c = 'a';
 
-    
+
     while (1)
     {
 	rflpc_uart0_putchar(c);
@@ -94,7 +86,7 @@ void test_uart()
 	    break;
 	}
     }
-    
+
 }
 
 void test_echo()
@@ -245,12 +237,12 @@ void test_ethernet()
     printf("- 'd' to toggle duplex\r\n");
     rflpc_uart0_set_rx_callback(_test_ethernet_serial_handler);
 
-    
+
 
     while (1)
     {
 	int current_link_state;
-	
+
 	if (request_autoneg)
 	{
 	    int mode;

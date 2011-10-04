@@ -16,6 +16,7 @@
 #ifndef __RFLPC_CONFIG_H__
 #define __RFLPC_CONFIG_H__
 /** @file
+ * Platform independent configuration options.
  * */
 
 

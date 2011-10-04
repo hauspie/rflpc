@@ -100,6 +100,9 @@
 /** @ingroup eth
  * @{
  */
+/** @{
+ * @name PHY device configuration
+ */
 /** MII Address of the PHY device.*/
 #define RFLPC_ETH_PHY_ADDR (0x01)
 
@@ -114,6 +117,7 @@
       registers which may not always reflect the real link mode)
 */
 #define RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+/** @} */
 
 /** @} */
 

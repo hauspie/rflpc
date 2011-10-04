@@ -18,10 +18,7 @@
   Created:
   Time-stamp: <2011-09-23 16:40:00 (hauspie)>
 */
-#include <rflpc17xx/memcpy.h>
-#include <rflpc17xx/drivers/timer.h>
-#include <rflpc17xx/drivers/uart.h>
-#include <rflpc17xx/printf.h>
+#include <rflpc17xx/rflpc17xx.h>
 
 #define ARRAY_SIZE 512
 
@@ -102,8 +99,6 @@ int putchar(int c)
 
 int main()
 {
-    int i;
-
     rflpc_uart0_init();
     init_timer();
 

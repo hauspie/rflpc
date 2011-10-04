@@ -1,17 +1,17 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
- *									 
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
+ *
  * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by	 
- * the Free Software Foundation, either version 3 of the License, or	 
- * (at your option) any later version.					 
- * 									 
- * rflpc is distributed in the hope that it will be useful,		 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
- * GNU General Public License for more details.				 
- * 									 
- * You should have received a copy of the GNU General Public License	 
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * rflpc is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
@@ -21,58 +21,114 @@
   all ethernet constants, register definition, bits etc..
 
 */
+/** @file
+ * Ethernet driver constants
+ */
 #ifndef __RFLPC_ETH_CONST_H__
 #define __RFLPC_ETH_CONST_H__
 
 #include "../config.h"
 
+/** @addtogroup eth
+ * Most of the defines are directly derived from the user manual of the LPC17xx or the PHY interface datasheet.
+ * Please refer to these documentation for further information
+ * @{ */
+
+/** Bit to set to activate ethernet in PCONP register */
 #define RFLPC_ETH_PCENET_BIT (1 << 30)
 
+/** @{
+ * @name Ethernet pin configuration
+ * This allows the configuration of the pins of the LPC17xx
+ * to use the ethernet device. This values are for LPC17xx devices.
+ */
+/** Number of the port the eth is connected to */
+#define RFLPC_ETH_PIN_PORT      1
+
+/** Transmit data bit 0 */
 #define RFLPC_ETH_PIN_TXD0      0
+/** Transmit data bit 1 */
 #define RFLPC_ETH_PIN_TXD1      1
+/** Transmit data enable pin */
 #define RFLPC_ETH_PIN_TX_EN     4
+/** Carrier sense Pin */
 #define RFLPC_ETH_PIN_CRS       8
+/** Receive data bit 0 */
 #define RFLPC_ETH_PIN_RXD0      9
+/** Receive data bit 1 */
 #define RFLPC_ETH_PIN_RXD1     10
+/** Receive error */
 #define RFLPC_ETH_PIN_RX_ER    14
+/** Reference clock */
 #define RFLPC_ETH_PIN_REF_CLK  15
+/** MIIM Clock pin */
 #define RFLPC_ETH_PIN_MDC      16
+/** MI data input and output pin */
 #define RFLPC_ETH_PIN_MDIO     17
+/** @} */
 
-
+/** @{
+ * @name MAC Configuration register bits
+ */
 /* MAC Configuration Register 1, bits definition */
-#define RFLPC_ETH_MAC1_RECEIVE_ENABLE  (1 << 0)      
-#define RFLPC_ETH_MAC1_PASS_ALL_FRAMES (1 << 1)  
-#define RFLPC_ETH_MAC1_RX_FLOW_CONTROL (1 << 2)  
-#define RFLPC_ETH_MAC1_TX_FLOW_CONTROL (1 << 3)  
-#define RFLPC_ETH_MAC1_LOOPBACK        (1 << 4)  
-#define RFLPC_ETH_MAC1_RESET_TX        (1 << 8)  
+/** Enable reception */
+#define RFLPC_ETH_MAC1_RECEIVE_ENABLE  (1 << 0)
+/** Pass all frames to driver */
+#define RFLPC_ETH_MAC1_PASS_ALL_FRAMES (1 << 1)
+/** Activate receive path flow control */
+#define RFLPC_ETH_MAC1_RX_FLOW_CONTROL (1 << 2)
+/** Activate transmit path flow control */
+#define RFLPC_ETH_MAC1_TX_FLOW_CONTROL (1 << 3)
+/** Activate interface loopback (for testing purpose mainly */
+#define RFLPC_ETH_MAC1_LOOPBACK        (1 << 4)
+/** Reset tranmit path */
+#define RFLPC_ETH_MAC1_RESET_TX        (1 << 8)
+/** Reset Transmit MAC Sublayer control logic */
 #define RFLPC_ETH_MAC1_RESET_MCS_TX    (1 << 9)
+/** Reset receive path */
 #define RFLPC_ETH_MAC1_RESET_RX        (1 << 10)
+/** Reset receive MAC Sublayer control logic */
 #define RFLPC_ETH_MAC1_RESET_MCS_RX    (1 << 11)
+/** Reset the random number generator in the transmit function */
 #define RFLPC_ETH_MAC1_SIM_RESET       (1 << 14)
+/** Reset the MAC device */
 #define RFLPC_ETH_MAC1_SOFT_RESET      (1 << 15)
 
 /* MAC Configuration Register 2, bits definition */
+/** Duplex mode selection */
 #define RFLPC_ETH_MAC2_FULL_DUPLEX            (1 << 0)
-#define RFLPC_ETH_MAC2_FRAME_LENGTH_CHK       (1 << 1)   
-#define RFLPC_ETH_MAC2_HUGE_FRAME_ENABLE      (1 << 2)    
+/** Check lenght of received and transmited frames and report in status info */
+#define RFLPC_ETH_MAC2_FRAME_LENGTH_CHK       (1 << 1)
+/** Activate jumbo frames */
+#define RFLPC_ETH_MAC2_HUGE_FRAME_ENABLE      (1 << 2)
+/** Wait some bytes before begining CRC calculation (if proprietary bytes are sent before 802.3 header */
 #define RFLPC_ETH_MAC2_DELAYED_CRC            (1 << 3)
-#define RFLPC_ETH_MAC2_CRC_ENABLE             (1 << 4)         
-#define RFLPC_ETH_MAC2_PAD_ENABLE             (1 << 5)         
-#define RFLPC_ETH_MAC2_VLAN_PAD_ENABLE        (1 << 6)    
-#define RFLPC_ETH_MAC2_AUTO_DETECT_PAD_ENABLE (1 << 7)   
-#define RFLPC_ETH_MAC2_PURE_PREAMBLE_ENFORCE  (1 << 8)     
-#define RFLPC_ETH_MAC2_LONG_PREAMBLE_ENFORCE  (1 << 9)     
+/** Add CRC to every frames */
+#define RFLPC_ETH_MAC2_CRC_ENABLE             (1 << 4)
+/** Activate CRC and/or Padding */
+#define RFLPC_ETH_MAC2_PAD_CRC_ENABLE         (1 << 5)
+/** Activate padding when sending frame smaller that 64 bytes */
+#define RFLPC_ETH_MAC2_VLAN_PAD_ENABLE        (1 << 6)
+/** Auto detect padded frames */
+#define RFLPC_ETH_MAC2_AUTO_DETECT_PAD_ENABLE (1 << 7)
+/** Force verification of preamble */
+#define RFLPC_ETH_MAC2_PURE_PREAMBLE_ENFORCE  (1 << 8)
+/** Force the use of long preamble */
+#define RFLPC_ETH_MAC2_LONG_PREAMBLE_ENFORCE  (1 << 9)
+/** Disable backoff after a collision occur */
 #define RFLPC_ETH_MAC2_NO_BACKOFF             (1 << 12)
+/** Disable backoff after a collision occur during back pressure */
 #define RFLPC_ETH_MAC2_BACK_PRESSURE          (1 << 13)
-#define RFLPC_ETH_MAC2_EXCESS_DEFER           (1 << 14)     
+/** When enabled (set to ’1’) the MAC will defer to carrier indefinitely as per the
+    Standard. When disabled, the MAC will abort when the excessive deferral limit is
+    reached. */
+#define RFLPC_ETH_MAC2_EXCESS_DEFER           (1 << 14)
 
-/* RMII Support */
-#define RFLPC_ETH_SUPP_10MBPS          (0)
-#define RFLPC_ETH_SUPP_100MBPS         (1 << 8)
+/** @} */
 
-
+/** @{
+ * @name MAC Control register bits
+ */
 /* MAC Control register bits */
 #define RFLPC_ETH_CMD_RX_ENABLE        (1 << 0)
 #define RFLPC_ETH_CMD_TX_ENABLE        (1 << 1)
@@ -85,27 +141,55 @@
 #define RFLPC_ETH_CMD_RMII             (1 << 9)
 #define RFLPC_ETH_CMD_FULL_DUPLEX      (1 << 10)
 
+/** @} */
+
+/** @{
+ * @name MIND control register
+ */
+
 /* MIND Control register */
 #define RFLPC_ETH_MIND_BUSY            (1)
 #define RFLPC_ETH_MIND_SCANNING        (1 << 1)
 #define RFLPC_ETH_MIND_NOT_VALID       (1 << 2)
 #define RFLPC_ETH_MIND_MII_LINK_FAIL   (1 << 3)
 
-/* MII control register bits */
+/** @} */
+
+/** @{
+ * @name RMII Support register
+ */
+#define RFLPC_ETH_SUPP_10MBPS          (0)
+#define RFLPC_ETH_SUPP_100MBPS         (1 << 8)
+
+/** @} */
+
+/** @{
+ * @name MII control register bits
+ */
 #define RFLPC_ETH_MCFG_SCAN_INCREMENT    (1 << 0)
 #define RFLPC_ETH_MCFG_SUPPRESS_PREAMBLE (1 << 1)
 #define RFLPC_ETH_MCFG_RESET_MIIM        (1 << 15)
 
-#define RFLPC_ETH_MAX_FRAME_LENGTH 1538 /*   1500 bytes for payload 
-				   * +    8 bytes for preamble/sfd
-				   * +   12 bytes for src and dst address 
-				   * +    2 bytes for length 
-				   * +    4 bytes for CRC 
-				   * +   12 bytes for minimum interframe gap */
-#define RFLPC_ETH_MAX_CLOCK 2500000 /* Maximum allowed clock frequency for MII, defined by IEEE 802.3, see p. 154 */
+/** @} */
+
+/** Maximum size of an ethernet frame
+ * Consist of:
+ * - 1500 bytes for payload
+ * - 8 bytes for preamble/sfd
+ * - 12 bytes for src and dst address
+ * - 2 bytes for length/type
+ * - 4 bytes for CRC
+ * - 12 bytes for minimum interframe gap
+ */
+#define RFLPC_ETH_MAX_FRAME_LENGTH 1538
+/** Maximum allowed clock frequency for MII, defined by IEEE 802.3, see p. 154 of the user manual */
+#define RFLPC_ETH_MAX_CLOCK 2500000
 
 
 /* Address of the DP83848J PHY registers */
+/** @{
+ * @name PHY Registers
+ */
 #define RFLPC_ETH_PHY_BMCR     (0x0)
 #define RFLPC_ETH_PHY_BMSR     (0x1)
 
@@ -130,8 +214,12 @@
 #define RFLPC_ETH_PHY_EDCR     (0x1D)
 #endif /* extended registers */
 
+/** @} */
+
 /* PHY register bits */
-/* Basic Mode Control Register (BMSR) */
+/** @{
+ * @name Basic Mode Control Register (BMSR) bits
+ */
 #define RFLPC_ETH_BMCR_RESET            (1 << 15)
 #define RFLPC_ETH_BMCR_LOOPBACK         (1 << 14)
 #define RFLPC_ETH_BMCR_SPEED_SELECT     (1 << 13)
@@ -141,8 +229,11 @@
 #define RFLPC_ETH_BMCR_RESTART_AUTO_NEG (1 << 9)
 #define RFLPC_ETH_BMCR_DUPLEX_MODE      (1 << 8)
 #define RFLPC_ETH_BMCR_COLLISION_TEST   (1 << 7)
+/** @} */
 
-/* Basic Mode Status Register */
+/** @{
+ * @name Basic Mode Status Register (BMSR) bits
+ */
 #define RFLPC_ETH_BMSR_100BASET4                (1 << 15)
 #define RFLPC_ETH_BMSR_100BASETX_FULL           (1 << 14)
 #define RFLPC_ETH_BMSR_100BASETX_HALF           (1 << 13)
@@ -155,12 +246,14 @@
 #define RFLPC_ETH_BMSR_LINK_STATUS              (1 << 2)
 #define RFLPC_ETH_BMSR_JABBER_DETECT            (1 << 1)
 #define RFLPC_ETH_BMSR_EXT_REGISTER_CAPS        (1 << 0)
-
+/** @} */
 
 
 /* Phy extented registers */
 #ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
-/* Auto negotiation advertisement register */
+/** @{
+ * @name Auto negotiation advertisement register (ANAR) bits
+ */
 #define RFLPC_ETH_ANAR_ASM_DIR (1 << 11)
 #define RFLPC_ETH_ANAR_PAUSE   (1 << 10)
 #define RFLPC_ETH_ANAR_T4      (1 << 9)
@@ -169,7 +262,11 @@
 #define RFLPC_ETH_ANAR_10_FD   (1 << 6)
 #define RFLPC_ETH_ANAR_10      (1 << 5)
 
-/* PHY status register */
+/** @} */
+
+/** @{
+ * @name PHY status register (PHYSTS) bits
+ */
 #define RFLPC_ETH_PHYSTS_MDI_X                     (1 << 14)
 #define RFLPC_ETH_PHYSTS_RX_ERROR_LATCH            (1 << 13)
 #define RFLPC_ETH_PHYSTS_POLARITY_STATUS           (1 << 12)
@@ -184,8 +281,15 @@
 #define RFLPC_ETH_PHYSTS_DUPLEX_STATUS             (1 << 2)
 #define RFLPC_ETH_PHYSTS_SPEED_STATUS              (1 << 1)
 #define RFLPC_ETH_PHYSTS_LINK_STATUS               (1 << 0)
+/** @} */
 #endif /* extended registers */
 
+/** @} */
+
+
+/** @{
+ * @name Interrupt bits
+ */
 /* Interrupt enable bits */
 #define RFLPC_ETH_IRQ_EN_RX_OVERRUN  (1 << 0)
 #define RFLPC_ETH_IRQ_EN_RX_ERROR    (1 << 1)
@@ -197,5 +301,9 @@
 #define RFLPC_ETH_IRQ_EN_TX_DONE     (1 << 7)
 #define RFLPC_ETH_IRQ_EN_SOFT        (1 << 12)
 #define RFLPC_ETH_IRQ_EN_WAKE_UP     (1 << 13)
+
+/** @} */
+
+/** @} */
 
 #endif

@@ -1,32 +1,24 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
- *									 
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
+ *
  * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by	 
- * the Free Software Foundation, either version 3 of the License, or	 
- * (at your option) any later version.					 
- * 									 
- * rflpc is distributed in the hope that it will be useful,		 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
- * GNU General Public License for more details.				 
- * 									 
- * You should have received a copy of the GNU General Public License	 
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * rflpc is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
-  Created: 
+  Created:
   Time-stamp: <2011-09-23 10:55:08 (hauspie)>
 */
-#include <rflpc17xx/debug.h>
-#include <rflpc17xx/memcpy.h>
-#include <rflpc17xx/drivers/leds.h>
-#include <rflpc17xx/drivers/uart.h>
-#include <rflpc17xx/drivers/ethernet.h>
-#include <rflpc17xx/drivers/rit.h> /* timer for link status */
-#include <rflpc17xx/interrupt.h>
-#include <rflpc17xx/drivers/eth_const.h>
-#include <rflpc17xx/printf.h>
+#include <rflpc17xx/rflpc17xx.h>
 
 #include "protocols.h"
 
@@ -148,7 +140,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
     rfEthTxStatus *txs;
     EthHead eth;
     EthHead eth_reply;
-    
+
 
     /* demangle ethernet frame*/
     proto_eth_demangle(&eth, rxd->packet);
@@ -156,7 +148,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
     {
 	ArpHead arp_rcv;
 	ArpHead arp_send;
-	
+
 	proto_arp_demangle(&arp_rcv, rxd->packet + PROTO_MAC_HLEN);
 	if (arp_rcv.target_ip != my_ip)
 	    return;
@@ -182,7 +174,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 
 	proto_eth_mangle(&eth_reply, txd->packet);
 	proto_arp_mangle(&arp_send, txd->packet + PROTO_MAC_HLEN);
-	
+
 	/* Set control bits in descriptor with  size, enable padding, crc, and last fragment */
 	txd->control = (PROTO_MAC_HLEN + PROTO_ARP_HLEN) | (1 << 18) | (1 << 29) | (1 << 30);
 	/* send packet */
@@ -222,7 +214,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 		    {
 			return;
 		    }
-		    
+
 
 		    proto_eth_mangle(&eth_reply, txd->packet);
 		    proto_ip_mangle(&ip, txd->packet + PROTO_MAC_HLEN);
@@ -286,14 +278,14 @@ void ethernet()
     printf("Waiting for link to be up\r\n");
     while(!rflpc_eth_link_state());
 
- 
+
     rflpc_eth_set_irq_handler(eth_handler);
     rflpc_eth_irq_enable_set(RFLPC_ETH_IRQ_EN_RX_DONE);
 
    /* setting rit timer to periodicaly check for link state */
     rflpc_rit_enable();
     rflpc_rit_set_callback(0xFFFFF, 0, 1, _rit_handler);
-    
+
 
     printf("Ok. Press:\r\n");
     printf("- 's' to toggle speed\r\n");

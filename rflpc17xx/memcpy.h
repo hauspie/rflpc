@@ -18,7 +18,9 @@
   Created: 2011-09-23
   Time-stamp: <2011-09-23 10:46:31 (hauspie)>
 */
-/** @file */
+/** @file
+ * An implementation of memcpy
+ */
 #ifndef __RFLPC_MEMCPY_H__
 #define __RFLPC_MEMCPY_H__
 

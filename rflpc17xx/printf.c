@@ -18,11 +18,9 @@
     Created:
     Time-stamp: <2011-08-31 15:17:22 (hauspie)>
 */
-#include "drivers/uart.h"
-
 #include <stdarg.h>
-
-extern int putchar(int c);
+#include <stdint.h>
+#include "printf.h"
 
 #define PUTCHAR(c) do { ++count; putchar((c)); } while(0)
 #define PUTS(s) do {const char *str=s; while (*str) PUTCHAR(*str++);}while(0)

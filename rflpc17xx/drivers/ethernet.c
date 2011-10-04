@@ -1,17 +1,17 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie                        
- *									 
+/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
+ *
  * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by	 
- * the Free Software Foundation, either version 3 of the License, or	 
- * (at your option) any later version.					 
- * 									 
- * rflpc is distributed in the hope that it will be useful,		 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of	 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	 
- * GNU General Public License for more details.				 
- * 									 
- * You should have received a copy of the GNU General Public License	 
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.	 
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * rflpc is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -34,7 +34,7 @@
 static const uint8_t clock_dividers[] = {4, 6, 8, 10, 14, 20, 28, 36, 40};
 
 /* This function allows to write value to a PHY register through the RMII
- * interface 
+ * interface
  */
 static void _write_to_phy_register_with_addr(uint8_t addr, uint8_t reg, uint16_t value)
 {
@@ -65,17 +65,17 @@ static uint16_t _read_from_phy_register_with_addr(uint8_t addr, uint8_t reg)
 
 static void _eth_setup_pins()
 {
-    
-    rflpc_pin_set(1, RFLPC_ETH_PIN_TXD0,    1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_TXD1,    1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_TX_EN,   1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_CRS,     1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_RXD0,    1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_RXD1,    1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_RX_ER,   1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_REF_CLK, 1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_MDC,     1, 0, 0);
-    rflpc_pin_set(1, RFLPC_ETH_PIN_MDIO,    1, 0, 0);
+
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_TXD0,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_TXD1,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_TX_EN,   1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_CRS,     1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_RXD0,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_RXD1,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_RX_ER,   1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_REF_CLK, 1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_MDC,     1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_MDIO,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
 }
 
 #define _read_from_phy_register(reg) _read_from_phy_register_with_addr(RFLPC_ETH_PHY_ADDR, (reg))
@@ -86,7 +86,7 @@ int rflpc_eth_init()
     int i;
     uint32_t divider;
 
-    _eth_setup_pins(); 
+    _eth_setup_pins();
 
     /* Power the ethernet device
        Set bit PCENET in PCONP register (p. 141 and 64) */
@@ -106,13 +106,13 @@ int rflpc_eth_init()
     LPC_EMAC->MAC1 = 0;
 
     /* Append CRC to the frame and PAD short frames (<64 bytes) and operate in full-duplex */
-    LPC_EMAC->MAC2 = RFLPC_ETH_MAC2_FULL_DUPLEX | RFLPC_ETH_MAC2_CRC_ENABLE | RFLPC_ETH_MAC2_PAD_ENABLE;
-    
+    LPC_EMAC->MAC2 = RFLPC_ETH_MAC2_FULL_DUPLEX | RFLPC_ETH_MAC2_CRC_ENABLE | RFLPC_ETH_MAC2_PAD_CRC_ENABLE;
+
     /* Back-to-back inter-packet gap. 0x15 is the recommended value in full-duplex (p. 152) */
     LPC_EMAC->IPGT = 0x15;
     /* Non Back-to-back inter-packet gap. 0x12 and 0xC are recommended values (p. 152) */
     LPC_EMAC->IPGR = 0x12 | (0xC << 8);
-    
+
     /* Collision window. 0xF and 0x37 are recommended values (p. 153) */
     LPC_EMAC->CLRT = 0xF | (0x37 << 8);
 
@@ -123,7 +123,7 @@ int rflpc_eth_init()
     LPC_EMAC->MAXF = RFLPC_ETH_MAX_FRAME_LENGTH;
 
     /* Set MIIM clock multiplier to a value compatible with system clock
-       (p. 154) 
+       (p. 154)
        IEEE 802.3 defines the MII clock to be no faster than 2.5MHz
     */
     divider = rflpc_clock_get_system_clock() / RFLPC_ETH_MAX_CLOCK;
@@ -140,7 +140,7 @@ int rflpc_eth_init()
 
     /* Enable RMII interface and disable rx filter */
     LPC_EMAC->Command = RFLPC_ETH_CMD_RMII | RFLPC_ETH_CMD_FULL_DUPLEX | RFLPC_ETH_CMD_PASS_RX_FILTER;
-    
+
     /* Put the PHY in reset */
     _write_to_phy_register(RFLPC_ETH_PHY_BMCR, RFLPC_ETH_BMCR_RESET);
 
@@ -148,7 +148,7 @@ int rflpc_eth_init()
     while (_read_from_phy_register(RFLPC_ETH_PHY_BMCR) & RFLPC_ETH_BMCR_RESET);
 
     /* Read PHY Identifier to generate MAC address */
-    
+
 
     return 1;
 }
@@ -165,7 +165,7 @@ int rflpc_eth_link_auto_negociate(int max_desired_mode)
 #ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
     uint16_t anar;
 #endif
-   
+
 
     /* Do not perform autonegociation if link is down */
     if (!rflpc_eth_link_state())
@@ -251,7 +251,7 @@ void rflpc_eth_set_link_mode(int mode)
 	cmd &= ~RFLPC_ETH_CMD_FULL_DUPLEX;
 	bmcr &= ~RFLPC_ETH_BMCR_DUPLEX_MODE;
     }
-    
+
     /* speed */
     if (mode & RFLPC_ETH_LINK_MODE_SPEED_BIT)
     {
@@ -306,7 +306,7 @@ void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus
     /* Turn reception off while modifying descriptors */
     LPC_EMAC->Command &= ~RFLPC_ETH_CMD_RX_ENABLE;
     LPC_EMAC->MAC1 &= ~RFLPC_ETH_MAC1_RECEIVE_ENABLE ;
-    
+
     LPC_EMAC->RxDescriptor = (uint32_t) descriptors;
     LPC_EMAC->RxStatus = (uint32_t) status;
     LPC_EMAC->RxDescriptorNumber = count - 1; /* stored in -1 encoding */
@@ -350,7 +350,7 @@ void rflpc_eth_set_mac_address(const uint8_t *addr)
     LPC_EMAC->SA2 = addr[4] << 8 | addr[5];
 }
 
-#define DUMP_REGISTER(a) printf("%s: %x (%d)\r\n", #a,a,a); 
+#define DUMP_REGISTER(a) printf("%s: %x (%d)\r\n", #a,a,a);
 void rflpc_eth_dump_internals()
 {
     DUMP_REGISTER(LPC_EMAC->Command);

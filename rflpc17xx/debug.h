@@ -18,7 +18,9 @@
   Created:
   Time-stamp: <2011-08-31 16:16:02 (hauspie)>
 */
-/** @file */
+/** @file
+ * Debug functions such as delay and stack dump.
+ */
 #ifndef __RFLPC_DEBUG_H__
 #define __RFLPC_DEBUG_H__
 
@@ -54,7 +56,7 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
    while(0)
 
 /** Dumps 64 bytes from the current value of the stack pointer.
- * @note this maccro uses ::printf
+ * @note this maccro uses ::rflpc_printf()
  * */
 #define RFLPC_DUMP_STACK() do {                                 \
 	register uint8_t *mstack =(uint8_t*) __get_MSP();       \

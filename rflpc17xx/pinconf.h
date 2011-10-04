@@ -20,7 +20,9 @@
 
   Provides macro to set pin function and modes
 */
-/** @file */
+/** @file
+ * Multi-purpose pins configuration made easy.
+ */
 #ifndef __RFLPC_PINCONF_H__
 #define __RFLPC_PINCONF_H__
 

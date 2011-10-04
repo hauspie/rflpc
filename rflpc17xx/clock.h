@@ -14,6 +14,7 @@
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 /** @file
+ * Clock initialization and defines.
  * @addtogroup clock
  * @ingroup system
  * @{
