@@ -94,7 +94,7 @@ static inline LPC_TIM_TypeDef *rflpc_timer_base(rflpc_timer_t timer)
 /**
  * @brief Power and clock the given timer
  *
- * @param timer_number
+ * @param timer
  */
 static inline void rflpc_timer_enable(rflpc_timer_t timer)
 {
@@ -115,7 +115,7 @@ static inline void rflpc_timer_enable(rflpc_timer_t timer)
 /**
  * @brief disable the given timer
  *
- * @param timer_number
+ * @param timer
  */
 static inline void rflpc_timer_disable(rflpc_timer_t timer)
 {
@@ -324,7 +324,7 @@ static inline void rflpc_timer_set_irq_on_match(rflpc_timer_t timer, rflpc_timer
 /**
  * Reset the irq for a given match register
  *
- * @param rflpc_timer_t
+ * @param timer
  * @param match_register
  */
 static inline void rflpc_timer_reset_irq(rflpc_timer_t timer, rflpc_timer_match_t match_register)

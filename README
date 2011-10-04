@@ -21,7 +21,8 @@ the peripheral registers.
 
 Folder description
 ------------------
-- docs: Datasheets which have been used to develop the library
+- datasheets: Datasheets which have been used to develop the library
+- doc: the doxygen file that can be used to generate the documentation of the API
 - rflpc17xx: library source folder
 - samples: some samples used to test and/or demonstrate some functionalities of
   the library
