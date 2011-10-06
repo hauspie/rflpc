@@ -86,14 +86,12 @@ static inline void rflpc_led_clr(uint32_t l)
 }
 
 
-/** Turns on the leds included in the mask*/
+/** Turns on the leds included in the mask */
 static inline void rflpc_led_val(uint32_t l)
 {
     rflpc_gpio_set_val(RFLPC_LED_PORT, l, ~(RFLPC_LED_1 | RFLPC_LED_2 | RFLPC_LED_3 | RFLPC_LED_4));
 }
 
-/**
- */
 /**
  * Turns the led to reflect a binary 4 digit number
  *
@@ -114,5 +112,7 @@ static inline void rflpc_led_binary_value(uint8_t v)
 	leds |= RFLPC_LED_1;
     rflpc_led_val(leds);
 }
+
+/** @} */
 
 #endif

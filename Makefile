@@ -1,4 +1,4 @@
-DIRS=rflpc17xx doc samples/basic_tests samples/ethernet samples/timer samples/skel samples/memcpy
+DIRS=rflpc17xx doc $(wildcard samples/*)
 
 .PHONY: all $(DIRS)
 
