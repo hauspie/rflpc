@@ -54,13 +54,16 @@ typedef enum
 extern void rflpc_spi_init_master(rflpc_spi_t port, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert);
 
 /**
- * Sends data through the spi interface.
- * @param port The port to send to
- * @param data The data to send. If the port has been configured to send less than 16 bits in each frame, the data must be right justified
- * @warning The destination slave must have been enabled by putting its CS pin to a logical low. This is usually done with GPIO
+ * Tests if transmition FIFO is empty
+ *
+ * @param port The SPI port to test
+ * @return true if empty
  **/
-
-extern void rflpc_spi_send(rflpc_spi_t port, uint16_t data);
+static inline int rflpc_spi_tx_fifo_empty(rflpc_spi_t port)
+{
+   LPC_SSP_TypeDef *spi_base = (port == RFLPC_SPI0) ? LPC_SSP0 : LPC_SSP1;
+   return spi_base->SR & 1;
+}
 
 /**
  * Tests if the transmition FIFO is full
@@ -75,15 +78,17 @@ static inline int rflpc_spi_tx_fifo_full(rflpc_spi_t port)
 }
 
 /**
- * Tests if transmition FIFO is empty
- *
- * @param port The SPI port to test
- * @return true if empty
+ * Sends data through the spi interface.
+ * @param port The port to send to
+ * @param data The data to send. If the port has been configured to send less than 16 bits in each frame, the data must be right justified
+ * @warning The destination slave must have been enabled by putting its CS pin to a logical low. This is usually done with GPIO
  **/
-static inline int rflpc_spi_tx_fifo_empty(rflpc_spi_t port)
+static inline void rflpc_spi_write(rflpc_spi_t port, uint16_t data)
 {
-   LPC_SSP_TypeDef *spi_base = (port == RFLPC_SPI0) ? LPC_SSP0 : LPC_SSP1;
-   return spi_base->SR & 1;
+   LPC_SSP_TypeDef *spi_base = port == RFLPC_SPI0 ? LPC_SSP0 : LPC_SSP1;
+   /* wait for FIFO to be not full */
+   while (rflpc_spi_tx_fifo_full(port));
+   spi_base->DR = data;
 }
 
 

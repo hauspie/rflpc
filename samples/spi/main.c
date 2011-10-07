@@ -36,7 +36,7 @@ void led_matrix_display_buffer(uint8_t *buffer)
    rflpc_gpio_clr_pin(0,6);
    wait(500);
    for (i = 0 ; i < 64 ; ++i)
-      rflpc_spi_send(RFLPC_SPI1, buffer[i]);
+      rflpc_spi_write(RFLPC_SPI1, buffer[i]);
    /* wait for transfer to finish */
    while (!rflpc_spi_tx_fifo_empty(RFLPC_SPI1));
    /* wait 0.5 more ms */

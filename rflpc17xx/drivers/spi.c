@@ -22,7 +22,6 @@
 #include "spi.h"
 #include "../nxp/LPC17xx.h"
 #include "../pinconf.h"
-#include "../printf.h"
 
 #define PINFUNC_SPI 2
 
@@ -65,16 +64,8 @@ void rflpc_spi_init_master(rflpc_spi_t port, rflpc_clock_divider_t cpu_clock_div
 
    /* user manual p. 422. Set the data transfert size and the serial clock rate */
    spi_base->CR0 = ((data_size_transfert - 1) & 0xF) | (serial_clock_rate - 1) << 8;
-   printf("%x\r\n", spi_base->CR0);
    spi_base->CPSR = clock_prescale;
    /* Master mode, no loop back, enable ssp controler */
    spi_base->CR1 = (1UL << 1);
 }
 
-void rflpc_spi_send(rflpc_spi_t port, uint16_t data)
-{
-   LPC_SSP_TypeDef *spi_base = port == RFLPC_SPI0 ? LPC_SSP0 : LPC_SSP1;
-   /* wait for FIFO to be not full */
-   while (rflpc_spi_tx_fifo_full(port));
-   spi_base->DR = data;
-}
