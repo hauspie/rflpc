@@ -16,12 +16,12 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-10-09 03:38:58 (mickey)>
+  Time-stamp: <2011-10-09 04:37:34 (mickey)>
 */
 #ifndef __SCROLLER_H__
 #define __SCROLLER_H__
 
-void display_char(uint8_t *buffer, char c, int xpos, uint8_t color);
+void display_char(uint8_t *buffer, unsigned char c, int xpos, uint8_t color);
 void display_text(uint8_t *buffer, const char *text, int position, uint8_t color);
 
 #endif
