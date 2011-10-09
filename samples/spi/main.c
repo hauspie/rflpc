@@ -16,10 +16,15 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2011-10-09 03:46:15 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
+#include "scroller.h"
 
+
+#define SPI_PORT RFLPC_SPI0
+#define CS_GPIO_PORT 0
+#define CS_GPIO_PIN 16
 
 
 void wait(int micros)
@@ -33,15 +38,15 @@ void led_matrix_display_buffer(uint8_t *buffer)
 {
    int i;
    /* Assert chip select */
-   rflpc_gpio_clr_pin(0,6);
+   rflpc_gpio_clr_pin(CS_GPIO_PORT,CS_GPIO_PIN);
    wait(500);
    for (i = 0 ; i < 64 ; ++i)
-      rflpc_spi_write(RFLPC_SPI1, buffer[i]);
+      rflpc_spi_write(SPI_PORT, buffer[i]);
    /* wait for transfer to finish */
-   while (!rflpc_spi_tx_fifo_empty(RFLPC_SPI1));
+   while (!rflpc_spi_tx_fifo_empty(SPI_PORT));
    /* wait 0.5 more ms */
    wait(500);
-   rflpc_gpio_set_pin(0,6);
+   rflpc_gpio_set_pin(CS_GPIO_PORT,CS_GPIO_PIN);
 }
 
 
@@ -66,6 +71,7 @@ void test_spi()
    int serial_clock_rate_divider = 1;
    int i = 1;
    int r = 0, g = 0, b = 0;
+   int c = 0;
 
    while (needed_divider / serial_clock_rate_divider > 254)
    {
@@ -74,30 +80,43 @@ void test_spi()
    needed_divider /= serial_clock_rate_divider;
    printf("Computed clock: %d (%d %d) \r\n", spi_peripheral_clock / (needed_divider * serial_clock_rate_divider), needed_divider, serial_clock_rate_divider);
 
-   rflpc_spi_init_master(RFLPC_SPI1, RFLPC_CCLK_8, needed_divider, serial_clock_rate_divider, 8);
+   rflpc_spi_init_master(SPI_PORT, RFLPC_CCLK_8, needed_divider, serial_clock_rate_divider, 8);
 
    /* Configure gpio for chip select 0.6 is the DIP8 on the MBED */
-   rflpc_gpio_use_pin(0, 6);
-   rflpc_gpio_set_pin_mode_output(0,6);
-   rflpc_gpio_set_pin(0,6); /* chip selection is made on low logical level so put high to disable yet */
+   rflpc_gpio_use_pin(CS_GPIO_PORT,CS_GPIO_PIN);
+   rflpc_gpio_set_pin_mode_output(CS_GPIO_PORT,CS_GPIO_PIN);
+   rflpc_gpio_set_pin(CS_GPIO_PORT,CS_GPIO_PIN); /* chip selection is made on low logical level so put high to disable yet */
+
+   
+   for (i = 0 ; i < 64 ; ++i)
+       pic[i] = 7 << 5;
+   led_matrix_display_buffer(pic);
+   wait(500000);
+
+   for (i = 0 ; i < 64 ; ++i)
+       pic[i] = 7 << 2;
+   led_matrix_display_buffer(pic);
+   wait(500000);
+
+   for (i = 0 ; i < 64 ; ++i)
+       pic[i] = 3;
+   led_matrix_display_buffer(pic);
+   wait(500000);
+   
 
 
-
+   c = 0;
    while (1)
    {
-      if (b <= 7)
-         b++;
-      else if (g <= 7)
-         g++;
-      else if (r <= 7)
-         r++;
-      else{ r = 0 ; b = 0 ; g = 0;}
-      for (i = 0 ; i < 64 ; ++i)
-      {
-         pic[i] = r << 6 | g << 3 | b;
-      }
-      led_matrix_display_buffer(pic);
-      wait(5000);
+       
+       for (i = 0 ; i < 64 ; ++i)
+	   pic[i] = 0;
+       display_text(pic, "Hello World!", c++, 0xFF);
+       if (c == 96)
+	   c = -8;
+	   
+       led_matrix_display_buffer(pic);
+       wait(200000);
    }
 }
 

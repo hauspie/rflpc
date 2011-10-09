@@ -15,7 +15,7 @@ BIN=$(OUTPUT_NAME).bin
 CFLAGS=`$(LIB_DIR)/rflpc-config --cflags`
 LDFLAGS=`$(LIB_DIR)/rflpc-config --libs`
 
-OBJS=main.o
+OBJS=main.o scroller.o
 
 all: $(BIN)
 
