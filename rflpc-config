@@ -45,7 +45,7 @@ for arg in $*
 do
     case $arg in
 	--cflags)
-	    echo -n "-DRFLPC_PLATFORM_MBED -ffreestanding -Wall -Os -I$RFLPC_DIR "
+	    echo -n "-DRFLPC_PLATFORM_MBED -fno-builtin -ffreestanding -Wall -Os -I$RFLPC_DIR "
 	    ;;
 	--libs|--ldflags)
 	    echo -n "-nodefaultlibs -nostdlib -L$RFLPC_DIR/rflpc17xx -lrflpc17xx -Wl,-T,rflpc17xx.ld "

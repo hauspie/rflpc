@@ -70,7 +70,6 @@ void test_spi()
    int needed_divider = spi_peripheral_clock / 125000;
    int serial_clock_rate_divider = 1;
    int i = 1;
-   int r = 0, g = 0, b = 0;
    int c = 0;
 
    while (needed_divider / serial_clock_rate_divider > 254)

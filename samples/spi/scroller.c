@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-10-09 04:39:54 (mickey)>
+  Time-stamp: <2011-10-10 10:20:46 (hauspie)>
 */
 #include <stdint.h>
 #include <rflpc17xx/rflpc17xx.h>
@@ -314,6 +314,14 @@ void display_text(uint8_t *buffer, const char *text, int position, uint8_t color
     int letter2 = letter1 + 1;
     int position_in_letter1 = position % 8;
     int position_in_letter2 = (8 - position_in_letter1);
+    int text_len = 0;
+    const char *p = text;
+
+     while (*p++)
+	text_len++;
+    
+    if (letter2 >= text_len)
+	letter2 = 0;
 
     if (letter1 >= 0)
 	display_char(buffer, text[letter1], -position_in_letter1, color);
