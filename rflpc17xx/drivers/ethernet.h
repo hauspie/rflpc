@@ -26,12 +26,12 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-09-08 16:07:43 (hauspie)>
+  Time-stamp: <2011-10-10 11:20:17 (hauspie)>
 */
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
-
+#include "eth_const.h"
 /** Inits the ethernet device */
 extern int rflpc_eth_init();
 
@@ -364,7 +364,7 @@ static inline uint32_t rflpc_eth_irq_get_status()
 }
 
 /**
- * @brief Force the generation of the given interrupt.
+ * Force the generation of the given interrupt.
  * This can be used for triggering an interrupt by software
  *
  * @param irqs a bitwise ORed combination of RFLPC_ETH_IRQ_EN_* bits
@@ -373,6 +373,34 @@ static inline uint32_t rflpc_eth_irq_get_status()
 static inline void rflpc_eth_irq_trigger(uint32_t irqs)
 {
     LPC_EMAC->IntSet = irqs;
+}
+
+/** 
+ * Activate the hardware receive filter.  
+ * When activated, the hardware will
+ * discard all packet whose destination address are not for the device (MAC
+ * address filter).
+ *
+ * @param accept_multicast If true, also accept multicast frames
+ * @param accept_broadcast If true, also accept broadcast frames
+ */
+static inline void rflpc_eth_activate_rx_filter(int accept_multicast, int accept_broadcast)
+{
+    LPC_EMAC->RxFilterCtrl = 0;
+    if (accept_multicast)
+	LPC_EMAC->RxFilterCtrl |= RFLPC_ETH_RXFILTER_MULTICAST_EN;
+    if (accept_broadcast)
+	LPC_EMAC->RxFilterCtrl |= RFLPC_ETH_RXFILTER_BROADCAST_EN;
+    /* activate filter */
+    LPC_EMAC->Command &= ~RFLPC_ETH_CMD_PASS_RX_FILTER;
+}
+/** 
+ * Deactivates the hardware receive filter.
+ * All received frames will now be received by the driver.
+ */
+static inline void rflpc_eth_deactivate_rx_filter()
+{
+    LPC_EMAC->Command |= RFLPC_ETH_CMD_PASS_RX_FILTER;
 }
 
 /**

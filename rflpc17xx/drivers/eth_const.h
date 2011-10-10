@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-13 10:32:55 (hauspie)>
+  Time-stamp: <2011-10-10 11:16:36 (hauspie)>
 
   all ethernet constants, register definition, bits etc..
 
@@ -141,6 +141,19 @@
 #define RFLPC_ETH_CMD_RMII             (1 << 9)
 #define RFLPC_ETH_CMD_FULL_DUPLEX      (1 << 10)
 
+/** @} */
+
+/** @{
+ * @name MAC Filtering register bits (p. 166)
+ */
+#define RFLPC_ETH_RXFILTER_UNICAST_EN         (1 << 0)
+#define RFLPC_ETH_RXFILTER_BROADCAST_EN       (1 << 1)
+#define RFLPC_ETH_RXFILTER_MULTICAST_EN       (1 << 2)
+#define RFLPC_ETH_RXFILTER_UNICAST_HASH_EN    (1 << 3)
+#define RFLPC_ETH_RXFILTER_MULTICAST_HASH_EN  (1 << 4)
+#define RFLPC_ETH_RXFILTER_PERFECT_EN         (1 << 5)
+#define RFLPC_ETH_RXFILTER_MAGIC_WOL_EN       (1 << 12)
+#define RFLPC_ETH_RXFILTER_RXFILTER_WOL_EN    (1 << 13)
 /** @} */
 
 /** @{
