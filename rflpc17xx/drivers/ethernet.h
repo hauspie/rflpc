@@ -186,10 +186,11 @@ static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
  * @param [in]  size_to_send Size of the buffer to send
  * @param [out] control Pointer to the control word to send
  * @param [in] trigger_it Should the transmission of this buffer produce an interrupt
+ * @param [in] last_fragment Is this fragment the last of the frame
  **/
-static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control, int trigger_it)
+static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control, int trigger_it, int last_fragment)
 {
-    *control = (size_to_send & 0x7FF) | (1 << 30) | ((trigger_it & 1) << 31);
+    *control = (size_to_send & 0x7FF) | ((last_fragment & 1) << 30) | ((trigger_it & 1) << 31);
 }
 
 /** Sets rx descriptors and status base address
@@ -375,26 +376,30 @@ static inline void rflpc_eth_irq_trigger(uint32_t irqs)
     LPC_EMAC->IntSet = irqs;
 }
 
-/** 
- * Activate the hardware receive filter.  
+/**
+ * Activate the hardware receive filter.
  * When activated, the hardware will
  * discard all packet whose destination address are not for the device (MAC
  * address filter).
  *
+ * @param accept_unicast If true, accept ALL unicast frames
  * @param accept_multicast If true, also accept multicast frames
  * @param accept_broadcast If true, also accept broadcast frames
  */
-static inline void rflpc_eth_activate_rx_filter(int accept_multicast, int accept_broadcast)
+static inline void rflpc_eth_activate_rx_filter(int accept_unicast, int accept_multicast, int accept_broadcast)
 {
     LPC_EMAC->RxFilterCtrl = 0;
+    if (accept_unicast)
+       LPC_EMAC->RxFilterCtrl |= RFLPC_ETH_RXFILTER_UNICAST_EN;
     if (accept_multicast)
 	LPC_EMAC->RxFilterCtrl |= RFLPC_ETH_RXFILTER_MULTICAST_EN;
     if (accept_broadcast)
 	LPC_EMAC->RxFilterCtrl |= RFLPC_ETH_RXFILTER_BROADCAST_EN;
+    LPC_EMAC->RxFilterCtrl |= RFLPC_ETH_RXFILTER_PERFECT_EN;
     /* activate filter */
     LPC_EMAC->Command &= ~RFLPC_ETH_CMD_PASS_RX_FILTER;
 }
-/** 
+/**
  * Deactivates the hardware receive filter.
  * All received frames will now be received by the driver.
  */
