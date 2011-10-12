@@ -153,7 +153,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 	if (arp_rcv.target_ip != my_ip)
 	    return;
 	/* generate reply */
-	if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs))
+	if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs,0))
 	{
 	    return;
 	}
@@ -178,7 +178,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 	/* Set control bits in descriptor with  size, enable padding, crc, and last fragment */
 	txd->control = (PROTO_MAC_HLEN + PROTO_ARP_HLEN) | (1 << 18) | (1 << 29) | (1 << 30);
 	/* send packet */
-	rflpc_eth_done_process_tx_packet();
+	rflpc_eth_done_process_tx_packet(1);
 	return;
     }
     if (eth.type == PROTO_IP)
@@ -210,7 +210,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 		    eth_reply.src = mac_addr;
 		    eth_reply.dst = eth.src;
 
-		    if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs))
+		    if (!rflpc_eth_get_current_tx_packet_descriptor(&txd, &txs,0))
 		    {
 			return;
 		    }
@@ -228,7 +228,7 @@ void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
 		    /* fill control word (size, padding, crc, last fragment) */
 		    txd->control = (PROTO_MAC_HLEN + ip.total_length) | (1 << 18) | (1 << 29) | (1 << 30);
 		    /* send packet */
-		    rflpc_eth_done_process_tx_packet();
+		    rflpc_eth_done_process_tx_packet(1);
 		}
 	    }
 	    break;

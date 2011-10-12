@@ -190,7 +190,7 @@ static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
  **/
 static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control, int trigger_it, int last_fragment)
 {
-    *control = (size_to_send & 0x7FF) | ((last_fragment & 1) << 30) | ((trigger_it & 1) << 31);
+    *control = ((size_to_send-1) & 0x7FF) | ((last_fragment & 1) << 30) | ((trigger_it & 1) << 31);
 }
 
 /** Sets rx descriptors and status base address
@@ -253,23 +253,30 @@ extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTx
 
 /** returns the index of the current tx packet descriptor.
 
-    The return descriptor is the one that is prepared by software before
+   @param [out] descriptor a pointer to a pointer of ::rfEthDescriptor
+   @param [out] status a pointer to a pointer of ::rfEthTxStatus
+   @param [in]  idx the descriptor to get. 0 is the first free, 1 the second free...
+
+   The return descriptor is the one that is prepared by software before
     sending it. When ::rflpc_eth_done_process_tx_packet() is called, the packet
     will be owned by the hardware and sent as soon as possible.
 
     @return 0 if no more descriptor are available (which means that all the
     buffers are owned by the hardware and waiting to be sent). 1 if pointers are valid
 */
-static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status)
+
+#define TX_PRODUCE_INDEX_INC(inc) ((LPC_EMAC->TxProduceIndex + (inc))%LPC_EMAC->TxDescriptorNumber)
+
+static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status, int idx)
 {
     /* queue full */
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 ||
-	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
+    if (TX_PRODUCE_INDEX_INC(idx) == LPC_EMAC->TxConsumeIndex - 1 ||
+	((TX_PRODUCE_INDEX_INC(idx) == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
     {
 	return 0;
     }
-    *descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + LPC_EMAC->TxProduceIndex;
-    *status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + LPC_EMAC->TxProduceIndex;
+    *descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + TX_PRODUCE_INDEX_INC(idx);
+    *status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + TX_PRODUCE_INDEX_INC(idx);
     return 1;
 }
 
@@ -288,19 +295,17 @@ static inline int rflpc_eth_get_last_sent_packet_idx()
 
 /** When the packet has been generated, calling this function will make it
  * owned by the hardware and queued for emission
+ * @param [in] count The number of descriptors to hand to the hardware
  */
-static inline void rflpc_eth_done_process_tx_packet()
+static inline void rflpc_eth_done_process_tx_packet(int count)
 {
     /* queue full */
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxConsumeIndex - 1 ||
-	((LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
+    if (TX_PRODUCE_INDEX_INC(count) == LPC_EMAC->TxConsumeIndex - 1 ||
+	((TX_PRODUCE_INDEX_INC(count) == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
     {
 	return;
     }
-    if (LPC_EMAC->TxProduceIndex == LPC_EMAC->TxDescriptorNumber)
-	LPC_EMAC->TxProduceIndex = 0;
-    else
-	LPC_EMAC->TxProduceIndex++;
+    LPC_EMAC->TxProduceIndex = TX_PRODUCE_INDEX_INC(count);
 }
 
 /** returns the device MAC address
