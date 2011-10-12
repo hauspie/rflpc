@@ -1,4 +1,4 @@
-DIRS=rflpc17xx doc $(wildcard samples/*)
+DIRS=rflpc17xx $(wildcard samples/*)
 
 .PHONY: all $(DIRS)
 
@@ -20,3 +20,6 @@ $(patsubst %, _mrproper_%, $(DIRS)):
 
 $(patsubst %, _dump_%, $(DIRS)):
 	make -C $(patsubst _dump_%, %, $@) dump
+
+doc:
+	make -C doc
