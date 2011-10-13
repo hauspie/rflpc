@@ -53,7 +53,8 @@ extern int putchar(int c);
 
     @note If another format char is used, int is assumed to skip
     argument, but nothing is printed unless LPC_VERBOSE_PRINTF
-    is defined when compiling lib.
+    is defined when compiling lib. If ATOMIC_PRINTF is defined,
+    interrupts are disabled when entering printf and enabled before exiting
 
     @warning It uses the ::putchar function to output all characters. You have to define
     this function in your code so that the link works
