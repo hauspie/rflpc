@@ -21,6 +21,7 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include "printf.h"
+#include "interrupt.h"
 
 #define PUTCHAR(c) do { ++count; putchar((c)); } while(0)
 #define PUTS(s) do {const char *str=s; while (*str) PUTCHAR(*str++);}while(0)
@@ -72,7 +73,9 @@ int rflpc_printf(const char *format, ...)
     int ccount = sizeof(unsigned int);
     va_start(args, format);
 
-
+#ifdef ATOMIC_PRINTF
+   rflpc_irq_global_disable();
+#endif
     while (*format)
     {
 	switch (*format)
@@ -165,5 +168,8 @@ int rflpc_printf(const char *format, ...)
 	++format;
     }
     va_end(args);
+#ifdef ATOMIC_PRINTF
+    rflpc_irq_global_enable();
+#endif
     return count;
 }
