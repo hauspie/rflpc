@@ -19,6 +19,7 @@
   Time-stamp: <2011-09-27 17:27:59 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
+#include "nxp/core_cm3.h"
 #include "config.h"
 #include "interrupt.h"
 
@@ -35,9 +36,56 @@ extern void* _rom_interrupts[RFLPC_IRQn_COUNT];
 RFLPC_IRQ_HANDLER _default_exception_handler()
 {
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
-    printf("CFSR: %x\r\n", SCB->CFSR);
-    printf("HFSR: %x\r\n", SCB->HFSR);
-    printf("DFSR: %x\r\n", SCB->DFSR);
+    printf("CFSR: %0x\r\n", SCB->CFSR);
+    printf("HFSR: %0x\r\n", SCB->HFSR);
+    printf("DFSR: %0x\r\n", SCB->DFSR);
+    if (SCB->CFSR & (1UL << 7)) /* Memory Management Fault Address Register Valid */
+       printf("Mem Managment Fault Adress: %p\r\n", SCB->MMFAR);
+    if (SCB->CFSR & (1UL << 4)) /* MSTKERR */
+       printf("Memory Fault caused by stacking for exception entry\r\n");
+    if (SCB->CFSR & (1UL << (3))) /* MUNSTKERR */
+       printf("Memory Fault caused by unstacking for return from exception\r\n");
+    if (SCB->CFSR & (1UL << (1))) /* DACCVIOL */
+       printf("Data Access Violation. PC value stacked point to the faulting instruction\r\n");
+    if (SCB->CFSR & (1UL << (0))) /* IACCVIOL */
+       printf("Instruction Access Violation. PC value stacked point to the faulting instruction\r\n");
+    if (SCB->CFSR & (1UL << (8+7))) /* BFARVALID */
+       printf("Bus fault with known address: %p\r\n", SCB->BFAR);
+    if (SCB->CFSR & (1UL << (8+4))) /* STKERR */
+       printf("Bus fault caused by stacking for exception entry\r\n");
+    if (SCB->CFSR & (1UL << (8+3))) /* UNSTKERR */
+       printf("Bus fault caused by unstacking for return from exception\r\n");
+    if (SCB->CFSR & (1UL << (8+2))) /* IMPRECISERR */
+       printf("Imprecise bus fault\r\n");
+    if (SCB->CFSR & (1UL << (8+1))) /* PRECISERR */
+       printf("Precise bus fault\r\n");
+    if (SCB->CFSR & (1UL << (8+0))) /* IBUSERR */
+       printf("Intruction bus error\r\n");
+
+    if (SCB->CFSR & (1UL << (16+9))) /* DIVZERO */
+       printf("Division by 0\r\n");
+    if (SCB->CFSR & (1UL << (16+8))) /* UNALIGNED */
+       printf("Unaligned access usage\r\n");
+    if (SCB->CFSR & (1UL << (16+3))) /* NOCP */
+       printf("Fault while accessing to a coprocessor\r\n");
+    if (SCB->CFSR & (1UL << (16+2))) /* INVPC */
+       printf("Invalid PC Load\r\n");
+    if (SCB->CFSR & (1UL << (16+1))) /* INVSTATE */
+       printf("The processor has attempted to execute an instruction that makes illegal use of the EPSR\r\n");
+    if (SCB->CFSR & (1UL << (16+0))) /* UNDEFINSTR */
+       printf("The processor has attempted to execute an undefined instruction\r\n");
+
+    if (SCB->HFSR & (1UL << (30))) /* FORCED */
+       printf("Forced hardware fault\r\n");
+    if (SCB->HFSR & (1UL << (1))) /* FORCED */
+       printf("Bus fault on vector table read\r\n");
+    /* Stack frame when entering exception is:
+     * R0-R3, R12 [0->4]
+     * PC [5]
+     * PSR [6]
+     * LR [7]
+     */
+    printf("PC value at exception: %p\r\n", ((uint32_t*)__get_MSP())[5+4]); /* +4 is because GCC pushes r0,r4,r5 and lr on the stack */
     RFLPC_DUMP_STACK();
     /* stops the execution with a O--O <-> -OO- led pattern. */
     RFLPC_STOP(RFLPC_LED_1|RFLPC_LED_4, 2000000);

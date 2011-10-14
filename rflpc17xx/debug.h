@@ -61,7 +61,7 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
 #define RFLPC_DUMP_STACK() do {                                 \
 	register uint8_t *mstack =(uint8_t*) __get_MSP();       \
 	register int i;                                         \
-	for (i = 0 ; i < 64 ; ++i)                              \
+	for (i = 0 ; i < 128 ; ++i)                              \
 	{                                                       \
 	    if (i % 16 == 0)                                    \
 		printf("\n\r%p: ", mstack  + i);                \
