@@ -19,7 +19,6 @@
  * Time-stamp: <2011-10-14 14:18:07 (hauspie)>
  */
 #include "../nxp/LPC17xx.h"
-#include "../printf.h"
 #include "dma.h"
 
 
@@ -76,7 +75,6 @@ static volatile uint32_t *rflpc_dma_get_chan_destination(rflpc_dma_channel_t cha
 static void rflpc_dma_set_channel_control(volatile uint32_t *control, uint16_t transfert_size, uint8_t burst_size)
 {
    *control = (transfert_size & 0xFFF) | (1 << 26) | (1 << 27);
-   rflpc_printf("============== %x %x\r\n", *control, transfert_size & 0xFFF);
 }
 
 static void rflpc_dma_set_channel_config(volatile uint32_t *config, int enable)
