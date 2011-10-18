@@ -53,5 +53,19 @@ extern void rflpc_dma_init(void);
  */
 extern int rflpc_dma_channel_ready(rflpc_dma_channel_t channel);
 
+/**
+ * Starts a DMA copy.
+ * The DMA channel must be ready before starting a DMA copy
+ * @param channel The channel to use.
+ * @param dest destination pointer
+ * @param src source data
+ * @param size number of bytes to transfert (limited to 0xFFF bytes)
+ * @return true if the copy has been started, false otherwise
+ *
+ * @warning In the current implementation, size is limited by 0xFFF because only one DMA request is generated.
+ * @todo Handle size > 0xFFF
+ **/
+extern int rflpc_dma_start(rflpc_dma_channel_t channel, void *dest, const void *src, uint32_t size);
+
 /** @} */
 #endif

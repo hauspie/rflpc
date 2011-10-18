@@ -118,5 +118,6 @@
 #include "drivers/sys_tick_timer.h"
 #include "drivers/timer.h"
 #include "drivers/uart.h"
+#include "drivers/dma.h"
 
 #endif
