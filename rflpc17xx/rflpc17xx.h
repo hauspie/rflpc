@@ -106,6 +106,7 @@
 #include "pinconf.h"
 #include "printf.h"
 #include "profiling.h"
+#include "setjmp.h"
 
 
 /* Peripheral drivers */
