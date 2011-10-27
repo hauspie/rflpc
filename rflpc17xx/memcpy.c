@@ -16,11 +16,9 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-09-23
-  Time-stamp: <2011-09-23 16:45:19 (hauspie)>
+  Time-stamp: <2011-10-27 16:37:19 (hauspie)>
 */
-#include <stdint.h>
-
-#include "printf.h"
+#include "memcpy.h"
 
 /* This memcpy uses 2 optimisations:
 
@@ -31,39 +29,13 @@
    1- copy byte per byte until a 4 byte boundary aligned is found (if both buffers are similarly aligned)
    2- try to compose words from multiple word aligned reads on the source to write word aligned on destination
 */
+#define IS_WORD_ALIGNED(a) (!((uint32_t)(a) & 0x3))
 
-void *memcpy(void *dest, const void *src, uint32_t n)
-{
-    uint32_t *wdest = (uint32_t*)dest;
-    const uint32_t *wsrc = (const uint32_t*)src;
-    uint8_t *bdest;
-    const uint8_t *bsrc;
-    register int count;
-    if (!((uint32_t)wsrc & 0x3) && !((uint32_t)wdest & 0x3)) /* If aligned on 4 byte boundary */
-    {
-	/* Duff's device */
-	count = ((n/4)+7)/8; /* loop iteration count */
-	switch ((n/4)%8)
-	{
-	    case 0: do { *wdest++ = *wsrc++;
-	    case 7: *wdest++ = *wsrc++;
-	    case 6: *wdest++ = *wsrc++;
-	    case 5: *wdest++ = *wsrc++;
-	    case 4: *wdest++ = *wsrc++;
-	    case 3: *wdest++ = *wsrc++;
-	    case 2: *wdest++ = *wsrc++;
-	    case 1: *wdest++ = *wsrc++;
-	    } while (--count > 0);
-	}
-	n = n % 4; /* remainder of copy */
-    }
-    if (n == 0)
-	return dest;
-    bdest = (uint8_t*) wdest;
-    bsrc = (const uint8_t*) wsrc;
-
-    /* Duff's device again */
-    count = (n+7) / 8;
+static void *rflpc_memcpy_unaligned_fast(void *dest, const void *src, rflpc_size_t n)
+{    
+    uint8_t *bdest = dest;
+    const uint8_t *bsrc = src;    
+    int count = (n+7) / 8;
     switch (n%8)
     {
 	case 0: do { *bdest++ = *bsrc++;
@@ -77,4 +49,36 @@ void *memcpy(void *dest, const void *src, uint32_t n)
 	} while (--count > 0);
     }
     return dest;
+}
+
+static void *rflpc_memcpy_aligned_fast(void *dest, const void *src, rflpc_size_t n)
+{    
+    uint32_t *wdest = dest;
+    const uint32_t *wsrc = src;
+    int count = ((n/4)+7)/8; /* loop iteration count */
+    switch ((n/4)%8)
+    {
+	 case 0: do { *wdest++ = *wsrc++;
+            case 7: *wdest++ = *wsrc++;
+            case 6: *wdest++ = *wsrc++;
+            case 5: *wdest++ = *wsrc++;
+            case 4: *wdest++ = *wsrc++;
+            case 3: *wdest++ = *wsrc++;
+            case 2: *wdest++ = *wsrc++;
+            case 1: *wdest++ = *wsrc++;
+            } while (--count > 0);
+    }
+    n = n % 4; /* remainder of copy */    
+    if (n)
+	rflpc_memcpy_unaligned_fast(wdest,wsrc,n);
+    return dest;
+}
+
+void *memcpy(void *dest, const void *src, rflpc_size_t n)
+{
+    if (n == 0)
+	return dest;
+    if (IS_WORD_ALIGNED(dest) && IS_WORD_ALIGNED(src))
+	return rflpc_memcpy_aligned_fast(dest, src, n);   
+   return rflpc_memcpy_unaligned_fast(dest, src, n);
 }

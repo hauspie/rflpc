@@ -16,11 +16,11 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 16:40:00 (hauspie)>
+  Time-stamp: <2011-10-27 16:33:10 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
-#define ARRAY_SIZE 512
+#define ARRAY_SIZE 4096
 
 uint8_t src_buffer[ARRAY_SIZE];
 uint8_t dst_buffer[ARRAY_SIZE];
@@ -104,11 +104,7 @@ int main()
 
     fill_with_magic();
 
-    test(src_buffer, dst_buffer, 100);
-
-
-    dump();
-
+    printf("%d\r\n", test(src_buffer, dst_buffer, 4096));
 
 
     while (1);

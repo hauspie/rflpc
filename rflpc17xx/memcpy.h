@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-09-23
-  Time-stamp: <2011-09-23 10:46:31 (hauspie)>
+  Time-stamp: <2011-10-27 16:32:02 (hauspie)>
 */
 /** @file
  * An implementation of memcpy
@@ -25,6 +25,8 @@
 #define __RFLPC_MEMCPY_H__
 
 #include <stdint.h>
+
+typedef uint32_t rflpc_size_t;
 
 /** @ingroup libc
  * @{ */
@@ -43,6 +45,6 @@
  *
  * @return
  */
-extern void *memcpy(void *dest, const void *src, uint32_t n);
+extern void *memcpy(void *dest, const void *src, rflpc_size_t n);
 
 #endif
