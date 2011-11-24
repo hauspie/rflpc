@@ -4,3 +4,4 @@
 *.a
 *~
 makefile.dep
+*.kde*
