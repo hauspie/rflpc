@@ -1,3 +1,9 @@
+0.6:
+	- Added setjmp/longjmp support
+	- Cleaned memcpy implementation
+	- Added DMA driver (limited to memory->memory copy)
+	- Added SPI driver (limited to write and only in master mode)
+	- Fixed bugs...
 0.5:
 	- Fixed lots of bugs while porting Smews to the MBED using this library
 	- Added a full doxygen documentation
