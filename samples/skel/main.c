@@ -20,13 +20,10 @@
 */
 #include <rflpc17xx/rflpc17xx.h>
 
-/* Putchar has to be defined in order to printf to work */
-int putchar(int c)
-{
-    return c;
-}
-
 int main()
 {
+    rflpc_uart0_init();
+    printf("Hello World\r\n");
+    while (1);
     return 0;
 }

@@ -91,12 +91,6 @@ void init_timer()
     rflpc_timer_start(RFLPC_TIMER0);
 }
 
-int putchar(int c)
-{
-    rflpc_uart0_putchar(c);
-    return c;
-}
-
 int main()
 {
     rflpc_uart0_init();

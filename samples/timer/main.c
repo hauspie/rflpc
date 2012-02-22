@@ -23,13 +23,6 @@
 
 #define TIMER_TO_TEST RFLPC_TIMER3
 
-int putchar(int c)
-{
-    rflpc_uart0_putchar(c);
-    return c;
-}
-
-
 RFLPC_IRQ_HANDLER _timer_cb()
 {
     if (rflpc_timer_test_irq(TIMER_TO_TEST, RFLPC_TIMER_MATCH0))

@@ -29,14 +29,6 @@ void *add_data2 = &test1;
 int a,b,c,d;
 char e;
 
-
-
-int putchar(int c)
-{
-    rflpc_uart0_putchar(c);
-    return c;
-}
-
 void test_data_bss()
 {
     rflpc_led_set(RFLPC_LED_1|RFLPC_LED_2|RFLPC_LED_3|RFLPC_LED_4);
@@ -289,6 +281,13 @@ void test_led()
     }
 }
 
+int my_silly_putchar(int c)
+{
+    rflpc_uart0_putchar(' ');
+    rflpc_uart0_putchar(c);
+    return c;
+}
+
 int main()
 {
     int led[6] = {RFLPC_LED_1, RFLPC_LED_2, RFLPC_LED_3, RFLPC_LED_4, RFLPC_LED_3, RFLPC_LED_2};
@@ -304,12 +303,13 @@ int main()
     printf("rflpc sample test\r\n");
     printf("System clock is %d Hz\r\n", rflpc_clock_get_system_clock());
 
-/*    test_printf();*/
+    rflpc_printf_set_putchar(my_silly_putchar);
+    test_printf();
 /*    test_echo();*/
 /*    test_echo_irq();*/
 /*    test_rit();*/
 /*    test_sys_timer();*/
-    test_ethernet();
+/*    test_ethernet();*/
 
     while (1)
     {
