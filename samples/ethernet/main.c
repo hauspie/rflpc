@@ -22,13 +22,6 @@
 
 #include "protocols.h"
 
-/* For printf */
-int putchar(int c)
-{
-    rflpc_uart0_putchar(c);
-    return c;
-}
-
 void dump_packet(rfEthDescriptor *d, rfEthRxStatus *s)
 {
     printf("= %p %p %p",d, s, d->packet);

@@ -25,13 +25,6 @@
 static uint32_t source_buffer[BUFFER_SIZE];
 static uint32_t destination_buffer[BUFFER_SIZE];
 
-/* Putchar has to be defined in order to printf to work */
-int putchar(int c)
-{
-   rflpc_uart0_putchar(c);
-    return c;
-}
-
 void copy_and_check(rflpc_dma_channel_t channel, void *dest, const void *src, uint32_t size)
 {
    uint32_t i;

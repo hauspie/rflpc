@@ -49,15 +49,6 @@ void led_matrix_display_buffer(uint8_t *buffer)
    rflpc_gpio_set_pin(CS_GPIO_PORT,CS_GPIO_PIN);
 }
 
-
-
-/* Putchar has to be defined in order to printf to work */
-int putchar(int c)
-{
-   rflpc_uart0_putchar(c);
-   return c;
-}
-
 /* Function to test SPI device.
  * This sample used a sparkfun LED matrix connected to SPI1
  * http://www.sparkfun.com/products/760
