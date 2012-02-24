@@ -1,5 +1,6 @@
 Next:
 	- Changed the way rflpc_printf outputs chars (uses a function pointer)
+	- Rewrite rflpc-config so that you can choose either to link with library or directly with object files
 0.6:
 	- Added setjmp/longjmp support
 	- Cleaned memcpy implementation
