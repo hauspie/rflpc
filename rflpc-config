@@ -50,6 +50,9 @@ do
 	--libs|--ldflags)
 	    echo -n "-nodefaultlibs -nostdlib -L$RFLPC_DIR/rflpc17xx -lrflpc17xx -Wl,-T,rflpc17xx.ld "
 	    ;;
+	--libfile)
+	    echo -n "-lrflpc17xx "
+	    ;;
 	*)
 	    usage $0
 	    ;;
