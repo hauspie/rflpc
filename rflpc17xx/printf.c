@@ -74,7 +74,7 @@ static int (*_rflpc_putchar)(int c) = _rflpc_default_putchar;
 	}							\
     } while(0);
 
-int rflpc_printf(const char *format, ...)
+int printf(const char *format, ...)
 {
     va_list args;
     int count = 0; /* number of char printed to uart */

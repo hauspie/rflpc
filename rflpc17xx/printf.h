@@ -50,7 +50,7 @@
    @param [in] format The format string. Prefer to use constant string
    instead of user supplied string to be sure that some escape characters are not put for wrong purpose.
 */
-extern int rflpc_printf(const char *format,...);
+extern int printf(const char *format,...);
 
 
 /** Sets the internal function pointer that is used by ::rflpc_printf to output a character.
@@ -63,7 +63,7 @@ extern void rflpc_printf_set_putchar(int (*putchar_func)(int c));
  * @note The main reason why the lib defines ::rflpc_printf instead of printf is to avoid
  * many weird problems when gcc tries to use its builtin function where it should not.
  */
-#define printf rflpc_printf
+/*#define printf rflpc_printf*/
 
 /** @} */
 
