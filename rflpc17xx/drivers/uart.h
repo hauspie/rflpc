@@ -57,11 +57,17 @@ static inline void rflpc_uart0_putchar(char c)
     LPC_UART0->THR = c & 0xFF;
 }
 
+/** Tells if a byte is available */
+static inline int rflpc_uart0_byte_available()
+{
+    return (LPC_UART0->LSR & 0x1UL);
+}
+
 /** reads a byte from the uart0 */
 static inline char rflpc_uart0_getchar()
 {
     /* Wait for the RBR register to receive a byte (p. 307) */
-    while (!(LPC_UART0->LSR & 0x1UL));
+    while (!rflpc_uart0_byte_available());
     /* read the byte from the FIFO */
     return LPC_UART0->RBR & 0xFF;
 }
