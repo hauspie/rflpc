@@ -2,6 +2,7 @@ Next:
 	- Changed the way rflpc_printf outputs chars (uses a function pointer)
 	- Added rflpc_uart0_byte_available() function
 	- Fixed the rflpc-config script so that lib and sample compiles even if gcc is not configured for cortex-m3 by default
+	- renamed rflpc_printf to printf
 0.6:
 	- Added setjmp/longjmp support
 	- Cleaned memcpy implementation
