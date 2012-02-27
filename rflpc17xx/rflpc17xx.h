@@ -102,12 +102,14 @@
 #include "clock.h"
 #include "debug.h"
 #include "interrupt.h"
-#include "memcpy.h"
 #include "pinconf.h"
-#include "printf.h"
 #include "profiling.h"
-#include "setjmp.h"
 
+
+/* Tiny libc */
+#include "tinylibc/printf.h"
+#include "tinylibc/memcpy.h"
+#include "tinylibc/setjmp.h"
 
 /* Peripheral drivers */
 #include "drivers/eth_const.h"

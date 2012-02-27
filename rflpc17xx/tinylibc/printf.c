@@ -21,8 +21,8 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include "printf.h"
-#include "interrupt.h"
-#include "drivers/uart.h"
+#include "../interrupt.h"
+#include "../drivers/uart.h"
 
 static int _rflpc_default_putchar(int c)
 {

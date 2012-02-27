@@ -26,7 +26,6 @@
 #include "leds.h"
 #include "../nxp/LPC17xx.h"
 #include "../clock.h"
-#include "../printf.h"
 
 
 #define ETH_DELAY do { int d = 100; for ( ; d != 0 ; --d); } while(0)
@@ -350,6 +349,7 @@ void rflpc_eth_set_mac_address(const uint8_t *addr)
     LPC_EMAC->SA2 = addr[4] << 8 | addr[5];
 }
 
+#include "../tinylibc/printf.h"
 #define DUMP_REGISTER(a) printf("%s: %x (%d)\r\n", #a,a,a);
 void rflpc_eth_dump_internals()
 {

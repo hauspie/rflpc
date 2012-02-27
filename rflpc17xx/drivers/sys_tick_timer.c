@@ -20,7 +20,7 @@
 */
 #include "sys_tick_timer.h"
 #include "../clock.h"
-#include "../printf.h"
+#include "../tinylibc/printf.h"
 
 void rflpc_sys_timer_init()
 {
