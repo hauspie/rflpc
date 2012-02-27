@@ -59,9 +59,6 @@ do
 	--libs)
 	    ($0 --ldflags && $0 --libfile) | tr -d '\n'
 	    ;;
-	--objs)
-	    find $RFLPC_DIR/rflpc17xx -name '*.o' | tr '\n' ' '
-	    ;;
 	*)
 	    usage $0
 	    ;;
