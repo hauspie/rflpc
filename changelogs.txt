@@ -1,3 +1,5 @@
+0.6a:
+	- Fixed rflpc-config script by adding forgotten -mthumb
 0.6:
 	- Added setjmp/longjmp support
 	- Cleaned memcpy implementation
