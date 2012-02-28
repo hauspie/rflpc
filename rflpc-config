@@ -45,10 +45,10 @@ for arg in $*
 do
     case $arg in
 	--cflags)
-	    echo -n "-mcpu=cortex-m3 -DATOMIC_PRINTF -DRFLPC_PLATFORM_MBED -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR "
+	    echo -n "-mthumb -mcpu=cortex-m3 -DATOMIC_PRINTF -DRFLPC_PLATFORM_MBED -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR "
 	    ;;
 	--libs|--ldflags)
-	    echo -n "-nodefaultlibs -nostdlib -L$RFLPC_DIR/rflpc17xx -lrflpc17xx -Wl,-T,rflpc17xx.ld "
+	    echo -n "-nostdlib -L$RFLPC_DIR/rflpc17xx -lrflpc17xx -Wl,-T,rflpc17xx.ld "
 	    ;;
 	*)
 	    usage $0
