@@ -1,4 +1,4 @@
-include ../Makefile.in
+include ../Makefile.vars
 CFLAGS=`../rflpc-config --cflags`
 
 LIB=librflpc17xx.a
