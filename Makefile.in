@@ -1,6 +1,6 @@
 # This Makefile can be included in a project to ease the compiling
 # 
-# You can find an Makefile example in samples/skel
+# You can find a Makefile example in samples/skel
 
 # This includes the makefile that defines compiler tools
 include $(RFLPC_DIR)/Makefile.vars
