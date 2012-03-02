@@ -1,3 +1,8 @@
+# This Makefile can be included in a project to ease the compiling
+# 
+# You can find an Makefile example in samples/skel
+
+# This includes the makefile that defines compiler tools
 include $(RFLPC_DIR)/Makefile.vars
 
 ## Compiling variables
@@ -5,7 +10,7 @@ CFLAGS=`$(RFLPC_DIR)/rflpc-config --cflags` -DRFLPC_PLATEFORM_CONFIGURED -DRFLPC
 LDFLAGS=`$(RFLPC_DIR)/rflpc-config --libs`
 
 ## Library configuration
-MBED_PATH=$(system mount | grep MBED | awk '{ print $3 }')
+MBED_PATH=`mount | grep MBED | awk '{ print $$3 }'`
 ELF=$(OUTPUT_NAME).elf
 BIN=$(OUTPUT_NAME).bin
 CFLAGS=`$(RFLPC_DIR)/rflpc-config --cflags`
