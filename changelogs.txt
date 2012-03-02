@@ -1,4 +1,5 @@
 Next:
+	- Added Makefiles helper to ease the start of a new project
 	- Changed the way rflpc_printf outputs chars (uses a function pointer)
 	- Added rflpc_uart0_byte_available() function
 	- Fixed the rflpc-config script so that lib and sample compiles even if gcc is not configured for cortex-m3 by default

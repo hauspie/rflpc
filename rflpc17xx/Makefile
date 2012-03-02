@@ -1,7 +1,4 @@
-CC=arm-none-eabi-gcc
-AS=arm-none-eabi-as
-AR=arm-none-eabi-ar
-OBJDUMP=arm-none-eabi-objdump
+include ../Makefile.vars
 CFLAGS=`../rflpc-config --cflags`
 
 LIB=librflpc17xx.a
