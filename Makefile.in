@@ -6,15 +6,13 @@
 include $(RFLPC_DIR)/Makefile.vars
 
 ## Compiling variables
-CFLAGS=`$(RFLPC_DIR)/rflpc-config --cflags` -DRFLPC_PLATEFORM_CONFIGURED -DRFLPC_PLATEFORM_MBED
-LDFLAGS=`$(RFLPC_DIR)/rflpc-config --libs`
+CFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --cflags)
+LDFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --libs)
 
 ## Library configuration
-MBED_PATH=`mount | grep MBED | awk '{ print $$3 }'`
+MBED_PATH=$(shell mount | grep MBED | awk '{ print $$3 }')
 ELF=$(OUTPUT_NAME).elf
 BIN=$(OUTPUT_NAME).bin
-CFLAGS=`$(RFLPC_DIR)/rflpc-config --cflags`
-LDFLAGS=`$(RFLPC_DIR)/rflpc-config --libs`
 
 ## Common rules
 all:	$(BIN)

@@ -1,5 +1,5 @@
 include ../Makefile.vars
-CFLAGS=`../rflpc-config --cflags`
+CFLAGS=$(shell ../rflpc-config --cflags)
 
 LIB=librflpc17xx.a
 
