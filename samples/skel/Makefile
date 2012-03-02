@@ -1,9 +1,5 @@
-CC=arm-none-eabi-gcc
-LD=arm-none-eabi-gcc
-OBJCOPY=arm-none-eabi-objcopy
-OBJDUMP=arm-none-eabi-objdump
-
 LIB_DIR=../..
+include $(LIB_DIR)/Makefile.in
 
 MBED_PATH=/media/MBED
 

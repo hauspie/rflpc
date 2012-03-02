@@ -1,0 +1,18 @@
+## Modify these settings
+PREFIX=arm-elf
+GCC_VERSION=-4.6
+
+## System commands definitions
+CC=$(PREFIX)-gcc$(GCC_VERSION)
+LD=$(CC)
+AS=$(PREFIX)-as
+AR=$(PREFIX)-ar
+OBJCOPY=$(PREFIX)-objcopy
+OBJDUMP=$(PREFIX)-objdump
+
+## Compiling variables
+CFLAGS=`$(LIB_DIR)/rflpc-config --cflags` -DRFLPC_PLATEFORM_CONFIGURED -DRFLPC_PLATEFORM_MBED
+LDFLAGS=`$(LIB_DIR)/rflpc-config --libs` -DRFLPC_PLATEFORM_CONFIGURED -DRFLPC_PLATEFORM_MBED
+
+## Library configuration
+MBED_PATH=$(system mount | grep MBED | awk '{ print $3 }')
