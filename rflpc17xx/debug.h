@@ -70,5 +70,9 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
 	printf("\n\r");                                         \
     } while(0)
 
+#define RFLPC_ASSERT(cond) do { if (!(cond)) { RFLPC_STOP(0, 50000); } } while (0)
+
 /** @} */
 #endif
+
+

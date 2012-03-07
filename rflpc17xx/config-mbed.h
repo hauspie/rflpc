@@ -127,4 +127,20 @@
  */
 #define RFLPC_PLATFORM_CONFIGURED
 
+/* UART0 settings */
+#define RFLPC_UART0_PORT    0
+#define RFLPC_UART0_TXD_PIN 2
+#define RFLPC_UART0_RXD_PIN 3
+
+/* UART2 settings */
+#define RFLPC_UART2_PORT    0
+#define RFLPC_UART2_TXD_PIN 10
+#define RFLPC_UART2_RXD_PIN 11
+
+/* UART3 settings */
+#define RFLPC_UART3_PORT    0
+#define RFLPC_UART3_TXD_PIN 0
+#define RFLPC_UART3_RXD_PIN 1
+
+
 #endif
