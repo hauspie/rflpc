@@ -40,6 +40,9 @@
  * @{
  */
 
+typedef enum RFLPC_UART_NUMBER { UART0 = 0, UART2 = 2, UART3 = 3 } rflpc_uart_number_e;
+
+
 /**
  * Inits the UART, using 115200 baud, 8 bits data, no parity and 1 stop bit
  *
@@ -48,34 +51,34 @@
  **/
 extern int rflpc_uart0_init();
 
+/**
+ * Inits the UART e, using 11520 baud, 8 bits data, no parity and 1 stop bit
+ *
+ * @return 0 if init is successful, -1 otherwise
+ * @note at the moment, -1 is returned if the CPU is not clocked at 96Mhz
+ **/
+extern int rflpc_uart_init(rflpc_uart_number_e uart_num);
+
 /** Sends a byte to the uart0 */
-static inline void rflpc_uart0_putchar(char c)
-{
-    /* Wait for THR to be empty before sending byte (p. 307) */
-    while (!(LPC_UART0->LSR & (0x1UL << 5)));
-    /* Add byte to fifo */
-    LPC_UART0->THR = c & 0xFF;
-}
+extern void rflpc_uart0_putchar(char c);
+
+extern void rflpc_uart_putchar(rflpc_uart_number_e uart_num, char c);
 
 /** Tells if a byte is available */
-static inline int rflpc_uart0_byte_available()
-{
-    return (LPC_UART0->LSR & 0x1UL);
-}
+extern int rflpc_uart0_byte_available();
+
+extern int rflpc_uart_byte_available(rflpc_uart_number_e uart_num);
 
 /** reads a byte from the uart0 */
-static inline char rflpc_uart0_getchar()
-{
-    /* Wait for the RBR register to receive a byte (p. 307) */
-    while (!rflpc_uart0_byte_available());
-    /* read the byte from the FIFO */
-    return LPC_UART0->RBR & 0xFF;
-}
+extern char rflpc_uart0_getchar();
+
+extern char rflpc_uart_getchar(rflpc_uart_number_e uart_num);
 
 /** set the uart0 rx callback. This enables the uart0 interrupt and set the
  * handler accordingly */
 extern void rflpc_uart0_set_rx_callback(rflpc_irq_handler_t callback);
 
+extern void rflpc_uart_set_rx_callback(rflpc_uart_number_e uart_num, rflpc_irq_handler_t callback);
 /** @} */
 
 #endif

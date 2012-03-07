@@ -29,18 +29,6 @@
 
 #include "uart.h"
 
-/* For now, we suppose that the CCLK is 96 Mhz. Thus,
-   we set PCLK to 12 Mhz by setting it to CCLK/8.
-   Then, (p. 315) we have to set 
-   DIVADDVAL = 5
-   MULVAL = 8
-   DLM = 0
-   DLL = 4
-   UART rate will then be set to 115384
-*/
-
-typedef enum RFLPC_UART_NUMBER { UART0 = 0, UART2 = 2, UART3 = 3 } uart_number_e;
-
 struct uart_pin_conf
 {
   /* (p. 108 and p. 299) */
@@ -59,7 +47,7 @@ struct uart_pin_conf
 
 typedef struct uart_pin_conf uart_pin_conf_t;
 
-static struct uart_pin_conf _rflpc_uart_config[4] = 
+static uart_pin_conf_t _rflpc_uart_config[4] = 
   {
     { 
       { RFLPC_UART0_PORT, RFLPC_UART0_TXD_PIN },
@@ -84,6 +72,59 @@ static struct uart_pin_conf _rflpc_uart_config[4] =
       
   };
 
+
+#define BASE_ADDR(n) (_rflpc_uart_config[n].base_address)
+
+/** Sends a byte to the uart0 */
+void rflpc_uart0_putchar(char c)
+{
+    /* Wait for THR to be empty before sending byte (p. 307) */
+    while (!(LPC_UART0->LSR & (0x1UL << 5)));
+    /* Add byte to fifo */
+    LPC_UART0->THR = c & 0xFF;
+}
+
+void rflpc_uart_putchar(rflpc_uart_number_e uart_num, char c)
+{
+  while (!(BASE_ADDR(uart_num)->LSR & (0x1UL << 5))); /* why << 5 here and not in available? */
+  BASE_ADDR(uart_num)->THR = c & 0xFF;
+}
+
+/** Tells if a byte is available */
+int rflpc_uart0_byte_available()
+{
+    return (LPC_UART0->LSR & 0x1UL);
+}
+
+int rflpc_uart_byte_available(rflpc_uart_number_e uart_num)
+{
+  return BASE_ADDR(uart_num)->LSR & 0x1UL;
+}
+
+char rflpc_uart_getchar(rflpc_uart_number_e uart_num)
+{
+  while (!rflpc_uart_byte_available(uart_num));
+  return BASE_ADDR(uart_num)->RBR & 0xFF;
+}
+
+/** reads a byte from the uart0 */
+char rflpc_uart0_getchar()
+{
+    /* Wait for the RBR register to receive a byte (p. 307) */
+    while (!rflpc_uart0_byte_available());
+    /* read the byte from the FIFO */
+    return LPC_UART0->RBR & 0xFF;
+}
+
+/* For now, we suppose that the CCLK is 96 Mhz. Thus,
+   we set PCLK to 12 Mhz by setting it to CCLK/8.
+   Then, (p. 315) we have to set 
+   DIVADDVAL = 5
+   MULVAL = 8
+   DLM = 0
+   DLL = 4
+   UART rate will then be set to 115384
+*/
 
 int _rflpc_uart_init(uart_pin_conf_t *uart)
 {
@@ -115,7 +156,7 @@ int _rflpc_uart_init(uart_pin_conf_t *uart)
   return 0;
 }
 
-int rflpc_uart_init(uart_number_e uart_num)
+int rflpc_uart_init(rflpc_uart_number_e uart_num)
 {
 
   /* Set the peripheral clock to 12 Mhz */
@@ -159,7 +200,7 @@ int rflpc_uart0_init()
 }
 
 
-void rflpc_uart_set_rx_callback(uart_number_e uart_num, rflpc_irq_handler_t  callback)
+void rflpc_uart_set_rx_callback(rflpc_uart_number_e uart_num, rflpc_irq_handler_t  callback)
 {
     RFLPC_ASSERT(uart_num != 1);
     /* set the uart0 interrupt handler */
