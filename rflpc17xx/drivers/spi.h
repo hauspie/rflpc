@@ -38,11 +38,18 @@ typedef enum
    RFLPC_SPI1  /**< Use the SPI port 1 */
 } rflpc_spi_t;
 
+/** Used to select the SPI operating mode */
+typedef enum
+{
+    RFLPC_SPI_MASTER, /**< Use the SPI as master */
+    RFLPC_SPI_SLAVE,  /**< Use the SPI as slave */
+} rflpc_spi_mode_t;
 
 /**
  * Inits the SPI interface in master mode.
  *
  * @param port The port to configure
+ * @param mode The mode to use
  * @param cpu_clock_divider The divider applied to CPU clock to get the SPI peripheral clock
  * @param clock_prescale Factor by which the prescaler divide the peripheral clock. Between 2 and 254. Bit 0 is always read as 0 (only even numbers)
  * @param serial_clock_rate Number of prescaler-outputs ber bit. This allows to set the SPI tranfert clock.
@@ -51,7 +58,12 @@ typedef enum
  * @note The final clock used as SCK is then \f[\frac{CPU Clock}{CPUDivider \times ClockPrescale \times SerialClockRate}\f]
  * @see ::rflpc_clock_get_system_clock()
  **/
-extern void rflpc_spi_init_master(rflpc_spi_t port, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert);
+extern void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert);
+
+static inline void rflpc_spi_init_master(rflpc_spi_t port, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert)
+{
+    rflpc_spi_init(port, RFLPC_SPI_MASTER, cpu_clock_divider, clock_prescale, serial_clock_rate, data_size_transfert);
+}
 
 static inline LPC_SSP_TypeDef *rflpc_spi_get_base_addr(rflpc_spi_t port)
 {
