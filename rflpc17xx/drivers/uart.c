@@ -16,7 +16,7 @@
 
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
-  Contributor: Francois Serman <fser@gmail.com>
+  Contributor: Francois Serman <francois.serman@inria.fr>
 */
 
 #include <stdint.h>
