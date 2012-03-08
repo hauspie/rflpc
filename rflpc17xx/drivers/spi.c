@@ -37,7 +37,7 @@
 
 void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert)
 {
-   LPC_SSP_TypeDef *spi_base = 0;
+   LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);
    if (mode != RFLPC_SPI_MASTER) /** @TODO implement SLAVE mode */
        return;
    /* Power and clock the SPI device */
@@ -49,8 +49,7 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
 
       rflpc_pin_set(SPI0_PORT, SCK0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(SPI0_PORT, MISO0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI0_PORT, MOSI0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      spi_base = LPC_SSP0;
+      rflpc_pin_set(SPI0_PORT, MOSI0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);      
    }
    else if (port == RFLPC_SPI1)
    {
@@ -60,8 +59,7 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
 
       rflpc_pin_set(SPI1_PORT, SCK1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(SPI1_PORT, MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI1_PORT, MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      spi_base = LPC_SSP1;
+      rflpc_pin_set(SPI1_PORT, MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);      
    }
 
    /* user manual p. 422. Set the data transfert size and the serial clock rate */
