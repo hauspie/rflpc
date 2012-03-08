@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-10-09 03:46:15 (mickey)>
+  Time-stamp: <2012-03-08 16:11:20 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 #include "scroller.h"
@@ -98,7 +98,7 @@ void test_spi()
 
 int main()
 {
-   rflpc_uart0_init();
+   rflpc_uart_init(RFLPC_UART0);
    rflpc_timer_enable(RFLPC_TIMER0);
    rflpc_timer_set_clock(RFLPC_TIMER0,RFLPC_CCLK/8);
    rflpc_timer_set_pre_scale_register(RFLPC_TIMER0, rflpc_clock_get_system_clock()/8000000); /* microsecond timer */

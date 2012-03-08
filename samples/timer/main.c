@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-14 15:07:36 (hauspie)>
+  Time-stamp: <2012-03-08 16:10:25 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -39,7 +39,7 @@ RFLPC_IRQ_HANDLER _timer_cb()
 
 RFLPC_IRQ_HANDLER _uart_cb()
 {
-    char c = rflpc_uart0_getchar();
+    char c = rflpc_uart_getchar(RFLPC_UART0);
 
     switch (c)
     {
@@ -59,10 +59,10 @@ int main()
 {
     uint32_t otc0;
 
-    if (rflpc_uart0_init() == -1)
+    if (rflpc_uart_init(RFLPC_UART0) == -1)
 	RFLPC_STOP(RFLPC_LED_1 | RFLPC_LED_2, 1000000);
 
-    rflpc_uart0_set_rx_callback(_uart_cb);
+    rflpc_uart_set_rx_callback(RFLPC_UART0, _uart_cb);
 
     printf("Enabling timers\r\n");
 
