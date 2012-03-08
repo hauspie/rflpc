@@ -28,7 +28,7 @@ $(ELF): $(OBJS)
 	$(LD) -o $@ $(OBJS) $(LDFLAGS)
 
 clean:
-	$(RM) *.o *~
+	$(RM) *.o *~ rflpc.map
 
 mrproper: clean
 	$(RM) $(ELF) $(BIN)
