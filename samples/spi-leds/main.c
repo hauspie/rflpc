@@ -22,10 +22,7 @@
 #include "scroller.h"
 
 
-#define SPI_PORT RFLPC_SPI0
-#define CS_GPIO_PORT 0
-#define CS_GPIO_PIN 16
-
+#define SPI_PORT RFLPC_SPI1
 
 void wait(int micros)
 {
@@ -37,16 +34,10 @@ void wait(int micros)
 void led_matrix_display_buffer(uint8_t *buffer)
 {
    int i;
-   /* Assert chip select */
-   rflpc_gpio_clr_pin(CS_GPIO_PORT,CS_GPIO_PIN);
-   wait(500);
    for (i = 0 ; i < 64 ; ++i)
       rflpc_spi_write(SPI_PORT, buffer[i]);
    /* wait for transfer to finish */
    while (!rflpc_spi_tx_fifo_empty(SPI_PORT));
-   /* wait 0.5 more ms */
-   wait(500);
-   rflpc_gpio_set_pin(CS_GPIO_PORT,CS_GPIO_PIN);
 }
 
 /* Function to test SPI device.
@@ -71,11 +62,6 @@ void test_spi()
    printf("Computed clock: %d (%d %d) \r\n", spi_peripheral_clock / (needed_divider * serial_clock_rate_divider), needed_divider, serial_clock_rate_divider);
 
    rflpc_spi_init_master(SPI_PORT, RFLPC_CCLK_8, needed_divider, serial_clock_rate_divider, 8);
-
-   /* Configure gpio for chip select 0.6 is the DIP8 on the MBED */
-   rflpc_gpio_use_pin(CS_GPIO_PORT,CS_GPIO_PIN);
-   rflpc_gpio_set_pin_mode_output(CS_GPIO_PORT,CS_GPIO_PIN);
-   rflpc_gpio_set_pin(CS_GPIO_PORT,CS_GPIO_PIN); /* chip selection is made on low logical level so put high to disable yet */
 
    
    for (i = 0 ; i < 64 ; ++i)
@@ -118,6 +104,7 @@ int main()
    rflpc_timer_set_pre_scale_register(RFLPC_TIMER0, rflpc_clock_get_system_clock()/8000000); /* microsecond timer */
    rflpc_timer_start(RFLPC_TIMER0);
 
+   printf("SPI test sample build on %s %s\r\n", __DATE__, __TIME__);
    printf("Waiting 1 second\r\n");
    wait(1000000);
    printf("OK\r\n");
