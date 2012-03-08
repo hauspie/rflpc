@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2012-03-08 16:17:20 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -71,7 +71,7 @@ int main()
 {
     uint8_t i = 42;
     int use_interrupt = 1;
-    rflpc_uart0_init();
+    rflpc_uart_init(RFLPC_UART0);
     configure_timer();
     printf("SPI simple sample build on %s %s\r\n", __DATE__, __TIME__);
     /* Init master SPI, set the SPI clock to 12 Mhz / (60*2) = 100 kHz */
