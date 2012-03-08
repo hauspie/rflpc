@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-08 16:13:23 (hauspie)>
+  Time-stamp: <2012-03-08 16:19:09 (hauspie)>
 */
 #ifndef __RFLPC_UART_H__
 #define __RFLPC_UART_H__
@@ -39,6 +39,7 @@
  * @{
  */
 
+/** Constants that represents the UART port you want to use in uart driver functions */
 typedef enum { RFLPC_UART0 = 0, RFLPC_UART2 = 2, RFLPC_UART3 = 3 } rflpc_uart_t;
 
 
