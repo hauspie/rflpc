@@ -80,3 +80,12 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
    }
 }
 
+void rflpc_spi_set_rx_callback(rflpc_spi_t port, rflpc_irq_handler_t callback)
+{
+    LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);
+    /* set the SPI interrupt handler */
+    rflpc_irq_set_handler(SSP0_IRQn + port, callback);
+    /* enable the interrupt vector */
+    rflpc_irq_enable(SSP0_IRQn + port);    
+    spi_base->IMSC |= (1UL << 2); /* Enable interrupt generation on RX Fifo half full event */
+}

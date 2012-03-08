@@ -49,9 +49,28 @@ void wait(int micros)
 #define MASTER_SPI RFLPC_SPI0
 #define SLAVE_SPI RFLPC_SPI1
 
+RFLPC_IRQ_HANDLER master_interrupt(void)
+{
+    while (!rflpc_spi_rx_fifo_empty(MASTER_SPI))
+    {
+	uint8_t val = rflpc_spi_read(MASTER_SPI);
+	printf("[M] Received %d\r\n", val);
+    }
+}
+
+RFLPC_IRQ_HANDLER slave_interrupt(void)
+{
+    while (!rflpc_spi_rx_fifo_empty(SLAVE_SPI))
+    {
+	uint8_t val = rflpc_spi_read(SLAVE_SPI);
+	printf("[S] Received %d\r\n", val);
+    }
+}
+
 int main()
 {
     uint8_t i = 42;
+    int use_interrupt = 1;
     rflpc_uart0_init();
     configure_timer();
     printf("SPI simple sample build on %s %s\r\n", __DATE__, __TIME__);
@@ -59,6 +78,12 @@ int main()
     rflpc_spi_init(MASTER_SPI, RFLPC_SPI_MASTER, RFLPC_CCLK_8, 8, 60, 2);
     /* Init slave SPI */
     rflpc_spi_init(SLAVE_SPI, RFLPC_SPI_SLAVE, RFLPC_CCLK_8, 8, 0, 0);
+    
+    if (use_interrupt)
+    {
+	rflpc_spi_set_rx_callback(MASTER_SPI, master_interrupt);
+	rflpc_spi_set_rx_callback(SLAVE_SPI, slave_interrupt);
+    }
     
     while (1)
     {
@@ -77,13 +102,14 @@ int main()
 	
 	printf("[M] Sending %d\r\n", i);
 	rflpc_spi_write(MASTER_SPI, i++);		
-	
-	/* Try to read the byte on the other SPI */
-	val = rflpc_spi_read(SLAVE_SPI);
-	printf("[S] Value read: %d\r\n", val);
-	val = rflpc_spi_read(MASTER_SPI);
-	printf("[M] Value read: %d\r\n", val);
-		
+	if (!use_interrupt)
+	{	    
+	    /* Try to read the byte on the other SPI */
+	    val = rflpc_spi_read(SLAVE_SPI);
+	    printf("[S] Value read: %d\r\n", val);
+	    val = rflpc_spi_read(MASTER_SPI);
+	    printf("[M] Value read: %d\r\n", val);
+	}	
 	wait(1000000);
     }
     return 0;

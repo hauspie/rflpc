@@ -25,6 +25,7 @@
 */
 
 #include "../clock.h"
+#include "../interrupt.h"
 
 /** @addtogroup spi SPI
  * @ingroup drivers
@@ -138,6 +139,15 @@ static inline uint16_t rflpc_spi_read(rflpc_spi_t port)
     while (rflpc_spi_rx_fifo_empty(port));
     return spi_base->DR;
 }
+
+/**
+ * Sets the interrupt handler for SPI reception.
+ * The interrupt will be generated when the RX FIFO is half-full
+ * @param port the port to use
+ * @param callback the callback to set
+ */
+extern void rflpc_spi_set_rx_callback(rflpc_spi_t port, rflpc_irq_handler_t callback);
+
 
 /** @} */
 
