@@ -63,6 +63,20 @@ int main()
     while (1)
     {
 	uint8_t val;
+	
+	/* The slave has to prepare the data it wishes to send
+	 * BEFORE the master actually sends its own. The reason 
+	 * is that when the master sends data, it enable the slave select
+	 * pin to transmit. The slave will also transmit its data if any.
+	 * That is why we write first with the slave, so that data are ready
+	 * when slave is selected by master
+	 */
+	
+	printf("Slave -> Master\r\n");
+	printf("[S] Prepare to send %d\r\n", i + 4);
+	rflpc_spi_write(SLAVE_SPI, i + 4);
+	printf("[S] Value sent\r\n");
+	
 	printf("Master -> Slave\r\n");
 	printf("[M] Sending %d\r\n", i);
 	rflpc_spi_write(MASTER_SPI, i++);	
@@ -70,7 +84,9 @@ int main()
 	
 	/* Try to read the byte on the other SPI */
 	val = rflpc_spi_read(SLAVE_SPI);
-	printf("[S] Value read: %d\r\n", val);	
+	printf("[S] Value read: %d\r\n", val);
+	val = rflpc_spi_read(MASTER_SPI);
+	printf("[M] Value read: %d\r\n", val);
 		
 	wait(1000000);
     }
