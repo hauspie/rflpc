@@ -35,7 +35,7 @@
 #define MISO1_PIN  8
 #define MOSI1_PIN  9
 
-void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert)
+void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t data_size_transfert, uint8_t clock_prescale, uint8_t serial_clock_rate)
 {
    LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);
    
