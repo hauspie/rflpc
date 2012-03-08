@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-08 16:11:20 (hauspie)>
+  Time-stamp: <2012-03-08 16:20:55 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 #include "scroller.h"
@@ -61,7 +61,7 @@ void test_spi()
    needed_divider /= serial_clock_rate_divider;
    printf("Computed clock: %d (%d %d) \r\n", spi_peripheral_clock / (needed_divider * serial_clock_rate_divider), needed_divider, serial_clock_rate_divider);
 
-   rflpc_spi_init_master(SPI_PORT, RFLPC_CCLK_8, needed_divider, serial_clock_rate_divider, 8);
+   rflpc_spi_init(SPI_PORT, RFLPC_SPI_MASTER, RFLPC_CCLK_8, 8, needed_divider, serial_clock_rate_divider);
 
    
    for (i = 0 ; i < 64 ; ++i)

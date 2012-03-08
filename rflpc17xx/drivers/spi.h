@@ -21,7 +21,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:24:40 (hauspie)>
+  Time-stamp: <2012-03-08 16:19:41 (hauspie)>
 */
 
 #include "../clock.h"
@@ -61,11 +61,6 @@ typedef enum
  * @see ::rflpc_clock_get_system_clock()
  **/
 extern void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t data_size_transfert, uint8_t clock_prescale, uint8_t serial_clock_rate);
-
-static inline void rflpc_spi_init_master(rflpc_spi_t port, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert)
-{
-    rflpc_spi_init(port, RFLPC_SPI_MASTER, cpu_clock_divider, data_size_transfert, clock_prescale, serial_clock_rate);
-}
 
 /**
  * Returns the base address of the SPI control block depending of the desired port
