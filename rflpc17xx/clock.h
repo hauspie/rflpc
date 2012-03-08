@@ -33,6 +33,7 @@
 /**
    This enums defines the different cpu clock dividers for use as peripheral
    clocks.
+   (See doc p. 57)
  */
 typedef enum
 {

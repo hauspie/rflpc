@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2012-03-08 16:09:45 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -24,13 +24,6 @@
 #define BUFFER_BYTES (BUFFER_SIZE*sizeof(uint32_t))
 static uint32_t source_buffer[BUFFER_SIZE];
 static uint32_t destination_buffer[BUFFER_SIZE];
-
-/* Putchar has to be defined in order to printf to work */
-int putchar(int c)
-{
-   rflpc_uart0_putchar(c);
-    return c;
-}
 
 void copy_and_check(rflpc_dma_channel_t channel, void *dest, const void *src, uint32_t size)
 {
@@ -69,7 +62,7 @@ void copy_and_check(rflpc_dma_channel_t channel, void *dest, const void *src, ui
 int main()
 {
    int i;
-   rflpc_uart0_init();
+   rflpc_uart_init(RFLPC_UART0);
    rflpc_dma_init();
    printf("%x\r\n", LPC_GPDMA->DMACEnbldChns);
 

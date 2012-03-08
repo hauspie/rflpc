@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 10:37:27 (hauspie)>
+  Time-stamp: <2012-03-08 16:12:21 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -28,14 +28,6 @@ void *add_data2 = &test1;
 
 int a,b,c,d;
 char e;
-
-
-
-int putchar(int c)
-{
-    rflpc_uart0_putchar(c);
-    return c;
-}
 
 void test_data_bss()
 {
@@ -77,12 +69,12 @@ void test_uart()
 
     while (1)
     {
-	rflpc_uart0_putchar(c);
+	rflpc_uart_putchar(RFLPC_UART0,c);
 	++c;
 	if (c == 'z'+1)
 	{
-	    rflpc_uart0_putchar('\n');
-	    rflpc_uart0_putchar('\r');
+	    rflpc_uart_putchar(RFLPC_UART0,'\n');
+	    rflpc_uart_putchar(RFLPC_UART0,'\r');
 	    break;
 	}
     }
@@ -95,7 +87,7 @@ void test_echo()
     printf("Press Q to quit test\r\n");
     while (1)
     {
-	char c = rflpc_uart0_getchar();
+	char c = rflpc_uart_getchar(RFLPC_UART0);
 	printf("Received '%c'\n\r", c);
 	if (c == 'Q')
 	    break;
@@ -136,13 +128,13 @@ void print_interrupts(const uint32_t *addr)
 
 RFLPC_IRQ_HANDLER uart0_rx()
 {
-    char c = rflpc_uart0_getchar();
+    char c = rflpc_uart_getchar(RFLPC_UART0);
     printf("Received '%c' via interrupt\r\n", c);
 }
 void test_echo_irq()
 {
     printf("Testing uart0 reception via interruption\r\n");
-    rflpc_uart0_set_rx_callback(uart0_rx);
+    rflpc_uart_set_rx_callback(RFLPC_UART0, uart0_rx);
 }
 
 
@@ -204,7 +196,7 @@ volatile static int autoneg_mode = RFLPC_ETH_LINK_MODE_100FD;
 
 RFLPC_IRQ_HANDLER _test_ethernet_serial_handler()
 {
-    char c = rflpc_uart0_getchar();
+    char c = rflpc_uart_getchar(RFLPC_UART0);
 
     switch (c)
     {
@@ -235,7 +227,7 @@ void test_ethernet()
     printf("Ok. Press:\r\n");
     printf("- 's' to toggle speed\r\n");
     printf("- 'd' to toggle duplex\r\n");
-    rflpc_uart0_set_rx_callback(_test_ethernet_serial_handler);
+    rflpc_uart_set_rx_callback(RFLPC_UART0,_test_ethernet_serial_handler);
 
 
 
@@ -289,6 +281,13 @@ void test_led()
     }
 }
 
+int my_silly_putchar(int c)
+{
+    rflpc_uart_putchar(RFLPC_UART0,' ');
+    rflpc_uart_putchar(RFLPC_UART0,c);
+    return c;
+}
+
 int main()
 {
     int led[6] = {RFLPC_LED_1, RFLPC_LED_2, RFLPC_LED_3, RFLPC_LED_4, RFLPC_LED_3, RFLPC_LED_2};
@@ -297,19 +296,20 @@ int main()
     /* test_led(); */
     test_data_bss();
 
-    if (rflpc_uart0_init() == -1)
+    if (rflpc_uart_init(RFLPC_UART0) == -1)
 	RFLPC_STOP(RFLPC_LED_1 | RFLPC_LED_3, 1000000);
     test_uart();
 
     printf("rflpc sample test\r\n");
     printf("System clock is %d Hz\r\n", rflpc_clock_get_system_clock());
 
-/*    test_printf();*/
-/*    test_echo();*/
-/*    test_echo_irq();*/
+    rflpc_printf_set_putchar(my_silly_putchar);
+    test_printf();
+    test_echo();
+    test_echo_irq();
 /*    test_rit();*/
 /*    test_sys_timer();*/
-    test_ethernet();
+/*    test_ethernet();*/
 
     while (1)
     {

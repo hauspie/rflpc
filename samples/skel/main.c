@@ -16,17 +16,14 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2012-03-08 16:11:38 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
-/* Putchar has to be defined in order to printf to work */
-int putchar(int c)
-{
-    return c;
-}
-
 int main()
 {
+    rflpc_uart_init(RFLPC_UART0);
+    printf("Hello World\r\n");
+    while (1);
     return 0;
 }

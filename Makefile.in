@@ -1,0 +1,45 @@
+# This Makefile can be included in a project to ease the compiling
+# 
+# You can find a Makefile example in samples/skel
+
+# This includes the makefile that defines compiler tools
+include $(RFLPC_DIR)/Makefile.vars
+
+## Compiling variables
+CFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --cflags)
+LDFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --libs)
+
+## Library configuration
+
+MBED_PATH=$(shell mount | grep MBED | cut -d\  -f3)
+# If your mount command is not completly compliant with the linux one, you can try to use awk instead of cut
+#MBED_PATH=$(shell mount | grep MBED | awk '{ print $$3 }')
+
+ELF=$(OUTPUT_NAME).elf
+BIN=$(OUTPUT_NAME).bin
+
+## Common rules
+all:	$(BIN)
+
+$(BIN): $(ELF)
+	$(OBJCOPY) -O binary -j .text -j .data $^ $@
+
+$(ELF): $(OBJS)
+	$(LD) -o $@ $(OBJS) $(LDFLAGS)
+
+clean:
+	$(RM) *.o *~ rflpc.map
+
+mrproper: clean
+	$(RM) $(ELF) $(BIN)
+
+program: $(BIN)
+	cp $+ $(MBED_PATH) && sync
+
+dump: $(ELF)
+	$(OBJDUMP) -sSt $^
+
+$(RFLPC_DIR):
+	make -C $(RFLPC_DIR)
+
+.DEFAULT: all

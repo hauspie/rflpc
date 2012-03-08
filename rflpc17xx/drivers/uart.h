@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:39:46 (hauspie)>
+  Time-stamp: <2012-03-08 16:19:09 (hauspie)>
 */
 #ifndef __RFLPC_UART_H__
 #define __RFLPC_UART_H__
@@ -27,48 +27,56 @@
 #include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
 
-/** @addtogroup uart0 UART0
+/** @addtogroup uart UART
  * @ingroup drivers
- * This is the driver for the UART0. At the moment, this driver is only usable
+ * This is the driver for the UART0/2/3. At the moment, this driver is only usable
  * when the CPU is clocked at 96Mhz and the UART mode is set to
  * - 115200 bauds
  * - 8 bits data
  * - no parity check
  * - 1 stop bit
  * @todo Allow fine configuration for the UART. Just have to calculate divider and multiplier depending on cpu clock and desired speed.
- * @todo Extend this driver for using all other UARTs (1/2/3)
  * @{
  */
 
+/** Constants that represents the UART port you want to use in uart driver functions */
+typedef enum { RFLPC_UART0 = 0, RFLPC_UART2 = 2, RFLPC_UART3 = 3 } rflpc_uart_t;
+
+
 /**
- * Inits the UART, using 115200 baud, 8 bits data, no parity and 1 stop bit
+ * Inits the UART e, using 11520 baud, 8 bits data, no parity and 1 stop bit.
  *
  * @return 0 if init is successful, -1 otherwise
  * @note at the moment, -1 is returned if the CPU is not clocked at 96Mhz
  **/
-extern int rflpc_uart0_init();
+extern int rflpc_uart_init(rflpc_uart_t uart_num);
 
-/** Sends a byte to the uart0 */
-static inline void rflpc_uart0_putchar(char c)
-{
-    /* Wait for THR to be empty before sending byte (p. 307) */
-    while (!(LPC_UART0->LSR & (0x1UL << 5)));
-    /* Add byte to fifo */
-    LPC_UART0->THR = c & 0xFF;
-}
+/** Sends a byte to the uart.
+ *  @param uart_num the uart to use
+ *  @param c character to send
+ */
+extern void rflpc_uart_putchar(rflpc_uart_t uart_num, char c);
 
-/** reads a byte from the uart0 */
-static inline char rflpc_uart0_getchar()
-{
-    /* Wait for the RBR register to receive a byte (p. 307) */
-    while (!(LPC_UART0->LSR & 0x1UL));
-    /* read the byte from the FIFO */
-    return LPC_UART0->RBR & 0xFF;
-}
+/** Test the reception FIFO.
+ *  @param uart_num the uart to use
+ *  @return true if a byte is available
+ */
+extern int rflpc_uart_byte_available(rflpc_uart_t uart_num);
 
-/** set the uart0 rx callback. This enables the uart0 interrupt and set the
- * handler accordingly */
-extern void rflpc_uart0_set_rx_callback(rflpc_irq_handler_t callback);
+/** 
+ * Gets a character from the uart.
+ * @param uart_num the uart to use
+ * @return the character read.
+ * @warning This function loops while no data is available!
+ */
+extern char rflpc_uart_getchar(rflpc_uart_t uart_num);
+
+/** Sets the uart rx callback.  
+ *  This enables the uart0 interrupt and set the handler accordingly 
+ *  @param uart_num the uart to use
+ *  @param callback a pointer to a ::rflpc_irq_handler_t function
+ */
+extern void rflpc_uart_set_rx_callback(rflpc_uart_t uart_num, rflpc_irq_handler_t callback);
 
 /** @} */
 

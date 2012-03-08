@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-10-27 16:33:10 (hauspie)>
+  Time-stamp: <2012-03-08 16:11:08 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -91,15 +91,9 @@ void init_timer()
     rflpc_timer_start(RFLPC_TIMER0);
 }
 
-int putchar(int c)
-{
-    rflpc_uart0_putchar(c);
-    return c;
-}
-
 int main()
 {
-    rflpc_uart0_init();
+    rflpc_uart_init(RFLPC_UART0);
     init_timer();
 
     fill_with_magic();

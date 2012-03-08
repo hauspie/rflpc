@@ -28,20 +28,6 @@
 /** @addtogroup libc
  * @{ */
 
-/**
- * @brief Ouputs a single character.
- * Used by ::rflpc_printf() to output its formating
- *
- * @note This function is NOT provided by the library.
- * It is meant to be implemented by each specific application
- * so that it can choose how and where to ouput messages
- *
- * @param [in] c character to print
- * @return the printed character
- **/
-
-extern int putchar(int c);
-
 /** Formated output function.
  * This function is similar to stdio's printf.
     However, it only handles:
@@ -56,19 +42,28 @@ extern int putchar(int c);
     is defined when compiling lib. If ATOMIC_PRINTF is defined,
     interrupts are disabled when entering printf and enabled before exiting
 
-    @warning It uses the ::putchar function to output all characters. You have to define
-    this function in your code so that the link works
+    @warning This function uses a function pointer to output each character. 
+    By default, it uses a function which eventually call ::rflpc_uart0_putchar.
+    If you want to use your own putchar function, you have to call ::rflpc_printf_set_putchar
+    to set the function pointer.
 
    @param [in] format The format string. Prefer to use constant string
    instead of user supplied string to be sure that some escape characters are not put for wrong purpose.
 */
-extern int rflpc_printf(const char *format,...);
+extern int printf(const char *format,...);
+
+
+/** Sets the internal function pointer that is used by ::rflpc_printf to output a character.
+ * By default, it uses a function that call ::rflpc_uart0_putchar.
+ * @param [in] putchar_func a pointer to a function that takes a character to put and returns it.
+ */
+extern void rflpc_printf_set_putchar(int (*putchar_func)(int c));
 
 /** Maccro to be able to use printf.
  * @note The main reason why the lib defines ::rflpc_printf instead of printf is to avoid
  * many weird problems when gcc tries to use its builtin function where it should not.
  */
-#define printf rflpc_printf
+/*#define printf rflpc_printf*/
 
 /** @} */
 

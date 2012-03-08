@@ -16,14 +16,23 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created:
-    Time-stamp: <2011-08-31 15:17:22 (hauspie)>
+    Time-stamp: <2012-03-08 16:03:16 (hauspie)>
 */
 #include <stdarg.h>
 #include <stdint.h>
 #include "printf.h"
-#include "interrupt.h"
+#include "../interrupt.h"
+#include "../drivers/uart.h"
 
-#define PUTCHAR(c) do { ++count; putchar((c)); } while(0)
+static int _rflpc_default_putchar(int c)
+{
+    rflpc_uart_putchar(RFLPC_UART0, c);
+    return c;
+}
+
+static int (*_rflpc_putchar)(int c) = _rflpc_default_putchar;
+
+#define PUTCHAR(c) do { ++count; _rflpc_putchar((c)); } while(0)
 #define PUTS(s) do {const char *str=s; while (*str) PUTCHAR(*str++);}while(0)
 
 
@@ -65,10 +74,10 @@
 	}							\
     } while(0);
 
-int rflpc_printf(const char *format, ...)
+int printf(const char *format, ...)
 {
     va_list args;
-    int count = 0; /* number of char printed to uart */
+    int count = 0; /* number of char printed */
     int print_zero = 0;
     int ccount = sizeof(unsigned int);
     va_start(args, format);
@@ -172,4 +181,9 @@ int rflpc_printf(const char *format, ...)
     rflpc_irq_global_enable();
 #endif
     return count;
+}
+
+void rflpc_printf_set_putchar(int (*putchar_func)(int c))
+{
+    _rflpc_putchar = putchar_func;
 }

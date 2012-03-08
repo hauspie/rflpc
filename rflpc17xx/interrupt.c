@@ -24,7 +24,7 @@
 #include "interrupt.h"
 
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
-#include "printf.h"
+#include "tinylibc/printf.h"
 #include "debug.h"
 #endif
 

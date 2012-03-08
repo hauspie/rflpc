@@ -1,3 +1,9 @@
 - Modify uart initialization to allow the choice of baud rate, and configure its peripheral clock depending on the cpu clock
 - Add flash memory interface driver
-- Add real documentation and user guide
+- Enhance DMA driver to allow more modes and extended size
+- I2C Driver
+- ADC Driver
+- DAC Driver
+- CAN Driver
+- PWM Driver
+- USB Driver

@@ -16,18 +16,11 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 10:55:08 (hauspie)>
+  Time-stamp: <2012-03-08 16:10:52 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
 #include "protocols.h"
-
-/* For printf */
-int putchar(int c)
-{
-    rflpc_uart0_putchar(c);
-    return c;
-}
 
 void dump_packet(rfEthDescriptor *d, rfEthRxStatus *s)
 {
@@ -89,7 +82,7 @@ volatile static int autoneg_mode = RFLPC_ETH_LINK_MODE_100FD;
 
 RFLPC_IRQ_HANDLER _serial_handler()
 {
-    char c = rflpc_uart0_getchar();
+    char c = rflpc_uart_getchar(RFLPC_UART0);
 
     switch (c)
     {
@@ -290,7 +283,7 @@ void ethernet()
     printf("Ok. Press:\r\n");
     printf("- 's' to toggle speed\r\n");
     printf("- 'd' to toggle duplex\r\n");
-    rflpc_uart0_set_rx_callback(_serial_handler);
+    rflpc_uart_set_rx_callback(RFLPC_UART0, _serial_handler);
 
     printf("hop\r\n");
 
@@ -327,7 +320,7 @@ void ethernet()
 
 int main()
 {
-    if (rflpc_uart0_init() == -1)
+    if (rflpc_uart_init(RFLPC_UART0) == -1)
 	RFLPC_STOP(RFLPC_LED_1 | RFLPC_LED_3, 1000000);
     printf("rflpc ethernet sample\r\n");
 

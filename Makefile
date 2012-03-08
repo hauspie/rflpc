@@ -1,6 +1,6 @@
 DIRS=rflpc17xx $(wildcard samples/*)
 
-.PHONY: all $(DIRS)
+.PHONY: all doc $(DIRS)
 
 all: $(patsubst %, _all_%, $(DIRS))
 clean: $(patsubst %, _clean_%, $(DIRS))

@@ -1,3 +1,14 @@
+0.7:
+	- Added memset function
+	- Updated UART driver to support UART0/2/3
+	- Added main missing features in SPI driver
+	    - slave/master selection
+	    - read using polling and interruption
+	- Added Makefiles helper to ease the start of a new project
+	- Changed the way rflpc_printf outputs chars (uses a function pointer)
+	- Added rflpc_uart0_byte_available() function
+	- Fixed the rflpc-config script so that lib and sample compiles even if gcc is not configured for cortex-m3 by default
+	- renamed rflpc_printf to printf
 0.6a:
 	- Fixed rflpc-config script by adding forgotten -mthumb
 0.6:
