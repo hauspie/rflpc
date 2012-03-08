@@ -1,4 +1,4 @@
-Next:
+0.7:
 	- Added memset function
 	- Updated UART driver to support UART0/2/3
 	- Added main missing features in SPI driver
