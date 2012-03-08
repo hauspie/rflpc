@@ -109,6 +109,7 @@
 /* Tiny libc */
 #include "tinylibc/printf.h"
 #include "tinylibc/memcpy.h"
+#include "tinylibc/memset.h"
 #include "tinylibc/setjmp.h"
 
 /* Peripheral drivers */
