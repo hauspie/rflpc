@@ -38,8 +38,7 @@
 void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert)
 {
    LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);
-   if (mode != RFLPC_SPI_MASTER) /** @TODO implement SLAVE mode */
-       return;
+   
    /* Power and clock the SPI device */
    if (port == RFLPC_SPI0)
    {
@@ -62,10 +61,17 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
       rflpc_pin_set(SPI1_PORT, MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);      
    }
 
-   /* user manual p. 422. Set the data transfert size and the serial clock rate */
-   spi_base->CR0 = ((data_size_transfert - 1) & 0xF) | (serial_clock_rate - 1) << 8;
-   spi_base->CPSR = clock_prescale;
-   /* Master mode, no loop back, enable ssp controler */
+   /* user manual p. 422. Set the data transfert size */
+   spi_base->CR0 = ((data_size_transfert - 1) & 0xF); /* | (serial_clock_rate - 1) << 8; */
+   /* No loop back, enable ssp controler */
    spi_base->CR1 = (1UL << 1);
+   if (mode == RFLPC_SPI_SLAVE)
+       spi_base->CR1 |= (1UL << 2);
+   else /* master mode */
+   {
+       /* Set clock parameters */
+       spi_base->CPSR = clock_prescale;
+       spi_base->CR0 |= (serial_clock_rate - 1) << 8;
+   }
 }
 
