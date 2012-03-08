@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2012-03-08 16:09:45 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -62,7 +62,7 @@ void copy_and_check(rflpc_dma_channel_t channel, void *dest, const void *src, ui
 int main()
 {
    int i;
-   rflpc_uart0_init();
+   rflpc_uart_init(RFLPC_UART0);
    rflpc_dma_init();
    printf("%x\r\n", LPC_GPDMA->DMACEnbldChns);
 
