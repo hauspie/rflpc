@@ -27,10 +27,13 @@
 
 #define SPI0_PORT  0
 #define SCK0_PIN  15
+#define SSEL0_PIN 16
 #define MISO0_PIN 17
 #define MOSI0_PIN 18
 
+
 #define SPI1_PORT  0
+#define SSEL1_PIN  6
 #define SCK1_PIN   7
 #define MISO1_PIN  8
 #define MOSI1_PIN  9
@@ -49,6 +52,7 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
       rflpc_pin_set(SPI0_PORT, SCK0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(SPI0_PORT, MISO0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(SPI0_PORT, MOSI0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);      
+      rflpc_pin_set(SPI0_PORT, SSEL0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
    }
    else if (port == RFLPC_SPI1)
    {
@@ -58,7 +62,8 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
 
       rflpc_pin_set(SPI1_PORT, SCK1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(SPI1_PORT, MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI1_PORT, MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);      
+      rflpc_pin_set(SPI1_PORT, MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(SPI1_PORT, SSEL1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
    }
 
    /* user manual p. 422. Set the data transfert size */
