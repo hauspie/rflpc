@@ -53,6 +53,11 @@ typedef enum
  **/
 extern void rflpc_spi_init_master(rflpc_spi_t port, rflpc_clock_divider_t cpu_clock_divider, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t data_size_transfert);
 
+static inline LPC_SSP_TypeDef *rflpc_spi_get_base_addr(rflpc_spi_t port)
+{
+    return (port == RFLPC_SPI0) ? LPC_SSP0 : LPC_SSP1;
+}
+
 /**
  * Tests if transmition FIFO is empty
  *
@@ -61,7 +66,7 @@ extern void rflpc_spi_init_master(rflpc_spi_t port, rflpc_clock_divider_t cpu_cl
  **/
 static inline int rflpc_spi_tx_fifo_empty(rflpc_spi_t port)
 {
-   LPC_SSP_TypeDef *spi_base = (port == RFLPC_SPI0) ? LPC_SSP0 : LPC_SSP1;
+   LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);/* (port == RFLPC_SPI0) ? LPC_SSP0 : LPC_SSP1; */
    return spi_base->SR & 1;
 }
 
@@ -73,7 +78,7 @@ static inline int rflpc_spi_tx_fifo_empty(rflpc_spi_t port)
  **/
 static inline int rflpc_spi_tx_fifo_full(rflpc_spi_t port)
 {
-   LPC_SSP_TypeDef *spi_base = (port == RFLPC_SPI0) ? LPC_SSP0 : LPC_SSP1;
+   LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port); /* (port == RFLPC_SPI0) ? LPC_SSP0 : LPC_SSP1;*/
    return !(spi_base->SR & 2);
 }
 
@@ -85,7 +90,7 @@ static inline int rflpc_spi_tx_fifo_full(rflpc_spi_t port)
  **/
 static inline void rflpc_spi_write(rflpc_spi_t port, uint16_t data)
 {
-   LPC_SSP_TypeDef *spi_base = port == RFLPC_SPI0 ? LPC_SSP0 : LPC_SSP1;
+   LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port); /* (port == RFLPC_SPI0 ? LPC_SSP0) : LPC_SSP1;*/
    /* wait for FIFO to be not full */
    while (rflpc_spi_tx_fifo_full(port));
    spi_base->DR = data;
