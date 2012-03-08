@@ -117,7 +117,8 @@ static inline int rflpc_spi_rx_fifo_empty(rflpc_spi_t port)
  * Sends data through the spi interface.
  * @param port The port to send to
  * @param data The data to send. If the port has been configured to send less than 16 bits in each frame, the data must be right justified
- * @warning The destination slave must have been enabled by putting its CS pin to a logical low. This is usually done with GPIO
+ * @note If the port is configured master, the slave select pin will be activated as long as there is data in the FIFO.
+ *       If the port is configured slave, the data will be transmitted only when the slave select is activated by master
  **/
 static inline void rflpc_spi_write(rflpc_spi_t port, uint16_t data)
 {
