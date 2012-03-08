@@ -10,7 +10,11 @@ CFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --cflags)
 LDFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --libs)
 
 ## Library configuration
-MBED_PATH=$(shell mount | grep MBED | awk '{ print $$3 }')
+
+MBED_PATH=$(shell mount | grep MBED | cut -d\  -f3)
+# If your mount command is not completly compliant with the linux one, you can try to use awk instead of cut
+#MBED_PATH=$(shell mount | grep MBED | awk '{ print $$3 }')
+
 ELF=$(OUTPUT_NAME).elf
 BIN=$(OUTPUT_NAME).bin
 
