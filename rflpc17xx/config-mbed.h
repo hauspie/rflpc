@@ -30,25 +30,19 @@
 #ifndef __RFLPC_CONFIG_MBED_H__
 #define __RFLPC_CONFIG_MBED_H__
 
+/** @addtogroup config MBED Platform configuration
+ * @ingroup system
+ * The following defines are used to configure the library to use with the MBED.
+ * @{
+ */
 
 /**************************************
  *          Clock configuration       *
  **************************************/
-/** @ingroup clock
- * @{
- */
-/** If defined, the rflpc_clock_init() function will use the main oscillator. */
-#define RFLPC_CLOCK_USE_MAIN_OSCILLATOR
 
 
-#ifdef RFLPC_CLOCK_USE_MAIN_OSCILLATOR
-/** The frequency of the main oscillator if used. */
-#define RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY 12000000
-#endif
-
-
-/** @{
- * @name PLL0 Configuration values
+/**
+ * @name Clock configuration
  * Dividers and multipliers for controlling the CPU clock.
  * The PLL output clock frequency is given by:
     (2*PLL_MULTIPLIER*MAIN_OSCILLATOR_FREQUENCY)/INPUT_DIVIDER
@@ -66,6 +60,17 @@
     @warning Be carefull when modifing these parameters. Clock the ARM at more
     than 100Mhz is a bad idea...
 */
+/** @{ */
+
+/** If defined, the rflpc_clock_init() function will use the main oscillator. */
+#define RFLPC_CLOCK_USE_MAIN_OSCILLATOR
+
+
+#ifdef RFLPC_CLOCK_USE_MAIN_OSCILLATOR
+/** The frequency of the main oscillator if used. */
+#define RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY 12000000
+#endif
+
 /** PLL0 will divide its input by this value. */
 #define RFLPC_CLOCK_INPUT_DIVIDER                    1
 /** PLL0 will multiply its input by this value. */
@@ -73,15 +78,13 @@
 /** The PLL0 output will be divided by this value to provide CPU clock. */
 #define RFLPC_CLOCK_CPU_DIVIDER                      3
 /** @} */
-/** @} */
 
 /**************************************
  *          LEDS configuration        *
  **************************************/
 
-/** @ingroup leds
- * @{
- */
+/** @name LEDs configuration */
+/** @{ */
 /** Which GPIO port is used for leds? */
 #define RFLPC_LED_PORT   1
 /** On which pin is the LED1 ? */
@@ -97,12 +100,10 @@
 /**************************************
  *          Ethernet Configuration    *
  **************************************/
-/** @ingroup eth
- * @{
- */
-/** @{
+/**
  * @name PHY device configuration
  */
+/** @{ */
 /** MII Address of the PHY device.*/
 #define RFLPC_ETH_PHY_ADDR (0x01)
 
@@ -119,28 +120,42 @@
 #define RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
 /** @} */
 
+/** @name UART Configuration */
+/** @{ */
+/* UART0 settings */
+/** UART0 PORT */
+#define RFLPC_UART0_PORT    0
+/** UART0 TX Pin */
+#define RFLPC_UART0_TXD_PIN 2
+/** UART0 RX Pin */
+#define RFLPC_UART0_RXD_PIN 3
+
+/* UART2 settings */
+/** UART2 PORT */
+#define RFLPC_UART2_PORT    0
+/** UART2 TX Pin */
+#define RFLPC_UART2_TXD_PIN 10
+/** UART2 RX Pin */
+#define RFLPC_UART2_RXD_PIN 11
+
+/* UART3 settings */
+/** UART3 PORT */
+#define RFLPC_UART3_PORT    0
+/** UART3 TX Pin */
+#define RFLPC_UART3_TXD_PIN 0
+/** UART3 RX Pin */
+#define RFLPC_UART3_RXD_PIN 1
+
 /** @} */
 
-/** @ingroup system
+
+
+/** 
  * The library can only compiled if this is defined.
  * This is just to ensure that a platform specific file has been defined
  */
 #define RFLPC_PLATFORM_CONFIGURED
 
-/* UART0 settings */
-#define RFLPC_UART0_PORT    0
-#define RFLPC_UART0_TXD_PIN 2
-#define RFLPC_UART0_RXD_PIN 3
-
-/* UART2 settings */
-#define RFLPC_UART2_PORT    0
-#define RFLPC_UART2_TXD_PIN 10
-#define RFLPC_UART2_RXD_PIN 11
-
-/* UART3 settings */
-#define RFLPC_UART3_PORT    0
-#define RFLPC_UART3_TXD_PIN 0
-#define RFLPC_UART3_RXD_PIN 1
-
+/** @} */
 
 #endif

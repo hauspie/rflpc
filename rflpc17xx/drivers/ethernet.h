@@ -41,11 +41,12 @@ extern int rflpc_eth_init();
 extern int rflpc_eth_link_state();
 
 
-/** @{
+/**
  * @name Link modes
  * These constants can be used to get or set the link mode using
  * ::rflpc_eth_get_link_mode and ::rflpc_eth_set_link_mode.
  */
+/** @{ */
 /** This bit indicates 100Mbps/10Mbps speed */
 #define RFLPC_ETH_LINK_MODE_SPEED_BIT   (1 << 0)
 /** This bit indicates Full/Half duplex mode */

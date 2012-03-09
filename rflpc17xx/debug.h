@@ -34,6 +34,7 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
 
 /** @addtogroup debug Debug macro
  * @ingroup system
+ * Useful macro to use for debuggin purpose.
  * @{ */
 
 /** wait until a counter reaches c.
