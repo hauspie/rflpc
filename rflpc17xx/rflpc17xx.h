@@ -52,7 +52,6 @@
  * @section missing What is missing?
  *
  * A lot of stuff ! Mainly the remainder of drivers for the other devices such as
- * - SPI
  * - CAN
  * - DAC/ADC
  * - PWM
@@ -68,7 +67,7 @@
  * The library provided by NXP (CMSIS) was a bit too high level for what we wanted and thus,
  * writing everything from scratch was our best option.
  *
- * The first of our project which has been ported to the MBED is Smews: Smart & Mobile Embedded Web Server (http://smews.gforge.inria.fr)
+ * The first of our project which has been ported to the MBED is Smews: Smart & Mobile Embedded Web Server (http://www.lifl.fr/2XS/smews)
  */
 
 /** @defgroup system Base system */
