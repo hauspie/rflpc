@@ -28,7 +28,9 @@
 
 #include "config.h"
 
+/** @cond ignore */
 extern unsigned char _stack[RFLPC_STACK_SIZE];
+/** @endcond */
 
 /** @addtogroup debug Debug macro
  * @ingroup system
@@ -56,7 +58,7 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
    while(0)
 
 /** Dumps 64 bytes from the current value of the stack pointer.
- * @note this maccro uses ::rflpc_printf()
+ * @note this maccro uses ::printf()
  * */
 #define RFLPC_DUMP_STACK() do {                                 \
 	register uint8_t *mstack =(uint8_t*) __get_MSP();       \
@@ -70,6 +72,9 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
 	printf("\n\r");                                         \
     } while(0)
 
+/** Asserts a condition.
+ * @param cond If false, stop the device and blink all leds
+ */
 #define RFLPC_ASSERT(cond) do { if (!(cond)) { RFLPC_STOP(0, 50000); } } while (0)
 
 /** @} */
