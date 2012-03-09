@@ -21,7 +21,7 @@
 #include "setjmp.h"
 
 
-int rflpc_setjmp(rflpc_jmp_buf_t env)
+int setjmp(jmp_buf env)
 {
     int ret = 0;
     asm volatile(
@@ -36,7 +36,7 @@ int rflpc_setjmp(rflpc_jmp_buf_t env)
     return ret;
 }
 
-int rflpc_longjmp(rflpc_jmp_buf_t env, int val)
+int longjmp(jmp_buf env, int val)
 {    
     asm volatile(
 	"mov	r0, %[env]	\n\t"

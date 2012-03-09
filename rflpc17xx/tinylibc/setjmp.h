@@ -23,7 +23,7 @@
 
 #include <stdint.h>
 
-typedef uint32_t rflpc_jmp_buf_t[12];
+typedef uint32_t jmp_buf[12];
 
 /**
  * Saves  the  stack  context/environment  in  env for later use by ::rflpc_longjmp.
@@ -31,7 +31,7 @@ typedef uint32_t rflpc_jmp_buf_t[12];
  * @param env 
  * @return 0 if returning directly and non-zero when returning from ::rflpc_longjmp
  **/
-extern int rflpc_setjmp(rflpc_jmp_buf_t env);
+extern int setjmp(jmp_buf env);
 
 /**
  * Restores the stack context/environment saved in env by ::rflpc_setjmp.
@@ -41,25 +41,7 @@ extern int rflpc_setjmp(rflpc_jmp_buf_t env);
  * @return int
  **/
 
-extern int rflpc_longjmp(rflpc_jmp_buf_t env, int val);
+extern int longjmp(jmp_buf env, int val);
 
-#ifdef setjmp
-#undef setjmp
-#endif
-
-#ifdef longjmp
-#undef longjmp
-#endif
-
-#ifdef jmp_buf
-#undef jmp_buf
-#endif
-
-/** Macro to define LIBC compatible prototype for setjmp */
-#define setjmp(env) rflpc_setjmp(env)
-/** Macro to define LIBC compatible prototype for longjmp */
-#define longjmp(env, val) rflpc_longjmp(env,val)
-/** LIBC compliant set_jmp type*/
-#define jmp_buf rflpc_jmp_buf_t
 
 #endif
