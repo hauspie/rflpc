@@ -40,7 +40,11 @@
  */
 
 /** Constants that represents the UART port you want to use in uart driver functions */
-typedef enum { RFLPC_UART0 = 0, RFLPC_UART2 = 2, RFLPC_UART3 = 3 } rflpc_uart_t;
+typedef enum { 
+    RFLPC_UART0 = 0, /**< Use UART0 */ 
+    RFLPC_UART2 = 2, /**< Use UART2 */
+    RFLPC_UART3 = 3  /**< Use UART3 */   
+} rflpc_uart_t;
 
 
 /**

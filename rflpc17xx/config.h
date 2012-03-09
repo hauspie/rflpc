@@ -48,21 +48,29 @@
 #endif
 
 
-/** @ingroup system
+/** @addtogroup config 
+ * @ingroup system
  * @{
  */
 
+/** @name Stack configuration */
+/** @{ */
 /** size of the stack in bytes */
 #ifndef RFLPC_STACK_SIZE
 #define RFLPC_STACK_SIZE 1024
 #endif
+/** @} */
 
+
+/** @name Interrupt configuration */
+/** @{ */
 /** If this constant is defined, then freeze the device on unhandled interrupt
  */
 #define RFLPC_IRQ_DEBUG_ENABLE
 
 /** This is the size of the interrupt vector */
 #define RFLPC_IRQn_COUNT (PLL1_IRQn + 16 +1)
+/** @} */
 
 /** @} */
 

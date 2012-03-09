@@ -41,11 +41,12 @@ extern int rflpc_eth_init();
 extern int rflpc_eth_link_state();
 
 
-/** @{
+/**
  * @name Link modes
  * These constants can be used to get or set the link mode using
  * ::rflpc_eth_get_link_mode and ::rflpc_eth_set_link_mode.
  */
+/** @{ */
 /** This bit indicates 100Mbps/10Mbps speed */
 #define RFLPC_ETH_LINK_MODE_SPEED_BIT   (1 << 0)
 /** This bit indicates Full/Half duplex mode */
@@ -251,6 +252,9 @@ static inline void rflpc_eth_done_process_rx_packet()
  */
 extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTxStatus *status, int count);
 
+/** Helper macro for ::rflpc_eth_get_current_tx_packet_descriptor */
+#define TX_PRODUCE_INDEX_INC(inc) ((LPC_EMAC->TxProduceIndex + (inc))% (LPC_EMAC->TxDescriptorNumber+1))
+
 /** returns the index of the current tx packet descriptor.
 
    @param [out] descriptor a pointer to a pointer of ::rfEthDescriptor
@@ -264,8 +268,6 @@ extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTx
     @return 0 if no more descriptor are available (which means that all the
     buffers are owned by the hardware and waiting to be sent). 1 if pointers are valid
 */
-
-#define TX_PRODUCE_INDEX_INC(inc) ((LPC_EMAC->TxProduceIndex + (inc))% (LPC_EMAC->TxDescriptorNumber+1))
 
 static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status, int idx)
 {
@@ -414,7 +416,7 @@ static inline void rflpc_eth_deactivate_rx_filter()
 }
 
 /**
- * @brief Use the ::rflpc_printf function to dump the values of the MAC registers
+ * @brief Use the ::printf function to dump the values of the MAC registers
  *
  * @return void
  **/

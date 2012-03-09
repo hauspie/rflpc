@@ -19,6 +19,7 @@
   Time-stamp: <2011-10-27 16:37:19 (hauspie)>
 */
 #include "memcpy.h"
+#include <stdint.h>
 
 /* This memcpy uses 2 optimisations:
 
@@ -31,7 +32,7 @@
 */
 #define IS_WORD_ALIGNED(a) (!((uint32_t)(a) & 0x3))
 
-static void *rflpc_memcpy_unaligned_fast(void *dest, const void *src, rflpc_size_t n)
+static void *rflpc_memcpy_unaligned_fast(void *dest, const void *src, size_t n)
 {    
     uint8_t *bdest = dest;
     const uint8_t *bsrc = src;    
@@ -51,7 +52,7 @@ static void *rflpc_memcpy_unaligned_fast(void *dest, const void *src, rflpc_size
     return dest;
 }
 
-static void *rflpc_memcpy_aligned_fast(void *dest, const void *src, rflpc_size_t n)
+static void *rflpc_memcpy_aligned_fast(void *dest, const void *src, size_t n)
 {    
     uint32_t *wdest = dest;
     const uint32_t *wsrc = src;
@@ -74,7 +75,7 @@ static void *rflpc_memcpy_aligned_fast(void *dest, const void *src, rflpc_size_t
     return dest;
 }
 
-void *memcpy(void *dest, const void *src, rflpc_size_t n)
+void *memcpy(void *dest, const void *src, size_t n)
 {
     if (n == 0)
 	return dest;

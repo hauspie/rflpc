@@ -24,9 +24,7 @@
 #ifndef __RFLPC_MEMCPY_H__
 #define __RFLPC_MEMCPY_H__
 
-#include <stdint.h>
-
-typedef uint32_t rflpc_size_t;
+#include <stddef.h>
 
 /** @ingroup libc
  * @{ */
@@ -45,6 +43,6 @@ typedef uint32_t rflpc_size_t;
  *
  * @return
  */
-extern void *memcpy(void *dest, const void *src, rflpc_size_t n);
+extern void *memcpy(void *dest, const void *src, size_t n);
 
 #endif

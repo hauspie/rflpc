@@ -25,26 +25,18 @@
 #define __RFLPC_LEDS_H__
 
 /** @addtogroup leds
- * Provides function to control 4 onboard leds.
+ * Provides function to control onboard leds.
  * This driver only have sense if your board has 4 leds controlled by GPIO, which is the case for the MBED board
  * @{*/
 
-/* Leds control.
-   See schematic p. 3 for pin number
-
-   LEDS are connected to GPIO1
-   LED1 P1.18
-   LED2 P1.20
-   LED3 P1.21
-   LED4 P1.23
-*/
 #include "../config.h"
 #include "gpio.h"
 
-/** @{
+/**
  * @name LEDs defines
  * This values can be used to set/clear leds in the driver functions
  */
+/** @{ */
 /** LED 1 */
 #define RFLPC_LED_1 (1 << RFLPC_LED_1_PIN)
 /** LED 2 */
