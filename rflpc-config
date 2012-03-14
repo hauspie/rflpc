@@ -30,11 +30,12 @@ usage()
 Usage: $1 <options>
 
 Options are:
-* --cflags : output the compiler flags on stdout
-* --libfile : ouput only the library link flag (not all the -nodefaultlibs... options
-* --ldflags : output only the link flags (and not the -lrflpc17xx)
-* --libs : concantenation of --libfile and --ldflags
-* --objs : ouput only object files names. This can be used for project where the main is defined in a library. This will allow library cyclic dependencies to be resolved correctly
+* --cflags  : outputs the compiler flags on stdout
+* --lib     : ouputs only the library link flag (not all the -nodefaultlibs... options
+* --ldflags : outputs only the link flags (and not the -lrflpc17xx)
+* --libs    : concantenation of --lib and --ldflags
+* --libfile : outputs the full path of the library file
+* --objs    : ouput only object files names. This can be used for project where the main is defined in a library. This will allow library cyclic dependencies to be resolved correctly
 EOF
 }
 
@@ -53,11 +54,14 @@ do
 	--ldflags)
 	    echo -n "-nostdlib -L$RFLPC_DIR/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map "
 	    ;;
-	--libfile)
+	--lib)
 	    echo -n "-lrflpc17xx "
 	    ;;
+	--libfile)
+	    echo "$RFLPC_DIR/rflpc17xx/librflpc17xx.a"
+	    ;;
 	--libs)
-	    ($0 --ldflags && $0 --libfile) | tr -d '\n'
+	    ($0 --ldflags && $0 --lib) | tr -d '\n'
 	    ;;
 	*)
 	    usage $0
