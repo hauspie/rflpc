@@ -175,8 +175,3 @@ void rflpc_uart_set_rx_callback(rflpc_uart_t uart_num, rflpc_irq_handler_t  call
     /* enable the uart0 irq generation (user manual p. 302) */
     BASE_ADDR(uart_num)->IER |= 1;
 }
-
-void rflpc_uart0_set_rx_callback(rflpc_irq_handler_t  callback)
-{
-  rflpc_uart_set_rx_callback(RFLPC_UART0, callback);
-}
