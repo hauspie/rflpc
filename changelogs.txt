@@ -1,3 +1,5 @@
+Next:
+	- Fine tuning of the library by selecting what is compiled
 0.7a:
 	- Fixed UART3 initialization code
 0.7:
