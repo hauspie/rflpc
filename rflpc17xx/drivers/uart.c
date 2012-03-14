@@ -32,14 +32,11 @@ struct uart_pin_conf
 {
   /* (p. 108 and p. 299) */
   struct {
-    unsigned char gpio_port:2;
-    unsigned char gpio_pin:5;
-  }tx;
-
-  struct {
-    unsigned char gpio_port:2;
-    unsigned char gpio_pin:5;
-  }rx;
+    unsigned char port:2;
+    unsigned char tx_pin:5;
+    unsigned char rx_pin:5;
+    unsigned char pin_function:2;
+  }gpio;  
 
   LPC_UART_TypeDef *base_address;
 };
@@ -49,23 +46,19 @@ typedef struct uart_pin_conf uart_pin_conf_t;
 static uart_pin_conf_t _rflpc_uart_config[4] = 
   {
     { 
-      { RFLPC_UART0_PORT, RFLPC_UART0_TXD_PIN },
-      { RFLPC_UART0_PORT, RFLPC_UART0_RXD_PIN },
+      { RFLPC_UART0_PORT, RFLPC_UART0_TXD_PIN, RFLPC_UART0_RXD_PIN, RFLPC_UART0_PIN_FUNCTION },
       (LPC_UART_TypeDef*)LPC_UART0,
     },
     { 
-      { 0, 0 },
-      {	0, 0 },
+      { 0, 0, 0, 0 },      
       NULL,
     },
     { 
-      { RFLPC_UART2_PORT, RFLPC_UART2_TXD_PIN },
-      { RFLPC_UART2_PORT, RFLPC_UART2_RXD_PIN },
+      { RFLPC_UART2_PORT, RFLPC_UART2_TXD_PIN, RFLPC_UART2_RXD_PIN, RFLPC_UART2_PIN_FUNCTION },
       LPC_UART2,
     },
     { 
-      { RFLPC_UART3_PORT, RFLPC_UART3_TXD_PIN },
-      { RFLPC_UART3_PORT, RFLPC_UART3_RXD_PIN },
+      { RFLPC_UART3_PORT, RFLPC_UART3_TXD_PIN, RFLPC_UART3_RXD_PIN, RFLPC_UART3_PIN_FUNCTION },
       LPC_UART3,
     }
       
@@ -122,8 +115,8 @@ int _rflpc_uart_init(uart_pin_conf_t *uart)
 
   /* Set pin mode for the UART to UART0 (TXD0, RXD0)  */
   /* CHANGEME */
-  rflpc_pin_set(uart->rx.gpio_port, uart->rx.gpio_pin, 1, 0, 0); /** @todo function value bad for UART3 */
-  rflpc_pin_set(uart->tx.gpio_port, uart->tx.gpio_pin, 1, 0, 0);
+  rflpc_pin_set(uart->gpio.port, uart->gpio.rx_pin, uart->gpio.pin_function, 0, 0); /** @todo function value bad for UART3 */
+  rflpc_pin_set(uart->gpio.port, uart->gpio.tx_pin, uart->gpio.pin_function, 0, 0);
 
   /* Reset the DLAB bit in U0LCR to enable access to transmit and receive registers (p. 301) */
   /* CHECKME */
