@@ -72,7 +72,7 @@ static uart_pin_conf_t _rflpc_uart_config[4] =
   };
 
 
-#define BASE_ADDR(n) (_rflpc_uart_config[n].base_address)
+#define BASE_ADDR(n) (_rflpc_uart_config[(n)].base_address)
 
 void rflpc_uart_putchar(rflpc_uart_t uart_num, char c)
 {
@@ -122,7 +122,7 @@ int _rflpc_uart_init(uart_pin_conf_t *uart)
 
   /* Set pin mode for the UART to UART0 (TXD0, RXD0)  */
   /* CHANGEME */
-  rflpc_pin_set(uart->rx.gpio_port, uart->rx.gpio_pin, 1, 0, 0);
+  rflpc_pin_set(uart->rx.gpio_port, uart->rx.gpio_pin, 1, 0, 0); /** @todo function value bad for UART3 */
   rflpc_pin_set(uart->tx.gpio_port, uart->tx.gpio_pin, 1, 0, 0);
 
   /* Reset the DLAB bit in U0LCR to enable access to transmit and receive registers (p. 301) */
@@ -145,19 +145,19 @@ int rflpc_uart_init(rflpc_uart_t uart_num)
   {
     /* Set UART CLOCK to 12 Mhz */
     /* 12 Mhz because of the frequency at 96 Mhz */
-    case 0:
+    case RFLPC_UART0:
       /* Enable UART (user manual, p. 63) */
       LPC_SC->PCONP |= (1UL << 3);
       /* Set UART clock Bits 6 and 7 are for UART3, 0x3 value is for CCLK/8 */
       LPC_SC->PCLKSEL0 |= (RFLPC_CCLK_8 << 6);
       break;
-    case 2:
+    case RFLPC_UART2:
       /* Enable UART (user manual, p. 63) */
       LPC_SC->PCONP |= (1UL << 24);
       /* Bits 16 and 17 are for UART3, 0x3 value is for CCLK/8 */
       LPC_SC->PCLKSEL1 |= (RFLPC_CCLK_8 << 16);
       break;
-    case 3:
+    case RFLPC_UART3:
       /* Enable UART (user manual, p. 63) */
       LPC_SC->PCONP |= (1UL << 25);
       /* Bits 18 and 19 are for UART3, 0x3 value is for CCLK/8 */
