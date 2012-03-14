@@ -138,8 +138,7 @@ extern void main(void);
 
 void _start(void)
 {
-    /* clear stack with magic */
-    rflpc_led_init();
+    /* clear stack with magic */    
     _copy_data_section();
     _zero_bss();
     /* set the clock to 96 Mhz */
