@@ -53,4 +53,6 @@ check_empty_config:
 # Check if at least one symbol is there and should not		
 	$(if $(BAD_SYMBOLS), @echo "Some symbols are not directed by a #ifdef RFLPC_XXXX_ENABLE rule")
 	@for symbol in $(BAD_SYMBOLS) ; do echo $$symbol ; done
+	@echo "Size report:"
+	$(SIZE) $(RFLPC_LIB_FILE)
 	
