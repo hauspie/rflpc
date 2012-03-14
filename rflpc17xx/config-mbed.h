@@ -129,6 +129,7 @@
 #define RFLPC_UART0_TXD_PIN 2
 /** UART0 RX Pin */
 #define RFLPC_UART0_RXD_PIN 3
+#define RFLPC_UART0_PIN_FUNCTION 1 /**< Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf. user manual PINSEL* registers) . */
 
 /* UART2 settings */
 /** UART2 PORT */
@@ -137,6 +138,7 @@
 #define RFLPC_UART2_TXD_PIN 10
 /** UART2 RX Pin */
 #define RFLPC_UART2_RXD_PIN 11
+#define RFLPC_UART2_PIN_FUNCTION 1 /**< Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf. user manual PINSEL* registers) . */
 
 /* UART3 settings */
 /** UART3 PORT */
@@ -145,6 +147,7 @@
 #define RFLPC_UART3_TXD_PIN 0
 /** UART3 RX Pin */
 #define RFLPC_UART3_RXD_PIN 1
+#define RFLPC_UART3_PIN_FUNCTION 2 /**< Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf. user manual PINSEL* registers) . */
 
 /** @} */
 
