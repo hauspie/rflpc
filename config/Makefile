@@ -42,11 +42,7 @@ __set_PRIMASK \
 __set_PSP
 
 
-check_empty_config:
-	@echo "Cleaning"
-	@make -C $(RFLPC_LIB_DIR) mrproper >& /dev/null
-	@echo "Compiling"
-	@make -C $(RFLPC_LIB_DIR) >& /dev/null
+check_empty_config: $(RFLPC_LIB_FILE)
 # Get the list of symbols in the library */	
 	$(eval SYMBOLS := $(shell $(NM) $(RFLPC_LIB_FILE) | grep -i ' T ' | cut -d' ' -f 3))
 	$(eval BAD_SYMBOLS := $(sort $(filter-out $(ALLOWED_SYMBOLS_FILE), $(SYMBOLS))))
@@ -54,5 +50,10 @@ check_empty_config:
 	$(if $(BAD_SYMBOLS), @echo "Some symbols are not directed by a #ifdef RFLPC_XXXX_ENABLE rule")
 	@for symbol in $(BAD_SYMBOLS) ; do echo $$symbol ; done
 	@echo "Size report:"
-	$(SIZE) $(RFLPC_LIB_FILE)
-	
+	$(SIZE) -t $(RFLPC_LIB_FILE)
+
+$(RFLPC_LIB_FILE):
+	@echo "Cleaning"
+	@make -C $(RFLPC_LIB_DIR) mrproper >& /dev/null
+	@echo "Compiling"
+	@make -C $(RFLPC_LIB_DIR) >& /dev/null
