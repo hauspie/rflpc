@@ -16,11 +16,12 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2011-10-14
- * Time-stamp: <2011-10-14 14:18:07 (hauspie)>
+ * Time-stamp: <2012-03-19 16:05:32 (hauspie)>
  */
 #include "../nxp/LPC17xx.h"
 #include "dma.h"
 
+#ifdef RFLPC_ENABLE_DMA
 
 static LPC_GPDMACH_TypeDef *rflpc_dma_get_chan(rflpc_dma_channel_t channel)
 {
@@ -135,3 +136,5 @@ int rflpc_dma_start(rflpc_dma_channel_t channel, void *dest, const void *src, ui
    rflpc_dma_set_channel_config(config, 1);
    return 1;
 }
+
+#endif /* ENABLE_DMA */

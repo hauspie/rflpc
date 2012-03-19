@@ -16,13 +16,15 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2011-10-14
- * Time-stamp: <2011-10-14 14:18:07 (hauspie)>
+ * Time-stamp: <2012-03-19 16:05:08 (hauspie)>
  */
 /** @file
  * General Purpose DMA driver
  */
 #ifndef __RFLPC_DMA_H__
 #define __RFLPC_DMA_H__
+
+#ifdef RFLPC_ENABLE_DMA
 
 /** @addtogroup dma General Purpose DMA
  * @ingroup drivers
@@ -68,4 +70,6 @@ extern int rflpc_dma_channel_ready(rflpc_dma_channel_t channel);
 extern int rflpc_dma_start(rflpc_dma_channel_t channel, void *dest, const void *src, uint32_t size);
 
 /** @} */
+#endif /* ENABLE_DMA */
+
 #endif
