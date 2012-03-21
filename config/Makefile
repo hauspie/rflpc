@@ -53,6 +53,9 @@ check_empty_config: $(RFLPC_LIB_FILE)
 	@echo "Size report:"
 	$(SIZE) -t $(RFLPC_LIB_FILE)
 
+extract_config_vars:
+	@grep -R RFLPC_ENABLE $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
+
 $(RFLPC_LIB_FILE):
 	@echo "Cleaning"
 	@make -C $(RFLPC_LIB_DIR) mrproper >& /dev/null
