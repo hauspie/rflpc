@@ -151,7 +151,7 @@ typedef struct
      * - Bits 24:16 : CRC calcultated from the destination address
      */
     uint32_t status_hash_crc;
-} rfEthRxStatus;
+} rflpc_eth_rx_status_t;
 
 
 /** This structure holds the transmit status associated to a descriptor.
@@ -173,7 +173,7 @@ typedef struct
 
 
 /**
- * @brief Returns the size of a packet from the status_info field of a ::rfEthTxStatus or ::rfEthRxStatus
+ * @brief Returns the size of a packet from the status_info field of a ::rfEthTxStatus or ::rflpc_eth_rx_status_t
  *
  * @param [in] status_info The corresponding field in ::rfEthTxStatus or ::rfEthTxStatus
  * @return The size of the corresponding buffer
@@ -201,7 +201,7 @@ static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t
     @warning descriptors must be aligned on a word boundary. status must be
     aligned on a double word boundaryx
 */
-extern void rflpc_eth_set_rx_base_addresses(rflpc_eth_descriptor_t *descriptors, rfEthRxStatus *status, int count);
+extern void rflpc_eth_set_rx_base_addresses(rflpc_eth_descriptor_t *descriptors, rflpc_eth_rx_status_t *status, int count);
 
 /** Returns the pointers on the current rx packet descriptor.
 
@@ -209,12 +209,12 @@ extern void rflpc_eth_set_rx_base_addresses(rflpc_eth_descriptor_t *descriptors,
     been marked as processed by ::rflpc_eth_done_process_rx_packet();
     @return 0 if receive queue is empty, 1 if pointers are valid
  */
-static inline int rflpc_eth_get_current_rx_packet_descriptor(rflpc_eth_descriptor_t **descriptor, rfEthRxStatus **status)
+static inline int rflpc_eth_get_current_rx_packet_descriptor(rflpc_eth_descriptor_t **descriptor, rflpc_eth_rx_status_t **status)
 {
     if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* empty queue */
 	return 0;
     *descriptor = ((rflpc_eth_descriptor_t*)LPC_EMAC->RxDescriptor) + LPC_EMAC->RxConsumeIndex;
-    *status = ((rfEthRxStatus*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
+    *status = ((rflpc_eth_rx_status_t*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
     return 1;
 }
 

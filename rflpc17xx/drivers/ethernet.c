@@ -301,7 +301,7 @@ int rflpc_eth_get_link_mode()
 #endif
 }
 
-void rflpc_eth_set_rx_base_addresses(rflpc_eth_descriptor_t *descriptors, rfEthRxStatus *status, int count)
+void rflpc_eth_set_rx_base_addresses(rflpc_eth_descriptor_t *descriptors, rflpc_eth_rx_status_t *status, int count)
 {
     /* Turn reception off while modifying descriptors */
     LPC_EMAC->Command &= ~RFLPC_ETH_CMD_RX_ENABLE;
