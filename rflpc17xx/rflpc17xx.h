@@ -215,6 +215,12 @@
  * 
  * If you want to contribute to the library, please follow these guidelines to ease the integration
  * 
+ * @section contribute How to contribute
+ * 
+ * - Use your github account to fork the @p hauspie/rflpc repository and push your contribution to your fork. Then, send me a pull-request for integration to the @p develop branch
+ * - Always do your development based on the @p develop branch, except if you want to submit me a hotfix of a released version. In the later case, based your work on the master branch, I will take care of integrating the hotfix in the @p develop branch.
+ * - Try to do some extensive tests on your code, and, if you can, a bit of code review (which I'll do with you anyway before integrating your patch)
+ * 
  * @section conventions Coding conventions
  * 
  * - All symbol names are in lower case, prefixed by @p rflpc_ and a term describing the category of the symbol/function. For example:
@@ -225,7 +231,7 @@
  * - If possible, prefer static inline functions to macros
  * - All new feature must be able to be enabled/disabled using the config system.
  * 	- you should put your code in a <tt>\#ifdef RFLPC_CONFIG_ENABLE_xxx ... \#endif</tt> block. The chosen name must be explicit
- * 
+ * - Notable exception to the prefix rule is for function that implements some libc well known functions (::printf, ::memcpy, ::memset...)
  * 
  */
 
