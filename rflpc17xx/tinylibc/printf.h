@@ -19,11 +19,13 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:20:45 (hauspie)>
+  Time-stamp: <2012-03-21 09:14:56 (hauspie)>
 */
 /** @file
  * An implementation of formated output
  */
+
+#ifdef RFLPC_ENABLE_PRINTF
 
 /** @addtogroup libc
  * @{ */
@@ -60,5 +62,7 @@ extern int printf(const char *format,...);
 extern void rflpc_printf_set_putchar(int (*putchar_func)(int c));
 
 /** @} */
+
+#endif /* ENABLE_PRINTF */
 
 #endif

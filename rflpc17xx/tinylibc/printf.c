@@ -16,8 +16,11 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created:
-    Time-stamp: <2012-03-21 09:12:03 (hauspie)>
+    Time-stamp: <2012-03-21 09:14:30 (hauspie)>
 */
+
+#ifdef RFLPC_ENABLE_PRINTF
+
 #include <stdarg.h>
 #include <stdint.h>
 #include "printf.h"
@@ -191,3 +194,5 @@ void rflpc_printf_set_putchar(int (*putchar_func)(int c))
 {
     _rflpc_putchar = putchar_func;
 }
+
+#endif /* ENABLE_PRINTF */
