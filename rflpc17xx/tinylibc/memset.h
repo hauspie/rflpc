@@ -22,6 +22,8 @@
 #ifndef __RFLPC_MEMSET_H__
 #define __RFLPC_MEMSET_H__
 
+#ifdef RFLPC_ENABLE_MEMSET
+
 #include <stddef.h>
 
 /** @ingroup libc
@@ -42,5 +44,7 @@
  * @return
  */
 extern void *memset(void *dest, int c, size_t n);
+
+#endif /* ENABLE_MEMSET */
 
 #endif
