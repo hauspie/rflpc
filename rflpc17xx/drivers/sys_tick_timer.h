@@ -19,10 +19,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:38:48 (hauspie)>
+  Time-stamp: <2012-03-21 09:07:57 (hauspie)>
 */
 #ifndef __RFLPC_SYS_TICK_TIMER_H__
 #define __RFLPC_SYS_TICK_TIMER_H__
+
+#ifdef RFLPC_ENABLE_SYS_TICK_TIMER
 
 /** @addtogroup systick System tick timer
  * @ingroup drivers
@@ -81,5 +83,7 @@ extern void rflpc_sys_timer_set_period(uint32_t micros_time);
 extern void rflpc_sys_timer_set_tick_period(uint32_t ticks);
 
 /** @} */
+
+#endif /* ENABLE_SYS_TICK_TIMER */
 
 #endif

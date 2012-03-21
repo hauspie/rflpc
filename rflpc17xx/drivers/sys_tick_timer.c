@@ -16,8 +16,10 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:24:57 (hauspie)>
+  Time-stamp: <2012-03-21 09:08:17 (hauspie)>
 */
+#ifdef RFLPC_ENABLE_SYS_TICK_TIMER
+
 #include "sys_tick_timer.h"
 #include "../clock.h"
 #include "../tinylibc/printf.h"
@@ -64,3 +66,4 @@ void rflpc_sys_timer_set_tick_period(uint32_t ticks)
     SysTick->CTRL |= 1;
     
 }
+#endif /* ENABLE_SYS_TICK_TIMER */
