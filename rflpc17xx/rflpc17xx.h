@@ -86,6 +86,7 @@
  * @subsection config-file Automatic generation of the configuration file
  *
  * The configuration file is located in the config/config folder. When you clone the git repository, this file is NOT included.
+ * However, if you just use make in the library folder, a default full configuration file is generated
  *
  * This file is a list of defines that will be enabled at compile time. 
  * The file is read by the rflpc-config script when generating the cflags. 
