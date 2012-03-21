@@ -16,8 +16,11 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-09-23
-  Time-stamp: <2011-10-27 16:37:19 (hauspie)>
+  Time-stamp: <2012-03-21 09:26:40 (hauspie)>
 */
+
+#ifdef RFLPC_ENABLE_MEMCPY
+
 #include "memcpy.h"
 #include <stdint.h>
 
@@ -83,3 +86,5 @@ void *memcpy(void *dest, const void *src, size_t n)
 	return rflpc_memcpy_aligned_fast(dest, src, n);   
    return rflpc_memcpy_unaligned_fast(dest, src, n);
 }
+
+#endif /* ENABLE_MEMCPY */
