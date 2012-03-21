@@ -24,9 +24,23 @@
  * Main header file. Can be used to include every needed headers at once.
  */
 
-/** @mainpage Getting started in 10 minutes
+/** @mainpage rfLPC : a small C library for LPC17xx SoC by NXP
+ * 
+ * This library is hosted at github: http://github.com/hauspie/rflpc. It is released under GPL licence.
+ * @section Authors
+ * - Original author: Michael Hauspie <tt>\<michael.hauspie@lifl.fr\></tt>
+ * - Additional contributors:
+ * 	- Thomas Soete (although not directly, some code parts are directly inspired by his)
+ * 	- François Serman (did the refactored UART driver)
+ * 
+ * More documentation:
+ * - @ref start
+ * - @ref guidelines
+ */
+
+/** @page start Getting started in 10 minutes
  *
- * \tableofcontents
+ * @tableofcontents
  *
  * @section faq Small FAQ
  * @subsection description What is this library?
@@ -194,6 +208,24 @@
  * - Recompile the library AND your program after making a change to the config file. (use make mrproper to clean the library and rebuild it)
  * - Pay attention to dependencies. For example, if you enable printf but not UARTs, the default function used by printf to output its characters will do nothing
  * - Most of the samples will not work if you do not enable at least uarts and printf
+ * 
+ */
+
+/** @page guidelines Developer guidelines
+ * 
+ * If you want to contribute to the library, please follow these guidelines to ease the integration
+ * 
+ * @section conventions Coding conventions
+ * 
+ * - All symbol names are in lower case, prefixed by @p rflpc_ and a term describing the category of the symbol/function. For example:
+ * 	- @p rflpc_eth_xxx for an ethernet driver
+ * 	- @p rflpc_spi_xxx for SPI drivers
+ * 	- ...
+ * - Type names uses the same prefix guidelines and must finish by a @p _t
+ * - If possible, prefer static inline functions to macros
+ * - All new feature must be able to be enabled/disabled using the config system.
+ * 	- you should put your code in a <tt>\#ifdef RFLPC_CONFIG_ENABLE_xxx ... \#endif</tt> block. The chosen name must be explicit
+ * 
  * 
  */
 
