@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-10-10 11:16:36 (hauspie)>
+  Time-stamp: <2012-03-21 09:04:41 (hauspie)>
 
   all ethernet constants, register definition, bits etc..
 
@@ -26,6 +26,8 @@
  */
 #ifndef __RFLPC_ETH_CONST_H__
 #define __RFLPC_ETH_CONST_H__
+
+#ifdef RFLPC_ENABLE_ETHERNET
 
 #include "../config.h"
 
@@ -320,5 +322,7 @@
 /** @} */
 
 /** @} */
+
+#endif /* ENABLE_ETHERNET */
 
 #endif

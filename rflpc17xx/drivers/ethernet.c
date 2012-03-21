@@ -17,8 +17,9 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-09-09 14:29:42 (hauspie)>
+  Time-stamp: <2012-03-21 09:05:17 (hauspie)>
 */
+#ifdef RFLPC_ENABLE_ETHERNET
 
 #include "ethernet.h"
 #include "eth_const.h"
@@ -374,3 +375,5 @@ void rflpc_eth_dump_internals()
     DUMP_REGISTER(LPC_EMAC->RxProduceIndex);
     DUMP_REGISTER(LPC_EMAC->RxConsumeIndex);
 }
+
+#endif /* ENABLE_ETHERNET */

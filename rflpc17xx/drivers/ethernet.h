@@ -19,6 +19,8 @@
 #ifndef __RFLPC_ETHERNET_H__
 #define __RFLPC_ETHERNET_H__
 
+#ifdef RFLPC_ENABLE_ETHERNET
+
 /** @addtogroup eth
  * @{
  */
@@ -26,7 +28,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-10-10 11:20:17 (hauspie)>
+  Time-stamp: <2012-03-21 09:04:06 (hauspie)>
 */
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -424,5 +426,7 @@ extern void rflpc_eth_dump_internals();
 
 
 /** @} */
+
+#endif /* ENABLE_ETHERNET */
 
 #endif
