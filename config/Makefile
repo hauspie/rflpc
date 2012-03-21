@@ -60,7 +60,7 @@ full_config:
 
 empty_config:
 	@echo "Generating configuration for minimal library"
-	@$(RM) $(RFLPC_LIB_CONFIG_FILE)
+	@echo -n "" > $(RFLPC_LIB_CONFIG_FILE)
 
 extract_config_vars:
 	@grep -R " RFLPC_CONFIG_ENABLE" $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
