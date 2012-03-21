@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created:
- Time-stamp: <2011-07-13 14:18:07 (hauspie)>
+ Time-stamp: <2012-03-21 15:26:19 (hauspie)>
  */
 #ifndef __RFLPC_RFLPC17XX_H__
 #define __RFLPC_RFLPC17XX_H__
@@ -68,6 +68,53 @@
  * writing everything from scratch was our best option.
  *
  * The first of our project which has been ported to the MBED is Smews: Smart & Mobile Embedded Web Server (http://www.lifl.fr/2XS/smews)
+ * 
+ * @section how How to use it
+ * 
+ * To use the library, you just have to compile it by issuing a 'make' in the main folder. It will build the library as well as all the samples.
+ * If everything builds, then you are ready to use it.
+ * 
+ * Otherwise, there are few things that you have to check:
+ * - Do you have an arm compiler in your path? 
+ * 	- is the Makefile.vars file modified according to this compiler?
+ * - Have you modified the config/config file which has been generated when compiling the library for the first time? 
+ * 	- if so, then the library may compile but some samples will not depending on what functionalities you have enabled
+ * 
+ * @section config Fine tuning of the library
+ * 
+ * The library can be configured so that some features are not included. This can save loads of code memory when you just need a few drivers.
+ * @subsection config-file Automatic generation of the configuration file
+ *
+ * The configuration file is located in the config/config folder. When you clone the git repository, this file is NOT included.
+ *
+ * This file is a list of defines that will be enabled at compile time. 
+ * The file is read by the rflpc-config script when generating the cflags. 
+ * Each line represents a define that will be transformed to a -Dxxxx flag.
+ * 
+ * To generate the file, you can use the makefile in the config folder. There are two main rules for generating a config file 
+ * - make empty_config
+ * - make full_config
+ * 
+ * The first one generates an empty config file. Then, when the library is compiled it is compiled with the minimum features which are:
+ * - board initialization code
+ * 	- clock configuration
+ * 	- bss and data segment initialization
+ * 	- default interrupt setup
+ * - interrupt management
+ * - Pins configuration
+ * - GPIOs
+ * - LEDs
+ * 
+ * Pins configuration, GPIOs and LEDs  are only macros or inlines in the library. Thus, the produced code will only include it if you use it.
+ * The library in the minimal configuration is about 800 bytes of code.
+ * 
+ * The second option (full_config) automatically extracts all the RFLPC_CONFIG_ENABLE_xxx macros from the library source code and add it to the config file.
+ * Thus, all the functionalities of the library are included. At the moment, this produce a library that is about 8kB of code.
+ * 
+ * @subsection fine-tune Fine tuning the configuration file
+ * 
+ * The simplest way to fine tune the library is to start by a make full_config and then remove the line you do not want from the config/config file. 
+ * You can either remove the lines completely or use the '#' character to make a line comment "à la" sh
  */
 
 /** @defgroup system Base system */

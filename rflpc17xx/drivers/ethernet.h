@@ -90,7 +90,7 @@ extern int rflpc_eth_link_auto_negociate(int max_desired_mode);
 /** returns the current link mode.
 
     The information is extracted from the PHY PHYSTS register if
-    ::RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS is defined. Otherwise,
+    ::RFLPC_ETH_USE_EXTENDED_MII is defined. Otherwise,
     it uses the Control register which is less reliable and may return
     wrong mode (especially for the duplex mode)
 
