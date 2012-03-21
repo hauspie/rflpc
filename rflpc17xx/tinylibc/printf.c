@@ -16,7 +16,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created:
-    Time-stamp: <2012-03-21 09:14:30 (hauspie)>
+    Time-stamp: <2012-03-21 10:07:49 (hauspie)>
 */
 
 #ifdef RFLPC_CONFIG_ENABLE_PRINTF
@@ -89,7 +89,7 @@ int printf(const char *format, ...)
     int ccount = sizeof(unsigned int);
     va_start(args, format);
 
-#ifdef ATOMIC_PRINTF
+#ifdef RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF
    rflpc_irq_global_disable();
 #endif
     while (*format)
@@ -184,7 +184,7 @@ int printf(const char *format, ...)
 	++format;
     }
     va_end(args);
-#ifdef ATOMIC_PRINTF
+#ifdef RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF
     rflpc_irq_global_enable();
 #endif
     return count;
