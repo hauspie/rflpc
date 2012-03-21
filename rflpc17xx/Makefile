@@ -13,6 +13,8 @@ HEADERS+=$(wildcard drivers/*.h)
 HEADERS+=$(wildcard nxp/*.h)
 HEADERS+=$(wildcard tinylibc/*.h)
 
+all: $(LIB)
+
 $(LIB): $(COBJS)
 	$(AR) rs $@ $^
 
@@ -29,7 +31,6 @@ clean:
 
 mrproper: clean
 	$(RM) $(LIB)
-	
 
 # Dependencies rules so that compilation works well
 include makefile.dep

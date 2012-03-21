@@ -17,12 +17,14 @@
 
 # Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
 # Created: 2011-09-23
-# Time-stamp: <2012-03-21 10:07:55 (hauspie)>
+# Time-stamp: <2012-03-21 14:41:37 (hauspie)>
 
 
 # This script makes writing of makefiles easier by giving cflags and ldflags
 
 RFLPC_DIR=`cd \`dirname $0\` && pwd`
+
+CONFIG_FILE=$RFLPC_DIR/config/config
 
 usage()
 {
@@ -36,7 +38,22 @@ Options are:
 * --libs    : concantenation of --lib and --ldflags
 * --libfile : outputs the full path of the library file
 * --objs    : ouput only object files names. This can be used for project where the main is defined in a library. This will allow library cyclic dependencies to be resolved correctly
+
+If the file $CONFIG_FILE is empty, a minimal library configuration is used.
+If the file $CONFIG_FILE does not define a platform to use, MBED is used as default
 EOF
+}
+
+generate_compile_flags_from_config()
+{
+    if ! test -f $CONFIG_FILE
+    then
+	echo -n "-DRFLPC_CONFIG_PLATFORM_MBED"
+	return 0
+    fi
+    VARS=`cat $CONFIG_FILE | sed -e 's/^/-D/g' | tr '\n' ' '`
+    echo $VARS | grep PLATFORM > /dev/null || VARS="$VARS -DRFLPC_CONFIG_PLATFORM_MBED"
+    echo -n $VARS
 }
 
 if [ $# -eq 0 ]
@@ -45,11 +62,14 @@ then
     exit 1
 fi
 
+CFLAGS="-mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR "
+CFLAGS="$CFLAGS `generate_compile_flags_from_config` "
+
 for arg in $*
 do
     case $arg in
 	--cflags)
-	    echo -n "-mthumb -mcpu=cortex-m3 -DRFLPC_CONFIG_ENABLE_ATOMIC_PRINTF -DRFLPC_CONFIG_PLATFORM_MBED -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR "
+	    echo -n $CFLAGS
 	    ;;
 	--ldflags)
 	    echo -n "-nostdlib -L$RFLPC_DIR/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map "

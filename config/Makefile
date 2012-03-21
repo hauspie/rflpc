@@ -1,11 +1,12 @@
 
-RFLPC_DIR=../
+RFLPC_DIR=..
 
 # Defines the compiler and binutils tools for the current host
 include $(RFLPC_DIR)/Makefile.vars
 
 RFLPC_LIB_DIR=$(RFLPC_DIR)/rflpc17xx
 RFLPC_LIB_FILE=$(shell $(RFLPC_DIR)/rflpc-config --libfile)
+RFLPC_LIB_CONFIG_FILE=$(RFLPC_DIR)/config/config
 
 # Multiline variable for use with -F grep option
 ALLOWED_SYMBOLS_FILE := \
@@ -53,8 +54,16 @@ check_empty_config: $(RFLPC_LIB_FILE)
 	@echo "Size report:"
 	$(SIZE) -t $(RFLPC_LIB_FILE)
 
+full_config:
+	@echo "Generating configuration for full library"
+	@make extract_config_vars | grep RFLPC_ > $(RFLPC_LIB_CONFIG_FILE)
+
+empty_config:
+	@echo "Generating configuration for minimal library"
+	@$(RM) $(RFLPC_LIB_CONFIG_FILE)
+
 extract_config_vars:
-	@grep -R " RFLPC_CONFIG" $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
+	@grep -R " RFLPC_CONFIG_ENABLE" $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
 
 $(RFLPC_LIB_FILE):
 	@echo "Cleaning"
