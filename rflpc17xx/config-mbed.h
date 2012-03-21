@@ -21,7 +21,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2012-03-21 09:57:18 (hauspie)>
+  Time-stamp: <2012-03-21 10:52:43 (hauspie)>
 
   This files provides the configuration of the lib for the mbed platform
 
@@ -117,7 +117,7 @@
     - Make the detection of the link mode not accurate (by using control
       registers which may not always reflect the real link mode)
 */
-#define RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#define RFLPC_CONFIG_ENABLE_EXTENDED_MII
 /** @} */
 
 /** @name UART Configuration */

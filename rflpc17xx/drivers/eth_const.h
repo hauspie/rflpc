@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2012-03-21 09:04:41 (hauspie)>
+  Time-stamp: <2012-03-21 10:51:41 (hauspie)>
 
   all ethernet constants, register definition, bits etc..
 
@@ -212,7 +212,7 @@
 #define RFLPC_ETH_PHY_BMSR     (0x1)
 
 /* Phy extented registers */
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#ifdef RFLPC_CONFIG_ENABLE_EXTENDED_MII
 #define RFLPC_ETH_PHY_PHYIDR1  (0x2)
 #define RFLPC_ETH_PHY_PHYIDR2  (0x3)
 #define RFLPC_ETH_PHY_ANAR     (0x4)
