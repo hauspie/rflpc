@@ -19,13 +19,15 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created:
-    Time-stamp: <2011-07-13 14:39:15 (hauspie)>
+    Time-stamp: <2012-03-21 09:21:01 (hauspie)>
 
   This files defines the driver for the Repetitive Interrupt Timer (user manual, p. 501)
  */
 
 #ifndef __RFLPC_RIT_H__
 #define __RFLPC_RIT_H__
+
+#ifdef RFLPC_ENABLE_RIT_TIMER
 
 #include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
@@ -66,4 +68,6 @@ static inline void rflpc_rit_clear_pending_interrupt() { LPC_RIT->RICTRL |= 1; }
 extern void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, int reset_on_match,  rflpc_irq_handler_t c);
 
 /** @} */
+#endif /* ENABLE_RIT_TIMER */
+
 #endif
