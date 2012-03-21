@@ -22,7 +22,7 @@
 #ifndef __RFLPC_MEMSET_H__
 #define __RFLPC_MEMSET_H__
 
-#ifdef RFLPC_ENABLE_MEMSET
+#ifdef RFLPC_CONFIG_ENABLE_MEMSET
 
 #include <stddef.h>
 

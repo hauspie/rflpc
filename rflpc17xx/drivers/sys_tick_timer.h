@@ -24,7 +24,7 @@
 #ifndef __RFLPC_SYS_TICK_TIMER_H__
 #define __RFLPC_SYS_TICK_TIMER_H__
 
-#ifdef RFLPC_ENABLE_SYS_TICK_TIMER
+#ifdef RFLPC_CONFIG_ENABLE_SYS_TICK_TIMER
 
 /** @addtogroup systick System tick timer
  * @ingroup drivers

@@ -18,7 +18,7 @@
   Created: 
   Time-stamp: <2012-03-21 09:08:17 (hauspie)>
 */
-#ifdef RFLPC_ENABLE_SYS_TICK_TIMER
+#ifdef RFLPC_CONFIG_ENABLE_SYS_TICK_TIMER
 
 #include "sys_tick_timer.h"
 #include "../clock.h"

@@ -25,7 +25,7 @@
  * An implementation of formated output
  */
 
-#ifdef RFLPC_ENABLE_PRINTF
+#ifdef RFLPC_CONFIG_ENABLE_PRINTF
 
 /** @addtogroup libc
  * @{ */

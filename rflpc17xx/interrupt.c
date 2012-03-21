@@ -23,7 +23,7 @@
 #include "config.h"
 #include "interrupt.h"
 
-#ifndef RFLPC_ENABLE_PRINTF
+#ifndef RFLPC_CONFIG_ENABLE_PRINTF
 #undef RFLPC_IRQ_DEBUG_ENABLE /* Can't debug without printf */
 #endif
 

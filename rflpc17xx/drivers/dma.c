@@ -21,7 +21,7 @@
 #include "../nxp/LPC17xx.h"
 #include "dma.h"
 
-#ifdef RFLPC_ENABLE_DMA
+#ifdef RFLPC_CONFIG_ENABLE_DMA
 
 static LPC_GPDMACH_TypeDef *rflpc_dma_get_chan(rflpc_dma_channel_t channel)
 {

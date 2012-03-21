@@ -18,7 +18,7 @@
  Created: 2011-10-06
  Time-stamp: <2012-03-21 09:29:01 (hauspie)>
 */
-#ifdef RFLPC_ENABLE_SPI
+#ifdef RFLPC_CONFIG_ENABLE_SPI
 
 #include "spi.h"
 #include "../nxp/LPC17xx.h"

@@ -26,7 +26,7 @@
 #ifndef __RFLPC_GPIO_H__
 #define __RFLPC_GPIO_H__
 
-#ifdef RFLPC_ENABLE_GPIO
+#ifdef RFLPC_CONFIG_ENABLE_GPIO
 
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"

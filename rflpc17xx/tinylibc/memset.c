@@ -17,7 +17,7 @@
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>  
 */
 
-#ifdef RFLPC_ENABLE_MEMSET
+#ifdef RFLPC_CONFIG_ENABLE_MEMSET
 
 #include "memset.h"
 #include <stdint.h>

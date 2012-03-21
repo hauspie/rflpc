@@ -54,8 +54,7 @@ check_empty_config: $(RFLPC_LIB_FILE)
 	$(SIZE) -t $(RFLPC_LIB_FILE)
 
 extract_config_vars:
-	@grep -R RFLPC_ENABLE $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
-	@grep -R RFLPC_PLATFORM $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
+	@grep -R " RFLPC_CONFIG" $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
 
 $(RFLPC_LIB_FILE):
 	@echo "Cleaning"

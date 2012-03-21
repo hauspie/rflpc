@@ -27,7 +27,7 @@
 #ifndef __RFLPC_RIT_H__
 #define __RFLPC_RIT_H__
 
-#ifdef RFLPC_ENABLE_RIT_TIMER
+#ifdef RFLPC_CONFIG_ENABLE_RIT_TIMER
 
 #include "../nxp/LPC17xx.h"
 #include "../interrupt.h"

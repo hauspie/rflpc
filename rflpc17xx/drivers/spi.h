@@ -24,7 +24,7 @@
   Time-stamp: <2012-03-21 09:28:14 (hauspie)>
 */
 
-#ifdef RFLPC_ENABLE_SPI
+#ifdef RFLPC_CONFIG_ENABLE_SPI
 
 #include "../clock.h"
 #include "../interrupt.h"

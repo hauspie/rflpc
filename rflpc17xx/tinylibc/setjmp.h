@@ -21,7 +21,7 @@
 #ifndef __RFLPC_SETJMP_H__
 #define __RFLPC_SETJMP_H__
 
-#ifdef RFLPC_ENABLE_SETJMP
+#ifdef RFLPC_CONFIG_ENABLE_SETJMP
 
 #include <stdint.h>
 

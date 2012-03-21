@@ -32,7 +32,7 @@
 
  */
 
-#ifdef RFLPC_PLATFORM_MBED
+#ifdef RFLPC_CONFIG_PLATFORM_MBED
 /* If you want to use the library on another LPC17xx based platform, create a
    config-xxx.h file for it (copy the config-mbed.h as a starting base). The file
    should define some pin connections and the activation/deactivation macro for

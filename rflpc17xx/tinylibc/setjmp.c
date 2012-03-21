@@ -18,7 +18,7 @@
   Created:
   Time-stamp: <2012-03-21 09:30:23 (hauspie)>
 */
-#ifdef RFLPC_ENABLE_SETJMP
+#ifdef RFLPC_CONFIG_ENABLE_SETJMP
 
 #include "setjmp.h"
 

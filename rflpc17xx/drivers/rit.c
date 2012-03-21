@@ -18,7 +18,7 @@
   Created: 
   Time-stamp: <2012-03-21 09:21:56 (hauspie)>
 */
-#ifdef RFLPC_ENABLE_RIT_TIMER
+#ifdef RFLPC_CONFIG_ENABLE_RIT_TIMER
 
 #include "rit.h"
 

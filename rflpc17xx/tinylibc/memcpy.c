@@ -19,7 +19,7 @@
   Time-stamp: <2012-03-21 09:26:40 (hauspie)>
 */
 
-#ifdef RFLPC_ENABLE_MEMCPY
+#ifdef RFLPC_CONFIG_ENABLE_MEMCPY
 
 #include "memcpy.h"
 #include <stdint.h>

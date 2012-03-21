@@ -24,7 +24,7 @@
 #ifndef __RFLPC_UART_H__
 #define __RFLPC_UART_H__
 
-#ifdef RFLPC_ENABLE_UART
+#ifdef RFLPC_CONFIG_ENABLE_UART
 
 #include "../nxp/LPC17xx.h"
 #include "../interrupt.h"

@@ -19,7 +19,7 @@
   Contributor: Francois Serman <francois.serman@inria.fr>
 */
 
-#ifdef RFLPC_ENABLE_UART
+#ifdef RFLPC_CONFIG_ENABLE_UART
 
 #include <stdint.h>
 #include <stdlib.h>

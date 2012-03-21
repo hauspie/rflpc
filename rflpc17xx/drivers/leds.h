@@ -24,7 +24,7 @@
 #ifndef __RFLPC_LEDS_H__
 #define __RFLPC_LEDS_H__
 
-#ifdef RFLPC_ENABLE_LEDS
+#ifdef RFLPC_CONFIG_ENABLE_LEDS
 
 /** @addtogroup leds
  * Provides function to control onboard leds.

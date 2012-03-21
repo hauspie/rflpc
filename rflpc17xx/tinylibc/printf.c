@@ -19,19 +19,19 @@
     Time-stamp: <2012-03-21 09:14:30 (hauspie)>
 */
 
-#ifdef RFLPC_ENABLE_PRINTF
+#ifdef RFLPC_CONFIG_ENABLE_PRINTF
 
 #include <stdarg.h>
 #include <stdint.h>
 #include "printf.h"
 #include "../interrupt.h"
 
-#ifdef RFLPC_ENABLE_UART
+#ifdef RFLPC_CONFIG_ENABLE_UART
 #include "../drivers/uart.h"
 #endif
 static int _rflpc_default_putchar(int c)
 {
-#ifdef RFLPC_ENABLE_UART
+#ifdef RFLPC_CONFIG_ENABLE_UART
     rflpc_uart_putchar(RFLPC_UART0, c);
 #endif
     return c;

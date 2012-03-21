@@ -19,10 +19,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-14 15:28:56 (hauspie)>
+  Time-stamp: <2012-03-21 09:59:04 (hauspie)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
+
+#ifdef RFLPC_CONFIG_ENABLE_TIMERS
 
 #include "../nxp/LPC17xx.h"
 #include "../clock.h"
@@ -347,5 +349,6 @@ static inline int rflpc_timer_test_irq(rflpc_timer_t timer, rflpc_timer_match_t 
 
 /** @} */
 
-#endif
+#endif /* ENABLE_TIMERS */
 
+#endif

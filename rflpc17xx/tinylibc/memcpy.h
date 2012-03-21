@@ -24,7 +24,7 @@
 #ifndef __RFLPC_MEMCPY_H__
 #define __RFLPC_MEMCPY_H__
 
-#ifdef RFLPC_ENABLE_MEMCPY
+#ifdef RFLPC_CONFIG_ENABLE_MEMCPY
 
 #include <stddef.h>
 

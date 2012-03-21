@@ -24,7 +24,7 @@
 #ifndef __RFLPC_DMA_H__
 #define __RFLPC_DMA_H__
 
-#ifdef RFLPC_ENABLE_DMA
+#ifdef RFLPC_CONFIG_ENABLE_DMA
 
 /** @addtogroup dma General Purpose DMA
  * @ingroup drivers

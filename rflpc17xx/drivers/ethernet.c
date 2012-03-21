@@ -19,7 +19,7 @@
   Created: Jun. 28 2011
   Time-stamp: <2012-03-21 09:05:17 (hauspie)>
 */
-#ifdef RFLPC_ENABLE_ETHERNET
+#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
 
 #include "ethernet.h"
 #include "eth_const.h"
