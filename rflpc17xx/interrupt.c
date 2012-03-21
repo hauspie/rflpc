@@ -16,12 +16,16 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-27 17:27:59 (hauspie)>
+  Time-stamp: <2012-03-21 09:38:35 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "nxp/core_cm3.h"
 #include "config.h"
 #include "interrupt.h"
+
+#ifndef RFLPC_ENABLE_PRINTF
+#undef RFLPC_IRQ_DEBUG_ENABLE /* Can't debug without printf */
+#endif
 
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
 #include "tinylibc/printf.h"
