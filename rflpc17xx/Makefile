@@ -13,6 +13,16 @@ HEADERS+=$(wildcard drivers/*.h)
 HEADERS+=$(wildcard nxp/*.h)
 HEADERS+=$(wildcard tinylibc/*.h)
 
+CONFIG_FILE=../config/config
+
+.PHONY: check_config
+
+all: check_config $(LIB)
+
+# Checks for the presence of the config file. If not, generate a full library by default
+check_config:
+	@if ! test -f $(CONFIG_FILE) ; then make -C ../config full_config ; make mrproper ; fi
+
 $(LIB): $(COBJS)
 	$(AR) rs $@ $^
 
@@ -29,7 +39,6 @@ clean:
 
 mrproper: clean
 	$(RM) $(LIB)
-	
 
 # Dependencies rules so that compilation works well
 include makefile.dep

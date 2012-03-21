@@ -19,11 +19,13 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:20:45 (hauspie)>
+  Time-stamp: <2012-03-21 09:14:56 (hauspie)>
 */
 /** @file
  * An implementation of formated output
  */
+
+#ifdef RFLPC_CONFIG_ENABLE_PRINTF
 
 /** @addtogroup libc
  * @{ */
@@ -38,12 +40,12 @@
     - %%s
 
     @note If another format char is used, int is assumed to skip
-    argument, but nothing is printed unless LPC_VERBOSE_PRINTF
-    is defined when compiling lib. If ATOMIC_PRINTF is defined,
+    argument, but nothing is printed unless RFLPC_VERBOSE_PRINTF
+    is defined when compiling lib. If RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF is defined,
     interrupts are disabled when entering printf and enabled before exiting
 
     @warning This function uses a function pointer to output each character. 
-    By default, it uses a function which eventually call ::rflpc_uart0_putchar.
+    By default, it uses a function which eventually call ::rflpc_uart_putchar with ::RFLPC_UART0.
     If you want to use your own putchar function, you have to call ::rflpc_printf_set_putchar
     to set the function pointer.
 
@@ -53,18 +55,14 @@
 extern int printf(const char *format,...);
 
 
-/** Sets the internal function pointer that is used by ::rflpc_printf to output a character.
- * By default, it uses a function that call ::rflpc_uart0_putchar.
+/** Sets the internal function pointer that is used by ::printf to output a character.
+ * By default, it uses a function that call ::rflpc_uart_putchar with ::RFLPC_UART0.
  * @param [in] putchar_func a pointer to a function that takes a character to put and returns it.
  */
 extern void rflpc_printf_set_putchar(int (*putchar_func)(int c));
 
-/** Maccro to be able to use printf.
- * @note The main reason why the lib defines ::rflpc_printf instead of printf is to avoid
- * many weird problems when gcc tries to use its builtin function where it should not.
- */
-/*#define printf rflpc_printf*/
-
 /** @} */
+
+#endif /* ENABLE_PRINTF */
 
 #endif

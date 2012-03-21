@@ -16,17 +16,24 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created:
-    Time-stamp: <2012-03-08 16:03:16 (hauspie)>
+    Time-stamp: <2012-03-21 10:07:49 (hauspie)>
 */
+
+#ifdef RFLPC_CONFIG_ENABLE_PRINTF
+
 #include <stdarg.h>
 #include <stdint.h>
 #include "printf.h"
 #include "../interrupt.h"
-#include "../drivers/uart.h"
 
+#ifdef RFLPC_CONFIG_ENABLE_UART
+#include "../drivers/uart.h"
+#endif
 static int _rflpc_default_putchar(int c)
 {
+#ifdef RFLPC_CONFIG_ENABLE_UART
     rflpc_uart_putchar(RFLPC_UART0, c);
+#endif
     return c;
 }
 
@@ -82,7 +89,7 @@ int printf(const char *format, ...)
     int ccount = sizeof(unsigned int);
     va_start(args, format);
 
-#ifdef ATOMIC_PRINTF
+#ifdef RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF
    rflpc_irq_global_disable();
 #endif
     while (*format)
@@ -161,7 +168,7 @@ int printf(const char *format, ...)
 			/* not handled arg, assume int and get next */
 			int i = (int) va_arg(args, int);
 			i = 0;
-#ifdef LPC_VERBOSE_PRINTF
+#ifdef RFLPC_VERBOSE_PRINTF
 			PUTS("!Not handled format char: '");
 			PUTCHAR(*format);
 			PUTS("', treated as int!");
@@ -177,7 +184,7 @@ int printf(const char *format, ...)
 	++format;
     }
     va_end(args);
-#ifdef ATOMIC_PRINTF
+#ifdef RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF
     rflpc_irq_global_enable();
 #endif
     return count;
@@ -187,3 +194,5 @@ void rflpc_printf_set_putchar(int (*putchar_func)(int c))
 {
     _rflpc_putchar = putchar_func;
 }
+
+#endif /* ENABLE_PRINTF */

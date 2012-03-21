@@ -19,6 +19,8 @@
 #ifndef __RFLPC_ETHERNET_H__
 #define __RFLPC_ETHERNET_H__
 
+#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
+
 /** @addtogroup eth
  * @{
  */
@@ -26,7 +28,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-10-10 11:20:17 (hauspie)>
+  Time-stamp: <2012-03-21 09:04:06 (hauspie)>
 */
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -41,11 +43,12 @@ extern int rflpc_eth_init();
 extern int rflpc_eth_link_state();
 
 
-/** @{
+/**
  * @name Link modes
  * These constants can be used to get or set the link mode using
  * ::rflpc_eth_get_link_mode and ::rflpc_eth_set_link_mode.
  */
+/** @{ */
 /** This bit indicates 100Mbps/10Mbps speed */
 #define RFLPC_ETH_LINK_MODE_SPEED_BIT   (1 << 0)
 /** This bit indicates Full/Half duplex mode */
@@ -87,7 +90,7 @@ extern int rflpc_eth_link_auto_negociate(int max_desired_mode);
 /** returns the current link mode.
 
     The information is extracted from the PHY PHYSTS register if
-    ::RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS is defined. Otherwise,
+    ::RFLPC_ETH_USE_EXTENDED_MII is defined. Otherwise,
     it uses the Control register which is less reliable and may return
     wrong mode (especially for the duplex mode)
 
@@ -119,7 +122,7 @@ typedef struct
     * - Bit 31 : IRQ on transmission enabled/disabled
     */
     uint32_t control;
-} rfEthDescriptor;
+} rflpc_eth_descriptor_t;
 
 /** This structure holds the reception status associated to a descriptor.
  */
@@ -148,7 +151,7 @@ typedef struct
      * - Bits 24:16 : CRC calcultated from the destination address
      */
     uint32_t status_hash_crc;
-} rfEthRxStatus;
+} rflpc_eth_rx_status_t;
 
 
 /** This structure holds the transmit status associated to a descriptor.
@@ -166,13 +169,13 @@ typedef struct
     * - Bit 31 : Error occurred during transmission.
     */
    uint32_t status_info;
-} rfEthTxStatus;
+} rflpc_eth_tx_status_t;
 
 
 /**
- * @brief Returns the size of a packet from the status_info field of a ::rfEthTxStatus or ::rfEthRxStatus
+ * @brief Returns the size of a packet from the status_info field of a ::rflpc_eth_tx_status_t or ::rflpc_eth_rx_status_t
  *
- * @param [in] status_info The corresponding field in ::rfEthTxStatus or ::rfEthTxStatus
+ * @param [in] status_info The corresponding field in ::rflpc_eth_tx_status_t or ::rflpc_eth_tx_status_t
  * @return The size of the corresponding buffer
  **/
 static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
@@ -181,7 +184,7 @@ static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
 }
 
 /**
- * @brief Sets the transmission control word of a ::rfEthDescriptor struct.
+ * @brief Sets the transmission control word of a ::rflpc_eth_descriptor_t struct.
  * @note This function is only a small helper. It will set the last frame bit. If you want more control, DIY :)
  * @param [in]  size_to_send Size of the buffer to send
  * @param [out] control Pointer to the control word to send
@@ -198,7 +201,7 @@ static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t
     @warning descriptors must be aligned on a word boundary. status must be
     aligned on a double word boundaryx
 */
-extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthRxStatus *status, int count);
+extern void rflpc_eth_set_rx_base_addresses(rflpc_eth_descriptor_t *descriptors, rflpc_eth_rx_status_t *status, int count);
 
 /** Returns the pointers on the current rx packet descriptor.
 
@@ -206,12 +209,12 @@ extern void rflpc_eth_set_rx_base_addresses(rfEthDescriptor *descriptors, rfEthR
     been marked as processed by ::rflpc_eth_done_process_rx_packet();
     @return 0 if receive queue is empty, 1 if pointers are valid
  */
-static inline int rflpc_eth_get_current_rx_packet_descriptor(rfEthDescriptor **descriptor, rfEthRxStatus **status)
+static inline int rflpc_eth_get_current_rx_packet_descriptor(rflpc_eth_descriptor_t **descriptor, rflpc_eth_rx_status_t **status)
 {
     if (LPC_EMAC->RxConsumeIndex == LPC_EMAC->RxProduceIndex) /* empty queue */
 	return 0;
-    *descriptor = ((rfEthDescriptor*)LPC_EMAC->RxDescriptor) + LPC_EMAC->RxConsumeIndex;
-    *status = ((rfEthRxStatus*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
+    *descriptor = ((rflpc_eth_descriptor_t*)LPC_EMAC->RxDescriptor) + LPC_EMAC->RxConsumeIndex;
+    *status = ((rflpc_eth_rx_status_t*)LPC_EMAC->RxStatus) + LPC_EMAC->RxConsumeIndex;
     return 1;
 }
 
@@ -249,12 +252,15 @@ static inline void rflpc_eth_done_process_rx_packet()
 
     @warning descriptors and status must be aligned on a word boundary.
  */
-extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTxStatus *status, int count);
+extern void rflpc_eth_set_tx_base_addresses(rflpc_eth_descriptor_t *descriptos, rflpc_eth_tx_status_t *status, int count);
+
+/** Helper macro for ::rflpc_eth_get_current_tx_packet_descriptor */
+#define TX_PRODUCE_INDEX_INC(inc) ((LPC_EMAC->TxProduceIndex + (inc))% (LPC_EMAC->TxDescriptorNumber+1))
 
 /** returns the index of the current tx packet descriptor.
 
-   @param [out] descriptor a pointer to a pointer of ::rfEthDescriptor
-   @param [out] status a pointer to a pointer of ::rfEthTxStatus
+   @param [out] descriptor a pointer to a pointer of ::rflpc_eth_descriptor_t
+   @param [out] status a pointer to a pointer of ::rflpc_eth_tx_status_t
    @param [in]  idx the descriptor to get. 0 is the first free, 1 the second free...
 
    The return descriptor is the one that is prepared by software before
@@ -265,9 +271,7 @@ extern void rflpc_eth_set_tx_base_addresses(rfEthDescriptor *descriptos, rfEthTx
     buffers are owned by the hardware and waiting to be sent). 1 if pointers are valid
 */
 
-#define TX_PRODUCE_INDEX_INC(inc) ((LPC_EMAC->TxProduceIndex + (inc))% (LPC_EMAC->TxDescriptorNumber+1))
-
-static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **descriptor, rfEthTxStatus **status, int idx)
+static inline int rflpc_eth_get_current_tx_packet_descriptor(rflpc_eth_descriptor_t **descriptor, rflpc_eth_tx_status_t **status, int idx)
 {
     /* queue full */
     if (TX_PRODUCE_INDEX_INC(idx) == LPC_EMAC->TxConsumeIndex - 1 ||
@@ -275,8 +279,8 @@ static inline int rflpc_eth_get_current_tx_packet_descriptor(rfEthDescriptor **d
     {
 	return 0;
     }
-    *descriptor = ((rfEthDescriptor*)LPC_EMAC->TxDescriptor) + TX_PRODUCE_INDEX_INC(idx);
-    *status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + TX_PRODUCE_INDEX_INC(idx);
+    *descriptor = ((rflpc_eth_descriptor_t*)LPC_EMAC->TxDescriptor) + TX_PRODUCE_INDEX_INC(idx);
+    *status = ((rflpc_eth_tx_status_t*)LPC_EMAC->TxStatus) + TX_PRODUCE_INDEX_INC(idx);
     return 1;
 }
 
@@ -414,7 +418,7 @@ static inline void rflpc_eth_deactivate_rx_filter()
 }
 
 /**
- * @brief Use the ::rflpc_printf function to dump the values of the MAC registers
+ * @brief Use the ::printf function to dump the values of the MAC registers
  *
  * @return void
  **/
@@ -422,5 +426,7 @@ extern void rflpc_eth_dump_internals();
 
 
 /** @} */
+
+#endif /* ENABLE_ETHERNET */
 
 #endif

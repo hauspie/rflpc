@@ -16,12 +16,14 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2012-03-21 09:30:23 (hauspie)>
 */
+#ifdef RFLPC_CONFIG_ENABLE_SETJMP
+
 #include "setjmp.h"
 
 
-int rflpc_setjmp(rflpc_jmp_buf_t env)
+int setjmp(jmp_buf env)
 {
     int ret = 0;
     asm volatile(
@@ -36,7 +38,7 @@ int rflpc_setjmp(rflpc_jmp_buf_t env)
     return ret;
 }
 
-int rflpc_longjmp(rflpc_jmp_buf_t env, int val)
+int longjmp(jmp_buf env, int val)
 {    
     asm volatile(
 	"mov	r0, %[env]	\n\t"
@@ -47,3 +49,5 @@ int rflpc_longjmp(rflpc_jmp_buf_t env, int val)
 	);
     return val;
 }
+
+#endif /* ENABLE_SETJMP */

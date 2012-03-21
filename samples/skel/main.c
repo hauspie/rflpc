@@ -16,14 +16,19 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-08 16:11:38 (hauspie)>
+  Time-stamp: <2012-03-21 09:40:41 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
 int main()
 {
+#ifdef RFLPC_ENABLE_UART
     rflpc_uart_init(RFLPC_UART0);
+#endif
+
+#ifdef RFLPC_ENABLE_PRINTF
     printf("Hello World\r\n");
+#endif
     while (1);
     return 0;
 }

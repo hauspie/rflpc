@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-10-10 11:16:36 (hauspie)>
+  Time-stamp: <2012-03-21 14:25:49 (hauspie)>
 
   all ethernet constants, register definition, bits etc..
 
@@ -26,6 +26,8 @@
  */
 #ifndef __RFLPC_ETH_CONST_H__
 #define __RFLPC_ETH_CONST_H__
+
+#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
 
 #include "../config.h"
 
@@ -37,11 +39,12 @@
 /** Bit to set to activate ethernet in PCONP register */
 #define RFLPC_ETH_PCENET_BIT (1 << 30)
 
-/** @{
+/**
  * @name Ethernet pin configuration
  * This allows the configuration of the pins of the LPC17xx
  * to use the ethernet device. This values are for LPC17xx devices.
  */
+/** @{ */
 /** Number of the port the eth is connected to */
 #define RFLPC_ETH_PIN_PORT      1
 
@@ -67,9 +70,10 @@
 #define RFLPC_ETH_PIN_MDIO     17
 /** @} */
 
-/** @{
+/** 
  * @name MAC Configuration register bits
  */
+/** @{ */
 /* MAC Configuration Register 1, bits definition */
 /** Enable reception */
 #define RFLPC_ETH_MAC1_RECEIVE_ENABLE  (1 << 0)
@@ -126,9 +130,10 @@
 
 /** @} */
 
-/** @{
+/**
  * @name MAC Control register bits
  */
+/** @{ */
 /* MAC Control register bits */
 #define RFLPC_ETH_CMD_RX_ENABLE        (1 << 0)
 #define RFLPC_ETH_CMD_TX_ENABLE        (1 << 1)
@@ -140,12 +145,12 @@
 #define RFLPC_ETH_CMD_TX_FLOW_CONTROL  (1 << 8)
 #define RFLPC_ETH_CMD_RMII             (1 << 9)
 #define RFLPC_ETH_CMD_FULL_DUPLEX      (1 << 10)
-
 /** @} */
 
-/** @{
+/**
  * @name MAC Filtering register bits (p. 166)
  */
+/** @{ */
 #define RFLPC_ETH_RXFILTER_UNICAST_EN         (1 << 0)
 #define RFLPC_ETH_RXFILTER_BROADCAST_EN       (1 << 1)
 #define RFLPC_ETH_RXFILTER_MULTICAST_EN       (1 << 2)
@@ -156,33 +161,32 @@
 #define RFLPC_ETH_RXFILTER_RXFILTER_WOL_EN    (1 << 13)
 /** @} */
 
-/** @{
+/**
  * @name MIND control register
  */
-
+/** @{ */
 /* MIND Control register */
 #define RFLPC_ETH_MIND_BUSY            (1)
 #define RFLPC_ETH_MIND_SCANNING        (1 << 1)
 #define RFLPC_ETH_MIND_NOT_VALID       (1 << 2)
 #define RFLPC_ETH_MIND_MII_LINK_FAIL   (1 << 3)
-
 /** @} */
 
-/** @{
+/**
  * @name RMII Support register
  */
+/** @{ */
 #define RFLPC_ETH_SUPP_10MBPS          (0)
 #define RFLPC_ETH_SUPP_100MBPS         (1 << 8)
-
 /** @} */
 
-/** @{
+/**
  * @name MII control register bits
  */
+/** @{ */
 #define RFLPC_ETH_MCFG_SCAN_INCREMENT    (1 << 0)
 #define RFLPC_ETH_MCFG_SUPPRESS_PREAMBLE (1 << 1)
 #define RFLPC_ETH_MCFG_RESET_MIIM        (1 << 15)
-
 /** @} */
 
 /** Maximum size of an ethernet frame
@@ -200,14 +204,15 @@
 
 
 /* Address of the DP83848J PHY registers */
-/** @{
+/**
  * @name PHY Registers
  */
+/** @{ */
 #define RFLPC_ETH_PHY_BMCR     (0x0)
 #define RFLPC_ETH_PHY_BMSR     (0x1)
 
 /* Phy extented registers */
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#ifdef RFLPC_ETH_USE_EXTENDED_MII
 #define RFLPC_ETH_PHY_PHYIDR1  (0x2)
 #define RFLPC_ETH_PHY_PHYIDR2  (0x3)
 #define RFLPC_ETH_PHY_ANAR     (0x4)
@@ -226,13 +231,13 @@
 #define RFLPC_ETH_PHY_CDCTRL1  (0x1B)
 #define RFLPC_ETH_PHY_EDCR     (0x1D)
 #endif /* extended registers */
-
 /** @} */
 
 /* PHY register bits */
-/** @{
+/**
  * @name Basic Mode Control Register (BMSR) bits
  */
+/** @{ */
 #define RFLPC_ETH_BMCR_RESET            (1 << 15)
 #define RFLPC_ETH_BMCR_LOOPBACK         (1 << 14)
 #define RFLPC_ETH_BMCR_SPEED_SELECT     (1 << 13)
@@ -244,9 +249,10 @@
 #define RFLPC_ETH_BMCR_COLLISION_TEST   (1 << 7)
 /** @} */
 
-/** @{
+/**
  * @name Basic Mode Status Register (BMSR) bits
  */
+/** @{ */
 #define RFLPC_ETH_BMSR_100BASET4                (1 << 15)
 #define RFLPC_ETH_BMSR_100BASETX_FULL           (1 << 14)
 #define RFLPC_ETH_BMSR_100BASETX_HALF           (1 << 13)
@@ -263,10 +269,11 @@
 
 
 /* Phy extented registers */
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
-/** @{
+#ifdef RFLPC_ETH_USE_EXTENDED_MII
+/**
  * @name Auto negotiation advertisement register (ANAR) bits
  */
+/** @{ */
 #define RFLPC_ETH_ANAR_ASM_DIR (1 << 11)
 #define RFLPC_ETH_ANAR_PAUSE   (1 << 10)
 #define RFLPC_ETH_ANAR_T4      (1 << 9)
@@ -274,12 +281,12 @@
 #define RFLPC_ETH_ANAR_TX      (1 << 7)
 #define RFLPC_ETH_ANAR_10_FD   (1 << 6)
 #define RFLPC_ETH_ANAR_10      (1 << 5)
-
 /** @} */
 
-/** @{
+/**
  * @name PHY status register (PHYSTS) bits
  */
+/** @{ */
 #define RFLPC_ETH_PHYSTS_MDI_X                     (1 << 14)
 #define RFLPC_ETH_PHYSTS_RX_ERROR_LATCH            (1 << 13)
 #define RFLPC_ETH_PHYSTS_POLARITY_STATUS           (1 << 12)
@@ -297,12 +304,10 @@
 /** @} */
 #endif /* extended registers */
 
-/** @} */
-
-
-/** @{
+/**
  * @name Interrupt bits
  */
+/** @{ */
 /* Interrupt enable bits */
 #define RFLPC_ETH_IRQ_EN_RX_OVERRUN  (1 << 0)
 #define RFLPC_ETH_IRQ_EN_RX_ERROR    (1 << 1)
@@ -314,9 +319,10 @@
 #define RFLPC_ETH_IRQ_EN_TX_DONE     (1 << 7)
 #define RFLPC_ETH_IRQ_EN_SOFT        (1 << 12)
 #define RFLPC_ETH_IRQ_EN_WAKE_UP     (1 << 13)
-
 /** @} */
 
 /** @} */
+
+#endif /* ENABLE_ETHERNET */
 
 #endif

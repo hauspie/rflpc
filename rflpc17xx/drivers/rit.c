@@ -16,8 +16,10 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 
-  Time-stamp: <2011-07-13 14:23:48 (hauspie)>
+  Time-stamp: <2012-03-21 09:21:56 (hauspie)>
 */
+#ifdef RFLPC_CONFIG_ENABLE_RIT_TIMER
+
 #include "rit.h"
 
 void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, int reset_on_match, rflpc_irq_handler_t c)
@@ -30,3 +32,5 @@ void rflpc_rit_set_callback(uint32_t comp_value, uint32_t mask, int reset_on_mat
     rflpc_irq_set_handler(RIT_IRQn, c);
     rflpc_irq_enable(RIT_IRQn);
 }
+
+#endif /* ENABLE_RIT_TIMER */

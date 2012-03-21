@@ -19,10 +19,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-08 16:19:09 (hauspie)>
+  Time-stamp: <2012-03-21 09:10:57 (hauspie)>
 */
 #ifndef __RFLPC_UART_H__
 #define __RFLPC_UART_H__
+
+#ifdef RFLPC_CONFIG_ENABLE_UART
 
 #include "../nxp/LPC17xx.h"
 #include "../interrupt.h"
@@ -40,7 +42,11 @@
  */
 
 /** Constants that represents the UART port you want to use in uart driver functions */
-typedef enum { RFLPC_UART0 = 0, RFLPC_UART2 = 2, RFLPC_UART3 = 3 } rflpc_uart_t;
+typedef enum { 
+    RFLPC_UART0 = 0, /**< Use UART0 */ 
+    RFLPC_UART2 = 2, /**< Use UART2 */
+    RFLPC_UART3 = 3  /**< Use UART3 */   
+} rflpc_uart_t;
 
 
 /**
@@ -79,5 +85,7 @@ extern char rflpc_uart_getchar(rflpc_uart_t uart_num);
 extern void rflpc_uart_set_rx_callback(rflpc_uart_t uart_num, rflpc_irq_handler_t callback);
 
 /** @} */
+
+#endif /* ENABLE_UART */
 
 #endif

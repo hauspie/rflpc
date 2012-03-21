@@ -16,9 +16,13 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-09-23
-  Time-stamp: <2011-10-27 16:37:19 (hauspie)>
+  Time-stamp: <2012-03-21 09:26:40 (hauspie)>
 */
+
+#ifdef RFLPC_CONFIG_ENABLE_MEMCPY
+
 #include "memcpy.h"
+#include <stdint.h>
 
 /* This memcpy uses 2 optimisations:
 
@@ -31,7 +35,7 @@
 */
 #define IS_WORD_ALIGNED(a) (!((uint32_t)(a) & 0x3))
 
-static void *rflpc_memcpy_unaligned_fast(void *dest, const void *src, rflpc_size_t n)
+static void *rflpc_memcpy_unaligned_fast(void *dest, const void *src, size_t n)
 {    
     uint8_t *bdest = dest;
     const uint8_t *bsrc = src;    
@@ -51,7 +55,7 @@ static void *rflpc_memcpy_unaligned_fast(void *dest, const void *src, rflpc_size
     return dest;
 }
 
-static void *rflpc_memcpy_aligned_fast(void *dest, const void *src, rflpc_size_t n)
+static void *rflpc_memcpy_aligned_fast(void *dest, const void *src, size_t n)
 {    
     uint32_t *wdest = dest;
     const uint32_t *wsrc = src;
@@ -74,7 +78,7 @@ static void *rflpc_memcpy_aligned_fast(void *dest, const void *src, rflpc_size_t
     return dest;
 }
 
-void *memcpy(void *dest, const void *src, rflpc_size_t n)
+void *memcpy(void *dest, const void *src, size_t n)
 {
     if (n == 0)
 	return dest;
@@ -82,3 +86,5 @@ void *memcpy(void *dest, const void *src, rflpc_size_t n)
 	return rflpc_memcpy_aligned_fast(dest, src, n);   
    return rflpc_memcpy_unaligned_fast(dest, src, n);
 }
+
+#endif /* ENABLE_MEMCPY */

@@ -16,8 +16,11 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>  
 */
-#include "memset.h"
 
+#ifdef RFLPC_CONFIG_ENABLE_MEMSET
+
+#include "memset.h"
+#include <stdint.h>
 /* This memset uses 2 optimisations:
 
    1- If address are aligned on a 4 byte boundary, it perform as much 4 bytes sets as it can. Then, it sets byte per byte
@@ -25,7 +28,7 @@
 */
 #define IS_WORD_ALIGNED(a) (!((uint32_t)(a) & 0x3))
 
-static void *rflpc_memset_unaligned_fast(void *dest, int c, rflpc_size_t n)
+static void *rflpc_memset_unaligned_fast(void *dest, int c, size_t n)
 {    
     uint8_t *bdest = dest;    
     int count = (n+7) / 8;
@@ -45,7 +48,7 @@ static void *rflpc_memset_unaligned_fast(void *dest, int c, rflpc_size_t n)
     return dest;
 }
 
-static void *rflpc_memset_aligned_fast(void *dest, int c, rflpc_size_t n)
+static void *rflpc_memset_aligned_fast(void *dest, int c, size_t n)
 {    
     uint32_t *wdest = dest;
     const uint32_t val = c << 24 | c << 16 | c << 8 | c;
@@ -69,7 +72,7 @@ static void *rflpc_memset_aligned_fast(void *dest, int c, rflpc_size_t n)
     return dest;
 }
 
-void *memset(void *dest, int c, rflpc_size_t n)
+void *memset(void *dest, int c, size_t n)
 {
     uint8_t *bdest = dest;
     if (n == 0)
@@ -84,3 +87,5 @@ void *memset(void *dest, int c, rflpc_size_t n)
 	return rflpc_memset_aligned_fast(bdest, c, n);   
    return dest;
 }
+
+#endif /* ENABLE_MEMSET */
