@@ -21,7 +21,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-13 11:19:13 (hauspie)>
+  Time-stamp: <2012-03-21 09:57:18 (hauspie)>
 
   This files provides the configuration of the lib for the mbed platform
 
@@ -150,14 +150,6 @@
 #define RFLPC_UART3_PIN_FUNCTION 2 /**< Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf. user manual PINSEL* registers) . */
 
 /** @} */
-
-
-
-/** 
- * The library can only compiled if this is defined.
- * This is just to ensure that a platform specific file has been defined
- */
-#define RFLPC_PLATFORM_CONFIGURED
 
 /** @} */
 
