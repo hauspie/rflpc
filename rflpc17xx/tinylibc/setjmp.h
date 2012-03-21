@@ -16,10 +16,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2012-03-21 09:30:02 (hauspie)>
 */
 #ifndef __RFLPC_SETJMP_H__
 #define __RFLPC_SETJMP_H__
+
+#ifdef RFLPC_CONFIG_ENABLE_SETJMP
 
 #include <stdint.h>
 
@@ -43,5 +45,6 @@ extern int setjmp(jmp_buf env);
 
 extern int longjmp(jmp_buf env, int val);
 
+#endif /* ENABLE_SETJMP */
 
 #endif

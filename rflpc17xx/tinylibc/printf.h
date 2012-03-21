@@ -19,11 +19,13 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:20:45 (hauspie)>
+  Time-stamp: <2012-03-21 09:14:56 (hauspie)>
 */
 /** @file
  * An implementation of formated output
  */
+
+#ifdef RFLPC_CONFIG_ENABLE_PRINTF
 
 /** @addtogroup libc
  * @{ */
@@ -38,8 +40,8 @@
     - %%s
 
     @note If another format char is used, int is assumed to skip
-    argument, but nothing is printed unless LPC_VERBOSE_PRINTF
-    is defined when compiling lib. If ATOMIC_PRINTF is defined,
+    argument, but nothing is printed unless RFLPC_VERBOSE_PRINTF
+    is defined when compiling lib. If RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF is defined,
     interrupts are disabled when entering printf and enabled before exiting
 
     @warning This function uses a function pointer to output each character. 
@@ -60,5 +62,7 @@ extern int printf(const char *format,...);
 extern void rflpc_printf_set_putchar(int (*putchar_func)(int c));
 
 /** @} */
+
+#endif /* ENABLE_PRINTF */
 
 #endif

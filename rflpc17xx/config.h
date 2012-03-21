@@ -23,7 +23,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 2011-07-04
-    Time-stamp: <2011-09-12 17:11:25 (hauspie)>
+    Time-stamp: <2012-03-21 09:56:54 (hauspie)>
 
     This files permits the configuration of the platform.
     It includes a platform-dependent config file for your target.
@@ -32,7 +32,7 @@
 
  */
 
-#ifdef RFLPC_PLATFORM_MBED
+#ifdef RFLPC_CONFIG_PLATFORM_MBED
 /* If you want to use the library on another LPC17xx based platform, create a
    config-xxx.h file for it (copy the config-mbed.h as a starting base). The file
    should define some pin connections and the activation/deactivation macro for
@@ -41,11 +41,6 @@
 #include "config-mbed.h"
 #endif
 
-
-
-#ifndef RFLPC_PLATFORM_CONFIGURED
-#error "Please create a config file for your platform and include it in config.h and/or define the RFLPC_USE_* macro to enable the right platform in the makefile"
-#endif
 
 
 /** @addtogroup config 

@@ -16,8 +16,9 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created: 2011-10-06
- Time-stamp: <2011-10-06 14:18:07 (hauspie)>
+ Time-stamp: <2012-03-21 09:29:01 (hauspie)>
 */
+#ifdef RFLPC_CONFIG_ENABLE_SPI
 
 #include "spi.h"
 #include "../nxp/LPC17xx.h"
@@ -89,3 +90,5 @@ void rflpc_spi_set_rx_callback(rflpc_spi_t port, rflpc_irq_handler_t callback)
     rflpc_irq_enable(SSP0_IRQn + port);    
     spi_base->IMSC |= (1UL << 2); /* Enable interrupt generation on RX Fifo half full event */
 }
+
+#endif

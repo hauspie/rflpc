@@ -19,6 +19,8 @@
 #ifndef __RFLPC_ETHERNET_H__
 #define __RFLPC_ETHERNET_H__
 
+#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
+
 /** @addtogroup eth
  * @{
  */
@@ -26,7 +28,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-10-10 11:20:17 (hauspie)>
+  Time-stamp: <2012-03-21 09:04:06 (hauspie)>
 */
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -88,7 +90,7 @@ extern int rflpc_eth_link_auto_negociate(int max_desired_mode);
 /** returns the current link mode.
 
     The information is extracted from the PHY PHYSTS register if
-    ::RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS is defined. Otherwise,
+    ::RFLPC_ETH_USE_EXTENDED_MII is defined. Otherwise,
     it uses the Control register which is less reliable and may return
     wrong mode (especially for the duplex mode)
 
@@ -424,5 +426,7 @@ extern void rflpc_eth_dump_internals();
 
 
 /** @} */
+
+#endif /* ENABLE_ETHERNET */
 
 #endif

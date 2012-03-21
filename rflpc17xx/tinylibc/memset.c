@@ -16,6 +16,9 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>  
 */
+
+#ifdef RFLPC_CONFIG_ENABLE_MEMSET
+
 #include "memset.h"
 #include <stdint.h>
 /* This memset uses 2 optimisations:
@@ -84,3 +87,5 @@ void *memset(void *dest, int c, size_t n)
 	return rflpc_memset_aligned_fast(bdest, c, n);   
    return dest;
 }
+
+#endif /* ENABLE_MEMSET */

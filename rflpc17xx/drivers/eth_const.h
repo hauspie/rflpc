@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-10-10 11:16:36 (hauspie)>
+  Time-stamp: <2012-03-21 14:25:49 (hauspie)>
 
   all ethernet constants, register definition, bits etc..
 
@@ -26,6 +26,8 @@
  */
 #ifndef __RFLPC_ETH_CONST_H__
 #define __RFLPC_ETH_CONST_H__
+
+#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
 
 #include "../config.h"
 
@@ -210,7 +212,7 @@
 #define RFLPC_ETH_PHY_BMSR     (0x1)
 
 /* Phy extented registers */
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#ifdef RFLPC_ETH_USE_EXTENDED_MII
 #define RFLPC_ETH_PHY_PHYIDR1  (0x2)
 #define RFLPC_ETH_PHY_PHYIDR2  (0x3)
 #define RFLPC_ETH_PHY_ANAR     (0x4)
@@ -267,7 +269,7 @@
 
 
 /* Phy extented registers */
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#ifdef RFLPC_ETH_USE_EXTENDED_MII
 /**
  * @name Auto negotiation advertisement register (ANAR) bits
  */
@@ -320,5 +322,7 @@
 /** @} */
 
 /** @} */
+
+#endif /* ENABLE_ETHERNET */
 
 #endif

@@ -21,7 +21,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-13 11:19:13 (hauspie)>
+  Time-stamp: <2012-03-21 14:43:38 (hauspie)>
 
   This files provides the configuration of the lib for the mbed platform
 
@@ -117,7 +117,9 @@
     - Make the detection of the link mode not accurate (by using control
       registers which may not always reflect the real link mode)
 */
-#define RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#define RFLPC_ETH_USE_EXTENDED_MII
+
+
 /** @} */
 
 /** @name UART Configuration */
@@ -150,14 +152,6 @@
 #define RFLPC_UART3_PIN_FUNCTION 2 /**< Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf. user manual PINSEL* registers) . */
 
 /** @} */
-
-
-
-/** 
- * The library can only compiled if this is defined.
- * This is just to ensure that a platform specific file has been defined
- */
-#define RFLPC_PLATFORM_CONFIGURED
 
 /** @} */
 

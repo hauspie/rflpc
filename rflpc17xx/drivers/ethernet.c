@@ -17,8 +17,9 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2011-09-09 14:29:42 (hauspie)>
+  Time-stamp: <2012-03-21 10:51:35 (hauspie)>
 */
+#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
 
 #include "ethernet.h"
 #include "eth_const.h"
@@ -161,7 +162,7 @@ int rflpc_eth_link_auto_negociate(int max_desired_mode)
 {
     int mode;
     uint16_t bmcr;
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#ifdef RFLPC_ETH_USE_EXTENDED_MII
     uint16_t anar;
 #endif
 
@@ -170,7 +171,7 @@ int rflpc_eth_link_auto_negociate(int max_desired_mode)
     if (!rflpc_eth_link_state())
 	return -1;
 
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#ifdef RFLPC_ETH_USE_EXTENDED_MII
     /* To set maximum mode, we set the ANAR register with desired value */
     anar = _read_from_phy_register(RFLPC_ETH_PHY_ANAR);
     /* remove all caps */
@@ -272,7 +273,7 @@ void rflpc_eth_set_link_mode(int mode)
 
 int rflpc_eth_get_link_mode()
 {
-#ifdef RFLPC_ETH_PHY_USE_EXTENDED_MII_REGISTERS
+#ifdef RFLPC_ETH_USE_EXTENDED_MII
     uint16_t physts = _read_from_phy_register(RFLPC_ETH_PHY_PHYSTS);
 
     if (physts & RFLPC_ETH_PHYSTS_SPEED_STATUS) /* 10 Mbps */
@@ -374,3 +375,5 @@ void rflpc_eth_dump_internals()
     DUMP_REGISTER(LPC_EMAC->RxProduceIndex);
     DUMP_REGISTER(LPC_EMAC->RxConsumeIndex);
 }
+
+#endif /* ENABLE_ETHERNET */

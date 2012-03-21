@@ -16,13 +16,15 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-09-23
-  Time-stamp: <2011-10-27 16:32:02 (hauspie)>
+  Time-stamp: <2012-03-21 09:27:03 (hauspie)>
 */
 /** @file
  * An implementation of memcpy
  */
 #ifndef __RFLPC_MEMCPY_H__
 #define __RFLPC_MEMCPY_H__
+
+#ifdef RFLPC_CONFIG_ENABLE_MEMCPY
 
 #include <stddef.h>
 
@@ -44,5 +46,7 @@
  * @return
  */
 extern void *memcpy(void *dest, const void *src, size_t n);
+
+#endif /* ENABLE_MEMCPY */
 
 #endif
