@@ -317,7 +317,7 @@ void rflpc_eth_set_rx_base_addresses(rflpc_eth_descriptor_t *descriptors, rflpc_
     LPC_EMAC->MAC1 |= RFLPC_ETH_MAC1_RECEIVE_ENABLE ;
 }
 
-void rflpc_eth_set_tx_base_addresses(rflpc_eth_descriptor_t *descriptors, rfEthTxStatus *status, int count)
+void rflpc_eth_set_tx_base_addresses(rflpc_eth_descriptor_t *descriptors, rflpc_eth_tx_status_t *status, int count)
 {
     /* Turn transmission off while modifying descriptors */
     LPC_EMAC->Command &= ~RFLPC_ETH_CMD_TX_ENABLE;

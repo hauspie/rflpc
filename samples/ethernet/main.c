@@ -117,7 +117,7 @@ rflpc_eth_descriptor_t _rx_desc[RX_BUFFER_COUNT];
 rflpc_eth_rx_status_t _rx_status[RX_BUFFER_COUNT];
 
 rflpc_eth_descriptor_t _tx_desc[TX_BUFFER_COUNT];
-rfEthTxStatus _tx_status[TX_BUFFER_COUNT];
+rflpc_eth_tx_status_t _tx_status[TX_BUFFER_COUNT];
 
 uint8_t rxbuffers[RX_BUFFER_SIZE][RX_BUFFER_COUNT];
 uint8_t txbuffers[TX_BUFFER_SIZE][TX_BUFFER_COUNT];
@@ -130,7 +130,7 @@ uint32_t my_ip = (192 << 24) | (168 << 16) | (100 << 8)| 200;
 void process_packet(rflpc_eth_descriptor_t *rxd, rflpc_eth_rx_status_t *rxs)
 {
     rflpc_eth_descriptor_t *txd;
-    rfEthTxStatus *txs;
+    rflpc_eth_tx_status_t *txs;
     EthHead eth;
     EthHead eth_reply;
 

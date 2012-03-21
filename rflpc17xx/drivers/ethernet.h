@@ -169,13 +169,13 @@ typedef struct
     * - Bit 31 : Error occurred during transmission.
     */
    uint32_t status_info;
-} rfEthTxStatus;
+} rflpc_eth_tx_status_t;
 
 
 /**
- * @brief Returns the size of a packet from the status_info field of a ::rfEthTxStatus or ::rflpc_eth_rx_status_t
+ * @brief Returns the size of a packet from the status_info field of a ::rflpc_eth_tx_status_t or ::rflpc_eth_rx_status_t
  *
- * @param [in] status_info The corresponding field in ::rfEthTxStatus or ::rfEthTxStatus
+ * @param [in] status_info The corresponding field in ::rflpc_eth_tx_status_t or ::rflpc_eth_tx_status_t
  * @return The size of the corresponding buffer
  **/
 static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
@@ -252,7 +252,7 @@ static inline void rflpc_eth_done_process_rx_packet()
 
     @warning descriptors and status must be aligned on a word boundary.
  */
-extern void rflpc_eth_set_tx_base_addresses(rflpc_eth_descriptor_t *descriptos, rfEthTxStatus *status, int count);
+extern void rflpc_eth_set_tx_base_addresses(rflpc_eth_descriptor_t *descriptos, rflpc_eth_tx_status_t *status, int count);
 
 /** Helper macro for ::rflpc_eth_get_current_tx_packet_descriptor */
 #define TX_PRODUCE_INDEX_INC(inc) ((LPC_EMAC->TxProduceIndex + (inc))% (LPC_EMAC->TxDescriptorNumber+1))
@@ -260,7 +260,7 @@ extern void rflpc_eth_set_tx_base_addresses(rflpc_eth_descriptor_t *descriptos, 
 /** returns the index of the current tx packet descriptor.
 
    @param [out] descriptor a pointer to a pointer of ::rflpc_eth_descriptor_t
-   @param [out] status a pointer to a pointer of ::rfEthTxStatus
+   @param [out] status a pointer to a pointer of ::rflpc_eth_tx_status_t
    @param [in]  idx the descriptor to get. 0 is the first free, 1 the second free...
 
    The return descriptor is the one that is prepared by software before
@@ -271,7 +271,7 @@ extern void rflpc_eth_set_tx_base_addresses(rflpc_eth_descriptor_t *descriptos, 
     buffers are owned by the hardware and waiting to be sent). 1 if pointers are valid
 */
 
-static inline int rflpc_eth_get_current_tx_packet_descriptor(rflpc_eth_descriptor_t **descriptor, rfEthTxStatus **status, int idx)
+static inline int rflpc_eth_get_current_tx_packet_descriptor(rflpc_eth_descriptor_t **descriptor, rflpc_eth_tx_status_t **status, int idx)
 {
     /* queue full */
     if (TX_PRODUCE_INDEX_INC(idx) == LPC_EMAC->TxConsumeIndex - 1 ||
@@ -280,7 +280,7 @@ static inline int rflpc_eth_get_current_tx_packet_descriptor(rflpc_eth_descripto
 	return 0;
     }
     *descriptor = ((rflpc_eth_descriptor_t*)LPC_EMAC->TxDescriptor) + TX_PRODUCE_INDEX_INC(idx);
-    *status = ((rfEthTxStatus*)LPC_EMAC->TxStatus) + TX_PRODUCE_INDEX_INC(idx);
+    *status = ((rflpc_eth_tx_status_t*)LPC_EMAC->TxStatus) + TX_PRODUCE_INDEX_INC(idx);
     return 1;
 }
 
