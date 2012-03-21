@@ -1,5 +1,6 @@
-Next:
+0.8:
 	- Fine tuning of the library by selecting what is compiled
+	- Better documentation to help getting started
 0.7a:
 	- Fixed UART3 initialization code
 0.7:
