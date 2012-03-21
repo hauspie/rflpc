@@ -1,4 +1,3 @@
-.PHONY: all
 
 RFLPC_DIR=../
 
@@ -41,6 +40,8 @@ __set_MSP \
 __set_PRIMASK \
 __set_PSP
 
+
+.PHONY: all $(RFLPC_LIB_FILE)
 
 check_empty_config: $(RFLPC_LIB_FILE)
 # Get the list of symbols in the library */	
