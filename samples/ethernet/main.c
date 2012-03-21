@@ -22,7 +22,7 @@
 
 #include "protocols.h"
 
-void dump_packet(rfEthDescriptor *d, rfEthRxStatus *s)
+void dump_packet(rflpc_eth_descriptor_t *d, rflpc_eth_rx_status_t *s)
 {
     printf("= %p %p %p",d, s, d->packet);
     if (s->status_info & (1 << 18))
@@ -113,11 +113,11 @@ RFLPC_IRQ_HANDLER _rit_handler()
 #define TX_BUFFER_SIZE  RFLPC_ETH_MAX_FRAME_LENGTH
 #define TX_BUFFER_COUNT 8
 
-rfEthDescriptor _rx_desc[RX_BUFFER_COUNT];
-rfEthRxStatus _rx_status[RX_BUFFER_COUNT];
+rflpc_eth_descriptor_t _rx_desc[RX_BUFFER_COUNT];
+rflpc_eth_rx_status_t _rx_status[RX_BUFFER_COUNT];
 
-rfEthDescriptor _tx_desc[TX_BUFFER_COUNT];
-rfEthTxStatus _tx_status[TX_BUFFER_COUNT];
+rflpc_eth_descriptor_t _tx_desc[TX_BUFFER_COUNT];
+rflpc_eth_tx_status_t _tx_status[TX_BUFFER_COUNT];
 
 uint8_t rxbuffers[RX_BUFFER_SIZE][RX_BUFFER_COUNT];
 uint8_t txbuffers[TX_BUFFER_SIZE][TX_BUFFER_COUNT];
@@ -127,10 +127,10 @@ uint8_t txbuffers[TX_BUFFER_SIZE][TX_BUFFER_COUNT];
 EthAddr mac_addr;
 uint32_t my_ip = (192 << 24) | (168 << 16) | (100 << 8)| 200;
 
-void process_packet(rfEthDescriptor *rxd, rfEthRxStatus *rxs)
+void process_packet(rflpc_eth_descriptor_t *rxd, rflpc_eth_rx_status_t *rxs)
 {
-    rfEthDescriptor *txd;
-    rfEthTxStatus *txs;
+    rflpc_eth_descriptor_t *txd;
+    rflpc_eth_tx_status_t *txs;
     EthHead eth;
     EthHead eth_reply;
 
@@ -235,8 +235,8 @@ void eth_handler()
 {
     if (rflpc_eth_irq_get_status() & RFLPC_ETH_IRQ_EN_RX_DONE) /* packet received */
     {
-	rfEthDescriptor *d;
-	rfEthRxStatus *s;
+	rflpc_eth_descriptor_t *d;
+	rflpc_eth_rx_status_t *s;
 	while (rflpc_eth_get_current_rx_packet_descriptor(&d, &s))
 	{
 	    rflpc_led_set(RFLPC_LED_2);
