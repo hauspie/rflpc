@@ -19,10 +19,12 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:39:33 (hauspie)>
+  Time-stamp: <2012-03-21 09:51:10 (hauspie)>
 */
 #ifndef __RFLPC_LEDS_H__
 #define __RFLPC_LEDS_H__
+
+#ifdef RFLPC_ENABLE_LEDS
 
 /** @addtogroup leds
  * Provides function to control onboard leds.
@@ -106,5 +108,7 @@ static inline void rflpc_led_binary_value(uint8_t v)
 }
 
 /** @} */
+
+#endif /* ENABLE_LEDS */
 
 #endif
