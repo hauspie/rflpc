@@ -21,8 +21,10 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-08 16:19:41 (hauspie)>
+  Time-stamp: <2012-03-21 09:28:14 (hauspie)>
 */
+
+#ifdef RFLPC_ENABLE_SPI
 
 #include "../clock.h"
 #include "../interrupt.h"
@@ -146,6 +148,7 @@ extern void rflpc_spi_set_rx_callback(rflpc_spi_t port, rflpc_irq_handler_t call
 
 /** @} */
 
+#endif /* ENABLE_SPI */
+
+
 #endif
-
-
