@@ -16,8 +16,10 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-09-23 11:14:13 (hauspie)>
+  Time-stamp: <2012-03-21 09:30:23 (hauspie)>
 */
+#ifdef RFLPC_ENABLE_SETJMP
+
 #include "setjmp.h"
 
 
@@ -47,3 +49,5 @@ int longjmp(jmp_buf env, int val)
 	);
     return val;
 }
+
+#endif /* ENABLE_SETJMP */
