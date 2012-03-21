@@ -1,0 +1,97 @@
+\hypertarget{group__dma}{\section{General Purpose D\-M\-A}
+\label{group__dma}\index{General Purpose D\-M\-A@{General Purpose D\-M\-A}}
+}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{group__dma_ga95122ad7327f7b184fdc914d30bf2f2d}{rflpc\-\_\-dma\-\_\-channel\-\_\-t} \{ \\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C0}, 
+\\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C1}, 
+\\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C2}, 
+\\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C3}, 
+\\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C4}, 
+\\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C5}, 
+\\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C6}, 
+\\*
+{\bfseries R\-F\-L\-P\-C\-\_\-\-D\-M\-A\-C7}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum to identify D\-M\-A channels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{group__dma_ga8751adacb3ac3764c426f2e142951916}{rflpc\-\_\-dma\-\_\-init} (void)
+\begin{DoxyCompactList}\small\item\em Inits the D\-M\-A Peripheral. \end{DoxyCompactList}\item 
+int \hyperlink{group__dma_ga36b6658b4994b20d9d08bbe9425950c3}{rflpc\-\_\-dma\-\_\-channel\-\_\-ready} (\hyperlink{group__dma_ga95122ad7327f7b184fdc914d30bf2f2d}{rflpc\-\_\-dma\-\_\-channel\-\_\-t} channel)
+\begin{DoxyCompactList}\small\item\em Tells if a D\-M\-A channel is ready to be used. \end{DoxyCompactList}\item 
+int \hyperlink{group__dma_gad72ed242e36f2827ea3a6f22b92a05f9}{rflpc\-\_\-dma\-\_\-start} (\hyperlink{group__dma_ga95122ad7327f7b184fdc914d30bf2f2d}{rflpc\-\_\-dma\-\_\-channel\-\_\-t} channel, void $\ast$dest, const void $\ast$src, uint32\-\_\-t size)
+\begin{DoxyCompactList}\small\item\em Starts a D\-M\-A copy. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{group__dma_ga36b6658b4994b20d9d08bbe9425950c3}{\index{General Purpose D\-M\-A@{General Purpose D\-M\-A}!rflpc\-\_\-dma\-\_\-channel\-\_\-ready@{rflpc\-\_\-dma\-\_\-channel\-\_\-ready}}
+\index{rflpc\-\_\-dma\-\_\-channel\-\_\-ready@{rflpc\-\_\-dma\-\_\-channel\-\_\-ready}!General Purpose DMA@{General Purpose D\-M\-A}}
+\subsubsection[{rflpc\-\_\-dma\-\_\-channel\-\_\-ready}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf rflpc\-\_\-dma\-\_\-channel\-\_\-ready} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-dma\-\_\-channel\-\_\-t}}]{channel}
+\end{DoxyParamCaption}
+)}}\label{group__dma_ga36b6658b4994b20d9d08bbe9425950c3}
+
+
+Tells if a D\-M\-A channel is ready to be used. 
+
+\begin{DoxyReturn}{Returns}
+true if the D\-M\-A channel is ready (not already doing something) 
+\end{DoxyReturn}
+\hypertarget{group__dma_ga8751adacb3ac3764c426f2e142951916}{\index{General Purpose D\-M\-A@{General Purpose D\-M\-A}!rflpc\-\_\-dma\-\_\-init@{rflpc\-\_\-dma\-\_\-init}}
+\index{rflpc\-\_\-dma\-\_\-init@{rflpc\-\_\-dma\-\_\-init}!General Purpose DMA@{General Purpose D\-M\-A}}
+\subsubsection[{rflpc\-\_\-dma\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf rflpc\-\_\-dma\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{group__dma_ga8751adacb3ac3764c426f2e142951916}
+
+
+Inits the D\-M\-A Peripheral. 
+
+\begin{DoxyNote}{Note}
+The D\-M\-A is enabled in little endian mode by default 
+\end{DoxyNote}
+\hypertarget{group__dma_gad72ed242e36f2827ea3a6f22b92a05f9}{\index{General Purpose D\-M\-A@{General Purpose D\-M\-A}!rflpc\-\_\-dma\-\_\-start@{rflpc\-\_\-dma\-\_\-start}}
+\index{rflpc\-\_\-dma\-\_\-start@{rflpc\-\_\-dma\-\_\-start}!General Purpose DMA@{General Purpose D\-M\-A}}
+\subsubsection[{rflpc\-\_\-dma\-\_\-start}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf rflpc\-\_\-dma\-\_\-start} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-dma\-\_\-channel\-\_\-t}}]{channel, }
+\item[{void $\ast$}]{dest, }
+\item[{const void $\ast$}]{src, }
+\item[{uint32\-\_\-t}]{size}
+\end{DoxyParamCaption}
+)}}\label{group__dma_gad72ed242e36f2827ea3a6f22b92a05f9}
+
+
+Starts a D\-M\-A copy. 
+
+The D\-M\-A channel must be ready before starting a D\-M\-A copy 
+\begin{DoxyParams}{Parameters}
+{\em channel} & The channel to use. \\
+\hline
+{\em dest} & destination pointer \\
+\hline
+{\em src} & source data \\
+\hline
+{\em size} & number of bytes to transfert (limited to 0x\-F\-F\-F bytes) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the copy has been started, false otherwise
+\end{DoxyReturn}
+\begin{DoxyWarning}{Warning}
+In the current implementation, size is limited by 0x\-F\-F\-F because only one D\-M\-A request is generated. 
+\end{DoxyWarning}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000001}{Todo}]Handle size $>$ 0x\-F\-F\-F \end{DoxyRefDesc}

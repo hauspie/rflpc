@@ -1,0 +1,51 @@
+\hypertarget{spi_8h}{\section{spi.\-h File Reference}
+\label{spi_8h}\index{spi.\-h@{spi.\-h}}
+}
+
+
+S\-P\-I device driver.  
+
+
+{\ttfamily \#include \char`\"{}../clock.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../interrupt.\-h\char`\"{}}\\*
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} \{ \\*
+\hyperlink{group__spi_ggacd0981a3c68e5b6af8c07d7638cb9156ae5a71c49b38c748942c3dfdb056c9fe6}{R\-F\-L\-P\-C\-\_\-\-S\-P\-I0}, 
+\\*
+\hyperlink{group__spi_ggacd0981a3c68e5b6af8c07d7638cb9156a741648e677756a1b0a630b3d6944a384}{R\-F\-L\-P\-C\-\_\-\-S\-P\-I1}
+ \}
+\begin{DoxyCompactList}\small\item\em Used to select which S\-P\-I port to use. \end{DoxyCompactList}\item 
+enum \hyperlink{group__spi_gacdd9f294e5d1e913729ec8a9bb715e37}{rflpc\-\_\-spi\-\_\-mode\-\_\-t} \{ \\*
+\hyperlink{group__spi_ggacdd9f294e5d1e913729ec8a9bb715e37ac50d7b09239e89014ed6fd314359c5bf}{R\-F\-L\-P\-C\-\_\-\-S\-P\-I\-\_\-\-M\-A\-S\-T\-E\-R}, 
+\\*
+\hyperlink{group__spi_ggacdd9f294e5d1e913729ec8a9bb715e37a4b75fd645e9016a1152cda505e1a66d7}{R\-F\-L\-P\-C\-\_\-\-S\-P\-I\-\_\-\-S\-L\-A\-V\-E}
+ \}
+\begin{DoxyCompactList}\small\item\em Used to select the S\-P\-I operating mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{group__spi_gabd4125872b2ec4da410f8f0446e3f47a}{rflpc\-\_\-spi\-\_\-init} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port, \hyperlink{group__spi_gacdd9f294e5d1e913729ec8a9bb715e37}{rflpc\-\_\-spi\-\_\-mode\-\_\-t} mode, \hyperlink{group__clock_gaf3b7fc561cd12dfdff9f7c1357c3f016}{rflpc\-\_\-clock\-\_\-divider\-\_\-t} cpu\-\_\-clock\-\_\-divider, uint8\-\_\-t data\-\_\-size\-\_\-transfert, uint8\-\_\-t clock\-\_\-prescale, uint8\-\_\-t serial\-\_\-clock\-\_\-rate)
+\begin{DoxyCompactList}\small\item\em Inits the S\-P\-I interface in master mode. \end{DoxyCompactList}\item 
+static L\-P\-C\-\_\-\-S\-S\-P\-\_\-\-Type\-Def $\ast$ \hyperlink{group__spi_gaafcca6b7f7909fff39ba58b75c701e57}{rflpc\-\_\-spi\-\_\-get\-\_\-base\-\_\-addr} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port)
+\begin{DoxyCompactList}\small\item\em Returns the base address of the S\-P\-I control block depending of the desired port. \end{DoxyCompactList}\item 
+static int \hyperlink{group__spi_ga9d76c0a2207df05a0016b7cf5f992248}{rflpc\-\_\-spi\-\_\-tx\-\_\-fifo\-\_\-empty} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port)
+\begin{DoxyCompactList}\small\item\em Tests if transmition F\-I\-F\-O is empty. \end{DoxyCompactList}\item 
+static int \hyperlink{group__spi_ga4336258f89f340435c1971bff1c452ec}{rflpc\-\_\-spi\-\_\-tx\-\_\-fifo\-\_\-full} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port)
+\begin{DoxyCompactList}\small\item\em Tests if the transmition F\-I\-F\-O is full. \end{DoxyCompactList}\item 
+static int \hyperlink{group__spi_ga0080a0144c29fba657836ed20916ee9f}{rflpc\-\_\-spi\-\_\-rx\-\_\-fifo\-\_\-empty} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port)
+\begin{DoxyCompactList}\small\item\em Tests if the reception F\-I\-F\-O is empty. \end{DoxyCompactList}\item 
+static void \hyperlink{group__spi_ga86d87ed42140ef44d673a16d7bcf555f}{rflpc\-\_\-spi\-\_\-write} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port, uint16\-\_\-t data)
+\begin{DoxyCompactList}\small\item\em Sends data through the spi interface. \end{DoxyCompactList}\item 
+static uint16\-\_\-t \hyperlink{group__spi_ga976b4ee1c4153eab4f477257371998a1}{rflpc\-\_\-spi\-\_\-read} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port)
+\begin{DoxyCompactList}\small\item\em Receive data through the spi interface. \end{DoxyCompactList}\item 
+void \hyperlink{group__spi_ga1054c25b01b178e15055f90667199a8e}{rflpc\-\_\-spi\-\_\-set\-\_\-rx\-\_\-callback} (\hyperlink{group__spi_gacd0981a3c68e5b6af8c07d7638cb9156}{rflpc\-\_\-spi\-\_\-t} port, \hyperlink{group__irq_ga4970a8a2cf9b63e4c261982504669a1f}{rflpc\-\_\-irq\-\_\-handler\-\_\-t} callback)
+\begin{DoxyCompactList}\small\item\em Sets the interrupt handler for S\-P\-I reception. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+S\-P\-I device driver. 
+
+Definition in file \hyperlink{spi_8h_source}{spi.\-h}.
+

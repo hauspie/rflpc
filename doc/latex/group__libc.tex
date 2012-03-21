@@ -1,0 +1,136 @@
+\hypertarget{group__libc}{\section{L\-I\-B\-C tiny subset}
+\label{group__libc}\index{L\-I\-B\-C tiny subset@{L\-I\-B\-C tiny subset}}
+}
+
+
+The rflpc library implement a very small subset of the libc.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{group__libc_ga98631211a4a8aee62f572375d5b637be}{printf} (const char $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Formated output function. \end{DoxyCompactList}\item 
+void \hyperlink{group__libc_gadce147a756b0ce3fa99e928e32c44db4}{rflpc\-\_\-printf\-\_\-set\-\_\-putchar} (int($\ast$putchar\-\_\-func)(int c))
+\begin{DoxyCompactList}\small\item\em Sets the internal function pointer that is used by \hyperlink{group__libc_ga98631211a4a8aee62f572375d5b637be}{printf} to output a character. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{group__libc_ga14938524dcbeb59d7117ba5e151ad1b1}{memcpy} (void $\ast$dest, const void $\ast$src, size\-\_\-t n)
+\begin{DoxyCompactList}\small\item\em Copies memory from one buffer to another. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{group__libc_ga362b656d9de3289b55b1035d14cb4b5d}{memset} (void $\ast$dest, int c, size\-\_\-t n)
+\begin{DoxyCompactList}\small\item\em Fills the first n bytes of the memory area pointed to by dest with the constant byte c. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The rflpc library implement a very small subset of the libc. 
+
+\subsection{Function Documentation}
+\hypertarget{group__libc_ga14938524dcbeb59d7117ba5e151ad1b1}{\index{L\-I\-B\-C tiny subset@{L\-I\-B\-C tiny subset}!memcpy@{memcpy}}
+\index{memcpy@{memcpy}!LIBC tiny subset@{L\-I\-B\-C tiny subset}}
+\subsubsection[{memcpy}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf memcpy} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{dest, }
+\item[{const void $\ast$}]{src, }
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{group__libc_ga14938524dcbeb59d7117ba5e151ad1b1}
+
+
+Copies memory from one buffer to another. 
+
+\begin{DoxyNote}{Note}
+if the src and dest are aligned on 4 bytes, copy is done by 4 bytes block, so it should be faster if the given pointers are aligned on a 4 byte boundary 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+dest and src should not overlap.
+\end{DoxyWarning}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em dest} & destination buffer \\
+\hline
+\mbox{\tt in}  & {\em src} & source buffer \\
+\hline
+\mbox{\tt in}  & {\em n} & number of bytes to copy\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{group__libc_ga362b656d9de3289b55b1035d14cb4b5d}{\index{L\-I\-B\-C tiny subset@{L\-I\-B\-C tiny subset}!memset@{memset}}
+\index{memset@{memset}!LIBC tiny subset@{L\-I\-B\-C tiny subset}}
+\subsubsection[{memset}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf memset} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{dest, }
+\item[{int}]{c, }
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)}}\label{group__libc_ga362b656d9de3289b55b1035d14cb4b5d}
+
+
+Fills the first n bytes of the memory area pointed to by dest with the constant byte c. 
+
+\begin{DoxyNote}{Note}
+if the src and dest are aligned on 4 bytes, memset is done by 4 bytes block, so it should be faster if the given pointers are aligned on a 4 byte boundary
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em dest} & destination buffer \\
+\hline
+\mbox{\tt in}  & {\em c} & value to set \\
+\hline
+\mbox{\tt in}  & {\em n} & number of bytes to copy\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{group__libc_ga98631211a4a8aee62f572375d5b637be}{\index{L\-I\-B\-C tiny subset@{L\-I\-B\-C tiny subset}!printf@{printf}}
+\index{printf@{printf}!LIBC tiny subset@{L\-I\-B\-C tiny subset}}
+\subsubsection[{printf}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf printf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}\label{group__libc_ga98631211a4a8aee62f572375d5b637be}
+
+
+Formated output function. 
+
+This function is similar to stdio's printf. However, it only handles\-:
+\begin{DoxyItemize}
+\item \%d
+\item \%x/\-X (\%0?X can also be used, where ? is a digit \mbox{[}1-\/9\mbox{]})
+\item \%p
+\item \%c
+\item \%s
+\end{DoxyItemize}
+
+\begin{DoxyNote}{Note}
+If another format char is used, int is assumed to skip argument, but nothing is printed unless R\-F\-L\-P\-C\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-P\-R\-I\-N\-T\-F is defined when compiling lib. If R\-F\-L\-P\-C\-\_\-\-C\-O\-N\-F\-I\-G\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-A\-T\-O\-M\-I\-C\-\_\-\-P\-R\-I\-N\-T\-F is defined, interrupts are disabled when entering printf and enabled before exiting
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+This function uses a function pointer to output each character. By default, it uses a function which eventually call \hyperlink{group__uart_gad350726760ac1e9064a0e90e99bef65f}{rflpc\-\_\-uart\-\_\-putchar} with \hyperlink{group__uart_ggab5996edf55ac7654ec4040e6aedaa7caa7203ffec58658c5e01ace4b2b7f22678}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T0}. If you want to use your own putchar function, you have to call \hyperlink{group__libc_gadce147a756b0ce3fa99e928e32c44db4}{rflpc\-\_\-printf\-\_\-set\-\_\-putchar} to set the function pointer.
+\end{DoxyWarning}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & The format string. Prefer to use constant string instead of user supplied string to be sure that some escape characters are not put for wrong purpose. \\
+\hline
+\end{DoxyParams}
+\hypertarget{group__libc_gadce147a756b0ce3fa99e928e32c44db4}{\index{L\-I\-B\-C tiny subset@{L\-I\-B\-C tiny subset}!rflpc\-\_\-printf\-\_\-set\-\_\-putchar@{rflpc\-\_\-printf\-\_\-set\-\_\-putchar}}
+\index{rflpc\-\_\-printf\-\_\-set\-\_\-putchar@{rflpc\-\_\-printf\-\_\-set\-\_\-putchar}!LIBC tiny subset@{L\-I\-B\-C tiny subset}}
+\subsubsection[{rflpc\-\_\-printf\-\_\-set\-\_\-putchar}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf rflpc\-\_\-printf\-\_\-set\-\_\-putchar} (
+\begin{DoxyParamCaption}
+\item[{int($\ast$)(int c)}]{putchar\-\_\-func}
+\end{DoxyParamCaption}
+)}}\label{group__libc_gadce147a756b0ce3fa99e928e32c44db4}
+
+
+Sets the internal function pointer that is used by \hyperlink{group__libc_ga98631211a4a8aee62f572375d5b637be}{printf} to output a character. 
+
+By default, it uses a function that call \hyperlink{group__uart_gad350726760ac1e9064a0e90e99bef65f}{rflpc\-\_\-uart\-\_\-putchar} with \hyperlink{group__uart_ggab5996edf55ac7654ec4040e6aedaa7caa7203ffec58658c5e01ace4b2b7f22678}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T0}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em putchar\-\_\-func} & a pointer to a function that takes a character to put and returns it. \\
+\hline
+\end{DoxyParams}

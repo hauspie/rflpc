@@ -1,0 +1,669 @@
+\hypertarget{group__timer}{\section{Timers}
+\label{group__timer}\index{Timers@{Timers}}
+}
+
+
+All four timers provides the same functionality.  
+
+
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} \{ \\*
+\hyperlink{group__timer_ggac08825cb88d61086e74638b859cb8b34a3940eddd10c5fda56bd7135695a668fb}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0} =  0, 
+\\*
+\hyperlink{group__timer_ggac08825cb88d61086e74638b859cb8b34a192b4b89b2cc0e52eb5a02b0604f3a06}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1} =  1, 
+\\*
+\hyperlink{group__timer_ggac08825cb88d61086e74638b859cb8b34ab568d24f928930ee72130757063ced2f}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2} =  2, 
+\\*
+\hyperlink{group__timer_ggac08825cb88d61086e74638b859cb8b34ac6c7308fa1e2c59e6db065ec8feea0e2}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3} =  3
+ \}
+\begin{DoxyCompactList}\small\item\em Value to use for the timer value in functions. \end{DoxyCompactList}\item 
+enum \hyperlink{group__timer_ga6be569cd5e74a2e35678ee2de31e853a}{rflpc\-\_\-timer\-\_\-match\-\_\-t} \{ \\*
+\hyperlink{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaa4bdd0c929cb583837f258510f5e15fa}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H0} =  0, 
+\\*
+\hyperlink{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaab7e73a250d7f795c42ff3bb71034ea5}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H1} =  1, 
+\\*
+\hyperlink{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaa462318df3ce136257723a8981683de2}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H2} =  2, 
+\\*
+\hyperlink{group__timer_gga6be569cd5e74a2e35678ee2de31e853aa06295ccf9c85b81b2344e5c4abf75008}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H3} =  3
+ \}
+\begin{DoxyCompactList}\small\item\em Match registers for interrupt generation. \end{DoxyCompactList}\item 
+enum \{ \\*
+\hyperlink{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba74a5c05f16f3840e59072e5876aa3696}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-I\-R\-Q\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H} =  1, 
+\\*
+\hyperlink{group__timer_gga06fc87d81c62e9abb8790b6e5713c55bab7c018a7a66bfd59c5fd7d88ca50c669}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-R\-E\-S\-E\-T\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H} =  2, 
+\\*
+\hyperlink{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba6eccf4b61667dfffc4d2850a10495480}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-S\-T\-O\-P\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H} =  4
+ \}
+\begin{DoxyCompactList}\small\item\em Options for interrupt generation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static L\-P\-C\-\_\-\-T\-I\-M\-\_\-\-Type\-Def $\ast$ \hyperlink{group__timer_ga50c78f3d07b2065c64c51bea91d593db}{rflpc\-\_\-timer\-\_\-base} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em This function is used by the driver to convert the timer id to the base address of its configuration register. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gac3200d2da39f6c6975220c757fc51e18}{rflpc\-\_\-timer\-\_\-enable} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em Power and clock the given timer. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gae5fbc12700e137ec4231d691ee2de948}{rflpc\-\_\-timer\-\_\-disable} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em disable the given timer \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gae9545ba61ff95f505f58f476e49af10b}{rflpc\-\_\-timer\-\_\-set\-\_\-clock} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, \hyperlink{group__clock_gaf3b7fc561cd12dfdff9f7c1357c3f016}{rflpc\-\_\-clock\-\_\-divider\-\_\-t} divider)
+\begin{DoxyCompactList}\small\item\em Sets the cpu clock divider for a given timer. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gab2799548ac7ff99c8a2e2266d0a67990}{rflpc\-\_\-timer\-\_\-set\-\_\-callback} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, \hyperlink{group__irq_ga4970a8a2cf9b63e4c261982504669a1f}{rflpc\-\_\-irq\-\_\-handler\-\_\-t} callback)
+\begin{DoxyCompactList}\small\item\em Sets the timer interrupt callback. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gaba3c362b2682760af6b95bc5726ed8f9}{rflpc\-\_\-timer\-\_\-start} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em starts the given timer. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_ga59f99025452f71c40ad366292a11f6c8}{rflpc\-\_\-timer\-\_\-stop} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em Stops the timer. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_ga4fadb2ed73522d4d76c984e62ddbc2c1}{rflpc\-\_\-timer\-\_\-reset} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em Resets the timer. \end{DoxyCompactList}\item 
+static uint32\-\_\-t \hyperlink{group__timer_ga57e24ccdcea66db465b16834b44b59a9}{rflpc\-\_\-timer\-\_\-get\-\_\-counter} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em Returns the timer counter value. \end{DoxyCompactList}\item 
+static uint32\-\_\-t \hyperlink{group__timer_gaed7ce6332d04ec5a155f69c88af66709}{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em Returns the prescale counter value. \end{DoxyCompactList}\item 
+static uint32\-\_\-t \hyperlink{group__timer_gaa84d035967961290a81fdc03ec6cf2f5}{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer)
+\begin{DoxyCompactList}\small\item\em Returns the value of the prescale register. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_ga3000e271844c8368b00d2ad920c046df}{rflpc\-\_\-timer\-\_\-set\-\_\-counter} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, uint32\-\_\-t value)
+\begin{DoxyCompactList}\small\item\em Sets the timer counter value. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_ga111ed4c30cbaadadcff06a3f199e8e80}{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, uint32\-\_\-t value)
+\begin{DoxyCompactList}\small\item\em Sets the prescale counter value. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gacbcb64481ba2834f37c46629823a6b7e}{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, uint32\-\_\-t value)
+\begin{DoxyCompactList}\small\item\em Sets the value of the prescale register. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gaf6d00c931d46b50694fcba4eb88311b6}{rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, \hyperlink{group__timer_ga6be569cd5e74a2e35678ee2de31e853a}{rflpc\-\_\-timer\-\_\-match\-\_\-t} match\-\_\-register, uint32\-\_\-t match\-\_\-value)
+\begin{DoxyCompactList}\small\item\em Set the match register value for a given timer. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gabce7312683163541ea46422b83dd5279}{rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, \hyperlink{group__timer_ga6be569cd5e74a2e35678ee2de31e853a}{rflpc\-\_\-timer\-\_\-match\-\_\-t} match\-\_\-register, uint32\-\_\-t options)
+\begin{DoxyCompactList}\small\item\em Enable I\-R\-Q generation when the timer counter reaches the value of a match register. \end{DoxyCompactList}\item 
+static void \hyperlink{group__timer_gac055674a123185990c8a077614f6d0a2}{rflpc\-\_\-timer\-\_\-reset\-\_\-irq} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, \hyperlink{group__timer_ga6be569cd5e74a2e35678ee2de31e853a}{rflpc\-\_\-timer\-\_\-match\-\_\-t} match\-\_\-register)
+\begin{DoxyCompactList}\small\item\em Reset the irq for a given match register. \end{DoxyCompactList}\item 
+static int \hyperlink{group__timer_ga11cc001f59b165b2ca7b456f317dfece}{rflpc\-\_\-timer\-\_\-test\-\_\-irq} (\hyperlink{group__timer_gac08825cb88d61086e74638b859cb8b34}{rflpc\-\_\-timer\-\_\-t} timer, \hyperlink{group__timer_ga6be569cd5e74a2e35678ee2de31e853a}{rflpc\-\_\-timer\-\_\-match\-\_\-t} match\-\_\-register)
+\begin{DoxyCompactList}\small\item\em Check if an interrupt has been generated for a given match register. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+All four timers provides the same functionality. The prescale counter is incremented at each timer clock tick. When the prescale counter reaches the prescale register value, the counter is incremented. The value of the counter can then be used as time value or match against four match registers to trigger an interrupt. 
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{group__timer_ga06fc87d81c62e9abb8790b6e5713c55b}{\subsubsection[{anonymous enum}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}}\label{group__timer_ga06fc87d81c62e9abb8790b6e5713c55b}
+
+
+Options for interrupt generation. 
+
+\begin{Desc}
+\item[Enumerator\-: ]\par
+\begin{description}
+\index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-I\-R\-Q\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-I\-R\-Q\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-I\-R\-Q\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-I\-R\-Q\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}}\item[{\em 
+\hypertarget{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba74a5c05f16f3840e59072e5876aa3696}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-I\-R\-Q\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}\label{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba74a5c05f16f3840e59072e5876aa3696}
+}]Trigger an interrupt when counter matches the match register. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-R\-E\-S\-E\-T\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-R\-E\-S\-E\-T\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-R\-E\-S\-E\-T\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-R\-E\-S\-E\-T\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}}\item[{\em 
+\hypertarget{group__timer_gga06fc87d81c62e9abb8790b6e5713c55bab7c018a7a66bfd59c5fd7d88ca50c669}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-R\-E\-S\-E\-T\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}\label{group__timer_gga06fc87d81c62e9abb8790b6e5713c55bab7c018a7a66bfd59c5fd7d88ca50c669}
+}]Reset the timer when counter matches the match register. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-S\-T\-O\-P\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-S\-T\-O\-P\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-S\-T\-O\-P\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-S\-T\-O\-P\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}}\item[{\em 
+\hypertarget{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba6eccf4b61667dfffc4d2850a10495480}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-S\-T\-O\-P\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}\label{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba6eccf4b61667dfffc4d2850a10495480}
+}]Stop the timer when the counter matches the match register. \end{description}
+\end{Desc}
+
+
+
+Definition at line 68 of file timer.\-h.
+
+\hypertarget{group__timer_ga6be569cd5e74a2e35678ee2de31e853a}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-match\-\_\-t@{rflpc\-\_\-timer\-\_\-match\-\_\-t}}
+\index{rflpc\-\_\-timer\-\_\-match\-\_\-t@{rflpc\-\_\-timer\-\_\-match\-\_\-t}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-match\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf rflpc\-\_\-timer\-\_\-match\-\_\-t}}}\label{group__timer_ga6be569cd5e74a2e35678ee2de31e853a}
+
+
+Match registers for interrupt generation. 
+
+\begin{Desc}
+\item[Enumerator\-: ]\par
+\begin{description}
+\index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H0@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H0}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H0@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H0}}\item[{\em 
+\hypertarget{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaa4bdd0c929cb583837f258510f5e15fa}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H0}\label{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaa4bdd0c929cb583837f258510f5e15fa}
+}]Match register 0. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H1@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H1}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H1@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H1}}\item[{\em 
+\hypertarget{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaab7e73a250d7f795c42ff3bb71034ea5}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H1}\label{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaab7e73a250d7f795c42ff3bb71034ea5}
+}]Match register 1. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H2@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H2}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H2@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H2}}\item[{\em 
+\hypertarget{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaa462318df3ce136257723a8981683de2}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H2}\label{group__timer_gga6be569cd5e74a2e35678ee2de31e853aaa462318df3ce136257723a8981683de2}
+}]Match register 2. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H3@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H3}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H3@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H3}}\item[{\em 
+\hypertarget{group__timer_gga6be569cd5e74a2e35678ee2de31e853aa06295ccf9c85b81b2344e5c4abf75008}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-M\-A\-T\-C\-H3}\label{group__timer_gga6be569cd5e74a2e35678ee2de31e853aa06295ccf9c85b81b2344e5c4abf75008}
+}]Match register 3. \end{description}
+\end{Desc}
+
+
+
+Definition at line 58 of file timer.\-h.
+
+\hypertarget{group__timer_gac08825cb88d61086e74638b859cb8b34}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-t@{rflpc\-\_\-timer\-\_\-t}}
+\index{rflpc\-\_\-timer\-\_\-t@{rflpc\-\_\-timer\-\_\-t}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf rflpc\-\_\-timer\-\_\-t}}}\label{group__timer_gac08825cb88d61086e74638b859cb8b34}
+
+
+Value to use for the timer value in functions. 
+
+\begin{Desc}
+\item[Enumerator\-: ]\par
+\begin{description}
+\index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0}}\item[{\em 
+\hypertarget{group__timer_ggac08825cb88d61086e74638b859cb8b34a3940eddd10c5fda56bd7135695a668fb}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0}\label{group__timer_ggac08825cb88d61086e74638b859cb8b34a3940eddd10c5fda56bd7135695a668fb}
+}]Timer 0. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1}}\item[{\em 
+\hypertarget{group__timer_ggac08825cb88d61086e74638b859cb8b34a192b4b89b2cc0e52eb5a02b0604f3a06}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1}\label{group__timer_ggac08825cb88d61086e74638b859cb8b34a192b4b89b2cc0e52eb5a02b0604f3a06}
+}]Timer 1. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2}}\item[{\em 
+\hypertarget{group__timer_ggac08825cb88d61086e74638b859cb8b34ab568d24f928930ee72130757063ced2f}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2}\label{group__timer_ggac08825cb88d61086e74638b859cb8b34ab568d24f928930ee72130757063ced2f}
+}]Timer 2. \index{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3}!Timers@{Timers}}\index{Timers@{Timers}!R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3@{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3}}\item[{\em 
+\hypertarget{group__timer_ggac08825cb88d61086e74638b859cb8b34ac6c7308fa1e2c59e6db065ec8feea0e2}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3}\label{group__timer_ggac08825cb88d61086e74638b859cb8b34ac6c7308fa1e2c59e6db065ec8feea0e2}
+}]Timer 3. \end{description}
+\end{Desc}
+
+
+
+Definition at line 48 of file timer.\-h.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{group__timer_ga50c78f3d07b2065c64c51bea91d593db}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-base@{rflpc\-\_\-timer\-\_\-base}}
+\index{rflpc\-\_\-timer\-\_\-base@{rflpc\-\_\-timer\-\_\-base}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-base}]{\setlength{\rightskip}{0pt plus 5cm}static L\-P\-C\-\_\-\-T\-I\-M\-\_\-\-Type\-Def$\ast$ {\bf rflpc\-\_\-timer\-\_\-base} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_ga50c78f3d07b2065c64c51bea91d593db}
+
+
+This function is used by the driver to convert the timer id to the base address of its configuration register. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & The timer to get \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+L\-P\-C\-\_\-\-T\-I\-M\-\_\-\-Type\-Def$\ast$ 
+\end{DoxyReturn}
+
+
+Definition at line 82 of file timer.\-h.
+
+
+
+References R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2, and R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3.
+
+
+
+Referenced by rflpc\-\_\-timer\-\_\-get\-\_\-counter(), rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter(), rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register(), rflpc\-\_\-timer\-\_\-reset(), rflpc\-\_\-timer\-\_\-reset\-\_\-irq(), rflpc\-\_\-timer\-\_\-set\-\_\-counter(), rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match(), rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value(), rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter(), rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register(), rflpc\-\_\-timer\-\_\-start(), rflpc\-\_\-timer\-\_\-stop(), and rflpc\-\_\-timer\-\_\-test\-\_\-irq().
+
+\hypertarget{group__timer_gae5fbc12700e137ec4231d691ee2de948}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-disable@{rflpc\-\_\-timer\-\_\-disable}}
+\index{rflpc\-\_\-timer\-\_\-disable@{rflpc\-\_\-timer\-\_\-disable}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-disable}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-disable} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gae5fbc12700e137ec4231d691ee2de948}
+
+
+disable the given timer 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 122 of file timer.\-h.
+
+
+
+References R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2, and R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3.
+
+\hypertarget{group__timer_gac3200d2da39f6c6975220c757fc51e18}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-enable@{rflpc\-\_\-timer\-\_\-enable}}
+\index{rflpc\-\_\-timer\-\_\-enable@{rflpc\-\_\-timer\-\_\-enable}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-enable}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-enable} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gac3200d2da39f6c6975220c757fc51e18}
+
+
+Power and clock the given timer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 101 of file timer.\-h.
+
+
+
+References R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2, and R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3.
+
+\hypertarget{group__timer_ga57e24ccdcea66db465b16834b44b59a9}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-get\-\_\-counter@{rflpc\-\_\-timer\-\_\-get\-\_\-counter}}
+\index{rflpc\-\_\-timer\-\_\-get\-\_\-counter@{rflpc\-\_\-timer\-\_\-get\-\_\-counter}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-get\-\_\-counter}]{\setlength{\rightskip}{0pt plus 5cm}static uint32\-\_\-t {\bf rflpc\-\_\-timer\-\_\-get\-\_\-counter} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_ga57e24ccdcea66db465b16834b44b59a9}
+
+
+Returns the timer counter value. 
+
+This value is incremented each time the prescale counter matches the prescale register.
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 220 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gaed7ce6332d04ec5a155f69c88af66709}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter@{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter}}
+\index{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter@{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter}]{\setlength{\rightskip}{0pt plus 5cm}static uint32\-\_\-t {\bf rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-counter} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gaed7ce6332d04ec5a155f69c88af66709}
+
+
+Returns the prescale counter value. 
+
+This value is incremented at each clock cycle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 233 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gaa84d035967961290a81fdc03ec6cf2f5}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register@{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register}}
+\index{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register@{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register}]{\setlength{\rightskip}{0pt plus 5cm}static uint32\-\_\-t {\bf rflpc\-\_\-timer\-\_\-get\-\_\-pre\-\_\-scale\-\_\-register} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gaa84d035967961290a81fdc03ec6cf2f5}
+
+
+Returns the value of the prescale register. 
+
+This register contains the number of clock cycle needed to increment the timer counter. That is, at each clock cycle, the prescale counter is incrementer and when it reaches the prescale register, the timer counter is incremented.
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 248 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_ga4fadb2ed73522d4d76c984e62ddbc2c1}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-reset@{rflpc\-\_\-timer\-\_\-reset}}
+\index{rflpc\-\_\-timer\-\_\-reset@{rflpc\-\_\-timer\-\_\-reset}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-reset}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-reset} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_ga4fadb2ed73522d4d76c984e62ddbc2c1}
+
+
+Resets the timer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 205 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gac055674a123185990c8a077614f6d0a2}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-reset\-\_\-irq@{rflpc\-\_\-timer\-\_\-reset\-\_\-irq}}
+\index{rflpc\-\_\-timer\-\_\-reset\-\_\-irq@{rflpc\-\_\-timer\-\_\-reset\-\_\-irq}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-reset\-\_\-irq}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-reset\-\_\-irq} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{{\bf rflpc\-\_\-timer\-\_\-match\-\_\-t}}]{match\-\_\-register}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gac055674a123185990c8a077614f6d0a2}
+
+
+Reset the irq for a given match register. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em match\-\_\-register} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 332 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gab2799548ac7ff99c8a2e2266d0a67990}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-set\-\_\-callback@{rflpc\-\_\-timer\-\_\-set\-\_\-callback}}
+\index{rflpc\-\_\-timer\-\_\-set\-\_\-callback@{rflpc\-\_\-timer\-\_\-set\-\_\-callback}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-set\-\_\-callback}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-set\-\_\-callback} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{{\bf rflpc\-\_\-irq\-\_\-handler\-\_\-t}}]{callback}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gab2799548ac7ff99c8a2e2266d0a67990}
+
+
+Sets the timer interrupt callback. 
+
+Also enables timer interrupt to be received.
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em callback} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 168 of file timer.\-h.
+
+
+
+References rflpc\-\_\-irq\-\_\-enable(), and rflpc\-\_\-irq\-\_\-set\-\_\-handler().
+
+\hypertarget{group__timer_gae9545ba61ff95f505f58f476e49af10b}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-set\-\_\-clock@{rflpc\-\_\-timer\-\_\-set\-\_\-clock}}
+\index{rflpc\-\_\-timer\-\_\-set\-\_\-clock@{rflpc\-\_\-timer\-\_\-set\-\_\-clock}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-set\-\_\-clock}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-set\-\_\-clock} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{{\bf rflpc\-\_\-clock\-\_\-divider\-\_\-t}}]{divider}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gae9545ba61ff95f505f58f476e49af10b}
+
+
+Sets the cpu clock divider for a given timer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em divider} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{group__clock_gaf3b7fc561cd12dfdff9f7c1357c3f016}{rflpc\-\_\-clock\-\_\-divider\-\_\-t} 
+\end{DoxySeeAlso}
+
+
+Definition at line 144 of file timer.\-h.
+
+
+
+References R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R0, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R1, R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R2, and R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R3.
+
+\hypertarget{group__timer_ga3000e271844c8368b00d2ad920c046df}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-set\-\_\-counter@{rflpc\-\_\-timer\-\_\-set\-\_\-counter}}
+\index{rflpc\-\_\-timer\-\_\-set\-\_\-counter@{rflpc\-\_\-timer\-\_\-set\-\_\-counter}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-set\-\_\-counter}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-set\-\_\-counter} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{uint32\-\_\-t}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_ga3000e271844c8368b00d2ad920c046df}
+
+
+Sets the timer counter value. 
+
+This value is incremented each time the prescale counter matches the prescale register.
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em value} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 262 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gabce7312683163541ea46422b83dd5279}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match@{rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match}}
+\index{rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match@{rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-set\-\_\-irq\-\_\-on\-\_\-match} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{{\bf rflpc\-\_\-timer\-\_\-match\-\_\-t}}]{match\-\_\-register, }
+\item[{uint32\-\_\-t}]{options}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gabce7312683163541ea46422b83dd5279}
+
+
+Enable I\-R\-Q generation when the timer counter reaches the value of a match register. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em match\-\_\-register} & \\
+\hline
+{\em options} & a bitwise O\-Red value of \hyperlink{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba74a5c05f16f3840e59072e5876aa3696}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-I\-R\-Q\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}, \hyperlink{group__timer_gga06fc87d81c62e9abb8790b6e5713c55bab7c018a7a66bfd59c5fd7d88ca50c669}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-R\-E\-S\-E\-T\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H} and \hyperlink{group__timer_gga06fc87d81c62e9abb8790b6e5713c55ba6eccf4b61667dfffc4d2850a10495480}{R\-F\-L\-P\-C\-\_\-\-T\-I\-M\-E\-R\-\_\-\-S\-T\-O\-P\-\_\-\-O\-N\-\_\-\-M\-A\-T\-C\-H}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 319 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gaf6d00c931d46b50694fcba4eb88311b6}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value@{rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value}}
+\index{rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value@{rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-set\-\_\-match\-\_\-value} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{{\bf rflpc\-\_\-timer\-\_\-match\-\_\-t}}]{match\-\_\-register, }
+\item[{uint32\-\_\-t}]{match\-\_\-value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gaf6d00c931d46b50694fcba4eb88311b6}
+
+
+Set the match register value for a given timer. 
+
+Interrupt can be generated when timer counter reaches a match register's value
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em match\-\_\-register} & \\
+\hline
+{\em match\-\_\-value} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 305 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_ga111ed4c30cbaadadcff06a3f199e8e80}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter@{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter}}
+\index{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter@{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-counter} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{uint32\-\_\-t}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_ga111ed4c30cbaadadcff06a3f199e8e80}
+
+
+Sets the prescale counter value. 
+
+This value is incremented at each clock cycle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em value} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 275 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gacbcb64481ba2834f37c46629823a6b7e}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register@{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register}}
+\index{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register@{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-set\-\_\-pre\-\_\-scale\-\_\-register} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{uint32\-\_\-t}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gacbcb64481ba2834f37c46629823a6b7e}
+
+
+Sets the value of the prescale register. 
+
+This register contains the number of clock cycle needed to increment the timer counter. That is, at each clock cycle, the prescale counter is incrementer and when it reaches the prescale register, the timer counter is incremented.
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em value} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 290 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_gaba3c362b2682760af6b95bc5726ed8f9}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-start@{rflpc\-\_\-timer\-\_\-start}}
+\index{rflpc\-\_\-timer\-\_\-start@{rflpc\-\_\-timer\-\_\-start}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-start}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-start} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_gaba3c362b2682760af6b95bc5726ed8f9}
+
+
+starts the given timer. 
+
+This does not modify timer register value. It just starts to count
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 184 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_ga59f99025452f71c40ad366292a11f6c8}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-stop@{rflpc\-\_\-timer\-\_\-stop}}
+\index{rflpc\-\_\-timer\-\_\-stop@{rflpc\-\_\-timer\-\_\-stop}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-stop}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-timer\-\_\-stop} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_ga59f99025452f71c40ad366292a11f6c8}
+
+
+Stops the timer. 
+
+Does not modify timer registers value 
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 196 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+
+\hypertarget{group__timer_ga11cc001f59b165b2ca7b456f317dfece}{\index{Timers@{Timers}!rflpc\-\_\-timer\-\_\-test\-\_\-irq@{rflpc\-\_\-timer\-\_\-test\-\_\-irq}}
+\index{rflpc\-\_\-timer\-\_\-test\-\_\-irq@{rflpc\-\_\-timer\-\_\-test\-\_\-irq}!Timers@{Timers}}
+\subsubsection[{rflpc\-\_\-timer\-\_\-test\-\_\-irq}]{\setlength{\rightskip}{0pt plus 5cm}static int {\bf rflpc\-\_\-timer\-\_\-test\-\_\-irq} (
+\begin{DoxyParamCaption}
+\item[{{\bf rflpc\-\_\-timer\-\_\-t}}]{timer, }
+\item[{{\bf rflpc\-\_\-timer\-\_\-match\-\_\-t}}]{match\-\_\-register}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__timer_ga11cc001f59b165b2ca7b456f317dfece}
+
+
+Check if an interrupt has been generated for a given match register. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timer} & \\
+\hline
+{\em match\-\_\-register} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if an interrupt is pending for the given match register 
+\end{DoxyReturn}
+
+
+Definition at line 345 of file timer.\-h.
+
+
+
+References rflpc\-\_\-timer\-\_\-base().
+

@@ -1,0 +1,77 @@
+\hypertarget{structrflpc__eth__rx__status__t}{\section{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t Struct Reference}
+\label{structrflpc__eth__rx__status__t}\index{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t@{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t}}
+}
+
+
+This structure holds the reception status associated to a descriptor.  
+
+
+
+
+{\ttfamily \#include $<$ethernet.\-h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+uint32\-\_\-t \hyperlink{structrflpc__eth__rx__status__t_acb6cbccb75a46eae2026c704e4c7d2d2}{status\-\_\-info}
+\begin{DoxyCompactList}\small\item\em Receive status return flags. \end{DoxyCompactList}\item 
+uint32\-\_\-t \hyperlink{structrflpc__eth__rx__status__t_a8bce302027e1fd2343ef971783807b3f}{status\-\_\-hash\-\_\-crc}
+\begin{DoxyCompactList}\small\item\em hash C\-R\-C calculated from source and destination address. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This structure holds the reception status associated to a descriptor. 
+
+Definition at line 129 of file ethernet.\-h.
+
+
+
+\subsection{Field Documentation}
+\hypertarget{structrflpc__eth__rx__status__t_a8bce302027e1fd2343ef971783807b3f}{\index{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t@{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t}!status\-\_\-hash\-\_\-crc@{status\-\_\-hash\-\_\-crc}}
+\index{status\-\_\-hash\-\_\-crc@{status\-\_\-hash\-\_\-crc}!rflpc_eth_rx_status_t@{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t}}
+\subsubsection[{status\-\_\-hash\-\_\-crc}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t {\bf rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t\-::status\-\_\-hash\-\_\-crc}}}\label{structrflpc__eth__rx__status__t_a8bce302027e1fd2343ef971783807b3f}
+
+
+hash C\-R\-C calculated from source and destination address. 
+
+
+\begin{DoxyItemize}
+\item Bits 8\-:0 \-: C\-R\-C calcultated from the source address
+\item Bits 24\-:16 \-: C\-R\-C calcultated from the destination address 
+\end{DoxyItemize}
+
+Definition at line 153 of file ethernet.\-h.
+
+\hypertarget{structrflpc__eth__rx__status__t_acb6cbccb75a46eae2026c704e4c7d2d2}{\index{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t@{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t}!status\-\_\-info@{status\-\_\-info}}
+\index{status\-\_\-info@{status\-\_\-info}!rflpc_eth_rx_status_t@{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t}}
+\subsubsection[{status\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t {\bf rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t\-::status\-\_\-info}}}\label{structrflpc__eth__rx__status__t_acb6cbccb75a46eae2026c704e4c7d2d2}
+
+
+Receive status return flags. 
+
+
+\begin{DoxyItemize}
+\item Bits 10\-:0 \-: Size of the received data (-\/1 encoded)
+\item Bit 18 \-: Control frame
+\item Bit 19 \-: V\-L\-A\-N frame
+\item Bit 20 \-: Fail frame filter. The remainder of the frame will be discarded
+\item Bit 21 \-: Multicast frame
+\item Bit 22 \-: Broadcast frame
+\item Bit 23 \-: C\-R\-C error
+\item Bit 24 \-: Symbol error reported by P\-H\-Y
+\item Bit 25 \-: Length Error
+\item Bit 26 \-: Range error
+\item Bit 27 \-: Alignement erro
+\item Bit 28 \-: Receive overrun
+\item Bit 29 \-: No more descriptor and the frame is to big to fit in the data buffer
+\item Bit 30 \-: Last flag. This is the last fragment of the frame
+\item Bit 31 \-: Error occured. 
+\end{DoxyItemize}
+
+Definition at line 148 of file ethernet.\-h.
+
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{ethernet_8h}{ethernet.\-h}\end{DoxyCompactItemize}

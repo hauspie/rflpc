@@ -1,0 +1,66 @@
+.TH "Repetitive Interrupt Timer" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Repetitive Interrupt Timer \- 
+.PP
+This timer provide a simple mean to get a repetitive interrupt\&.  
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBrflpc_rit_enable\fP ()"
+.br
+.RI "\fIEnables the RIT\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_rit_get_counter_value\fP ()"
+.br
+.RI "\fIGets the current value of the rit counter\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_rit_set_counter_value\fP (uint32_t value)"
+.br
+.RI "\fISets the current value of the rit counter\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_rit_clear_pending_interrupt\fP ()"
+.br
+.RI "\fIclears the pending interrupt\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_rit_set_callback\fP (uint32_t comp_value, uint32_t mask, int reset_on_match, \fBrflpc_irq_handler_t\fP c)"
+.br
+.RI "\fIsets the RIT interrupt callback and configure the RIT interrupt\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+This timer provide a simple mean to get a repetitive interrupt\&. 
+
+When the timer is started, it is incremented at each CPU clock tick and can be configured to generate an interruption when its counter matches a value/mask pair 
+.SH "Function Documentation"
+.PP 
+.SS "static void \fBrflpc_rit_clear_pending_interrupt\fP ()\fC [inline, static]\fP"
+
+.PP
+clears the pending interrupt\&. Should be called at the end of your callback to prevent the interruption to be generated again 
+.PP
+Definition at line 58 of file rit\&.h\&.
+.SS "static void \fBrflpc_rit_enable\fP ()\fC [inline, static]\fP"
+
+.PP
+Enables the RIT\&. By default, it is turned off\&. See PCONP register, user manual, p\&.63 
+.PP
+Definition at line 45 of file rit\&.h\&.
+.SS "void \fBrflpc_rit_set_callback\fP (uint32_tcomp_value, uint32_tmask, intreset_on_match, \fBrflpc_irq_handler_t\fPc)"
+
+.PP
+sets the RIT interrupt callback and configure the RIT interrupt\&. The interrupt handler will be called when the counter value reaches value for the bits zeroed in the mask If reset on match is true, then when the counter match the comp_value, the counter is reset to 0
+.PP
+For example, if you want the timer to be called each time the 7th bit is equal to one:
+.IP "\(bu" 2
+comp_value should be set to 1 << 7
+.IP "\(bu" 2
+mask should be set to ~(1 << 7) 
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

@@ -1,0 +1,212 @@
+.TH "start" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+start \- Getting started in 10 minutes 
+.SH "Small FAQ"
+.PP
+.SS "What is this library?"
+This library allows development on a LPC17xx board from NXP\&. The release includes configuration for the MBED platform which uses a LPC1768\&.
+.SS "What is needed to use rfLPC?"
+In order to compile, you will need a gcc version tuned to build bare metal binaries\&. I use the one which can be build using the shell script available here: https://github.com/esden/summon-arm-toolchain
+.PP
+This release also includes two header files from ARM and NXP that defines C structures to access Cortex M3 and LPC17xx registers\&.
+.SS "What is provided?"
+This library provides
+.IP "\(bu" 2
+A linker script
+.IP "\(bu" 2
+Board initialization code (mainly, data and bss segment initialization, moving the interrupt vector in RAM and configuring the PLL0 to set the CPU clock to something usable (96Mhz for the MBED)
+.IP "\(bu" 2
+Few libc like functions (memcpy, printf)
+.IP "\(bu" 2
+Drivers for several peripherals
+.IP "  \(bu" 4
+Onboard LEDs
+.IP "  \(bu" 4
+Ethernet 100Mbps
+.IP "  \(bu" 4
+GPIO
+.IP "  \(bu" 4
+Repetitive Interrupt Timer
+.IP "  \(bu" 4
+System Tick Timer
+.IP "  \(bu" 4
+General purpose Timers
+.IP "  \(bu" 4
+UART 
+.PP
+
+.PP
+.SS "What is missing?"
+A lot of stuff ! Mainly the remainder of drivers for the other devices such as
+.IP "\(bu" 2
+CAN
+.IP "\(bu" 2
+DAC/ADC
+.IP "\(bu" 2
+PWM
+.IP "\(bu" 2
+\&.\&.\&. 
+.PP
+.SS "What is using this library ?"
+This library has mainly been developped for two purposes
+.IP "\(bu" 2
+Enjoying myself
+.IP "\(bu" 2
+Provide a nice prototyping platform for my research team (you can have a look at my research work here http://www.lifl.fr/~hauspie)
+.PP
+.PP
+For this last purpose, the MBED was a nice and affordable platform although the whole on the cloud compiler stuff was not much what pleases us as the libraries provided by mbed were HUGE and we wanted to release ALL our code open source, even the low level code\&. The library provided by NXP (CMSIS) was a bit too high level for what we wanted and thus, writing everything from scratch was our best option\&.
+.PP
+The first of our project which has been ported to the MBED is Smews: Smart & Mobile Embedded Web Server (http://www.lifl.fr/2XS/smews)
+.SH "Environment configuration and building the library"
+.PP
+To use the library, you just have to compile it by issuing a \fC'make'\fP in the main folder\&. It will build the library as well as all the samples\&. But before that, you have to install an arm compiler and modify the Makefile\&.vars to set the path and executable names of your compiler\&. The library should be shipped with the configuration for arm-none-eabi-* tools suite\&. Modifying \fCPREFIX\fP and \fCGCC_VERSION\fP should be enough\&.
+.PP
+.PP
+.nf
+ ## Modify these settings
+ PREFIX=arm-none-eabi
+ GCC_VERSION=
+
+ ## System commands definitions
+ CC=$(PREFIX)-gcc$(GCC_VERSION)
+ LD=$(CC)
+ AR=$(PREFIX)-ar
+ AS=$(PREFIX)-as
+ OBJCOPY=$(PREFIX)-objcopy
+ OBJDUMP=$(PREFIX)-objdump
+ NM=$(PREFIX)-nm
+ SIZE=$(PREFIX)-size
+.fi
+.PP
+.PP
+If everything builds, then you are ready to use it\&.
+.PP
+Otherwise, there are few things that you have to check:
+.IP "\(bu" 2
+Do you have an arm compiler in your path?
+.IP "  \(bu" 4
+is the \fCMakefile\&.vars\fP file modified according to this compiler?
+.PP
+
+.IP "\(bu" 2
+Have you modified the config/config file which has been generated when compiling the library for the first time?
+.IP "  \(bu" 4
+if so, then the library may compile but some samples will not depending on what functionalities you have enabled
+.PP
+
+.PP
+.SH "Your first program"
+.PP
+The easiest way to start your first program is to copy the samples/skel folder and start from here\&.
+.PP
+In this folder, you will find two files
+.IP "\(bu" 2
+Makefile
+.IP "\(bu" 2
+main\&.c
+.PP
+.PP
+The Makefile rules how your program is compiled\&. Here is how it looks 
+.PP
+.nf
+ OUTPUT_NAME=modify_this
+ SRC=$(wildcard *\&.c)
+ OBJS=$(SRC:\&.c=\&.o)
+ 
+ # Modify this variable at your own risk
+ RFLPC_DIR=\&.\&./\&.\&.
+ include $(RFLPC_DIR)/Makefile\&.in
+
+.fi
+.PP
+.PP
+.PD 0
+.IP "\(bu" 2
+the \fCOUTPUT_NAME\fP variable define the name of the final binary\&. Here it will generate \fCmodify_this\&.elf\fP and \fCmodify_this\&.bin\fP files 
+.IP "\(bu" 2
+the \fCSRC\fP variable should contain the name of all your \fC\fP\&.c files\&. These files will be compiled and linked to the final binary 
+.IP "\(bu" 2
+the \fCRFLPC_DIR\fP is the relative path from your folder to the folder that contains the \fCrflpc-config\fP file 
+.IP "\(bu" 2
+the \fCinclude\fP line includes the makefile that does all the magic for you\&. It contains generic rules for compiling your source files as well as the link rules to generate the \fC\fP\&.elf and \fC\fP\&.bin files
+.PP
+Thus, you should just have to modify \fCOUTPUT_NAME\fP and \fCSRC\fP variables to create the needed makefile to compile your project\&.
+.PP
+To compile, just type \fCmake\fP\&. You should see something like that
+.PP
+.PP
+.nf
+ $ make
+ arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I/home/hauspie/work/git/rflpc -DRFLPC_CONFIG_ENABLE_ATOMIC_PRINTF -DRFLPC_CONFIG_ENABLE_DMA -DRFLPC_CONFIG_ENABLE_ETHERNET -DRFLPC_CONFIG_ENABLE_MEMCPY -DRFLPC_CONFIG_ENABLE_MEMSET -DRFLPC_CONFIG_ENABLE_PRINTF -DRFLPC_CONFIG_ENABLE_PROFILING -DRFLPC_CONFIG_ENABLE_RIT_TIMER -DRFLPC_CONFIG_ENABLE_SETJMP -DRFLPC_CONFIG_ENABLE_SPI -DRFLPC_CONFIG_ENABLE_SYS_TICK_TIMER -DRFLPC_CONFIG_ENABLE_TIMERS -DRFLPC_CONFIG_ENABLE_UART -DRFLPC_CONFIG_PLATFORM_MBED   -c -o main\&.o main\&.c
+ arm-none-eabi-gcc -o modify_this\&.elf main\&.o -nostdlib -L/home/hauspie/work/git/rflpc/rflpc17xx -Wl,-T,rflpc17xx\&.ld,-Map=rflpc\&.map -lrflpc17xx 
+ arm-none-eabi-objcopy -O binary -j \&.text -j \&.data modify_this\&.elf modify_this\&.bin
+.fi
+.PP
+.PP
+If so, then you will have two files, an elf file and a bin file\&. The elf file is your program in ELF format\&. You can inspect it, dissassemble it\&.\&.\&. with commands such as your arm objdump\&. The bin file is the raw code memory file which is an extract of the \fC\fP\&.text and \fC\fP\&.data section of your elf file\&. For the MBED platform, it is this file that you have to copy on the USB mass storage drive\&.
+.PP
+To program your code on the MBED, you can issue a \fCmake program\fP\&. This command will try to guess the mountpoint of your MBED (using the output of the \fCmount\fP command) and copy the bin file to it\&. After that, you just have to reset the MBED to actually flash the code\&.
+.SH "Fine tuning the library"
+.PP
+The library can be configured so that some features are not included\&. This can save loads of code memory when you just need a few drivers\&. 
+.SS "Automatic generation of the configuration file"
+The configuration file is located in the config/config folder\&. When you clone the git repository, this file is NOT included\&. However, if you just use \fCmake\fP in the library folder, a default full configuration file is generated
+.PP
+This file is a list of defines that will be enabled at compile time\&. The file is read by the \fCrflpc-config\fP script when generating the compile flags\&. Each line represents a define that will be transformed to a \fC-Dxxxx\fP flag\&.
+.PP
+To generate the file, you can use the makefile in the config folder\&. There are two main rules for generating a config file
+.IP "\(bu" 2
+\fCmake empty_config\fP
+.IP "\(bu" 2
+\fCmake full_config\fP
+.PP
+.PP
+The first one generates an empty config file\&. Then, when the library is compiled it is compiled with the minimum features which are:
+.IP "\(bu" 2
+board initialization code
+.IP "  \(bu" 4
+clock configuration
+.IP "  \(bu" 4
+bss and data segment initialization
+.IP "  \(bu" 4
+default interrupt setup
+.PP
+
+.IP "\(bu" 2
+interrupt management
+.IP "\(bu" 2
+Pins configuration
+.IP "\(bu" 2
+GPIOs
+.IP "\(bu" 2
+LEDs
+.PP
+.PP
+Pins configuration, GPIOs and LEDs are only macros or inlines in the library\&. Thus, the produced code will only include it if you use it\&. The library in the minimal configuration is about 800 bytes of code\&.
+.PP
+The second option (full_config) automatically extracts all the \fCRFLPC_CONFIG_ENABLE_xxx\fP macros from the library source code and add it to the config file\&. Thus, all the functionalities of the library are included\&. At the moment, this produce a library that is about 8kB of code\&.
+.SS "Fine tuning the configuration file"
+The simplest way to fine tune the library is to start by a make full_config and then remove the line you do not want from the config/config file\&. You can either remove the lines completely or use the \fC#\fP character to make a line comment 'à la' sh\&.
+.PP
+For example, this config file builds a library that uses only UART
+.PP
+.PP
+.nf
+ # You can use comments in the config file to disable a line or simply comment
+ #RFLPC_CONFIG_ENABLE_TIMERS
+ RFLPC_CONFIG_ENABLE_UART
+.fi
+.PP
+.SS "Common configuration mistakes"
+When fine tuning the configuration be sure to:
+.IP "\(bu" 2
+Recompile the library AND your program after making a change to the config file\&. (use make mrproper to clean the library and rebuild it)
+.IP "\(bu" 2
+Pay attention to dependencies\&. For example, if you enable printf but not UARTs, the default function used by printf to output its characters will do nothing
+.IP "\(bu" 2
+Most of the samples will not work if you do not enable at least uarts and printf 
+.PP
+

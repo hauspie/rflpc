@@ -1,0 +1,119 @@
+\hypertarget{ethernet_8h}{\section{ethernet.\-h File Reference}
+\label{ethernet_8h}\index{ethernet.\-h@{ethernet.\-h}}
+}
+
+
+Ethernet peripheral driver.  
+
+
+{\ttfamily \#include $<$stdint.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}../nxp/\-L\-P\-C17xx.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../interrupt.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}eth\-\_\-const.\-h\char`\"{}}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structrflpc__eth__descriptor__t}{rflpc\-\_\-eth\-\_\-descriptor\-\_\-t}
+\begin{DoxyCompactList}\small\item\em This structure holds a descriptor which describes the fragment received or sent by the ethernet D\-M\-A. \end{DoxyCompactList}\item 
+struct \hyperlink{structrflpc__eth__rx__status__t}{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t}
+\begin{DoxyCompactList}\small\item\em This structure holds the reception status associated to a descriptor. \end{DoxyCompactList}\item 
+struct \hyperlink{structrflpc__eth__tx__status__t}{rflpc\-\_\-eth\-\_\-tx\-\_\-status\-\_\-t}
+\begin{DoxyCompactList}\small\item\em This structure holds the transmit status associated to a descriptor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__eth_gaad17bd5da95409bc737382c92c774e7f}{\#define \hyperlink{group__eth_gaad17bd5da95409bc737382c92c774e7f}{T\-X\-\_\-\-P\-R\-O\-D\-U\-C\-E\-\_\-\-I\-N\-D\-E\-X\-\_\-\-I\-N\-C}(inc)~((L\-P\-C\-\_\-\-E\-M\-A\-C-\/$>$Tx\-Produce\-Index + (inc))\% (L\-P\-C\-\_\-\-E\-M\-A\-C-\/$>$Tx\-Descriptor\-Number+1))}\label{group__eth_gaad17bd5da95409bc737382c92c774e7f}
+
+\begin{DoxyCompactList}\small\item\em Helper macro for \hyperlink{group__eth_ga73ce91815ea1ec2faad48fdd18b1fc80}{rflpc\-\_\-eth\-\_\-get\-\_\-current\-\_\-tx\-\_\-packet\-\_\-descriptor}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Link modes}\par
+{\em These constants can be used to get or set the link mode using \hyperlink{group__eth_ga5b73a8c385152888baff90c83e34fdb0}{rflpc\-\_\-eth\-\_\-get\-\_\-link\-\_\-mode} and \hyperlink{group__eth_gad8d8a82c4aed3c98c358814619b234d9}{rflpc\-\_\-eth\-\_\-set\-\_\-link\-\_\-mode}. }\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__eth_gaa7db2e40e7ee0641b8ef48fe7e8f5a29}{\#define \hyperlink{group__eth_gaa7db2e40e7ee0641b8ef48fe7e8f5a29}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-\-S\-P\-E\-E\-D\-\_\-\-B\-I\-T}~(1 $<$$<$ 0)}\label{group__eth_gaa7db2e40e7ee0641b8ef48fe7e8f5a29}
+
+\begin{DoxyCompactList}\small\item\em This bit indicates 100\-Mbps/10\-Mbps speed. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga8662c8abfaba91f359fc0c002bf5575f}{\#define \hyperlink{group__eth_ga8662c8abfaba91f359fc0c002bf5575f}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-\-D\-U\-P\-L\-E\-X\-\_\-\-B\-I\-T}~(1 $<$$<$ 1)}\label{group__eth_ga8662c8abfaba91f359fc0c002bf5575f}
+
+\begin{DoxyCompactList}\small\item\em This bit indicates Full/\-Half duplex mode. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga27a5eb1d19d3122a7bdbc1babf84511d}{\#define \hyperlink{group__eth_ga27a5eb1d19d3122a7bdbc1babf84511d}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-100\-H\-D}~(\hyperlink{group__eth_gaa7db2e40e7ee0641b8ef48fe7e8f5a29}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-\-S\-P\-E\-E\-D\-\_\-\-B\-I\-T})}\label{group__eth_ga27a5eb1d19d3122a7bdbc1babf84511d}
+
+\begin{DoxyCompactList}\small\item\em 100\-Mbps, Half Duplex \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gaf8fe530a009e9e2f27078456b7495c4c}{\#define \hyperlink{group__eth_gaf8fe530a009e9e2f27078456b7495c4c}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-10\-H\-D}~(0)}\label{group__eth_gaf8fe530a009e9e2f27078456b7495c4c}
+
+\begin{DoxyCompactList}\small\item\em 10\-Mbps, Half Duplex \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga250b55f95bb7d9c45f813c1f6275577a}{\#define \hyperlink{group__eth_ga250b55f95bb7d9c45f813c1f6275577a}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-100\-F\-D}~(\hyperlink{group__eth_gaa7db2e40e7ee0641b8ef48fe7e8f5a29}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-\-S\-P\-E\-E\-D\-\_\-\-B\-I\-T} $|$ \hyperlink{group__eth_ga8662c8abfaba91f359fc0c002bf5575f}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-\-D\-U\-P\-L\-E\-X\-\_\-\-B\-I\-T})}\label{group__eth_ga250b55f95bb7d9c45f813c1f6275577a}
+
+\begin{DoxyCompactList}\small\item\em 100\-Mbps, Full Duplex \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gafb92b1abb1013a1f56a1d39198af3e52}{\#define \hyperlink{group__eth_gafb92b1abb1013a1f56a1d39198af3e52}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-10\-F\-D}~(\hyperlink{group__eth_ga8662c8abfaba91f359fc0c002bf5575f}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-L\-I\-N\-K\-\_\-\-M\-O\-D\-E\-\_\-\-D\-U\-P\-L\-E\-X\-\_\-\-B\-I\-T})}\label{group__eth_gafb92b1abb1013a1f56a1d39198af3e52}
+
+\begin{DoxyCompactList}\small\item\em 10\-Mbps, Full Duplex \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__eth_gade7d32e2e9ff5cb517b47513b0a293a8}{int \hyperlink{group__eth_gade7d32e2e9ff5cb517b47513b0a293a8}{rflpc\-\_\-eth\-\_\-init} ()}\label{group__eth_gade7d32e2e9ff5cb517b47513b0a293a8}
+
+\begin{DoxyCompactList}\small\item\em Inits the ethernet device. \end{DoxyCompactList}\item 
+int \hyperlink{group__eth_ga118494d89093096fb27fbd6feb746b84}{rflpc\-\_\-eth\-\_\-link\-\_\-state} ()
+\begin{DoxyCompactList}\small\item\em Returns the link state. \end{DoxyCompactList}\item 
+void \hyperlink{group__eth_gad8d8a82c4aed3c98c358814619b234d9}{rflpc\-\_\-eth\-\_\-set\-\_\-link\-\_\-mode} (int mode)
+\begin{DoxyCompactList}\small\item\em Forces the M\-A\-C and P\-H\-Y devices to operate on the given mode no matter the capability of the linked partner. \end{DoxyCompactList}\item 
+int \hyperlink{group__eth_ga53be61699736b3d80d972347bb78be45}{rflpc\-\_\-eth\-\_\-link\-\_\-auto\-\_\-negociate} (int max\-\_\-desired\-\_\-mode)
+\begin{DoxyCompactList}\small\item\em Force the physical link to perform auto negociation of mode. \end{DoxyCompactList}\item 
+int \hyperlink{group__eth_ga5b73a8c385152888baff90c83e34fdb0}{rflpc\-\_\-eth\-\_\-get\-\_\-link\-\_\-mode} ()
+\begin{DoxyCompactList}\small\item\em returns the current link mode. \end{DoxyCompactList}\item 
+static uint32\-\_\-t \hyperlink{group__eth_ga92aaec21aabcfc33e2eb1cd288a9de2f}{rflpc\-\_\-eth\-\_\-get\-\_\-packet\-\_\-size} (uint32\-\_\-t status\-\_\-info)
+\begin{DoxyCompactList}\small\item\em Returns the size of a packet from the status\-\_\-info field of a \hyperlink{structrflpc__eth__tx__status__t}{rflpc\-\_\-eth\-\_\-tx\-\_\-status\-\_\-t} or \hyperlink{structrflpc__eth__rx__status__t}{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t}. \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_gad8f2bfd64ec7401b1d19df89bd34ecfb}{rflpc\-\_\-eth\-\_\-set\-\_\-tx\-\_\-control\-\_\-word} (uint32\-\_\-t size\-\_\-to\-\_\-send, uint32\-\_\-t $\ast$control, int trigger\-\_\-it, int last\-\_\-fragment)
+\begin{DoxyCompactList}\small\item\em Sets the transmission control word of a \hyperlink{structrflpc__eth__descriptor__t}{rflpc\-\_\-eth\-\_\-descriptor\-\_\-t} struct. \end{DoxyCompactList}\item 
+void \hyperlink{group__eth_ga47f9acbab027c73f5f672caeb8343871}{rflpc\-\_\-eth\-\_\-set\-\_\-rx\-\_\-base\-\_\-addresses} (\hyperlink{structrflpc__eth__descriptor__t}{rflpc\-\_\-eth\-\_\-descriptor\-\_\-t} $\ast$descriptors, \hyperlink{structrflpc__eth__rx__status__t}{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t} $\ast$status, int count)
+\begin{DoxyCompactList}\small\item\em Sets rx descriptors and status base address. \end{DoxyCompactList}\item 
+static int \hyperlink{group__eth_ga06310dadd40007da79da7f434816f64c}{rflpc\-\_\-eth\-\_\-get\-\_\-current\-\_\-rx\-\_\-packet\-\_\-descriptor} (\hyperlink{structrflpc__eth__descriptor__t}{rflpc\-\_\-eth\-\_\-descriptor\-\_\-t} $\ast$$\ast$descriptor, \hyperlink{structrflpc__eth__rx__status__t}{rflpc\-\_\-eth\-\_\-rx\-\_\-status\-\_\-t} $\ast$$\ast$status)
+\begin{DoxyCompactList}\small\item\em Returns the pointers on the current rx packet descriptor. \end{DoxyCompactList}\item 
+static int \hyperlink{group__eth_gaf6fea7f08b38dcb9c9ef267f910989ac}{rflpc\-\_\-eth\-\_\-rx\-\_\-available} ()
+\begin{DoxyCompactList}\small\item\em Returns true if a packet has been received and not yet processed available. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gadf32019c43a12949903ce47e078d2b4e}{static void \hyperlink{group__eth_gadf32019c43a12949903ce47e078d2b4e}{rflpc\-\_\-eth\-\_\-done\-\_\-process\-\_\-rx\-\_\-packet} ()}\label{group__eth_gadf32019c43a12949903ce47e078d2b4e}
+
+\begin{DoxyCompactList}\small\item\em This function has to be called when a packet (which descriptor is returned by \hyperlink{group__eth_ga06310dadd40007da79da7f434816f64c}{rflpc\-\_\-eth\-\_\-get\-\_\-current\-\_\-rx\-\_\-packet\-\_\-descriptor}) has been processed and can be discarded. \end{DoxyCompactList}\item 
+void \hyperlink{group__eth_ga582b528c504ffe38890f4c655b2084cb}{rflpc\-\_\-eth\-\_\-set\-\_\-tx\-\_\-base\-\_\-addresses} (\hyperlink{structrflpc__eth__descriptor__t}{rflpc\-\_\-eth\-\_\-descriptor\-\_\-t} $\ast$descriptos, \hyperlink{structrflpc__eth__tx__status__t}{rflpc\-\_\-eth\-\_\-tx\-\_\-status\-\_\-t} $\ast$status, int count)
+\begin{DoxyCompactList}\small\item\em Sets tx descriptors and status base address. \end{DoxyCompactList}\item 
+static int \hyperlink{group__eth_ga73ce91815ea1ec2faad48fdd18b1fc80}{rflpc\-\_\-eth\-\_\-get\-\_\-current\-\_\-tx\-\_\-packet\-\_\-descriptor} (\hyperlink{structrflpc__eth__descriptor__t}{rflpc\-\_\-eth\-\_\-descriptor\-\_\-t} $\ast$$\ast$descriptor, \hyperlink{structrflpc__eth__tx__status__t}{rflpc\-\_\-eth\-\_\-tx\-\_\-status\-\_\-t} $\ast$$\ast$status, int idx)
+\begin{DoxyCompactList}\small\item\em returns the index of the current tx packet descriptor. \end{DoxyCompactList}\item 
+static int \hyperlink{group__eth_ga70aa198cdf96cbe80c4c7c6458c5f30e}{rflpc\-\_\-eth\-\_\-get\-\_\-last\-\_\-sent\-\_\-packet\-\_\-idx} ()
+\begin{DoxyCompactList}\small\item\em Returns the index of the last send buffer. \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_ga537cc96b9f1332eec753bdd7a033ef52}{rflpc\-\_\-eth\-\_\-done\-\_\-process\-\_\-tx\-\_\-packet} (int count)
+\begin{DoxyCompactList}\small\item\em When the packet has been generated, calling this function will make it owned by the hardware and queued for emission. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga549c1f53718d91876f0f13cf4082e2ac}{void \hyperlink{group__eth_ga549c1f53718d91876f0f13cf4082e2ac}{rflpc\-\_\-eth\-\_\-get\-\_\-mac\-\_\-address} (uint8\-\_\-t $\ast$addr)}\label{group__eth_ga549c1f53718d91876f0f13cf4082e2ac}
+
+\begin{DoxyCompactList}\small\item\em returns the device M\-A\-C address \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga2633bf7b80203a508a27023ca48ec075}{void \hyperlink{group__eth_ga2633bf7b80203a508a27023ca48ec075}{rflpc\-\_\-eth\-\_\-set\-\_\-mac\-\_\-address} (const uint8\-\_\-t $\ast$addr)}\label{group__eth_ga2633bf7b80203a508a27023ca48ec075}
+
+\begin{DoxyCompactList}\small\item\em sets the device M\-A\-C address \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga38c78af70094bbb49498aef4e6c9603f}{static void \hyperlink{group__eth_ga38c78af70094bbb49498aef4e6c9603f}{rflpc\-\_\-eth\-\_\-set\-\_\-irq\-\_\-handler} (\hyperlink{group__irq_ga4970a8a2cf9b63e4c261982504669a1f}{rflpc\-\_\-irq\-\_\-handler\-\_\-t} c)}\label{group__eth_ga38c78af70094bbb49498aef4e6c9603f}
+
+\begin{DoxyCompactList}\small\item\em sets the interrupt handler of the ethernet peripheral \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_gacbbf829ec0b5c6e2af80d57c51cce14d}{rflpc\-\_\-eth\-\_\-irq\-\_\-enable} (uint32\-\_\-t irqs)
+\begin{DoxyCompactList}\small\item\em enable eth interrupts \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_ga19e9700bec67106ddcf68a56c945e4d4}{rflpc\-\_\-eth\-\_\-irq\-\_\-disable} (uint32\-\_\-t irqs)
+\begin{DoxyCompactList}\small\item\em disable eth interrupts This function will remove irq enable bits. \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_gaa56203b703266060ea2567eac82418c9}{rflpc\-\_\-eth\-\_\-irq\-\_\-enable\-\_\-set} (uint32\-\_\-t irqs)
+\begin{DoxyCompactList}\small\item\em sets the irq enable register This function will disable all irqs and then only enable those given. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga028dc9a4647329b5c075c2f4b8cec83d}{static void \hyperlink{group__eth_ga028dc9a4647329b5c075c2f4b8cec83d}{rflpc\-\_\-eth\-\_\-irq\-\_\-clear} (uint32\-\_\-t irqs)}\label{group__eth_ga028dc9a4647329b5c075c2f4b8cec83d}
+
+\begin{DoxyCompactList}\small\item\em clear given pending interrupts \end{DoxyCompactList}\item 
+static uint32\-\_\-t \hyperlink{group__eth_gaa8edd8188bb816ca8a3d5a4c432b1f2c}{rflpc\-\_\-eth\-\_\-irq\-\_\-get\-\_\-status} ()
+\begin{DoxyCompactList}\small\item\em gets the interrupt status. \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_ga9b1dae38f883c57f355d4e861d189df8}{rflpc\-\_\-eth\-\_\-irq\-\_\-trigger} (uint32\-\_\-t irqs)
+\begin{DoxyCompactList}\small\item\em Force the generation of the given interrupt. \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_ga94e7bd8f0461a5cdcd591ab65d547c32}{rflpc\-\_\-eth\-\_\-activate\-\_\-rx\-\_\-filter} (int accept\-\_\-unicast, int accept\-\_\-multicast, int accept\-\_\-broadcast)
+\begin{DoxyCompactList}\small\item\em Activate the hardware receive filter. \end{DoxyCompactList}\item 
+static void \hyperlink{group__eth_ga242f3993144325b34fb8f257f9148dff}{rflpc\-\_\-eth\-\_\-deactivate\-\_\-rx\-\_\-filter} ()
+\begin{DoxyCompactList}\small\item\em Deactivates the hardware receive filter. \end{DoxyCompactList}\item 
+void \hyperlink{group__eth_ga0eb1c1d02e6f05055972a7309b22e123}{rflpc\-\_\-eth\-\_\-dump\-\_\-internals} ()
+\begin{DoxyCompactList}\small\item\em Use the \hyperlink{group__libc_ga98631211a4a8aee62f572375d5b637be}{printf} function to dump the values of the M\-A\-C registers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ethernet peripheral driver. 
+
+Definition in file \hyperlink{ethernet_8h_source}{ethernet.\-h}.
+

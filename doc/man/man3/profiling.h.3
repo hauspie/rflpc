@@ -1,0 +1,56 @@
+.TH "profiling.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+profiling.h \- 
+.PP
+Macro that can be used to profile some parts of your code\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'drivers/timer\&.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_PROFILE_PRESCALE\fP   (\fBrflpc_clock_get_system_clock\fP() / 1000000)"
+.br
+.RI "\fIThis holds the value of the prescale counter that will be used for time measurement\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_PROFILE_INIT\fP(timer)   do {\fBrflpc_timer_enable\fP(timer); \fBrflpc_timer_set_clock\fP(timer, \fBRFLPC_CCLK\fP); \fBrflpc_timer_set_pre_scale_register\fP(timer,\fBRFLPC_PROFILE_PRESCALE\fP); \fBrflpc_timer_start\fP(timer); } while(0)"
+.br
+.RI "\fIInits a given timer so that it can be used for profiling\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_PROFILE_DECLARE_COUNTER\fP(counter)   volatile uint32_t rflpc_profile_total_##counter; volatile uint32_t rflpc_profile_start_##counter;"
+.br
+.RI "\fIDeclares the needed global variables for profiling\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_PROFILE_DECLARE_EXTERN_COUNTER\fP(counter)   extern volatile uint32_t rflpc_profile_total_##counter;extern volatile uint32_t rflpc_profile_start_##counter;"
+.br
+.RI "\fIDeclare the needed global variables for profiling as externs\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_PROFILE_START_COUNTER\fP(counter, timer)   do { rflpc_profile_start_##counter = \fBrflpc_timer_get_counter\fP(timer);} while(0)"
+.br
+.RI "\fIStarts a given counter, storing the current time of the given timer\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_PROFILE_STOP_COUNTER\fP(counter, timer)   do { rflpc_profile_total_##counter += \fBrflpc_timer_get_counter\fP(timer) - rflpc_profile_start_##counter;} while(0)"
+.br
+.RI "\fIStops a given counter, adding the elapsed time since its start to the global counter\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_PROFILE_GET_TOTAL\fP(counter)   rflpc_profile_total_##counter"
+.br
+.RI "\fIGets the global counter value\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+Macro that can be used to profile some parts of your code\&. 
+
+
+.PP
+Definition in file \fBprofiling\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

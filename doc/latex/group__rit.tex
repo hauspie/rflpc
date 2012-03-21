@@ -1,0 +1,80 @@
+\hypertarget{group__rit}{\section{Repetitive Interrupt Timer}
+\label{group__rit}\index{Repetitive Interrupt Timer@{Repetitive Interrupt Timer}}
+}
+
+
+This timer provide a simple mean to get a repetitive interrupt.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{group__rit_ga2860cda81e1e3fc5d4441f964c9b615d}{rflpc\-\_\-rit\-\_\-enable} ()
+\begin{DoxyCompactList}\small\item\em Enables the R\-I\-T. \end{DoxyCompactList}\item 
+\hypertarget{group__rit_ga9d790b6ec3e4052da2156e38fac01ede}{static uint32\-\_\-t \hyperlink{group__rit_ga9d790b6ec3e4052da2156e38fac01ede}{rflpc\-\_\-rit\-\_\-get\-\_\-counter\-\_\-value} ()}\label{group__rit_ga9d790b6ec3e4052da2156e38fac01ede}
+
+\begin{DoxyCompactList}\small\item\em Gets the current value of the rit counter. \end{DoxyCompactList}\item 
+\hypertarget{group__rit_ga36cabb41b0168d9aea9640644ed1ea23}{static void \hyperlink{group__rit_ga36cabb41b0168d9aea9640644ed1ea23}{rflpc\-\_\-rit\-\_\-set\-\_\-counter\-\_\-value} (uint32\-\_\-t value)}\label{group__rit_ga36cabb41b0168d9aea9640644ed1ea23}
+
+\begin{DoxyCompactList}\small\item\em Sets the current value of the rit counter. \end{DoxyCompactList}\item 
+static void \hyperlink{group__rit_ga2ef1d26b936739a2c96b5e9fc90339ae}{rflpc\-\_\-rit\-\_\-clear\-\_\-pending\-\_\-interrupt} ()
+\begin{DoxyCompactList}\small\item\em clears the pending interrupt. \end{DoxyCompactList}\item 
+void \hyperlink{group__rit_ga5e882b9898132d2281a1f012f7d2dd08}{rflpc\-\_\-rit\-\_\-set\-\_\-callback} (uint32\-\_\-t comp\-\_\-value, uint32\-\_\-t mask, int reset\-\_\-on\-\_\-match, \hyperlink{group__irq_ga4970a8a2cf9b63e4c261982504669a1f}{rflpc\-\_\-irq\-\_\-handler\-\_\-t} c)
+\begin{DoxyCompactList}\small\item\em sets the R\-I\-T interrupt callback and configure the R\-I\-T interrupt. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This timer provide a simple mean to get a repetitive interrupt. When the timer is started, it is incremented at each C\-P\-U clock tick and can be configured to generate an interruption when its counter matches a value/mask pair 
+
+\subsection{Function Documentation}
+\hypertarget{group__rit_ga2ef1d26b936739a2c96b5e9fc90339ae}{\index{Repetitive Interrupt Timer@{Repetitive Interrupt Timer}!rflpc\-\_\-rit\-\_\-clear\-\_\-pending\-\_\-interrupt@{rflpc\-\_\-rit\-\_\-clear\-\_\-pending\-\_\-interrupt}}
+\index{rflpc\-\_\-rit\-\_\-clear\-\_\-pending\-\_\-interrupt@{rflpc\-\_\-rit\-\_\-clear\-\_\-pending\-\_\-interrupt}!Repetitive Interrupt Timer@{Repetitive Interrupt Timer}}
+\subsubsection[{rflpc\-\_\-rit\-\_\-clear\-\_\-pending\-\_\-interrupt}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-rit\-\_\-clear\-\_\-pending\-\_\-interrupt} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__rit_ga2ef1d26b936739a2c96b5e9fc90339ae}
+
+
+clears the pending interrupt. 
+
+Should be called at the end of your callback to prevent the interruption to be generated again 
+
+Definition at line 58 of file rit.\-h.
+
+\hypertarget{group__rit_ga2860cda81e1e3fc5d4441f964c9b615d}{\index{Repetitive Interrupt Timer@{Repetitive Interrupt Timer}!rflpc\-\_\-rit\-\_\-enable@{rflpc\-\_\-rit\-\_\-enable}}
+\index{rflpc\-\_\-rit\-\_\-enable@{rflpc\-\_\-rit\-\_\-enable}!Repetitive Interrupt Timer@{Repetitive Interrupt Timer}}
+\subsubsection[{rflpc\-\_\-rit\-\_\-enable}]{\setlength{\rightskip}{0pt plus 5cm}static void {\bf rflpc\-\_\-rit\-\_\-enable} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, static\mbox{]}}}}\label{group__rit_ga2860cda81e1e3fc5d4441f964c9b615d}
+
+
+Enables the R\-I\-T. 
+
+By default, it is turned off. See P\-C\-O\-N\-P register, user manual, p.\-63 
+
+Definition at line 45 of file rit.\-h.
+
+\hypertarget{group__rit_ga5e882b9898132d2281a1f012f7d2dd08}{\index{Repetitive Interrupt Timer@{Repetitive Interrupt Timer}!rflpc\-\_\-rit\-\_\-set\-\_\-callback@{rflpc\-\_\-rit\-\_\-set\-\_\-callback}}
+\index{rflpc\-\_\-rit\-\_\-set\-\_\-callback@{rflpc\-\_\-rit\-\_\-set\-\_\-callback}!Repetitive Interrupt Timer@{Repetitive Interrupt Timer}}
+\subsubsection[{rflpc\-\_\-rit\-\_\-set\-\_\-callback}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf rflpc\-\_\-rit\-\_\-set\-\_\-callback} (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{comp\-\_\-value, }
+\item[{uint32\-\_\-t}]{mask, }
+\item[{int}]{reset\-\_\-on\-\_\-match, }
+\item[{{\bf rflpc\-\_\-irq\-\_\-handler\-\_\-t}}]{c}
+\end{DoxyParamCaption}
+)}}\label{group__rit_ga5e882b9898132d2281a1f012f7d2dd08}
+
+
+sets the R\-I\-T interrupt callback and configure the R\-I\-T interrupt. 
+
+The interrupt handler will be called when the counter value reaches value for the bits zeroed in the mask If reset on match is true, then when the counter match the comp\-\_\-value, the counter is reset to 0
+
+For example, if you want the timer to be called each time the 7th bit is equal to one\-:
+\begin{DoxyItemize}
+\item comp\-\_\-value should be set to 1 $<$$<$ 7
+\item mask should be set to $\sim$(1 $<$$<$ 7) 
+\end{DoxyItemize}

@@ -1,0 +1,107 @@
+\hypertarget{config-mbed_8h}{\section{config-\/mbed.h File Reference}
+\label{config-mbed_8h}\index{config-\/mbed.\-h@{config-\/mbed.\-h}}
+}
+
+
+Configure the library to use with the M\-B\-E\-D platform (\href{http://www.mbed.org}{\tt http\-://www.\-mbed.\-org})  
+
+
+\subsection*{Defines}
+\begin{Indent}{\bf Clock configuration}\par
+{\em Dividers and multipliers for controlling the C\-P\-U clock.
+
+The P\-L\-L output clock frequency is given by\-: (2$\ast$\-P\-L\-L\-\_\-\-M\-U\-L\-T\-I\-P\-L\-I\-E\-R$\ast$\-M\-A\-I\-N\-\_\-\-O\-S\-C\-I\-L\-L\-A\-T\-O\-R\-\_\-\-F\-R\-E\-Q\-U\-E\-N\-C\-Y)/\-I\-N\-P\-U\-T\-\_\-\-D\-I\-V\-I\-D\-E\-R This clock is then divided by C\-P\-U\-\_\-\-D\-I\-V\-I\-D\-E\-R to clock the C\-P\-U.
+
+C\-P\-U is set to 96\-Mhz using the 12\-Mhz source for P\-L\-L0. (see mbed schematic, main oscillator is a 12\-Mhz crystal connected to pins X\-T\-A\-L1 and X\-T\-A\-L2)
+
+As this setup is suitable for U\-S\-B, P\-P\-L0 can be used to clock U\-S\-B (need a 48\-Mhz mutiple)
+
+With the given configuration (I\-N\-P\-U\-T\-\_\-\-D\-I\-V\-I\-D\-E\-R=1, P\-L\-L\-\_\-\-M\-U\-L\-T\-I\-P\-L\-I\-E\-R=12, C\-P\-U\-\_\-\-D\-I\-V\-I\-D\-E\-R=3), P\-L\-L ouput is 2$\ast$12$\ast$12000000/1 = 288\-Mhz Divided by 3 -\/$>$ C\-P\-U is at 96 Mhz
+
+\begin{DoxyWarning}{Warning}
+Be carefull when modifing these parameters. Clock the A\-R\-M at more than 100\-Mhz is a bad idea... 
+\end{DoxyWarning}
+}\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__config_ga613aee18f230b92f06a5c3edf1c0eb8d}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-U\-S\-E\-\_\-\-M\-A\-I\-N\-\_\-\-O\-S\-C\-I\-L\-L\-A\-T\-O\-R}
+\begin{DoxyCompactList}\small\item\em If defined, the \hyperlink{group__clock_ga00ad4cbad1cd13962e283bdfb3451f7f}{rflpc\-\_\-clock\-\_\-init()} function will use the main oscillator. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga1aca349fddc5e309a59773326d84357e}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-M\-A\-I\-N\-\_\-\-O\-S\-C\-I\-L\-L\-A\-T\-O\-R\-\_\-\-F\-R\-E\-Q\-U\-E\-N\-C\-Y}~12000000
+\begin{DoxyCompactList}\small\item\em The frequency of the main oscillator if used. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga896b4d9a201a8f3350e8a2827e389edd}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-I\-N\-P\-U\-T\-\_\-\-D\-I\-V\-I\-D\-E\-R}~1
+\begin{DoxyCompactList}\small\item\em P\-L\-L0 will divide its input by this value. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga512c5ec1b384b35110da196912f42548}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-P\-L\-L\-\_\-\-M\-U\-L\-T\-I\-P\-L\-I\-E\-R}~12
+\begin{DoxyCompactList}\small\item\em P\-L\-L0 will multiply its input by this value. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga90b12dedcc59811400db87190281f77f}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-C\-P\-U\-\_\-\-D\-I\-V\-I\-D\-E\-R}~3
+\begin{DoxyCompactList}\small\item\em The P\-L\-L0 output will be divided by this value to provide C\-P\-U clock. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf L\-E\-Ds configuration}\par
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__config_gafc180ae44e9f400ffb8dd696d5b91c0e}{\#define \hyperlink{group__config_gafc180ae44e9f400ffb8dd696d5b91c0e}{R\-F\-L\-P\-C\-\_\-\-L\-E\-D\-\_\-\-P\-O\-R\-T}~1}\label{group__config_gafc180ae44e9f400ffb8dd696d5b91c0e}
+
+\begin{DoxyCompactList}\small\item\em Which G\-P\-I\-O port is used for leds? \end{DoxyCompactList}\item 
+\hypertarget{group__config_gaf2f44df1da41d405749c104714d685b3}{\#define \hyperlink{group__config_gaf2f44df1da41d405749c104714d685b3}{R\-F\-L\-P\-C\-\_\-\-L\-E\-D\-\_\-1\-\_\-\-P\-I\-N}~18}\label{group__config_gaf2f44df1da41d405749c104714d685b3}
+
+\begin{DoxyCompactList}\small\item\em On which pin is the L\-E\-D1 ? \end{DoxyCompactList}\item 
+\hypertarget{group__config_ga6faf6042aee47250aa8581072c96ef71}{\#define \hyperlink{group__config_ga6faf6042aee47250aa8581072c96ef71}{R\-F\-L\-P\-C\-\_\-\-L\-E\-D\-\_\-2\-\_\-\-P\-I\-N}~20}\label{group__config_ga6faf6042aee47250aa8581072c96ef71}
+
+\begin{DoxyCompactList}\small\item\em On which pin is the L\-E\-D2 ? \end{DoxyCompactList}\item 
+\hypertarget{group__config_ga81cffd6a00d32da136b5852b70bab8e6}{\#define \hyperlink{group__config_ga81cffd6a00d32da136b5852b70bab8e6}{R\-F\-L\-P\-C\-\_\-\-L\-E\-D\-\_\-3\-\_\-\-P\-I\-N}~21}\label{group__config_ga81cffd6a00d32da136b5852b70bab8e6}
+
+\begin{DoxyCompactList}\small\item\em On which pin is the L\-E\-D3 ? \end{DoxyCompactList}\item 
+\hypertarget{group__config_gaa2342a982cef2535071bfb723e6694e0}{\#define \hyperlink{group__config_gaa2342a982cef2535071bfb723e6694e0}{R\-F\-L\-P\-C\-\_\-\-L\-E\-D\-\_\-4\-\_\-\-P\-I\-N}~23}\label{group__config_gaa2342a982cef2535071bfb723e6694e0}
+
+\begin{DoxyCompactList}\small\item\em On which pin is the L\-E\-D4 ? \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf P\-H\-Y device configuration}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__config_ga4855717644cc229c169a9aad41e807c1}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-A\-D\-D\-R}~(0x01)
+\begin{DoxyCompactList}\small\item\em M\-I\-I Address of the P\-H\-Y device. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga02c4bc43d0f8f9c635f405bc9bd0b801}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-U\-S\-E\-\_\-\-E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-M\-I\-I}
+\begin{DoxyCompactList}\small\item\em Define this constant to use the M\-I\-I extended register set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf U\-A\-R\-T Configuration}\par
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__config_ga5cdbffcf41fc063af9cfcb1473c80332}{\#define \hyperlink{group__config_ga5cdbffcf41fc063af9cfcb1473c80332}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T0\-\_\-\-P\-O\-R\-T}~0}\label{group__config_ga5cdbffcf41fc063af9cfcb1473c80332}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T0 P\-O\-R\-T. \end{DoxyCompactList}\item 
+\hypertarget{group__config_gadf8bc56f69f4501e5960ea79ed4f300d}{\#define \hyperlink{group__config_gadf8bc56f69f4501e5960ea79ed4f300d}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T0\-\_\-\-T\-X\-D\-\_\-\-P\-I\-N}~2}\label{group__config_gadf8bc56f69f4501e5960ea79ed4f300d}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T0 T\-X Pin. \end{DoxyCompactList}\item 
+\hypertarget{group__config_ga752305019118b083adfaa2b341912ee4}{\#define \hyperlink{group__config_ga752305019118b083adfaa2b341912ee4}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T0\-\_\-\-R\-X\-D\-\_\-\-P\-I\-N}~3}\label{group__config_ga752305019118b083adfaa2b341912ee4}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T0 R\-X Pin. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga16df9509883b14d96ddf30f831a0fae5}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T0\-\_\-\-P\-I\-N\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N}~1
+\begin{DoxyCompactList}\small\item\em Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-\/purpose pins (cf. \end{DoxyCompactList}\item 
+\hypertarget{group__config_gad108f2b9ae2d6aa85bbc58c2e98438df}{\#define \hyperlink{group__config_gad108f2b9ae2d6aa85bbc58c2e98438df}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T2\-\_\-\-P\-O\-R\-T}~0}\label{group__config_gad108f2b9ae2d6aa85bbc58c2e98438df}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T2 P\-O\-R\-T. \end{DoxyCompactList}\item 
+\hypertarget{group__config_ga7fb82741537cdfd04bb47663c3f51859}{\#define \hyperlink{group__config_ga7fb82741537cdfd04bb47663c3f51859}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T2\-\_\-\-T\-X\-D\-\_\-\-P\-I\-N}~10}\label{group__config_ga7fb82741537cdfd04bb47663c3f51859}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T2 T\-X Pin. \end{DoxyCompactList}\item 
+\hypertarget{group__config_ga48508620183c256d73ea0e6cd27e8832}{\#define \hyperlink{group__config_ga48508620183c256d73ea0e6cd27e8832}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T2\-\_\-\-R\-X\-D\-\_\-\-P\-I\-N}~11}\label{group__config_ga48508620183c256d73ea0e6cd27e8832}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T2 R\-X Pin. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga407dd3739a66a95a6252951ec28b7ae0}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T2\-\_\-\-P\-I\-N\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N}~1
+\begin{DoxyCompactList}\small\item\em Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-\/purpose pins (cf. \end{DoxyCompactList}\item 
+\hypertarget{group__config_gae693d2010094f1d87d124a7888758645}{\#define \hyperlink{group__config_gae693d2010094f1d87d124a7888758645}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T3\-\_\-\-P\-O\-R\-T}~0}\label{group__config_gae693d2010094f1d87d124a7888758645}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T3 P\-O\-R\-T. \end{DoxyCompactList}\item 
+\hypertarget{group__config_ga9f0d2ed7c6a82bc0abdb2a29f63ff5dc}{\#define \hyperlink{group__config_ga9f0d2ed7c6a82bc0abdb2a29f63ff5dc}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T3\-\_\-\-T\-X\-D\-\_\-\-P\-I\-N}~0}\label{group__config_ga9f0d2ed7c6a82bc0abdb2a29f63ff5dc}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T3 T\-X Pin. \end{DoxyCompactList}\item 
+\hypertarget{group__config_ga447d22f8b082919d45f6b38c10c770a5}{\#define \hyperlink{group__config_ga447d22f8b082919d45f6b38c10c770a5}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T3\-\_\-\-R\-X\-D\-\_\-\-P\-I\-N}~1}\label{group__config_ga447d22f8b082919d45f6b38c10c770a5}
+
+\begin{DoxyCompactList}\small\item\em U\-A\-R\-T3 R\-X Pin. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__config_ga96ec09a4733c111eb037839112f7ae3a}{R\-F\-L\-P\-C\-\_\-\-U\-A\-R\-T3\-\_\-\-P\-I\-N\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N}~2
+\begin{DoxyCompactList}\small\item\em Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-\/purpose pins (cf. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+Configure the library to use with the M\-B\-E\-D platform (\href{http://www.mbed.org}{\tt http\-://www.\-mbed.\-org}) 
+
+Definition in file \hyperlink{config-mbed_8h_source}{config-\/mbed.\-h}.
+

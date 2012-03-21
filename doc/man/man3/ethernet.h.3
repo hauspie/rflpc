@@ -1,0 +1,199 @@
+.TH "ethernet.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ethernet.h \- 
+.PP
+Ethernet peripheral driver\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include '\&.\&./nxp/LPC17xx\&.h'\fP
+.br
+\fC#include '\&.\&./interrupt\&.h'\fP
+.br
+\fC#include 'eth_const\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBrflpc_eth_descriptor_t\fP"
+.br
+.RI "\fIThis structure holds a descriptor which describes the fragment received or sent by the ethernet DMA\&. \fP"
+.ti -1c
+.RI "struct \fBrflpc_eth_rx_status_t\fP"
+.br
+.RI "\fIThis structure holds the reception status associated to a descriptor\&. \fP"
+.ti -1c
+.RI "struct \fBrflpc_eth_tx_status_t\fP"
+.br
+.RI "\fIThis structure holds the transmit status associated to a descriptor\&. \fP"
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTX_PRODUCE_INDEX_INC\fP(inc)   ((LPC_EMAC->TxProduceIndex + (inc))% (LPC_EMAC->TxDescriptorNumber+1))"
+.br
+.RI "\fIHelper macro for \fBrflpc_eth_get_current_tx_packet_descriptor\fP\&. \fP"
+.in -1c
+.PP
+.RI "\fBLink modes\fP"
+.br
+These constants can be used to get or set the link mode using \fBrflpc_eth_get_link_mode\fP and \fBrflpc_eth_set_link_mode\fP\&. 
+.PP
+.in +1c
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_ETH_LINK_MODE_SPEED_BIT\fP   (1 << 0)"
+.br
+.RI "\fIThis bit indicates 100Mbps/10Mbps speed\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_ETH_LINK_MODE_DUPLEX_BIT\fP   (1 << 1)"
+.br
+.RI "\fIThis bit indicates Full/Half duplex mode\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_ETH_LINK_MODE_100HD\fP   (\fBRFLPC_ETH_LINK_MODE_SPEED_BIT\fP)"
+.br
+.RI "\fI100Mbps, Half Duplex \fP"
+.ti -1c
+.RI "#define \fBRFLPC_ETH_LINK_MODE_10HD\fP   (0)"
+.br
+.RI "\fI10Mbps, Half Duplex \fP"
+.ti -1c
+.RI "#define \fBRFLPC_ETH_LINK_MODE_100FD\fP   (\fBRFLPC_ETH_LINK_MODE_SPEED_BIT\fP | \fBRFLPC_ETH_LINK_MODE_DUPLEX_BIT\fP)"
+.br
+.RI "\fI100Mbps, Full Duplex \fP"
+.ti -1c
+.RI "#define \fBRFLPC_ETH_LINK_MODE_10FD\fP   (\fBRFLPC_ETH_LINK_MODE_DUPLEX_BIT\fP)"
+.br
+.RI "\fI10Mbps, Full Duplex \fP"
+.in -1c
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBrflpc_eth_init\fP ()"
+.br
+.RI "\fIInits the ethernet device\&. \fP"
+.ti -1c
+.RI "int \fBrflpc_eth_link_state\fP ()"
+.br
+.RI "\fIReturns the link state\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_eth_set_link_mode\fP (int mode)"
+.br
+.RI "\fIForces the MAC and PHY devices to operate on the given mode no matter the capability of the linked partner\&. \fP"
+.ti -1c
+.RI "int \fBrflpc_eth_link_auto_negociate\fP (int max_desired_mode)"
+.br
+.RI "\fIForce the physical link to perform auto negociation of mode\&. \fP"
+.ti -1c
+.RI "int \fBrflpc_eth_get_link_mode\fP ()"
+.br
+.RI "\fIreturns the current link mode\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_eth_get_packet_size\fP (uint32_t status_info)"
+.br
+.RI "\fIReturns the size of a packet from the status_info field of a \fBrflpc_eth_tx_status_t\fP or \fBrflpc_eth_rx_status_t\fP\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_set_tx_control_word\fP (uint32_t size_to_send, uint32_t *control, int trigger_it, int last_fragment)"
+.br
+.RI "\fISets the transmission control word of a \fBrflpc_eth_descriptor_t\fP struct\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_eth_set_rx_base_addresses\fP (\fBrflpc_eth_descriptor_t\fP *descriptors, \fBrflpc_eth_rx_status_t\fP *status, int count)"
+.br
+.RI "\fISets rx descriptors and status base address\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_eth_get_current_rx_packet_descriptor\fP (\fBrflpc_eth_descriptor_t\fP **descriptor, \fBrflpc_eth_rx_status_t\fP **status)"
+.br
+.RI "\fIReturns the pointers on the current rx packet descriptor\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_eth_rx_available\fP ()"
+.br
+.RI "\fIReturns true if a packet has been received and not yet processed available\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_done_process_rx_packet\fP ()"
+.br
+.RI "\fIThis function has to be called when a packet (which descriptor is returned by \fBrflpc_eth_get_current_rx_packet_descriptor\fP) has been processed and can be discarded\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_eth_set_tx_base_addresses\fP (\fBrflpc_eth_descriptor_t\fP *descriptos, \fBrflpc_eth_tx_status_t\fP *status, int count)"
+.br
+.RI "\fISets tx descriptors and status base address\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_eth_get_current_tx_packet_descriptor\fP (\fBrflpc_eth_descriptor_t\fP **descriptor, \fBrflpc_eth_tx_status_t\fP **status, int idx)"
+.br
+.RI "\fIreturns the index of the current tx packet descriptor\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_eth_get_last_sent_packet_idx\fP ()"
+.br
+.RI "\fIReturns the index of the last send buffer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_done_process_tx_packet\fP (int count)"
+.br
+.RI "\fIWhen the packet has been generated, calling this function will make it owned by the hardware and queued for emission\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_eth_get_mac_address\fP (uint8_t *addr)"
+.br
+.RI "\fIreturns the device MAC address \fP"
+.ti -1c
+.RI "void \fBrflpc_eth_set_mac_address\fP (const uint8_t *addr)"
+.br
+.RI "\fIsets the device MAC address \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_set_irq_handler\fP (\fBrflpc_irq_handler_t\fP c)"
+.br
+.RI "\fIsets the interrupt handler of the ethernet peripheral \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_irq_enable\fP (uint32_t irqs)"
+.br
+.RI "\fIenable eth interrupts \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_irq_disable\fP (uint32_t irqs)"
+.br
+.RI "\fIdisable eth interrupts This function will remove irq enable bits\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_irq_enable_set\fP (uint32_t irqs)"
+.br
+.RI "\fIsets the irq enable register This function will disable all irqs and then only enable those given\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_irq_clear\fP (uint32_t irqs)"
+.br
+.RI "\fIclear given pending interrupts \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_eth_irq_get_status\fP ()"
+.br
+.RI "\fIgets the interrupt status\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_irq_trigger\fP (uint32_t irqs)"
+.br
+.RI "\fIForce the generation of the given interrupt\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_activate_rx_filter\fP (int accept_unicast, int accept_multicast, int accept_broadcast)"
+.br
+.RI "\fIActivate the hardware receive filter\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_eth_deactivate_rx_filter\fP ()"
+.br
+.RI "\fIDeactivates the hardware receive filter\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_eth_dump_internals\fP ()"
+.br
+.RI "\fIUse the \fBprintf\fP function to dump the values of the MAC registers\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+Ethernet peripheral driver\&. 
+
+
+.PP
+Definition in file \fBethernet\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

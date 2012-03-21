@@ -1,0 +1,167 @@
+.TH "config-mbed.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+config-mbed.h \- 
+.PP
+Configure the library to use with the MBED platform (http://www.mbed.org)  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.PP
+.RI "\fBClock configuration\fP"
+.br
+Dividers and multipliers for controlling the CPU clock\&.
+.PP
+The PLL output clock frequency is given by: (2*PLL_MULTIPLIER*MAIN_OSCILLATOR_FREQUENCY)/INPUT_DIVIDER This clock is then divided by CPU_DIVIDER to clock the CPU\&.
+.PP
+CPU is set to 96Mhz using the 12Mhz source for PLL0\&. (see mbed schematic, main oscillator is a 12Mhz crystal connected to pins XTAL1 and XTAL2)
+.PP
+As this setup is suitable for USB, PPL0 can be used to clock USB (need a 48Mhz mutiple)
+.PP
+With the given configuration (INPUT_DIVIDER=1, PLL_MULTIPLIER=12, CPU_DIVIDER=3), PLL ouput is 2*12*12000000/1 = 288Mhz Divided by 3 -> CPU is at 96 Mhz
+.PP
+\fBWarning:\fP
+.RS 4
+Be carefull when modifing these parameters\&. Clock the ARM at more than 100Mhz is a bad idea\&.\&.\&. 
+.RE
+.PP
+
+.PP
+.in +1c
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_USE_MAIN_OSCILLATOR\fP"
+.br
+.RI "\fIIf defined, the \fBrflpc_clock_init()\fP function will use the main oscillator\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY\fP   12000000"
+.br
+.RI "\fIThe frequency of the main oscillator if used\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_INPUT_DIVIDER\fP   1"
+.br
+.RI "\fIPLL0 will divide its input by this value\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_PLL_MULTIPLIER\fP   12"
+.br
+.RI "\fIPLL0 will multiply its input by this value\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_CPU_DIVIDER\fP   3"
+.br
+.RI "\fIThe PLL0 output will be divided by this value to provide CPU clock\&. \fP"
+.in -1c
+.in -1c
+.PP
+.RI "\fBLEDs configuration\fP"
+.br
+
+.in +1c
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_LED_PORT\fP   1"
+.br
+.RI "\fIWhich GPIO port is used for leds? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_1_PIN\fP   18"
+.br
+.RI "\fIOn which pin is the LED1 ? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_2_PIN\fP   20"
+.br
+.RI "\fIOn which pin is the LED2 ? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_3_PIN\fP   21"
+.br
+.RI "\fIOn which pin is the LED3 ? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_4_PIN\fP   23"
+.br
+.RI "\fIOn which pin is the LED4 ? \fP"
+.in -1c
+.in -1c
+.PP
+.RI "\fBPHY device configuration\fP"
+.br
+
+.in +1c
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_ETH_PHY_ADDR\fP   (0x01)"
+.br
+.RI "\fIMII Address of the PHY device\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_ETH_USE_EXTENDED_MII\fP"
+.br
+.RI "\fIDefine this constant to use the MII extended register set\&. \fP"
+.in -1c
+.in -1c
+.PP
+.RI "\fBUART Configuration\fP"
+.br
+
+.in +1c
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_UART0_PORT\fP   0"
+.br
+.RI "\fIUART0 PORT\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART0_TXD_PIN\fP   2"
+.br
+.RI "\fIUART0 TX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART0_RXD_PIN\fP   3"
+.br
+.RI "\fIUART0 RX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART0_PIN_FUNCTION\fP   1"
+.br
+.RI "\fIDepending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_PORT\fP   0"
+.br
+.RI "\fIUART2 PORT\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_TXD_PIN\fP   10"
+.br
+.RI "\fIUART2 TX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_RXD_PIN\fP   11"
+.br
+.RI "\fIUART2 RX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_PIN_FUNCTION\fP   1"
+.br
+.RI "\fIDepending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_PORT\fP   0"
+.br
+.RI "\fIUART3 PORT\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_TXD_PIN\fP   0"
+.br
+.RI "\fIUART3 TX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_RXD_PIN\fP   1"
+.br
+.RI "\fIUART3 RX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_PIN_FUNCTION\fP   2"
+.br
+.RI "\fIDepending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. \fP"
+.in -1c
+.in -1c
+.SH "Detailed Description"
+.PP 
+Configure the library to use with the MBED platform (http://www.mbed.org) 
+
+
+.PP
+Definition in file \fBconfig-mbed\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

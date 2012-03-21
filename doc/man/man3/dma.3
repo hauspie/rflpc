@@ -1,0 +1,84 @@
+.TH "General Purpose DMA" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+General Purpose DMA \- 
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBrflpc_dma_channel_t\fP { \fBRFLPC_DMAC0\fP, \fBRFLPC_DMAC1\fP, \fBRFLPC_DMAC2\fP, \fBRFLPC_DMAC3\fP, \fBRFLPC_DMAC4\fP, \fBRFLPC_DMAC5\fP, \fBRFLPC_DMAC6\fP, \fBRFLPC_DMAC7\fP }"
+.br
+.RI "\fIEnum to identify DMA channels\&. \fP"
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrflpc_dma_init\fP (void)"
+.br
+.RI "\fIInits the DMA Peripheral\&. \fP"
+.ti -1c
+.RI "int \fBrflpc_dma_channel_ready\fP (\fBrflpc_dma_channel_t\fP channel)"
+.br
+.RI "\fITells if a DMA channel is ready to be used\&. \fP"
+.ti -1c
+.RI "int \fBrflpc_dma_start\fP (\fBrflpc_dma_channel_t\fP channel, void *dest, const void *src, uint32_t size)"
+.br
+.RI "\fIStarts a DMA copy\&. \fP"
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int \fBrflpc_dma_channel_ready\fP (\fBrflpc_dma_channel_t\fPchannel)"
+
+.PP
+Tells if a DMA channel is ready to be used\&. \fBReturns:\fP
+.RS 4
+true if the DMA channel is ready (not already doing something) 
+.RE
+.PP
+
+.SS "void \fBrflpc_dma_init\fP (void)"
+
+.PP
+Inits the DMA Peripheral\&. \fBNote:\fP
+.RS 4
+The DMA is enabled in little endian mode by default 
+.RE
+.PP
+
+.SS "int \fBrflpc_dma_start\fP (\fBrflpc_dma_channel_t\fPchannel, void *dest, const void *src, uint32_tsize)"
+
+.PP
+Starts a DMA copy\&. The DMA channel must be ready before starting a DMA copy 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIchannel\fP The channel to use\&. 
+.br
+\fIdest\fP destination pointer 
+.br
+\fIsrc\fP source data 
+.br
+\fIsize\fP number of bytes to transfert (limited to 0xFFF bytes) 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true if the copy has been started, false otherwise
+.RE
+.PP
+\fBWarning:\fP
+.RS 4
+In the current implementation, size is limited by 0xFFF because only one DMA request is generated\&. 
+.RE
+.PP
+\fBTodo\fP
+.RS 4
+Handle size > 0xFFF 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

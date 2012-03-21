@@ -1,0 +1,45 @@
+.TH "dma.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+dma.h \- 
+.PP
+General Purpose DMA driver\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBrflpc_dma_channel_t\fP { \fBRFLPC_DMAC0\fP, \fBRFLPC_DMAC1\fP, \fBRFLPC_DMAC2\fP, \fBRFLPC_DMAC3\fP, \fBRFLPC_DMAC4\fP, \fBRFLPC_DMAC5\fP, \fBRFLPC_DMAC6\fP, \fBRFLPC_DMAC7\fP }"
+.br
+.RI "\fIEnum to identify DMA channels\&. \fP"
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrflpc_dma_init\fP (void)"
+.br
+.RI "\fIInits the DMA Peripheral\&. \fP"
+.ti -1c
+.RI "int \fBrflpc_dma_channel_ready\fP (\fBrflpc_dma_channel_t\fP channel)"
+.br
+.RI "\fITells if a DMA channel is ready to be used\&. \fP"
+.ti -1c
+.RI "int \fBrflpc_dma_start\fP (\fBrflpc_dma_channel_t\fP channel, void *dest, const void *src, uint32_t size)"
+.br
+.RI "\fIStarts a DMA copy\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+General Purpose DMA driver\&. 
+
+
+.PP
+Definition in file \fBdma\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

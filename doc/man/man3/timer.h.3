@@ -1,0 +1,122 @@
+.TH "timer.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+timer.h \- 
+.PP
+TIMER0/1/2/3 device driver\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include '\&.\&./nxp/LPC17xx\&.h'\fP
+.br
+\fC#include '\&.\&./clock\&.h'\fP
+.br
+\fC#include '\&.\&./tools\&.h'\fP
+.br
+\fC#include '\&.\&./interrupt\&.h'\fP
+.br
+
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBrflpc_timer_t\fP { \fBRFLPC_TIMER0\fP =  0, \fBRFLPC_TIMER1\fP =  1, \fBRFLPC_TIMER2\fP =  2, \fBRFLPC_TIMER3\fP =  3 }"
+.br
+.RI "\fIValue to use for the timer value in functions\&. \fP"
+.ti -1c
+.RI "enum \fBrflpc_timer_match_t\fP { \fBRFLPC_TIMER_MATCH0\fP =  0, \fBRFLPC_TIMER_MATCH1\fP =  1, \fBRFLPC_TIMER_MATCH2\fP =  2, \fBRFLPC_TIMER_MATCH3\fP =  3 }"
+.br
+.RI "\fIMatch registers for interrupt generation\&. \fP"
+.ti -1c
+.RI "enum { \fBRFLPC_TIMER_IRQ_ON_MATCH\fP =  1, \fBRFLPC_TIMER_RESET_ON_MATCH\fP =  2, \fBRFLPC_TIMER_STOP_ON_MATCH\fP =  4 }"
+.br
+.RI "\fIOptions for interrupt generation\&. \fP"
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "static LPC_TIM_TypeDef * \fBrflpc_timer_base\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIThis function is used by the driver to convert the timer id to the base address of its configuration register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_enable\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIPower and clock the given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_disable\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIdisable the given timer \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_clock\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_clock_divider_t\fP divider)"
+.br
+.RI "\fISets the cpu clock divider for a given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_callback\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_irq_handler_t\fP callback)"
+.br
+.RI "\fISets the timer interrupt callback\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_start\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIstarts the given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_stop\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIStops the timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_reset\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIResets the timer\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_timer_get_counter\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIReturns the timer counter value\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_timer_get_pre_scale_counter\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIReturns the prescale counter value\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_timer_get_pre_scale_register\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIReturns the value of the prescale register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_counter\fP (\fBrflpc_timer_t\fP timer, uint32_t value)"
+.br
+.RI "\fISets the timer counter value\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_pre_scale_counter\fP (\fBrflpc_timer_t\fP timer, uint32_t value)"
+.br
+.RI "\fISets the prescale counter value\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_pre_scale_register\fP (\fBrflpc_timer_t\fP timer, uint32_t value)"
+.br
+.RI "\fISets the value of the prescale register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_match_value\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register, uint32_t match_value)"
+.br
+.RI "\fISet the match register value for a given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_irq_on_match\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register, uint32_t options)"
+.br
+.RI "\fIEnable IRQ generation when the timer counter reaches the value of a match register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_reset_irq\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register)"
+.br
+.RI "\fIReset the irq for a given match register\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_timer_test_irq\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register)"
+.br
+.RI "\fICheck if an interrupt has been generated for a given match register\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+TIMER0/1/2/3 device driver\&. 
+
+
+.PP
+Definition in file \fBtimer\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

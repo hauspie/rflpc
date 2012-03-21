@@ -1,0 +1,467 @@
+\hypertarget{eth__const_8h}{\section{eth\-\_\-const.\-h File Reference}
+\label{eth__const_8h}\index{eth\-\_\-const.\-h@{eth\-\_\-const.\-h}}
+}
+
+
+Ethernet driver constants.  
+
+
+{\ttfamily \#include \char`\"{}../config.\-h\char`\"{}}\\*
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__eth_gabdad242ec4e3a7948e7ee71b22eab94d}{\#define \hyperlink{group__eth_gabdad242ec4e3a7948e7ee71b22eab94d}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-C\-E\-N\-E\-T\-\_\-\-B\-I\-T}~(1 $<$$<$ 30)}\label{group__eth_gabdad242ec4e3a7948e7ee71b22eab94d}
+
+\begin{DoxyCompactList}\small\item\em Bit to set to activate ethernet in P\-C\-O\-N\-P register. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__eth_gabdb5479a16aa9c77c6954bed00ffeef2}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-X\-\_\-\-F\-R\-A\-M\-E\-\_\-\-L\-E\-N\-G\-T\-H}~1538
+\begin{DoxyCompactList}\small\item\em Maximum size of an ethernet frame Consist of\-: \end{DoxyCompactList}\item 
+\#define \hyperlink{group__eth_ga379519025dad85582152eaf75f1d74fe}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-X\-\_\-\-C\-L\-O\-C\-K}~2500000
+\begin{DoxyCompactList}\small\item\em Maximum allowed clock frequency for M\-I\-I, defined by I\-E\-E\-E 802.\-3, see p. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Ethernet pin configuration}\par
+{\em This allows the configuration of the pins of the L\-P\-C17xx to use the ethernet device.
+
+This values are for L\-P\-C17xx devices. }\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__eth_gae223711fb13e9928de624ffb989c2be6}{\#define \hyperlink{group__eth_gae223711fb13e9928de624ffb989c2be6}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-P\-O\-R\-T}~1}\label{group__eth_gae223711fb13e9928de624ffb989c2be6}
+
+\begin{DoxyCompactList}\small\item\em Number of the port the eth is connected to. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga64e2830bb571bd868d1a0f7dc691b40c}{\#define \hyperlink{group__eth_ga64e2830bb571bd868d1a0f7dc691b40c}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-T\-X\-D0}~0}\label{group__eth_ga64e2830bb571bd868d1a0f7dc691b40c}
+
+\begin{DoxyCompactList}\small\item\em Transmit data bit 0. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gad50aab764ed158ad2b0188bc1238135e}{\#define \hyperlink{group__eth_gad50aab764ed158ad2b0188bc1238135e}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-T\-X\-D1}~1}\label{group__eth_gad50aab764ed158ad2b0188bc1238135e}
+
+\begin{DoxyCompactList}\small\item\em Transmit data bit 1. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gaf0f07384e3ef0fbcf2394df3b345d94c}{\#define \hyperlink{group__eth_gaf0f07384e3ef0fbcf2394df3b345d94c}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-T\-X\-\_\-\-E\-N}~4}\label{group__eth_gaf0f07384e3ef0fbcf2394df3b345d94c}
+
+\begin{DoxyCompactList}\small\item\em Transmit data enable pin. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga2de28d2d47d0388182cc0bccb4074be5}{\#define \hyperlink{group__eth_ga2de28d2d47d0388182cc0bccb4074be5}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-C\-R\-S}~8}\label{group__eth_ga2de28d2d47d0388182cc0bccb4074be5}
+
+\begin{DoxyCompactList}\small\item\em Carrier sense Pin. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga56dc2c8508fc2538f83fab449ad0ba9d}{\#define \hyperlink{group__eth_ga56dc2c8508fc2538f83fab449ad0ba9d}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-R\-X\-D0}~9}\label{group__eth_ga56dc2c8508fc2538f83fab449ad0ba9d}
+
+\begin{DoxyCompactList}\small\item\em Receive data bit 0. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga66ba35d412b2776cd451a3d2b5ad1be3}{\#define \hyperlink{group__eth_ga66ba35d412b2776cd451a3d2b5ad1be3}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-R\-X\-D1}~10}\label{group__eth_ga66ba35d412b2776cd451a3d2b5ad1be3}
+
+\begin{DoxyCompactList}\small\item\em Receive data bit 1. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga386ba6e30aef14a859cbaf1974cb36ed}{\#define \hyperlink{group__eth_ga386ba6e30aef14a859cbaf1974cb36ed}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-R\-X\-\_\-\-E\-R}~14}\label{group__eth_ga386ba6e30aef14a859cbaf1974cb36ed}
+
+\begin{DoxyCompactList}\small\item\em Receive error. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gaeee370fff48e5c0d8bc3f0ef32de17b2}{\#define \hyperlink{group__eth_gaeee370fff48e5c0d8bc3f0ef32de17b2}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-R\-E\-F\-\_\-\-C\-L\-K}~15}\label{group__eth_gaeee370fff48e5c0d8bc3f0ef32de17b2}
+
+\begin{DoxyCompactList}\small\item\em Reference clock. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga1cb5f06c0a2c26ed3318d66f562d3e54}{\#define \hyperlink{group__eth_ga1cb5f06c0a2c26ed3318d66f562d3e54}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-M\-D\-C}~16}\label{group__eth_ga1cb5f06c0a2c26ed3318d66f562d3e54}
+
+\begin{DoxyCompactList}\small\item\em M\-I\-I\-M Clock pin. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga1f0d688d33bfbc98a8e88b627896c5ae}{\#define \hyperlink{group__eth_ga1f0d688d33bfbc98a8e88b627896c5ae}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-I\-N\-\_\-\-M\-D\-I\-O}~17}\label{group__eth_ga1f0d688d33bfbc98a8e88b627896c5ae}
+
+\begin{DoxyCompactList}\small\item\em M\-I data input and output pin. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf M\-A\-C Configuration register bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__eth_gad2805dffcc41321bc82ae2e11be45a36}{\#define \hyperlink{group__eth_gad2805dffcc41321bc82ae2e11be45a36}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-R\-E\-C\-E\-I\-V\-E\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 0)}\label{group__eth_gad2805dffcc41321bc82ae2e11be45a36}
+
+\begin{DoxyCompactList}\small\item\em Enable reception. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga9abdb375a32fd4bf6180efafbfb84a40}{\#define \hyperlink{group__eth_ga9abdb375a32fd4bf6180efafbfb84a40}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-P\-A\-S\-S\-\_\-\-A\-L\-L\-\_\-\-F\-R\-A\-M\-E\-S}~(1 $<$$<$ 1)}\label{group__eth_ga9abdb375a32fd4bf6180efafbfb84a40}
+
+\begin{DoxyCompactList}\small\item\em Pass all frames to driver. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga64151ed3da6ba4769f0b804bc1e5bfdd}{\#define \hyperlink{group__eth_ga64151ed3da6ba4769f0b804bc1e5bfdd}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-R\-X\-\_\-\-F\-L\-O\-W\-\_\-\-C\-O\-N\-T\-R\-O\-L}~(1 $<$$<$ 2)}\label{group__eth_ga64151ed3da6ba4769f0b804bc1e5bfdd}
+
+\begin{DoxyCompactList}\small\item\em Activate receive path flow control. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga0edb0e465dcdec19f7d87d1eb51c57a7}{\#define \hyperlink{group__eth_ga0edb0e465dcdec19f7d87d1eb51c57a7}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-T\-X\-\_\-\-F\-L\-O\-W\-\_\-\-C\-O\-N\-T\-R\-O\-L}~(1 $<$$<$ 3)}\label{group__eth_ga0edb0e465dcdec19f7d87d1eb51c57a7}
+
+\begin{DoxyCompactList}\small\item\em Activate transmit path flow control. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gaa9b678e19c9b7c24cecef8f4fd537353}{\#define \hyperlink{group__eth_gaa9b678e19c9b7c24cecef8f4fd537353}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-L\-O\-O\-P\-B\-A\-C\-K}~(1 $<$$<$ 4)}\label{group__eth_gaa9b678e19c9b7c24cecef8f4fd537353}
+
+\begin{DoxyCompactList}\small\item\em Activate interface loopback (for testing purpose mainly. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga708bda290539e7a4fc18f4129cb29e96}{\#define \hyperlink{group__eth_ga708bda290539e7a4fc18f4129cb29e96}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-R\-E\-S\-E\-T\-\_\-\-T\-X}~(1 $<$$<$ 8)}\label{group__eth_ga708bda290539e7a4fc18f4129cb29e96}
+
+\begin{DoxyCompactList}\small\item\em Reset tranmit path. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga5a6dbcd075853ce2cea21d136a723a9e}{\#define \hyperlink{group__eth_ga5a6dbcd075853ce2cea21d136a723a9e}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-R\-E\-S\-E\-T\-\_\-\-M\-C\-S\-\_\-\-T\-X}~(1 $<$$<$ 9)}\label{group__eth_ga5a6dbcd075853ce2cea21d136a723a9e}
+
+\begin{DoxyCompactList}\small\item\em Reset Transmit M\-A\-C Sublayer control logic. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gacffd1d0c63e725d3edacb7b7e072bdd1}{\#define \hyperlink{group__eth_gacffd1d0c63e725d3edacb7b7e072bdd1}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-R\-E\-S\-E\-T\-\_\-\-R\-X}~(1 $<$$<$ 10)}\label{group__eth_gacffd1d0c63e725d3edacb7b7e072bdd1}
+
+\begin{DoxyCompactList}\small\item\em Reset receive path. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gae8d87b3759dcd981fe7fb32bd6991657}{\#define \hyperlink{group__eth_gae8d87b3759dcd981fe7fb32bd6991657}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-R\-E\-S\-E\-T\-\_\-\-M\-C\-S\-\_\-\-R\-X}~(1 $<$$<$ 11)}\label{group__eth_gae8d87b3759dcd981fe7fb32bd6991657}
+
+\begin{DoxyCompactList}\small\item\em Reset receive M\-A\-C Sublayer control logic. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga7ffdf796391e597b0e37ee53f557986c}{\#define \hyperlink{group__eth_ga7ffdf796391e597b0e37ee53f557986c}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-S\-I\-M\-\_\-\-R\-E\-S\-E\-T}~(1 $<$$<$ 14)}\label{group__eth_ga7ffdf796391e597b0e37ee53f557986c}
+
+\begin{DoxyCompactList}\small\item\em Reset the random number generator in the transmit function. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gac84bc7c26b84a052a2b31449570e99e8}{\#define \hyperlink{group__eth_gac84bc7c26b84a052a2b31449570e99e8}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C1\-\_\-\-S\-O\-F\-T\-\_\-\-R\-E\-S\-E\-T}~(1 $<$$<$ 15)}\label{group__eth_gac84bc7c26b84a052a2b31449570e99e8}
+
+\begin{DoxyCompactList}\small\item\em Reset the M\-A\-C device. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga595450337e66c8970c766bbe46e42eef}{\#define \hyperlink{group__eth_ga595450337e66c8970c766bbe46e42eef}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-F\-U\-L\-L\-\_\-\-D\-U\-P\-L\-E\-X}~(1 $<$$<$ 0)}\label{group__eth_ga595450337e66c8970c766bbe46e42eef}
+
+\begin{DoxyCompactList}\small\item\em Duplex mode selection. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gabafe35d8637a7adcea674b197e05144a}{\#define \hyperlink{group__eth_gabafe35d8637a7adcea674b197e05144a}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-F\-R\-A\-M\-E\-\_\-\-L\-E\-N\-G\-T\-H\-\_\-\-C\-H\-K}~(1 $<$$<$ 1)}\label{group__eth_gabafe35d8637a7adcea674b197e05144a}
+
+\begin{DoxyCompactList}\small\item\em Check lenght of received and transmited frames and report in status info. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gabf0c1a6c1ec54327e5781b278981faf0}{\#define \hyperlink{group__eth_gabf0c1a6c1ec54327e5781b278981faf0}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-H\-U\-G\-E\-\_\-\-F\-R\-A\-M\-E\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 2)}\label{group__eth_gabf0c1a6c1ec54327e5781b278981faf0}
+
+\begin{DoxyCompactList}\small\item\em Activate jumbo frames. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gaf0231e7de8b5d2058555f6ff5e1bb2de}{\#define \hyperlink{group__eth_gaf0231e7de8b5d2058555f6ff5e1bb2de}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-D\-E\-L\-A\-Y\-E\-D\-\_\-\-C\-R\-C}~(1 $<$$<$ 3)}\label{group__eth_gaf0231e7de8b5d2058555f6ff5e1bb2de}
+
+\begin{DoxyCompactList}\small\item\em Wait some bytes before begining C\-R\-C calculation (if proprietary bytes are sent before 802.\-3 header. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga48e2ce03c6931c4604781e756e23ab44}{\#define \hyperlink{group__eth_ga48e2ce03c6931c4604781e756e23ab44}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-C\-R\-C\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 4)}\label{group__eth_ga48e2ce03c6931c4604781e756e23ab44}
+
+\begin{DoxyCompactList}\small\item\em Add C\-R\-C to every frames. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga3416ab0daad7feb2651e2609bbab702e}{\#define \hyperlink{group__eth_ga3416ab0daad7feb2651e2609bbab702e}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-P\-A\-D\-\_\-\-C\-R\-C\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 5)}\label{group__eth_ga3416ab0daad7feb2651e2609bbab702e}
+
+\begin{DoxyCompactList}\small\item\em Activate C\-R\-C and/or Padding. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga936446c542259464dbb308d5e286d282}{\#define \hyperlink{group__eth_ga936446c542259464dbb308d5e286d282}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-V\-L\-A\-N\-\_\-\-P\-A\-D\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 6)}\label{group__eth_ga936446c542259464dbb308d5e286d282}
+
+\begin{DoxyCompactList}\small\item\em Activate padding when sending frame smaller that 64 bytes. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gac8b829eb0ac5dddb5625dc50470225d3}{\#define \hyperlink{group__eth_gac8b829eb0ac5dddb5625dc50470225d3}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-A\-U\-T\-O\-\_\-\-D\-E\-T\-E\-C\-T\-\_\-\-P\-A\-D\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 7)}\label{group__eth_gac8b829eb0ac5dddb5625dc50470225d3}
+
+\begin{DoxyCompactList}\small\item\em Auto detect padded frames. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gabcfd8e7a321eb10dec18506cf9386792}{\#define \hyperlink{group__eth_gabcfd8e7a321eb10dec18506cf9386792}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-P\-U\-R\-E\-\_\-\-P\-R\-E\-A\-M\-B\-L\-E\-\_\-\-E\-N\-F\-O\-R\-C\-E}~(1 $<$$<$ 8)}\label{group__eth_gabcfd8e7a321eb10dec18506cf9386792}
+
+\begin{DoxyCompactList}\small\item\em Force verification of preamble. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga00d4eb2cbda4eea75a3b181e5564e3c5}{\#define \hyperlink{group__eth_ga00d4eb2cbda4eea75a3b181e5564e3c5}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-L\-O\-N\-G\-\_\-\-P\-R\-E\-A\-M\-B\-L\-E\-\_\-\-E\-N\-F\-O\-R\-C\-E}~(1 $<$$<$ 9)}\label{group__eth_ga00d4eb2cbda4eea75a3b181e5564e3c5}
+
+\begin{DoxyCompactList}\small\item\em Force the use of long preamble. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_gacc6cfd1d3dd4479a52a2d151c2c29e8a}{\#define \hyperlink{group__eth_gacc6cfd1d3dd4479a52a2d151c2c29e8a}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-N\-O\-\_\-\-B\-A\-C\-K\-O\-F\-F}~(1 $<$$<$ 12)}\label{group__eth_gacc6cfd1d3dd4479a52a2d151c2c29e8a}
+
+\begin{DoxyCompactList}\small\item\em Disable backoff after a collision occur. \end{DoxyCompactList}\item 
+\hypertarget{group__eth_ga9d675347526ed6f30f6adb3df065ea62}{\#define \hyperlink{group__eth_ga9d675347526ed6f30f6adb3df065ea62}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-B\-A\-C\-K\-\_\-\-P\-R\-E\-S\-S\-U\-R\-E}~(1 $<$$<$ 13)}\label{group__eth_ga9d675347526ed6f30f6adb3df065ea62}
+
+\begin{DoxyCompactList}\small\item\em Disable backoff after a collision occur during back pressure. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__eth_ga15bda0c464d98d921fad049918e75ed3}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-A\-C2\-\_\-\-E\-X\-C\-E\-S\-S\-\_\-\-D\-E\-F\-E\-R}~(1 $<$$<$ 14)
+\begin{DoxyCompactList}\small\item\em When enabled (set to ’1’) the M\-A\-C will defer to carrier indefinitely as per the Standard. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf M\-A\-C Control register bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga58a4df01434a48865f35ab2e5f8abccf}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-R\-X\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 0)
+\item 
+\hypertarget{group__eth_ga8f98ad89d7f5e46842f3998b96c206dc}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-T\-X\-\_\-\-E\-N\-A\-B\-L\-E}~(1 $<$$<$ 1)}\label{group__eth_ga8f98ad89d7f5e46842f3998b96c206dc}
+
+\item 
+\hypertarget{group__eth_ga27de294aadc04922784750544ff3ecb4}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-R\-E\-G\-\_\-\-R\-E\-S\-E\-T}~(1 $<$$<$ 3)}\label{group__eth_ga27de294aadc04922784750544ff3ecb4}
+
+\item 
+\hypertarget{group__eth_ga50aed245aead6f456619e29f1c307e84}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-T\-X\-\_\-\-R\-E\-S\-E\-T}~(1 $<$$<$ 4)}\label{group__eth_ga50aed245aead6f456619e29f1c307e84}
+
+\item 
+\hypertarget{group__eth_ga9373a2b4d9c9d577fa8cb25091dd5033}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-R\-X\-\_\-\-R\-E\-S\-E\-T}~(1 $<$$<$ 5)}\label{group__eth_ga9373a2b4d9c9d577fa8cb25091dd5033}
+
+\item 
+\hypertarget{group__eth_ga35204d5d3f7cad0db42315add68e9ee0}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-P\-A\-S\-S\-\_\-\-R\-U\-N\-T\-\_\-\-F\-R\-A\-M\-E\-S}~(1 $<$$<$ 6)}\label{group__eth_ga35204d5d3f7cad0db42315add68e9ee0}
+
+\item 
+\hypertarget{group__eth_gafc2e4271b17b5f9c66431a30e758efe1}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-P\-A\-S\-S\-\_\-\-R\-X\-\_\-\-F\-I\-L\-T\-E\-R}~(1 $<$$<$ 7)}\label{group__eth_gafc2e4271b17b5f9c66431a30e758efe1}
+
+\item 
+\hypertarget{group__eth_gae3900496e6bf4401e6c6d8fb83bd9744}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-T\-X\-\_\-\-F\-L\-O\-W\-\_\-\-C\-O\-N\-T\-R\-O\-L}~(1 $<$$<$ 8)}\label{group__eth_gae3900496e6bf4401e6c6d8fb83bd9744}
+
+\item 
+\hypertarget{group__eth_gab62cdca2e9fd8933223ea8d5cb7ffc6f}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-R\-M\-I\-I}~(1 $<$$<$ 9)}\label{group__eth_gab62cdca2e9fd8933223ea8d5cb7ffc6f}
+
+\item 
+\hypertarget{group__eth_gaae69123d1fb4025ab21aa2140644fbf9}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-C\-M\-D\-\_\-\-F\-U\-L\-L\-\_\-\-D\-U\-P\-L\-E\-X}~(1 $<$$<$ 10)}\label{group__eth_gaae69123d1fb4025ab21aa2140644fbf9}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf M\-A\-C Filtering register bits (p. 166)}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_gac3ecd67e6b6b684239e341481ec36584}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-U\-N\-I\-C\-A\-S\-T\-\_\-\-E\-N}~(1 $<$$<$ 0)
+\item 
+\hypertarget{group__eth_ga5e414e2d92196860d74a5349574362d1}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-E\-N}~(1 $<$$<$ 1)}\label{group__eth_ga5e414e2d92196860d74a5349574362d1}
+
+\item 
+\hypertarget{group__eth_ga0adeccaba7cb9a75c9b79175c0e6c64e}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-M\-U\-L\-T\-I\-C\-A\-S\-T\-\_\-\-E\-N}~(1 $<$$<$ 2)}\label{group__eth_ga0adeccaba7cb9a75c9b79175c0e6c64e}
+
+\item 
+\hypertarget{group__eth_ga9234646da71dbef8ffdefcd6bbef48dd}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-U\-N\-I\-C\-A\-S\-T\-\_\-\-H\-A\-S\-H\-\_\-\-E\-N}~(1 $<$$<$ 3)}\label{group__eth_ga9234646da71dbef8ffdefcd6bbef48dd}
+
+\item 
+\hypertarget{group__eth_gab28e59a7ad7b7f29ae109b6690ad7ac9}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-M\-U\-L\-T\-I\-C\-A\-S\-T\-\_\-\-H\-A\-S\-H\-\_\-\-E\-N}~(1 $<$$<$ 4)}\label{group__eth_gab28e59a7ad7b7f29ae109b6690ad7ac9}
+
+\item 
+\hypertarget{group__eth_gac8a57f58a6bcd2990b21f931badb925f}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-P\-E\-R\-F\-E\-C\-T\-\_\-\-E\-N}~(1 $<$$<$ 5)}\label{group__eth_gac8a57f58a6bcd2990b21f931badb925f}
+
+\item 
+\hypertarget{group__eth_ga4d4363c80a0ef534743be34f12ad2432}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-M\-A\-G\-I\-C\-\_\-\-W\-O\-L\-\_\-\-E\-N}~(1 $<$$<$ 12)}\label{group__eth_ga4d4363c80a0ef534743be34f12ad2432}
+
+\item 
+\hypertarget{group__eth_gaa93a63f943f0bd393e06f9ee938a2069}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-R\-X\-F\-I\-L\-T\-E\-R\-\_\-\-W\-O\-L\-\_\-\-E\-N}~(1 $<$$<$ 13)}\label{group__eth_gaa93a63f943f0bd393e06f9ee938a2069}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf M\-I\-N\-D control register}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_gaf92e9f547f9c7308c8bcf182af4f2ad2}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-I\-N\-D\-\_\-\-B\-U\-S\-Y}~(1)
+\item 
+\hypertarget{group__eth_ga7384a0f2972358b8870173aa463904b5}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-I\-N\-D\-\_\-\-S\-C\-A\-N\-N\-I\-N\-G}~(1 $<$$<$ 1)}\label{group__eth_ga7384a0f2972358b8870173aa463904b5}
+
+\item 
+\hypertarget{group__eth_gad5b75968973d33a31092ee078a1ce6a0}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-I\-N\-D\-\_\-\-N\-O\-T\-\_\-\-V\-A\-L\-I\-D}~(1 $<$$<$ 2)}\label{group__eth_gad5b75968973d33a31092ee078a1ce6a0}
+
+\item 
+\hypertarget{group__eth_ga490a83de934d2177f16b8ad8c05884ef}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-I\-N\-D\-\_\-\-M\-I\-I\-\_\-\-L\-I\-N\-K\-\_\-\-F\-A\-I\-L}~(1 $<$$<$ 3)}\label{group__eth_ga490a83de934d2177f16b8ad8c05884ef}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf R\-M\-I\-I Support register}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga8f9f474b102dab60aa02e9f25ee01a26}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-S\-U\-P\-P\-\_\-10\-M\-B\-P\-S}~(0)
+\item 
+\hypertarget{group__eth_gaf596be17249ca2ff3cb1da0b8a75817d}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-S\-U\-P\-P\-\_\-100\-M\-B\-P\-S}~(1 $<$$<$ 8)}\label{group__eth_gaf596be17249ca2ff3cb1da0b8a75817d}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf M\-I\-I control register bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga32eaa75ff95be30d518ad30473874040}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-C\-F\-G\-\_\-\-S\-C\-A\-N\-\_\-\-I\-N\-C\-R\-E\-M\-E\-N\-T}~(1 $<$$<$ 0)
+\item 
+\hypertarget{group__eth_gae5f93f580a5346309a65313cc50e59a6}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-C\-F\-G\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-P\-R\-E\-A\-M\-B\-L\-E}~(1 $<$$<$ 1)}\label{group__eth_gae5f93f580a5346309a65313cc50e59a6}
+
+\item 
+\hypertarget{group__eth_gafbb44832ad83576a1d4f7d8ccf9525e9}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-M\-C\-F\-G\-\_\-\-R\-E\-S\-E\-T\-\_\-\-M\-I\-I\-M}~(1 $<$$<$ 15)}\label{group__eth_gafbb44832ad83576a1d4f7d8ccf9525e9}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf P\-H\-Y Registers}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga86310a5e1a1c9ac6c50830a2c49bbc6a}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-B\-M\-C\-R}~(0x0)
+\item 
+\hypertarget{group__eth_gac7f8f6487da92fc92615b0adef4a0304}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-B\-M\-S\-R}~(0x1)}\label{group__eth_gac7f8f6487da92fc92615b0adef4a0304}
+
+\item 
+\hypertarget{group__eth_ga2b83ec5ec2a6cc4d0c4e68eee70aeba1}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-P\-H\-Y\-I\-D\-R1}~(0x2)}\label{group__eth_ga2b83ec5ec2a6cc4d0c4e68eee70aeba1}
+
+\item 
+\hypertarget{group__eth_ga0fb67458742ba70486c2febc4f2a8d95}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-P\-H\-Y\-I\-D\-R2}~(0x3)}\label{group__eth_ga0fb67458742ba70486c2febc4f2a8d95}
+
+\item 
+\hypertarget{group__eth_ga698cc57cd212589b3976ab859e4cbf49}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-A\-N\-A\-R}~(0x4)}\label{group__eth_ga698cc57cd212589b3976ab859e4cbf49}
+
+\item 
+\hypertarget{group__eth_ga787185d27a236682b1c25222b66b1a0a}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-A\-N\-L\-P\-A\-R}~(0x5)}\label{group__eth_ga787185d27a236682b1c25222b66b1a0a}
+
+\item 
+\hypertarget{group__eth_ga50598967b789889bfba641ae247bbd5c}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-A\-N\-L\-P\-A\-R\-N\-P}~(0x5) /$\ast$ Not a bug, it I\-S the same addr (p. 36 of the D\-P83848\-J datasheet $\ast$/}\label{group__eth_ga50598967b789889bfba641ae247bbd5c}
+
+\item 
+\hypertarget{group__eth_gad2102936cd4aeaa7aa283547d4c3bdd9}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-A\-N\-E\-R}~(0x6)}\label{group__eth_gad2102936cd4aeaa7aa283547d4c3bdd9}
+
+\item 
+\hypertarget{group__eth_gabb2855db598e684cc9bbbfb7bbd67367}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-A\-N\-N\-P\-T\-R}~(0x7)}\label{group__eth_gabb2855db598e684cc9bbbfb7bbd67367}
+
+\item 
+\hypertarget{group__eth_ga2d4daf217bf0acdb798618ea556b675a}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-P\-H\-Y\-S\-T\-S}~(0x10)}\label{group__eth_ga2d4daf217bf0acdb798618ea556b675a}
+
+\item 
+\hypertarget{group__eth_ga64f0216f03fa8732fca30f0a7b29cb38}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-F\-C\-S\-C\-R}~(0x14)}\label{group__eth_ga64f0216f03fa8732fca30f0a7b29cb38}
+
+\item 
+\hypertarget{group__eth_ga454bc667cbcea754e3d2d281f95b69dd}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-R\-E\-C\-R}~(0x15)}\label{group__eth_ga454bc667cbcea754e3d2d281f95b69dd}
+
+\item 
+\hypertarget{group__eth_ga2f59f048e5491024eebdfdc5b656754e}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-P\-C\-S\-R}~(0x16)}\label{group__eth_ga2f59f048e5491024eebdfdc5b656754e}
+
+\item 
+\hypertarget{group__eth_ga3852fc97957d14742c5ff1e54219fffa}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-R\-B\-R}~(0x17)}\label{group__eth_ga3852fc97957d14742c5ff1e54219fffa}
+
+\item 
+\hypertarget{group__eth_ga0ad28459659b41815315211809231b02}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-L\-E\-D\-C\-R}~(0x18)}\label{group__eth_ga0ad28459659b41815315211809231b02}
+
+\item 
+\hypertarget{group__eth_ga0f29c7568bef1f60685104245527f33c}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-P\-H\-Y\-C\-R}~(0x19)}\label{group__eth_ga0f29c7568bef1f60685104245527f33c}
+
+\item 
+\hypertarget{group__eth_ga317ddff7336effcf43921495fe868363}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-10\-B\-T\-S\-C\-R}~(0x1\-A)}\label{group__eth_ga317ddff7336effcf43921495fe868363}
+
+\item 
+\hypertarget{group__eth_ga7f2b2cdb597b71e6d96269af6e5dce18}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-C\-D\-C\-T\-R\-L1}~(0x1\-B)}\label{group__eth_ga7f2b2cdb597b71e6d96269af6e5dce18}
+
+\item 
+\hypertarget{group__eth_ga6beca66d6b5762545f6c9a48dfcac9f2}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-\_\-\-E\-D\-C\-R}~(0x1\-D)}\label{group__eth_ga6beca66d6b5762545f6c9a48dfcac9f2}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Basic Mode Control Register (B\-M\-S\-R) bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga4de02a7571f4380e10ea947edce1e325}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-R\-E\-S\-E\-T}~(1 $<$$<$ 15)
+\item 
+\hypertarget{group__eth_ga677aeb88ae1bb9f4411f9337dc0214a6}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-L\-O\-O\-P\-B\-A\-C\-K}~(1 $<$$<$ 14)}\label{group__eth_ga677aeb88ae1bb9f4411f9337dc0214a6}
+
+\item 
+\hypertarget{group__eth_ga37c58680917bde5cc5321c6a9fb7ebff}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-S\-P\-E\-E\-D\-\_\-\-S\-E\-L\-E\-C\-T}~(1 $<$$<$ 13)}\label{group__eth_ga37c58680917bde5cc5321c6a9fb7ebff}
+
+\item 
+\hypertarget{group__eth_gac671dc19e5d0a81e441b43a14b548614}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-A\-U\-T\-O\-\_\-\-N\-E\-G}~(1 $<$$<$ 12)}\label{group__eth_gac671dc19e5d0a81e441b43a14b548614}
+
+\item 
+\hypertarget{group__eth_gaaae682c992018abf48bc960fe1258d25}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-P\-O\-W\-E\-R\-\_\-\-D\-O\-W\-N}~(1 $<$$<$ 11)}\label{group__eth_gaaae682c992018abf48bc960fe1258d25}
+
+\item 
+\hypertarget{group__eth_ga1d8c8434d481aa742d02d5eb72d8a45f}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-I\-S\-O\-L\-A\-T\-E}~(1 $<$$<$ 10)}\label{group__eth_ga1d8c8434d481aa742d02d5eb72d8a45f}
+
+\item 
+\hypertarget{group__eth_gac98690d26fdbea90ab5d45b77ea25db6}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-R\-E\-S\-T\-A\-R\-T\-\_\-\-A\-U\-T\-O\-\_\-\-N\-E\-G}~(1 $<$$<$ 9)}\label{group__eth_gac98690d26fdbea90ab5d45b77ea25db6}
+
+\item 
+\hypertarget{group__eth_ga6ff4a02217de5af0af5e1da6600c0be2}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-D\-U\-P\-L\-E\-X\-\_\-\-M\-O\-D\-E}~(1 $<$$<$ 8)}\label{group__eth_ga6ff4a02217de5af0af5e1da6600c0be2}
+
+\item 
+\hypertarget{group__eth_gaf732bade66d74e9c9200f72ed59a8729}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-C\-R\-\_\-\-C\-O\-L\-L\-I\-S\-I\-O\-N\-\_\-\-T\-E\-S\-T}~(1 $<$$<$ 7)}\label{group__eth_gaf732bade66d74e9c9200f72ed59a8729}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Basic Mode Status Register (B\-M\-S\-R) bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_gaf02f683088239f9b4fb88f81aa94f73f}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-100\-B\-A\-S\-E\-T4}~(1 $<$$<$ 15)
+\item 
+\hypertarget{group__eth_ga464681ad5b8dd8a1d6996977afeac29b}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-100\-B\-A\-S\-E\-T\-X\-\_\-\-F\-U\-L\-L}~(1 $<$$<$ 14)}\label{group__eth_ga464681ad5b8dd8a1d6996977afeac29b}
+
+\item 
+\hypertarget{group__eth_ga9a5b6c397199f567ec58e9ec9378df03}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-100\-B\-A\-S\-E\-T\-X\-\_\-\-H\-A\-L\-F}~(1 $<$$<$ 13)}\label{group__eth_ga9a5b6c397199f567ec58e9ec9378df03}
+
+\item 
+\hypertarget{group__eth_gaaf043eae264e2b92a3c631fba2b4848f}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-10\-B\-A\-S\-E\-T\-\_\-\-F\-U\-L\-L}~(1 $<$$<$ 12)}\label{group__eth_gaaf043eae264e2b92a3c631fba2b4848f}
+
+\item 
+\hypertarget{group__eth_ga28f18ac954d9809deaf4ba813d315ac8}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-10\-B\-A\-S\-E\-T\-\_\-\-H\-A\-L\-F}~(1 $<$$<$ 11)}\label{group__eth_ga28f18ac954d9809deaf4ba813d315ac8}
+
+\item 
+\hypertarget{group__eth_ga5d59771cf8e7a122a82f16c08ed787be}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-\-M\-F\-\_\-\-P\-R\-E\-A\-M\-B\-L\-E\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-I\-O\-N}~(1 $<$$<$ 6)}\label{group__eth_ga5d59771cf8e7a122a82f16c08ed787be}
+
+\item 
+\hypertarget{group__eth_ga009965515adb3addbec0fa02b1b3ab68}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-\-A\-U\-T\-O\-\_\-\-N\-E\-G\-\_\-\-C\-O\-M\-P\-L\-E\-T\-E}~(1 $<$$<$ 5)}\label{group__eth_ga009965515adb3addbec0fa02b1b3ab68}
+
+\item 
+\hypertarget{group__eth_gaeaaacf5bae22d6b6f3ac37b683e12ad8}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-\-R\-E\-M\-O\-T\-E\-\_\-\-F\-A\-U\-L\-T}~(1 $<$$<$ 4)}\label{group__eth_gaeaaacf5bae22d6b6f3ac37b683e12ad8}
+
+\item 
+\hypertarget{group__eth_ga787094252e9d10a26492ee9934c336eb}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-\-C\-A\-N\-\_\-\-A\-U\-T\-O\-\_\-\-N\-E\-G}~(1 $<$$<$ 3)}\label{group__eth_ga787094252e9d10a26492ee9934c336eb}
+
+\item 
+\hypertarget{group__eth_gaec99ec78744270f04c9f9b2be14d9ac1}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-\-L\-I\-N\-K\-\_\-\-S\-T\-A\-T\-U\-S}~(1 $<$$<$ 2)}\label{group__eth_gaec99ec78744270f04c9f9b2be14d9ac1}
+
+\item 
+\hypertarget{group__eth_ga33267c62aff2dd9775fb92f548481345}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-\-J\-A\-B\-B\-E\-R\-\_\-\-D\-E\-T\-E\-C\-T}~(1 $<$$<$ 1)}\label{group__eth_ga33267c62aff2dd9775fb92f548481345}
+
+\item 
+\hypertarget{group__eth_ga0dc00ef81d0f4ea3b01245b410cebf17}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-B\-M\-S\-R\-\_\-\-E\-X\-T\-\_\-\-R\-E\-G\-I\-S\-T\-E\-R\-\_\-\-C\-A\-P\-S}~(1 $<$$<$ 0)}\label{group__eth_ga0dc00ef81d0f4ea3b01245b410cebf17}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Auto negotiation advertisement register (A\-N\-A\-R) bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga76e2d7b1c3a579fbfa1df91798d91538}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-A\-N\-A\-R\-\_\-\-A\-S\-M\-\_\-\-D\-I\-R}~(1 $<$$<$ 11)
+\item 
+\hypertarget{group__eth_gafa984288ad56d7765b7657290c955e60}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-A\-N\-A\-R\-\_\-\-P\-A\-U\-S\-E}~(1 $<$$<$ 10)}\label{group__eth_gafa984288ad56d7765b7657290c955e60}
+
+\item 
+\hypertarget{group__eth_ga941370cba8f8132fa8b9e426abbdee7c}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-A\-N\-A\-R\-\_\-\-T4}~(1 $<$$<$ 9)}\label{group__eth_ga941370cba8f8132fa8b9e426abbdee7c}
+
+\item 
+\hypertarget{group__eth_ga15e1ec2646d27d7bdff059cdb9eb01c0}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-A\-N\-A\-R\-\_\-\-T\-X\-\_\-\-F\-D}~(1 $<$$<$ 8)}\label{group__eth_ga15e1ec2646d27d7bdff059cdb9eb01c0}
+
+\item 
+\hypertarget{group__eth_ga74476594da6025e94adeaa594114c7c1}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-A\-N\-A\-R\-\_\-\-T\-X}~(1 $<$$<$ 7)}\label{group__eth_ga74476594da6025e94adeaa594114c7c1}
+
+\item 
+\hypertarget{group__eth_ga26901c02f3acd3fe9e7d9272bca334aa}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-A\-N\-A\-R\-\_\-10\-\_\-\-F\-D}~(1 $<$$<$ 6)}\label{group__eth_ga26901c02f3acd3fe9e7d9272bca334aa}
+
+\item 
+\hypertarget{group__eth_gaa2580df685fc6837e8c8aabf263135eb}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-A\-N\-A\-R\-\_\-10}~(1 $<$$<$ 5)}\label{group__eth_gaa2580df685fc6837e8c8aabf263135eb}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf P\-H\-Y status register (P\-H\-Y\-S\-T\-S) bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga0ea8ae33532af2eb4db888d3f29acd0f}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-M\-D\-I\-\_\-\-X}~(1 $<$$<$ 14)
+\item 
+\hypertarget{group__eth_ga46b58950404b71eab1bc17d16fe63f21}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-R\-X\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-A\-T\-C\-H}~(1 $<$$<$ 13)}\label{group__eth_ga46b58950404b71eab1bc17d16fe63f21}
+
+\item 
+\hypertarget{group__eth_gadb4f3adf616b5b55f87eb90af5f3717e}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-P\-O\-L\-A\-R\-I\-T\-Y\-\_\-\-S\-T\-A\-T\-U\-S}~(1 $<$$<$ 12)}\label{group__eth_gadb4f3adf616b5b55f87eb90af5f3717e}
+
+\item 
+\hypertarget{group__eth_ga142c3ab1fc9e078b78dedbdcca693819}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-F\-A\-L\-S\-E\-\_\-\-C\-A\-R\-R\-I\-E\-R\-\_\-\-S\-E\-N\-S\-E\-\_\-\-L\-A\-T\-C\-H}~(1 $<$$<$ 11)}\label{group__eth_ga142c3ab1fc9e078b78dedbdcca693819}
+
+\item 
+\hypertarget{group__eth_gae969388f92114f3c86ae49af250f0470}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-S\-I\-G\-N\-A\-L\-\_\-\-D\-E\-T\-E\-C\-T}~(1 $<$$<$ 10)}\label{group__eth_gae969388f92114f3c86ae49af250f0470}
+
+\item 
+\hypertarget{group__eth_gab23250abae0ec7e9ad01933d88509c53}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-D\-E\-S\-C\-R\-A\-M\-B\-L\-E\-R\-\_\-\-L\-O\-C\-K}~(1 $<$$<$ 9)}\label{group__eth_gab23250abae0ec7e9ad01933d88509c53}
+
+\item 
+\hypertarget{group__eth_ga83ea92ac4fd5bc1ccbdb3b3899116a58}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-P\-A\-G\-E\-\_\-\-R\-E\-C\-E\-I\-V\-E\-D}~(1 $<$$<$ 8)}\label{group__eth_ga83ea92ac4fd5bc1ccbdb3b3899116a58}
+
+\item 
+\hypertarget{group__eth_ga763f1ae27f71c325890bfc92a2d3a0e1}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-R\-E\-M\-O\-T\-E\-\_\-\-F\-A\-U\-L\-T}~(1 $<$$<$ 6)}\label{group__eth_ga763f1ae27f71c325890bfc92a2d3a0e1}
+
+\item 
+\hypertarget{group__eth_gaac6251a6be69d693ea21404346ffa30a}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-J\-A\-B\-B\-E\-R\-\_\-\-D\-E\-T\-E\-C\-T}~(1 $<$$<$ 5)}\label{group__eth_gaac6251a6be69d693ea21404346ffa30a}
+
+\item 
+\hypertarget{group__eth_ga72b9f3f194e4f6b968a43636be897bff}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-A\-U\-T\-O\-\_\-\-N\-E\-G\-\_\-\-C\-O\-M\-P\-L\-E\-T\-E}~(1 $<$$<$ 4)}\label{group__eth_ga72b9f3f194e4f6b968a43636be897bff}
+
+\item 
+\hypertarget{group__eth_gac5d9e821faf7699176d1b52ac21d5046}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-L\-O\-O\-P\-B\-A\-C\-K\-\_\-\-S\-T\-A\-T\-U\-S}~(1 $<$$<$ 3)}\label{group__eth_gac5d9e821faf7699176d1b52ac21d5046}
+
+\item 
+\hypertarget{group__eth_ga7fcc9aadf8f8998776c2c3244ab6be56}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-D\-U\-P\-L\-E\-X\-\_\-\-S\-T\-A\-T\-U\-S}~(1 $<$$<$ 2)}\label{group__eth_ga7fcc9aadf8f8998776c2c3244ab6be56}
+
+\item 
+\hypertarget{group__eth_ga9a9cc71b5b5c6c2acb914d226bca2725}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-S\-P\-E\-E\-D\-\_\-\-S\-T\-A\-T\-U\-S}~(1 $<$$<$ 1)}\label{group__eth_ga9a9cc71b5b5c6c2acb914d226bca2725}
+
+\item 
+\hypertarget{group__eth_ga9d77a34683583ee8c6b38ae6b27bce31}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-P\-H\-Y\-S\-T\-S\-\_\-\-L\-I\-N\-K\-\_\-\-S\-T\-A\-T\-U\-S}~(1 $<$$<$ 0)}\label{group__eth_ga9d77a34683583ee8c6b38ae6b27bce31}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Interrupt bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group__eth_ga0470a2297e3d90c742bea3417541d737}{R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-R\-X\-\_\-\-O\-V\-E\-R\-R\-U\-N}~(1 $<$$<$ 0)
+\item 
+\hypertarget{group__eth_ga6329f5555827f898aaf654485a9f3be3}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-R\-X\-\_\-\-E\-R\-R\-O\-R}~(1 $<$$<$ 1)}\label{group__eth_ga6329f5555827f898aaf654485a9f3be3}
+
+\item 
+\hypertarget{group__eth_ga85bc0906a286f028975162407b00564f}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-R\-X\-\_\-\-F\-I\-N\-I\-S\-H\-E\-D}~(1 $<$$<$ 2)}\label{group__eth_ga85bc0906a286f028975162407b00564f}
+
+\item 
+\hypertarget{group__eth_gaba98ac40cdc532abcef7c120eca14d91}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-R\-X\-\_\-\-D\-O\-N\-E}~(1 $<$$<$ 3)}\label{group__eth_gaba98ac40cdc532abcef7c120eca14d91}
+
+\item 
+\hypertarget{group__eth_gab4d04836a465bcfaf614de6e069237dd}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-T\-X\-\_\-\-U\-N\-D\-E\-R\-R\-U\-N}~(1 $<$$<$ 4)}\label{group__eth_gab4d04836a465bcfaf614de6e069237dd}
+
+\item 
+\hypertarget{group__eth_ga2d05e34a39b0d75ad049e5d1fac395d6}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-T\-X\-\_\-\-E\-R\-R\-O\-R}~(1 $<$$<$ 5)}\label{group__eth_ga2d05e34a39b0d75ad049e5d1fac395d6}
+
+\item 
+\hypertarget{group__eth_ga8085ea43564e1ca5bf301bdbb063ff48}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-T\-X\-\_\-\-F\-I\-N\-I\-S\-H\-E\-D}~(1 $<$$<$ 6)}\label{group__eth_ga8085ea43564e1ca5bf301bdbb063ff48}
+
+\item 
+\hypertarget{group__eth_gad98d37754b45f06261b90341e5bf93a8}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-T\-X\-\_\-\-D\-O\-N\-E}~(1 $<$$<$ 7)}\label{group__eth_gad98d37754b45f06261b90341e5bf93a8}
+
+\item 
+\hypertarget{group__eth_ga740d08fdbdc77f23dead00d1152d70b0}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-S\-O\-F\-T}~(1 $<$$<$ 12)}\label{group__eth_ga740d08fdbdc77f23dead00d1152d70b0}
+
+\item 
+\hypertarget{group__eth_gaec19e9506463e7e41e75cfd5176fee8d}{\#define {\bfseries R\-F\-L\-P\-C\-\_\-\-E\-T\-H\-\_\-\-I\-R\-Q\-\_\-\-E\-N\-\_\-\-W\-A\-K\-E\-\_\-\-U\-P}~(1 $<$$<$ 13)}\label{group__eth_gaec19e9506463e7e41e75cfd5176fee8d}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+Ethernet driver constants. 
+
+Definition in file \hyperlink{eth__const_8h_source}{eth\-\_\-const.\-h}.
+

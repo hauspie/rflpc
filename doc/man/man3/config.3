@@ -1,0 +1,232 @@
+.TH "MBED Platform configuration" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MBED Platform configuration \- 
+.PP
+The following defines are used to configure the library to use with the MBED\&.  
+
+.SS "Clock configuration"
+Dividers and multipliers for controlling the CPU clock\&.
+.PP
+The PLL output clock frequency is given by: (2*PLL_MULTIPLIER*MAIN_OSCILLATOR_FREQUENCY)/INPUT_DIVIDER This clock is then divided by CPU_DIVIDER to clock the CPU\&.
+.PP
+CPU is set to 96Mhz using the 12Mhz source for PLL0\&. (see mbed schematic, main oscillator is a 12Mhz crystal connected to pins XTAL1 and XTAL2)
+.PP
+As this setup is suitable for USB, PPL0 can be used to clock USB (need a 48Mhz mutiple)
+.PP
+With the given configuration (INPUT_DIVIDER=1, PLL_MULTIPLIER=12, CPU_DIVIDER=3), PLL ouput is 2*12*12000000/1 = 288Mhz Divided by 3 -> CPU is at 96 Mhz
+.PP
+\fBWarning:\fP
+.RS 4
+Be carefull when modifing these parameters\&. Clock the ARM at more than 100Mhz is a bad idea\&.\&.\&. 
+.RE
+.PP
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_USE_MAIN_OSCILLATOR\fP"
+.br
+.RI "\fIIf defined, the \fBrflpc_clock_init()\fP function will use the main oscillator\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY\fP   12000000"
+.br
+.RI "\fIThe frequency of the main oscillator if used\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_INPUT_DIVIDER\fP   1"
+.br
+.RI "\fIPLL0 will divide its input by this value\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_PLL_MULTIPLIER\fP   12"
+.br
+.RI "\fIPLL0 will multiply its input by this value\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_CLOCK_CPU_DIVIDER\fP   3"
+.br
+.RI "\fIThe PLL0 output will be divided by this value to provide CPU clock\&. \fP"
+.in -1c
+.SS "LEDs configuration"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_LED_PORT\fP   1"
+.br
+.RI "\fIWhich GPIO port is used for leds? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_1_PIN\fP   18"
+.br
+.RI "\fIOn which pin is the LED1 ? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_2_PIN\fP   20"
+.br
+.RI "\fIOn which pin is the LED2 ? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_3_PIN\fP   21"
+.br
+.RI "\fIOn which pin is the LED3 ? \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_4_PIN\fP   23"
+.br
+.RI "\fIOn which pin is the LED4 ? \fP"
+.in -1c
+.SS "PHY device configuration"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_ETH_PHY_ADDR\fP   (0x01)"
+.br
+.RI "\fIMII Address of the PHY device\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_ETH_USE_EXTENDED_MII\fP"
+.br
+.RI "\fIDefine this constant to use the MII extended register set\&. \fP"
+.in -1c
+.SS "UART Configuration"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_UART0_PORT\fP   0"
+.br
+.RI "\fIUART0 PORT\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART0_TXD_PIN\fP   2"
+.br
+.RI "\fIUART0 TX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART0_RXD_PIN\fP   3"
+.br
+.RI "\fIUART0 RX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART0_PIN_FUNCTION\fP   1"
+.br
+.RI "\fIDepending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_PORT\fP   0"
+.br
+.RI "\fIUART2 PORT\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_TXD_PIN\fP   10"
+.br
+.RI "\fIUART2 TX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_RXD_PIN\fP   11"
+.br
+.RI "\fIUART2 RX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART2_PIN_FUNCTION\fP   1"
+.br
+.RI "\fIDepending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_PORT\fP   0"
+.br
+.RI "\fIUART3 PORT\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_TXD_PIN\fP   0"
+.br
+.RI "\fIUART3 TX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_RXD_PIN\fP   1"
+.br
+.RI "\fIUART3 RX Pin\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_UART3_PIN_FUNCTION\fP   2"
+.br
+.RI "\fIDepending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. \fP"
+.in -1c
+.SS "Stack configuration"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_STACK_SIZE\fP   1024"
+.br
+.RI "\fIsize of the stack in bytes \fP"
+.in -1c
+.SS "Interrupt configuration"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_IRQ_DEBUG_ENABLE\fP"
+.br
+.RI "\fIIf this constant is defined, then freeze the device on unhandled interrupt\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_IRQn_COUNT\fP   (PLL1_IRQn + 16 +1)"
+.br
+.RI "\fIThis is the size of the interrupt vector\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+The following defines are used to configure the library to use with the MBED\&. 
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBRFLPC_CLOCK_CPU_DIVIDER\fP   3"
+
+.PP
+The PLL0 output will be divided by this value to provide CPU clock\&. 
+.PP
+Definition at line 79 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_CLOCK_INPUT_DIVIDER\fP   1"
+
+.PP
+PLL0 will divide its input by this value\&. 
+.PP
+Definition at line 75 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY\fP   12000000"
+
+.PP
+The frequency of the main oscillator if used\&. 
+.PP
+Definition at line 71 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_CLOCK_PLL_MULTIPLIER\fP   12"
+
+.PP
+PLL0 will multiply its input by this value\&. 
+.PP
+Definition at line 77 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_CLOCK_USE_MAIN_OSCILLATOR\fP"
+
+.PP
+If defined, the \fBrflpc_clock_init()\fP function will use the main oscillator\&. 
+.PP
+Definition at line 66 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_ETH_PHY_ADDR\fP   (0x01)"
+
+.PP
+MII Address of the PHY device\&. 
+.PP
+Definition at line 108 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_ETH_USE_EXTENDED_MII\fP"
+
+.PP
+Define this constant to use the MII extended register set\&. Disabling this will:
+.PP
+.IP "\(bu" 2
+Disable fine control of auto-negociation (performing a link auto negociation will select a mode regardless the specified one (because of the non availability of the auto negociation ability (ANAR) register
+.PP
+.PP
+.IP "\(bu" 2
+Make the detection of the link mode not accurate (by using control registers which may not always reflect the real link mode) 
+.PP
+
+.PP
+Definition at line 120 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_UART0_PIN_FUNCTION\fP   1"
+
+.PP
+Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. user manual PINSEL* registers) \&. 
+.PP
+Definition at line 134 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_UART2_PIN_FUNCTION\fP   1"
+
+.PP
+Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. user manual PINSEL* registers) \&. 
+.PP
+Definition at line 143 of file config-mbed\&.h\&.
+.SS "#define \fBRFLPC_UART3_PIN_FUNCTION\fP   2"
+
+.PP
+Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf\&. user manual PINSEL* registers) \&. 
+.PP
+Definition at line 152 of file config-mbed\&.h\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

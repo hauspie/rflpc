@@ -1,0 +1,33 @@
+.TH "tools.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+tools.h \- 
+.PP
+Macro tools for easy implementation of other macros\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTOKEN_PASTE2\fP(x, y)   x ## y"
+.br
+.RI "\fIConcatenate two tokens together\&. \fP"
+.ti -1c
+.RI "#define \fBTOKEN_PASTE\fP(x, y)   \fBTOKEN_PASTE2\fP(x, y)"
+.br
+.RI "\fIThis macro allows concatenation of tokens even in recursive macro\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+Macro tools for easy implementation of other macros\&. 
+
+
+.PP
+Definition in file \fBtools\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

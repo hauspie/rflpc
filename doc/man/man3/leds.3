@@ -1,0 +1,85 @@
+.TH "LEDs" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+LEDs \- 
+.PP
+Provides function to control onboard leds\&.  
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBrflpc_led_init\fP ()"
+.br
+.RI "\fIInits the GPIO port to use the leds\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_led_set\fP (uint32_t l)"
+.br
+.RI "\fITurns the given led(s) on\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_led_clr\fP (uint32_t l)"
+.br
+.RI "\fIClears the given led(s) (turn them off) \fP"
+.ti -1c
+.RI "static void \fBrflpc_led_val\fP (uint32_t l)"
+.br
+.RI "\fITurns on the leds included in the mask\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_led_binary_value\fP (uint8_t v)"
+.br
+.RI "\fITurns the led to reflect a binary 4 digit number\&. \fP"
+.in -1c
+.SS "LEDs defines"
+This values can be used to set/clear leds in the driver functions 
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_LED_1\fP   (1 << \fBRFLPC_LED_1_PIN\fP)"
+.br
+.RI "\fILED 1\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_2\fP   (1 << \fBRFLPC_LED_2_PIN\fP)"
+.br
+.RI "\fILED 2\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_3\fP   (1 << \fBRFLPC_LED_3_PIN\fP)"
+.br
+.RI "\fILED 3\&. \fP"
+.ti -1c
+.RI "#define \fBRFLPC_LED_4\fP   (1 << \fBRFLPC_LED_4_PIN\fP)"
+.br
+.RI "\fILED 4\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+Provides function to control onboard leds\&. 
+
+This driver only have sense if your board has 4 leds controlled by GPIO, which is the case for the MBED board 
+.SH "Function Documentation"
+.PP 
+.SS "static void \fBrflpc_led_binary_value\fP (uint8_tv)\fC [inline, static]\fP"
+
+.PP
+Turns the led to reflect a binary 4 digit number\&. \fBRFLPC_LED_4\fP is LSB, \fBRFLPC_LED_1\fP MSB
+.PP
+\fBParameters:\fP
+.RS 4
+\fIv\fP The value to display on the 4 leds 
+.RE
+.PP
+
+.PP
+Definition at line 94 of file leds\&.h\&.
+.PP
+References RFLPC_LED_1, RFLPC_LED_2, RFLPC_LED_3, RFLPC_LED_4, and rflpc_led_val()\&.
+.SS "static void \fBrflpc_led_init\fP ()\fC [inline, static]\fP"
+
+.PP
+Inits the GPIO port to use the leds\&. Sets the \fBRFLPC_LED_PORT\fP led pins to output pins 
+.PP
+Definition at line 53 of file leds\&.h\&.
+.PP
+References rflpc_gpio_set_pin_mode_output, rflpc_gpio_use_pin(), RFLPC_LED_1_PIN, RFLPC_LED_2_PIN, RFLPC_LED_3_PIN, RFLPC_LED_4_PIN, and RFLPC_LED_PORT\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

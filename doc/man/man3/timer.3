@@ -1,0 +1,485 @@
+.TH "Timers" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Timers \- 
+.PP
+All four timers provides the same functionality\&.  
+
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBrflpc_timer_t\fP { \fBRFLPC_TIMER0\fP =  0, \fBRFLPC_TIMER1\fP =  1, \fBRFLPC_TIMER2\fP =  2, \fBRFLPC_TIMER3\fP =  3 }"
+.br
+.RI "\fIValue to use for the timer value in functions\&. \fP"
+.ti -1c
+.RI "enum \fBrflpc_timer_match_t\fP { \fBRFLPC_TIMER_MATCH0\fP =  0, \fBRFLPC_TIMER_MATCH1\fP =  1, \fBRFLPC_TIMER_MATCH2\fP =  2, \fBRFLPC_TIMER_MATCH3\fP =  3 }"
+.br
+.RI "\fIMatch registers for interrupt generation\&. \fP"
+.ti -1c
+.RI "enum { \fBRFLPC_TIMER_IRQ_ON_MATCH\fP =  1, \fBRFLPC_TIMER_RESET_ON_MATCH\fP =  2, \fBRFLPC_TIMER_STOP_ON_MATCH\fP =  4 }"
+.br
+.RI "\fIOptions for interrupt generation\&. \fP"
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "static LPC_TIM_TypeDef * \fBrflpc_timer_base\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIThis function is used by the driver to convert the timer id to the base address of its configuration register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_enable\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIPower and clock the given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_disable\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIdisable the given timer \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_clock\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_clock_divider_t\fP divider)"
+.br
+.RI "\fISets the cpu clock divider for a given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_callback\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_irq_handler_t\fP callback)"
+.br
+.RI "\fISets the timer interrupt callback\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_start\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIstarts the given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_stop\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIStops the timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_reset\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIResets the timer\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_timer_get_counter\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIReturns the timer counter value\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_timer_get_pre_scale_counter\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIReturns the prescale counter value\&. \fP"
+.ti -1c
+.RI "static uint32_t \fBrflpc_timer_get_pre_scale_register\fP (\fBrflpc_timer_t\fP timer)"
+.br
+.RI "\fIReturns the value of the prescale register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_counter\fP (\fBrflpc_timer_t\fP timer, uint32_t value)"
+.br
+.RI "\fISets the timer counter value\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_pre_scale_counter\fP (\fBrflpc_timer_t\fP timer, uint32_t value)"
+.br
+.RI "\fISets the prescale counter value\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_pre_scale_register\fP (\fBrflpc_timer_t\fP timer, uint32_t value)"
+.br
+.RI "\fISets the value of the prescale register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_match_value\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register, uint32_t match_value)"
+.br
+.RI "\fISet the match register value for a given timer\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_set_irq_on_match\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register, uint32_t options)"
+.br
+.RI "\fIEnable IRQ generation when the timer counter reaches the value of a match register\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_timer_reset_irq\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register)"
+.br
+.RI "\fIReset the irq for a given match register\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_timer_test_irq\fP (\fBrflpc_timer_t\fP timer, \fBrflpc_timer_match_t\fP match_register)"
+.br
+.RI "\fICheck if an interrupt has been generated for a given match register\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+All four timers provides the same functionality\&. 
+
+The prescale counter is incremented at each timer clock tick\&. When the prescale counter reaches the prescale register value, the counter is incremented\&. The value of the counter can then be used as time value or match against four match registers to trigger an interrupt\&. 
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "anonymous enum"
+
+.PP
+Options for interrupt generation\&. 
+.PP
+\fBEnumerator: \fP
+.in +1c
+.TP
+\fB\fIRFLPC_TIMER_IRQ_ON_MATCH \fP\fP
+Trigger an interrupt when counter matches the match register\&. 
+.TP
+\fB\fIRFLPC_TIMER_RESET_ON_MATCH \fP\fP
+Reset the timer when counter matches the match register\&. 
+.TP
+\fB\fIRFLPC_TIMER_STOP_ON_MATCH \fP\fP
+Stop the timer when the counter matches the match register\&. 
+.PP
+Definition at line 68 of file timer\&.h\&.
+.SS "enum \fBrflpc_timer_match_t\fP"
+
+.PP
+Match registers for interrupt generation\&. 
+.PP
+\fBEnumerator: \fP
+.in +1c
+.TP
+\fB\fIRFLPC_TIMER_MATCH0 \fP\fP
+Match register 0\&. 
+.TP
+\fB\fIRFLPC_TIMER_MATCH1 \fP\fP
+Match register 1\&. 
+.TP
+\fB\fIRFLPC_TIMER_MATCH2 \fP\fP
+Match register 2\&. 
+.TP
+\fB\fIRFLPC_TIMER_MATCH3 \fP\fP
+Match register 3\&. 
+.PP
+Definition at line 58 of file timer\&.h\&.
+.SS "enum \fBrflpc_timer_t\fP"
+
+.PP
+Value to use for the timer value in functions\&. 
+.PP
+\fBEnumerator: \fP
+.in +1c
+.TP
+\fB\fIRFLPC_TIMER0 \fP\fP
+Timer 0\&. 
+.TP
+\fB\fIRFLPC_TIMER1 \fP\fP
+Timer 1\&. 
+.TP
+\fB\fIRFLPC_TIMER2 \fP\fP
+Timer 2\&. 
+.TP
+\fB\fIRFLPC_TIMER3 \fP\fP
+Timer 3\&. 
+.PP
+Definition at line 48 of file timer\&.h\&.
+.SH "Function Documentation"
+.PP 
+.SS "static LPC_TIM_TypeDef* \fBrflpc_timer_base\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+This function is used by the driver to convert the timer id to the base address of its configuration register\&. \fBParameters:\fP
+.RS 4
+\fItimer\fP The timer to get 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+LPC_TIM_TypeDef* 
+.RE
+.PP
+
+.PP
+Definition at line 82 of file timer\&.h\&.
+.PP
+References RFLPC_TIMER0, RFLPC_TIMER1, RFLPC_TIMER2, and RFLPC_TIMER3\&.
+.PP
+Referenced by rflpc_timer_get_counter(), rflpc_timer_get_pre_scale_counter(), rflpc_timer_get_pre_scale_register(), rflpc_timer_reset(), rflpc_timer_reset_irq(), rflpc_timer_set_counter(), rflpc_timer_set_irq_on_match(), rflpc_timer_set_match_value(), rflpc_timer_set_pre_scale_counter(), rflpc_timer_set_pre_scale_register(), rflpc_timer_start(), rflpc_timer_stop(), and rflpc_timer_test_irq()\&.
+.SS "static void \fBrflpc_timer_disable\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+disable the given timer \fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+
+.PP
+Definition at line 122 of file timer\&.h\&.
+.PP
+References RFLPC_TIMER0, RFLPC_TIMER1, RFLPC_TIMER2, and RFLPC_TIMER3\&.
+.SS "static void \fBrflpc_timer_enable\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+Power and clock the given timer\&. \fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+
+.PP
+Definition at line 101 of file timer\&.h\&.
+.PP
+References RFLPC_TIMER0, RFLPC_TIMER1, RFLPC_TIMER2, and RFLPC_TIMER3\&.
+.SS "static uint32_t \fBrflpc_timer_get_counter\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+Returns the timer counter value\&. This value is incremented each time the prescale counter matches the prescale register\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 220 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static uint32_t \fBrflpc_timer_get_pre_scale_counter\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+Returns the prescale counter value\&. This value is incremented at each clock cycle\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 233 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static uint32_t \fBrflpc_timer_get_pre_scale_register\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+Returns the value of the prescale register\&. This register contains the number of clock cycle needed to increment the timer counter\&. That is, at each clock cycle, the prescale counter is incrementer and when it reaches the prescale register, the timer counter is incremented\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 248 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_reset\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+Resets the timer\&. \fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+
+.PP
+Definition at line 205 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_reset_irq\fP (\fBrflpc_timer_t\fPtimer, \fBrflpc_timer_match_t\fPmatch_register)\fC [inline, static]\fP"
+
+.PP
+Reset the irq for a given match register\&. \fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fImatch_register\fP 
+.RE
+.PP
+
+.PP
+Definition at line 332 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_set_callback\fP (\fBrflpc_timer_t\fPtimer, \fBrflpc_irq_handler_t\fPcallback)\fC [inline, static]\fP"
+
+.PP
+Sets the timer interrupt callback\&. Also enables timer interrupt to be received\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fIcallback\fP 
+.RE
+.PP
+
+.PP
+Definition at line 168 of file timer\&.h\&.
+.PP
+References rflpc_irq_enable(), and rflpc_irq_set_handler()\&.
+.SS "static void \fBrflpc_timer_set_clock\fP (\fBrflpc_timer_t\fPtimer, \fBrflpc_clock_divider_t\fPdivider)\fC [inline, static]\fP"
+
+.PP
+Sets the cpu clock divider for a given timer\&. \fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fIdivider\fP 
+.RE
+.PP
+\fBSee also:\fP
+.RS 4
+\fBrflpc_clock_divider_t\fP 
+.RE
+.PP
+
+.PP
+Definition at line 144 of file timer\&.h\&.
+.PP
+References RFLPC_TIMER0, RFLPC_TIMER1, RFLPC_TIMER2, and RFLPC_TIMER3\&.
+.SS "static void \fBrflpc_timer_set_counter\fP (\fBrflpc_timer_t\fPtimer, uint32_tvalue)\fC [inline, static]\fP"
+
+.PP
+Sets the timer counter value\&. This value is incremented each time the prescale counter matches the prescale register\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fIvalue\fP 
+.RE
+.PP
+
+.PP
+Definition at line 262 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_set_irq_on_match\fP (\fBrflpc_timer_t\fPtimer, \fBrflpc_timer_match_t\fPmatch_register, uint32_toptions)\fC [inline, static]\fP"
+
+.PP
+Enable IRQ generation when the timer counter reaches the value of a match register\&. \fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fImatch_register\fP 
+.br
+\fIoptions\fP a bitwise ORed value of \fBRFLPC_TIMER_IRQ_ON_MATCH\fP, \fBRFLPC_TIMER_RESET_ON_MATCH\fP and \fBRFLPC_TIMER_STOP_ON_MATCH\fP
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 319 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_set_match_value\fP (\fBrflpc_timer_t\fPtimer, \fBrflpc_timer_match_t\fPmatch_register, uint32_tmatch_value)\fC [inline, static]\fP"
+
+.PP
+Set the match register value for a given timer\&. Interrupt can be generated when timer counter reaches a match register's value
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fImatch_register\fP 
+.br
+\fImatch_value\fP 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 305 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_set_pre_scale_counter\fP (\fBrflpc_timer_t\fPtimer, uint32_tvalue)\fC [inline, static]\fP"
+
+.PP
+Sets the prescale counter value\&. This value is incremented at each clock cycle\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fIvalue\fP 
+.RE
+.PP
+
+.PP
+Definition at line 275 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_set_pre_scale_register\fP (\fBrflpc_timer_t\fPtimer, uint32_tvalue)\fC [inline, static]\fP"
+
+.PP
+Sets the value of the prescale register\&. This register contains the number of clock cycle needed to increment the timer counter\&. That is, at each clock cycle, the prescale counter is incrementer and when it reaches the prescale register, the timer counter is incremented\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fIvalue\fP 
+.RE
+.PP
+
+.PP
+Definition at line 290 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_start\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+starts the given timer\&. This does not modify timer register value\&. It just starts to count
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+
+.PP
+Definition at line 184 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static void \fBrflpc_timer_stop\fP (\fBrflpc_timer_t\fPtimer)\fC [inline, static]\fP"
+
+.PP
+Stops the timer\&. Does not modify timer registers value 
+.PP
+\fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.RE
+.PP
+
+.PP
+Definition at line 196 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SS "static int \fBrflpc_timer_test_irq\fP (\fBrflpc_timer_t\fPtimer, \fBrflpc_timer_match_t\fPmatch_register)\fC [inline, static]\fP"
+
+.PP
+Check if an interrupt has been generated for a given match register\&. \fBParameters:\fP
+.RS 4
+\fItimer\fP 
+.br
+\fImatch_register\fP 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true if an interrupt is pending for the given match register 
+.RE
+.PP
+
+.PP
+Definition at line 345 of file timer\&.h\&.
+.PP
+References rflpc_timer_base()\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

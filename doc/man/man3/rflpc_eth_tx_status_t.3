@@ -1,0 +1,55 @@
+.TH "rflpc_eth_tx_status_t" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+rflpc_eth_tx_status_t \- 
+.PP
+This structure holds the transmit status associated to a descriptor\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <ethernet\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "uint32_t \fBstatus_info\fP"
+.br
+.RI "\fITransmission status info\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+This structure holds the transmit status associated to a descriptor\&. 
+.PP
+Definition at line 159 of file ethernet\&.h\&.
+.SH "Field Documentation"
+.PP 
+.SS "uint32_t \fBrflpc_eth_tx_status_t::status_info\fP"
+
+.PP
+Transmission status info\&. .IP "\(bu" 2
+Bits 24:21 : Collision count (number of retransmission that were needed to send the packet)
+.IP "\(bu" 2
+Bit 25 : This packet incurred deferral (not a problem if not excessive defer)
+.IP "\(bu" 2
+Bit 26 : Excessive defer\&. Packet was aborted due to excessive defer
+.IP "\(bu" 2
+Bit 27 : Excessive collision\&. Packet was aborted due to excessive collision
+.IP "\(bu" 2
+Bit 28 : Late collision\&. Packet aborted due to Out of window Collision
+.IP "\(bu" 2
+Bit 29 : TX Underrun due to adapter not producing transmit data
+.IP "\(bu" 2
+Bit 30 : No descriptor\&. Transmit stream interrupted because not enough descriptor
+.IP "\(bu" 2
+Bit 31 : Error occurred during transmission\&. 
+.PP
+
+.PP
+Definition at line 171 of file ethernet\&.h\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

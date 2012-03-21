@@ -1,0 +1,75 @@
+\hypertarget{group__clock}{\section{Clock}
+\label{group__clock}\index{Clock@{Clock}}
+}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{group__clock_gaf3b7fc561cd12dfdff9f7c1357c3f016}{rflpc\-\_\-clock\-\_\-divider\-\_\-t} \{ \\*
+\hyperlink{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a93a233b505c3659a81d4674b91d0daad}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-4} =  0, 
+\\*
+\hyperlink{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a9cc79356f5343282b73a36bd7e6115ba}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K} =  1, 
+\\*
+\hyperlink{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016aa074865ba21da15526a6a4cea10d9e7c}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-2} =  2, 
+\\*
+\hyperlink{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a3eac4d3b6b5c061897a63c1dac00616c}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-8} =  3
+ \}
+\begin{DoxyCompactList}\small\item\em This enums defines the different cpu clock dividers for use as peripheral clocks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__clock_ga7e496bb7f41ac1ff5ab79f7bd1d8ef47}{uint32\-\_\-t \hyperlink{group__clock_ga7e496bb7f41ac1ff5ab79f7bd1d8ef47}{rflpc\-\_\-clock\-\_\-get\-\_\-system\-\_\-clock} ()}\label{group__clock_ga7e496bb7f41ac1ff5ab79f7bd1d8ef47}
+
+\begin{DoxyCompactList}\small\item\em returns the system clock in Hz \end{DoxyCompactList}\item 
+void \hyperlink{group__clock_ga00ad4cbad1cd13962e283bdfb3451f7f}{rflpc\-\_\-clock\-\_\-init} (void)
+\begin{DoxyCompactList}\small\item\em init the P\-L\-L0 to clock the board at its operational speed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{group__clock_gaf3b7fc561cd12dfdff9f7c1357c3f016}{\index{Clock@{Clock}!rflpc\-\_\-clock\-\_\-divider\-\_\-t@{rflpc\-\_\-clock\-\_\-divider\-\_\-t}}
+\index{rflpc\-\_\-clock\-\_\-divider\-\_\-t@{rflpc\-\_\-clock\-\_\-divider\-\_\-t}!Clock@{Clock}}
+\subsubsection[{rflpc\-\_\-clock\-\_\-divider\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf rflpc\-\_\-clock\-\_\-divider\-\_\-t}}}\label{group__clock_gaf3b7fc561cd12dfdff9f7c1357c3f016}
+
+
+This enums defines the different cpu clock dividers for use as peripheral clocks. 
+
+(See doc p. 57) \begin{Desc}
+\item[Enumerator\-: ]\par
+\begin{description}
+\index{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-4@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-4}!Clock@{Clock}}\index{Clock@{Clock}!R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-4@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-4}}\item[{\em 
+\hypertarget{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a93a233b505c3659a81d4674b91d0daad}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-4}\label{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a93a233b505c3659a81d4674b91d0daad}
+}]Divide the C\-P\-U clock by 4. \index{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K}!Clock@{Clock}}\index{Clock@{Clock}!R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K}}\item[{\em 
+\hypertarget{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a9cc79356f5343282b73a36bd7e6115ba}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K}\label{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a9cc79356f5343282b73a36bd7e6115ba}
+}]Use the C\-P\-U clock. \begin{DoxyVerb}      \end{DoxyVerb}
+ \index{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-2@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-2}!Clock@{Clock}}\index{Clock@{Clock}!R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-2@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-2}}\item[{\em 
+\hypertarget{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016aa074865ba21da15526a6a4cea10d9e7c}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-2}\label{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016aa074865ba21da15526a6a4cea10d9e7c}
+}]Divide the C\-P\-U clock by 2. \index{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-8@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-8}!Clock@{Clock}}\index{Clock@{Clock}!R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-8@{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-8}}\item[{\em 
+\hypertarget{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a3eac4d3b6b5c061897a63c1dac00616c}{R\-F\-L\-P\-C\-\_\-\-C\-C\-L\-K\-\_\-8}\label{group__clock_ggaf3b7fc561cd12dfdff9f7c1357c3f016a3eac4d3b6b5c061897a63c1dac00616c}
+}]Divide the C\-P\-U clock by 8. \end{description}
+\end{Desc}
+
+
+
+Definition at line 38 of file clock.\-h.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{group__clock_ga00ad4cbad1cd13962e283bdfb3451f7f}{\index{Clock@{Clock}!rflpc\-\_\-clock\-\_\-init@{rflpc\-\_\-clock\-\_\-init}}
+\index{rflpc\-\_\-clock\-\_\-init@{rflpc\-\_\-clock\-\_\-init}!Clock@{Clock}}
+\subsubsection[{rflpc\-\_\-clock\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf rflpc\-\_\-clock\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{group__clock_ga00ad4cbad1cd13962e283bdfb3451f7f}
+
+
+init the P\-L\-L0 to clock the board at its operational speed. 
+
+This function will use the defines\-:
+\begin{DoxyItemize}
+\item \hyperlink{group__config_ga613aee18f230b92f06a5c3edf1c0eb8d}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-U\-S\-E\-\_\-\-M\-A\-I\-N\-\_\-\-O\-S\-C\-I\-L\-L\-A\-T\-O\-R}
+\item \hyperlink{group__config_ga1aca349fddc5e309a59773326d84357e}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-M\-A\-I\-N\-\_\-\-O\-S\-C\-I\-L\-L\-A\-T\-O\-R\-\_\-\-F\-R\-E\-Q\-U\-E\-N\-C\-Y}
+\item \hyperlink{group__config_ga896b4d9a201a8f3350e8a2827e389edd}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-I\-N\-P\-U\-T\-\_\-\-D\-I\-V\-I\-D\-E\-R}
+\item \hyperlink{group__config_ga512c5ec1b384b35110da196912f42548}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-P\-L\-L\-\_\-\-M\-U\-L\-T\-I\-P\-L\-I\-E\-R}
+\item \hyperlink{group__config_ga90b12dedcc59811400db87190281f77f}{R\-F\-L\-P\-C\-\_\-\-C\-L\-O\-C\-K\-\_\-\-C\-P\-U\-\_\-\-D\-I\-V\-I\-D\-E\-R} 
+\end{DoxyItemize}

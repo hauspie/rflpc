@@ -1,0 +1,74 @@
+.TH "spi.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+spi.h \- 
+.PP
+SPI device driver\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include '\&.\&./clock\&.h'\fP
+.br
+\fC#include '\&.\&./interrupt\&.h'\fP
+.br
+
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBrflpc_spi_t\fP { \fBRFLPC_SPI0\fP, \fBRFLPC_SPI1\fP }"
+.br
+.RI "\fIUsed to select which SPI port to use\&. \fP"
+.ti -1c
+.RI "enum \fBrflpc_spi_mode_t\fP { \fBRFLPC_SPI_MASTER\fP, \fBRFLPC_SPI_SLAVE\fP }"
+.br
+.RI "\fIUsed to select the SPI operating mode\&. \fP"
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrflpc_spi_init\fP (\fBrflpc_spi_t\fP port, \fBrflpc_spi_mode_t\fP mode, \fBrflpc_clock_divider_t\fP cpu_clock_divider, uint8_t data_size_transfert, uint8_t clock_prescale, uint8_t serial_clock_rate)"
+.br
+.RI "\fIInits the SPI interface in master mode\&. \fP"
+.ti -1c
+.RI "static LPC_SSP_TypeDef * \fBrflpc_spi_get_base_addr\fP (\fBrflpc_spi_t\fP port)"
+.br
+.RI "\fIReturns the base address of the SPI control block depending of the desired port\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_spi_tx_fifo_empty\fP (\fBrflpc_spi_t\fP port)"
+.br
+.RI "\fITests if transmition FIFO is empty\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_spi_tx_fifo_full\fP (\fBrflpc_spi_t\fP port)"
+.br
+.RI "\fITests if the transmition FIFO is full\&. \fP"
+.ti -1c
+.RI "static int \fBrflpc_spi_rx_fifo_empty\fP (\fBrflpc_spi_t\fP port)"
+.br
+.RI "\fITests if the reception FIFO is empty\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_spi_write\fP (\fBrflpc_spi_t\fP port, uint16_t data)"
+.br
+.RI "\fISends data through the spi interface\&. \fP"
+.ti -1c
+.RI "static uint16_t \fBrflpc_spi_read\fP (\fBrflpc_spi_t\fP port)"
+.br
+.RI "\fIReceive data through the spi interface\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_spi_set_rx_callback\fP (\fBrflpc_spi_t\fP port, \fBrflpc_irq_handler_t\fP callback)"
+.br
+.RI "\fISets the interrupt handler for SPI reception\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+SPI device driver\&. 
+
+
+.PP
+Definition in file \fBspi\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

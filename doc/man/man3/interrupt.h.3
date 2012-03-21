@@ -1,0 +1,68 @@
+.TH "interrupt.h" 3 "Wed Mar 21 2012" "rfLPC" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+interrupt.h \- 
+.PP
+Interrupt handling functions\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'nxp/LPC17xx\&.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRFLPC_IRQ_HANDLER\fP   void __attribute__((interrupt('IRQ')))"
+.br
+.RI "\fIDefine to use to declare a IRQ handler\&. \fP"
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef void(* \fBrflpc_irq_handler_t\fP )()"
+.br
+.RI "\fIInterrupt handler type\&. \fP"
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBrflpc_irq_global_enable\fP ()"
+.br
+.RI "\fIEnables interrupts\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_irq_global_disable\fP ()"
+.br
+.RI "\fIDisable interrupts\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_irq_enable\fP (IRQn_Type irq)"
+.br
+.RI "\fIEnables a specific interrupt\&. \fP"
+.ti -1c
+.RI "static void \fBrflpc_irq_disable\fP (IRQn_Type irq)"
+.br
+.RI "\fIDisables a specific interrupt\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_irq_init\fP ()"
+.br
+.RI "\fIInits the interruption by relocating the interrupt vector to ram\&. \fP"
+.ti -1c
+.RI "void \fBrflpc_irq_set_handler\fP (IRQn_Type irq, \fBrflpc_irq_handler_t\fP handler)"
+.br
+.RI "\fISets an handler for the given IRQ\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+Interrupt handling functions\&. 
+
+
+.PP
+Definition in file \fBinterrupt\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for rfLPC from the source code\&.

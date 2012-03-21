@@ -1,0 +1,56 @@
+\hypertarget{group__systick}{\section{System tick timer}
+\label{group__systick}\index{System tick timer@{System tick timer}}
+}
+
+
+This driver allows the use of the system tick timer.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{group__systick_ga2b95025b2e40b1789a01041b572cc86b}{void \hyperlink{group__systick_ga2b95025b2e40b1789a01041b572cc86b}{rflpc\-\_\-sys\-\_\-timer\-\_\-init} ()}\label{group__systick_ga2b95025b2e40b1789a01041b572cc86b}
+
+\begin{DoxyCompactList}\small\item\em initializes the system timer \end{DoxyCompactList}\item 
+\hypertarget{group__systick_gabd54efc8c728f18ba5ea6f6e36fa0812}{static void \hyperlink{group__systick_gabd54efc8c728f18ba5ea6f6e36fa0812}{rflpc\-\_\-sys\-\_\-timer\-\_\-start} ()}\label{group__systick_gabd54efc8c728f18ba5ea6f6e36fa0812}
+
+\begin{DoxyCompactList}\small\item\em starts the system timer \end{DoxyCompactList}\item 
+\hypertarget{group__systick_gab008324e92a1ddd04eabcf8ba8ca90bd}{static void \hyperlink{group__systick_gab008324e92a1ddd04eabcf8ba8ca90bd}{rflpc\-\_\-sys\-\_\-timer\-\_\-stop} ()}\label{group__systick_gab008324e92a1ddd04eabcf8ba8ca90bd}
+
+\begin{DoxyCompactList}\small\item\em stops the system timer \end{DoxyCompactList}\item 
+\hypertarget{group__systick_ga54887d370bdff0a461127f5366f5f5ff}{static void \hyperlink{group__systick_ga54887d370bdff0a461127f5366f5f5ff}{rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-callback} (\hyperlink{group__irq_ga4970a8a2cf9b63e4c261982504669a1f}{rflpc\-\_\-irq\-\_\-handler\-\_\-t} c)}\label{group__systick_ga54887d370bdff0a461127f5366f5f5ff}
+
+\begin{DoxyCompactList}\small\item\em sets the callback for the timer interrupt \end{DoxyCompactList}\item 
+\hypertarget{group__systick_ga9a3d1454c6e49c79984085a837fee36e}{void \hyperlink{group__systick_ga9a3d1454c6e49c79984085a837fee36e}{rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-period} (uint32\-\_\-t micros\-\_\-time)}\label{group__systick_ga9a3d1454c6e49c79984085a837fee36e}
+
+\begin{DoxyCompactList}\small\item\em initializes the timer with a given period (in µs) This automatically starts the timer even if it was stopped. \end{DoxyCompactList}\item 
+void \hyperlink{group__systick_ga3d2887f774eb4556636f4555727553a3}{rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-tick\-\_\-period} (uint32\-\_\-t ticks)
+\begin{DoxyCompactList}\small\item\em initializes the timer with a given tick count This automatically starts the timer even if it was stopped. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This driver allows the use of the system tick timer. This timer is intended to generate a precise 10ms timer, however it can be used to count different times. But, the tick count is only on 24bits so, at 96\-Mhz, the maximum wait time is 2$^\wedge$24 ticks (around 170ms)
+
+Its counter is decremented at each clock tick, and when the counter reaches 0, an interrupt can be generated. The time between interrupts thus depends on the counter value and the clock speed.
+
+This driver uses the cpu clock as the reference clock for the timer.
+
+user manual p. 504 
+
+\subsection{Function Documentation}
+\hypertarget{group__systick_ga3d2887f774eb4556636f4555727553a3}{\index{System tick timer@{System tick timer}!rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-tick\-\_\-period@{rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-tick\-\_\-period}}
+\index{rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-tick\-\_\-period@{rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-tick\-\_\-period}!System tick timer@{System tick timer}}
+\subsubsection[{rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-tick\-\_\-period}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf rflpc\-\_\-sys\-\_\-timer\-\_\-set\-\_\-tick\-\_\-period} (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{ticks}
+\end{DoxyParamCaption}
+)}}\label{group__systick_ga3d2887f774eb4556636f4555727553a3}
+
+
+initializes the timer with a given tick count This automatically starts the timer even if it was stopped. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ticks} & Only the 24 lower bits are used. \\
+\hline
+\end{DoxyParams}
