@@ -16,17 +16,21 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created:
-    Time-stamp: <2012-03-08 16:03:16 (hauspie)>
+    Time-stamp: <2012-03-21 09:12:03 (hauspie)>
 */
 #include <stdarg.h>
 #include <stdint.h>
 #include "printf.h"
 #include "../interrupt.h"
-#include "../drivers/uart.h"
 
+#ifdef RFLPC_ENABLE_UART
+#include "../drivers/uart.h"
+#endif
 static int _rflpc_default_putchar(int c)
 {
+#ifdef RFLPC_ENABLE_UART
     rflpc_uart_putchar(RFLPC_UART0, c);
+#endif
     return c;
 }
 

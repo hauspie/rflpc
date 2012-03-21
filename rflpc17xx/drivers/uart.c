@@ -19,6 +19,8 @@
   Contributor: Francois Serman <francois.serman@inria.fr>
 */
 
+#ifdef RFLPC_ENABLE_UART
+
 #include <stdint.h>
 #include <stdlib.h>
 #include "../clock.h"
@@ -175,3 +177,5 @@ void rflpc_uart_set_rx_callback(rflpc_uart_t uart_num, rflpc_irq_handler_t  call
     /* enable the uart0 irq generation (user manual p. 302) */
     BASE_ADDR(uart_num)->IER |= 1;
 }
+
+#endif /* ENABLE_UART */
