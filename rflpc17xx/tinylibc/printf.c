@@ -168,7 +168,7 @@ int printf(const char *format, ...)
 			/* not handled arg, assume int and get next */
 			int i = (int) va_arg(args, int);
 			i = 0;
-#ifdef LPC_VERBOSE_PRINTF
+#ifdef RFLPC_VERBOSE_PRINTF
 			PUTS("!Not handled format char: '");
 			PUTCHAR(*format);
 			PUTS("', treated as int!");

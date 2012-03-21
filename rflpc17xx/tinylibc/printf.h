@@ -40,8 +40,8 @@
     - %%s
 
     @note If another format char is used, int is assumed to skip
-    argument, but nothing is printed unless LPC_VERBOSE_PRINTF
-    is defined when compiling lib. If ATOMIC_PRINTF is defined,
+    argument, but nothing is printed unless RFLPC_VERBOSE_PRINTF
+    is defined when compiling lib. If RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF is defined,
     interrupts are disabled when entering printf and enabled before exiting
 
     @warning This function uses a function pointer to output each character. 
