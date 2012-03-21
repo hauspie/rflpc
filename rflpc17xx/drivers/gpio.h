@@ -19,12 +19,14 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2011-07-13 14:40:14 (hauspie)>
+  Time-stamp: <2012-03-21 09:50:28 (hauspie)>
 
   GPIO driver for LPC.
 */
 #ifndef __RFLPC_GPIO_H__
 #define __RFLPC_GPIO_H__
+
+#ifdef RFLPC_ENABLE_GPIO
 
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -102,4 +104,6 @@ static inline void rflpc_gpio_use_pin(int gpio, int pin)
 #define rflpc_gpio_get_val(gpio) (RFLPC_GPIO_BASE(gpio)->FIOMASK = 0, RFLPC_GPIO_BASE(gpio)->FIOPIN)
 
 /** @} */
+#endif /* ENABLE_GPIO */
+
 #endif
