@@ -40,7 +40,7 @@ typedef enum
    RFLPC_PIN_MODE_REPEATER,             /**< The pin has repeater mode enabled.         */
    RFLPC_PIN_MODE_RESISTOR_NONE,        /**< The pin has neither pull-up nor pull-down. */
    RFLPC_PIN_MODE_RESISTOR_PULL_DOWN,   /**< The pin has pull-down resistor enabled.    */
-} rfPinMode;
+} rflpc_pin_mode_t;
 
 /**
  * Sets the operational mode for a given pin on a given port.
@@ -49,10 +49,10 @@ typedef enum
  * @param port The port of the pin (0..4)
  * @param pin The pin (0..31)
  * @param function How the pin is used (0..3).
- * @param mode The pin mode (see ::rfPinMode)
+ * @param mode The pin mode (see ::rflpc_pin_mode_t)
  * @param opendrain Control the open drain mode for pins used as output. 0 for normal mode (no open drain), 1 for open drain.
  **/
-static inline void rflpc_pin_set(int port, int pin, int function, rfPinMode mode, int opendrain)
+static inline void rflpc_pin_set(int port, int pin, int function, rflpc_pin_mode_t mode, int opendrain)
 {
     int register_idx = 2*port;
     if (pin >= 16)
