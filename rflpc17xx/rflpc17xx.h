@@ -276,6 +276,7 @@
 #include "tinylibc/memcpy.h"
 #include "tinylibc/memset.h"
 #include "tinylibc/setjmp.h"
+#include "tinylibc/rand.h"
 
 /* Peripheral drivers */
 #include "drivers/eth_const.h"

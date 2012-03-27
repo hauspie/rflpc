@@ -1,3 +1,5 @@
+Next:
+	- rand(), rand_r(), srand()
 0.8:
 	- Fine tuning of the library by selecting what is compiled
 	- Better documentation to help getting started
