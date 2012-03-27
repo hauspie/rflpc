@@ -43,7 +43,7 @@
 /** Sets the seed used by ::rand() to generate the pseudo-random sequence.
  * @param seed the seed to use.
  */
-extern int srand(unsigned int seed);
+extern void srand(unsigned int seed);
 
 /** Returns a pseudo-random integer in the range of 0 to ::RAND_MAX.
  * @warning this function is not reentrant!

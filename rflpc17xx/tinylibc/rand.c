@@ -23,7 +23,7 @@
 
 static unsigned int _seed;
 
-int srand(unsigned int seed)
+void srand(unsigned int seed)
 {
     _seed = seed;
 }
