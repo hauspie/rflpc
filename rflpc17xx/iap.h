@@ -16,6 +16,9 @@
 /** @file
  * In-Application programming functions 
  * This file defines functions to acces the flash memory interface
+ */
+
+/** @defgroup iap Flash memory In-Application Programming (IAP)
  * @ingroup system
  * @{
  */
