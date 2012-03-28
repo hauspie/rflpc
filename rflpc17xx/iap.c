@@ -55,6 +55,10 @@ int rflpc_iap_get_serial_number(unsigned long result[4])
     
     if (command[0] != IAP_CMD_SUCCESS)
 	return -1;
+    result[0] = command[1];
+    result[1] = command[2];
+    result[2] = command[3];
+    result[3] = command[4];
     return 0;
 }
 
