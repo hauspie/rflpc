@@ -269,6 +269,7 @@
 #include "interrupt.h"
 #include "pinconf.h"
 #include "profiling.h"
+#include "iap.h"
 
 
 /* Tiny libc */
