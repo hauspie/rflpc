@@ -6,7 +6,7 @@ include $(RFLPC_DIR)/Makefile.vars
 
 RFLPC_LIB_DIR=$(RFLPC_DIR)/rflpc17xx
 RFLPC_LIB_FILE=$(shell $(RFLPC_DIR)/rflpc-config --libfile)
-RFLPC_LIB_CONFIG_FILE=$(RFLPC_DIR)/config/config
+RFLPC_LIB_CONFIG_FILE=$(RFLPC_LIB_DIR)/config/config-options.h
 
 # Multiline variable for use with -F grep option
 ALLOWED_SYMBOLS_FILE := \
@@ -54,16 +54,25 @@ check_empty_config: $(RFLPC_LIB_FILE)
 	@echo "Size report:"
 	$(SIZE) -t $(RFLPC_LIB_FILE)
 
+config_file_header:
+	@./create_header.sh $(RFLPC_LIB_CONFIG_FILE)
+
+config_file_footer:
+	@./create_footer.sh $(RFLPC_LIB_CONFIG_FILE)
+
 full_config:
 	@echo "Generating configuration for full library"
-	@make extract_config_vars | grep RFLPC_ > $(RFLPC_LIB_CONFIG_FILE)
+	@make config_file_header
+	@make extract_config_vars | grep RFLPC_ | sed -e 's/^/#define /' >> $(RFLPC_LIB_CONFIG_FILE)
+	@make config_file_footer
 
 empty_config:
 	@echo "Generating configuration for minimal library"
-	@echo -n "" > $(RFLPC_LIB_CONFIG_FILE)
+	@make config_file_header
+	@make config_file_footer
 
 extract_config_vars:
-	@grep -R " RFLPC_CONFIG_ENABLE" $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq
+	@grep -R " RFLPC_CONFIG_ENABLE" $(RFLPC_LIB_DIR)/* | cut -d\  -f2 | sort | uniq | grep RFLPC_
 
 $(RFLPC_LIB_FILE):
 	@echo "Cleaning"
