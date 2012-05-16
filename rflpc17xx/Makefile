@@ -13,7 +13,7 @@ HEADERS+=$(wildcard drivers/*.h)
 HEADERS+=$(wildcard nxp/*.h)
 HEADERS+=$(wildcard tinylibc/*.h)
 
-CONFIG_FILE=../config/config
+CONFIG_FILE=config/config-options.h
 
 .PHONY: check_config
 

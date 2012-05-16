@@ -24,9 +24,9 @@
 #ifndef __RFLPC_DEBUG_H__
 #define __RFLPC_DEBUG_H__
 
-#include "drivers/leds.h"
 
-#include "config.h"
+
+#include "drivers/leds.h"
 
 /** @cond ignore */
 extern unsigned char _stack[RFLPC_STACK_SIZE];

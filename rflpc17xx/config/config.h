@@ -32,6 +32,9 @@
 
  */
 
+/* Include file that defines what is compiled in the library */
+#include "config-options.h"
+
 #ifdef RFLPC_CONFIG_PLATFORM_MBED
 /* If you want to use the library on another LPC17xx based platform, create a
    config-xxx.h file for it (copy the config-mbed.h as a starting base). The file

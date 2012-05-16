@@ -20,12 +20,14 @@
   Time-stamp: <2011-09-12 17:14:03 (hauspie)>
 */
 #include <stdint.h>
+
+
 #include "drivers/leds.h"
 
 #include "clock.h"
 #include "interrupt.h"
 #include "debug.h"
-#include "config.h"
+
 
 /* These symbols are defined by the linker script.
    They are used to find bounds of text, data and bss sections in flash/ram
