@@ -6,4 +6,4 @@
 makefile.dep
 *.kde*
 *.map
-config/config
+rflpc17xx/config/config-options.h
