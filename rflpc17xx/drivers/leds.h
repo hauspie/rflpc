@@ -29,7 +29,7 @@
  * This driver only have sense if your board has 4 leds controlled by GPIO, which is the case for the MBED board
  * @{*/
 
-#include "../config.h"
+#include "../config/config.h"
 #include "gpio.h"
 
 /**

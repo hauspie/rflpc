@@ -26,7 +26,7 @@
 
 #include "drivers/leds.h"
 
-#include "config.h"
+#include "config/config.h"
 
 /** @cond ignore */
 extern unsigned char _stack[RFLPC_STACK_SIZE];

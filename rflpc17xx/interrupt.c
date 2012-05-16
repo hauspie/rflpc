@@ -20,7 +20,7 @@
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "nxp/core_cm3.h"
-#include "config.h"
+#include "config/config.h"
 #include "interrupt.h"
 
 #ifndef RFLPC_CONFIG_ENABLE_PRINTF

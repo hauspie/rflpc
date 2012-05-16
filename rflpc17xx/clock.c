@@ -20,7 +20,7 @@
 */
 #include "clock.h"
 #include "interrupt.h"
-#include "config.h"
+#include "config/config.h"
 
 /* Internal RC Oscillator is 4Mhz. */
 #define RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY 4000000

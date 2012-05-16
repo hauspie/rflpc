@@ -261,9 +261,10 @@
 #include "nxp/LPC17xx.h"
 #include "nxp/core_cm3.h"
 
+/* Library configuration */
+#include "config/config.h"
 
 /* Base system includes */
-#include "config.h"
 #include "clock.h"
 #include "debug.h"
 #include "interrupt.h"

@@ -27,9 +27,9 @@
 #ifndef __RFLPC_ETH_CONST_H__
 #define __RFLPC_ETH_CONST_H__
 
-#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
+#include "../config/config.h"
 
-#include "../config.h"
+#ifdef RFLPC_CONFIG_ENABLE_ETHERNET
 
 /** @addtogroup eth
  * Most of the defines are directly derived from the user manual of the LPC17xx or the PHY interface datasheet.
