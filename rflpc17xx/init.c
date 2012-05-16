@@ -20,7 +20,7 @@
   Time-stamp: <2011-09-12 17:14:03 (hauspie)>
 */
 #include <stdint.h>
-#include "config/config.h"
+
 
 #include "drivers/leds.h"
 

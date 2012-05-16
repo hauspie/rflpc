@@ -23,8 +23,9 @@
 # This script makes writing of makefiles easier by giving cflags and ldflags
 
 RFLPC_DIR=`cd \`dirname $0\` && pwd`
-
-CONFIG_FILE=$RFLPC_DIR/config/config
+RFLPC_LIB_DIR=$RFLPC_DIR/rflpc17xx
+CONFIG_OPTIONS_FILE=$RFLPC_LIB_DIR/config/config-options.h
+CONFIG_FILE=$RFLPC_LIB_DIR/config/config.h
 
 usage()
 {
@@ -39,21 +40,18 @@ Options are:
 * --libfile : outputs the full path of the library file
 * --objs    : ouput only object files names. This can be used for project where the main is defined in a library. This will allow library cyclic dependencies to be resolved correctly
 
-If the file $CONFIG_FILE is empty or missing, a minimal library configuration is used.
-If the file $CONFIG_FILE does not define a platform to use, MBED is used as default
 EOF
 }
 
 generate_compile_flags_from_config()
 {
-    if ! test -f $CONFIG_FILE
+    if ! test -f $CONFIG_OPTIONS_FILE
     then
 	echo -n "-DRFLPC_CONFIG_PLATFORM_MBED"
-	return 0
+	make -C config empty_config >& /dev/null
     fi
-    VARS=`cat $CONFIG_FILE | sed -e 's/#.*$//g' -e 's/^RFLPC_/-DRFLPC_/g' | tr '\n' ' '`
-    echo $VARS | grep PLATFORM > /dev/null || VARS="$VARS -DRFLPC_CONFIG_PLATFORM_MBED"
-    echo -n $VARS
+    grep -q PLATFORM $CONFIG_OPTIONS_FILE || echo -n " -DRFLPC_CONFIG_PLATFORM_MBED"
+    echo -n " -include $CONFIG_FILE"
 }
 
 if [ $# -eq 0 ]
@@ -63,7 +61,7 @@ then
 fi
 
 CFLAGS="-mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR "
-CFLAGS="$CFLAGS `generate_compile_flags_from_config` "
+CFLAGS="$CFLAGS `generate_compile_flags_from_config`"
 
 for arg in $*
 do

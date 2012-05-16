@@ -262,7 +262,7 @@
 #include "nxp/core_cm3.h"
 
 /* Library configuration */
-#include "config/config.h"
+
 
 /* Base system includes */
 #include "clock.h"

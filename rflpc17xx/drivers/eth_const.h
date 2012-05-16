@@ -27,7 +27,7 @@
 #ifndef __RFLPC_ETH_CONST_H__
 #define __RFLPC_ETH_CONST_H__
 
-#include "../config/config.h"
+
 
 #ifdef RFLPC_CONFIG_ENABLE_ETHERNET
 
