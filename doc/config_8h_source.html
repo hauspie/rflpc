@@ -144,33 +144,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00032"></a>00032 <span class="comment"></span>
 <a name="l00033"></a>00033 <span class="comment"> */</span>
 <a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="preprocessor">#ifdef RFLPC_CONFIG_PLATFORM_MBED</span>
-<a name="l00036"></a>00036 <span class="preprocessor"></span><span class="comment">/* If you want to use the library on another LPC17xx based platform, create a</span>
-<a name="l00037"></a>00037 <span class="comment">   config-xxx.h file for it (copy the config-mbed.h as a starting base). The file</span>
-<a name="l00038"></a>00038 <span class="comment">   should define some pin connections and the activation/deactivation macro for</span>
-<a name="l00039"></a>00039 <span class="comment">   parts of the library.</span>
-<a name="l00040"></a>00040 <span class="comment">*/</span>
-<a name="l00041"></a>00041 <span class="preprocessor">#include &quot;<a class="code" href="config-mbed_8h.html" title="Configure the library to use with the MBED platform (http://www.mbed.org)">config-mbed.h</a>&quot;</span>
-<a name="l00042"></a>00042 <span class="preprocessor">#endif</span>
-<a name="l00043"></a>00043 <span class="preprocessor"></span>
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045 
-<a name="l00054"></a>00054 <span class="preprocessor">#ifndef RFLPC_STACK_SIZE</span>
-<a name="l00055"></a><a class="code" href="group__config.html#gabbee8373de1e5bcee5553825999d55c4">00055</a> <span class="preprocessor"></span><span class="preprocessor">#define RFLPC_STACK_SIZE 1024</span>
-<a name="l00056"></a>00056 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00057"></a>00057 <span class="preprocessor"></span>
-<a name="l00064"></a><a class="code" href="group__config.html#gaf855ea6f86cabcbdbb354c395fd08369">00064</a> <span class="preprocessor">#define RFLPC_IRQ_DEBUG_ENABLE</span>
-<a name="l00065"></a>00065 <span class="preprocessor"></span>
-<a name="l00067"></a><a class="code" href="group__config.html#ga8ca8f165a35db7d7c870a54e57221fbf">00067</a> <span class="preprocessor">#define RFLPC_IRQn_COUNT (PLL1_IRQn + 16 +1)</span>
+<a name="l00035"></a>00035 <span class="comment">/* Include file that defines what is compiled in the library */</span>
+<a name="l00036"></a>00036 <span class="preprocessor">#include &quot;config-options.h&quot;</span>
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 <span class="preprocessor">#ifdef RFLPC_CONFIG_PLATFORM_MBED</span>
+<a name="l00039"></a>00039 <span class="preprocessor"></span><span class="comment">/* If you want to use the library on another LPC17xx based platform, create a</span>
+<a name="l00040"></a>00040 <span class="comment">   config-xxx.h file for it (copy the config-mbed.h as a starting base). The file</span>
+<a name="l00041"></a>00041 <span class="comment">   should define some pin connections and the activation/deactivation macro for</span>
+<a name="l00042"></a>00042 <span class="comment">   parts of the library.</span>
+<a name="l00043"></a>00043 <span class="comment">*/</span>
+<a name="l00044"></a>00044 <span class="preprocessor">#include &quot;<a class="code" href="config-mbed_8h.html" title="Configure the library to use with the MBED platform (http://www.mbed.org)">config-mbed.h</a>&quot;</span>
+<a name="l00045"></a>00045 <span class="preprocessor">#endif</span>
+<a name="l00046"></a>00046 <span class="preprocessor"></span>
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048 
+<a name="l00057"></a>00057 <span class="preprocessor">#ifndef RFLPC_STACK_SIZE</span>
+<a name="l00058"></a><a class="code" href="group__config.html#gabbee8373de1e5bcee5553825999d55c4">00058</a> <span class="preprocessor"></span><span class="preprocessor">#define RFLPC_STACK_SIZE 1024</span>
+<a name="l00059"></a>00059 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00060"></a>00060 <span class="preprocessor"></span>
+<a name="l00067"></a><a class="code" href="group__config.html#gaf855ea6f86cabcbdbb354c395fd08369">00067</a> <span class="preprocessor">#define RFLPC_IRQ_DEBUG_ENABLE</span>
 <a name="l00068"></a>00068 <span class="preprocessor"></span>
-<a name="l00072"></a>00072 <span class="preprocessor">#endif</span>
+<a name="l00070"></a><a class="code" href="group__config.html#ga8ca8f165a35db7d7c870a54e57221fbf">00070</a> <span class="preprocessor">#define RFLPC_IRQn_COUNT (PLL1_IRQn + 16 +1)</span>
+<a name="l00071"></a>00071 <span class="preprocessor"></span>
+<a name="l00075"></a>00075 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="config_8h.html">config.h</a>      </li>
 
-    <li class="footer">Generated on Wed Mar 21 2012 18:01:01 for rfLPC by
+    <li class="footer">Generated on Wed May 16 2012 14:27:00 for rfLPC by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

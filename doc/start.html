@@ -222,10 +222,10 @@ Your first program</h2>
 </ul>
 <p>Thus, you should just have to modify <code>OUTPUT_NAME</code> and <code>SRC</code> variables to create the needed makefile to compile your project.</p>
 <p>To compile, just type <code>make</code>. You should see something like that</p>
-<div class="fragment"><pre class="fragment"> $ make
- arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I/home/hauspie/work/git/rflpc -DRFLPC_CONFIG_ENABLE_ATOMIC_PRINTF -DRFLPC_CONFIG_ENABLE_DMA -DRFLPC_CONFIG_ENABLE_ETHERNET -DRFLPC_CONFIG_ENABLE_MEMCPY -DRFLPC_CONFIG_ENABLE_MEMSET -DRFLPC_CONFIG_ENABLE_PRINTF -DRFLPC_CONFIG_ENABLE_PROFILING -DRFLPC_CONFIG_ENABLE_RIT_TIMER -DRFLPC_CONFIG_ENABLE_SETJMP -DRFLPC_CONFIG_ENABLE_SPI -DRFLPC_CONFIG_ENABLE_SYS_TICK_TIMER -DRFLPC_CONFIG_ENABLE_TIMERS -DRFLPC_CONFIG_ENABLE_UART -DRFLPC_CONFIG_PLATFORM_MBED   -c -o main.o main.c
+<div class="fragment"><pre class="fragment"> $ makefile
+ arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I/home/hauspie/work/git/rflpc -DRFLPC_CONFIG_PLATFORM_MBED -include /home/hauspie/work/git/rflpc/rflpc17xx/config/config.h   -c -o main.o main.c
  arm-none-eabi-gcc -o modify_this.elf main.o -nostdlib -L/home/hauspie/work/git/rflpc/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map -lrflpc17xx 
- arm-none-eabi-objcopy -O binary -j .text -j .data modify_this.elf modify_this.bin
+ arm-none-eabi-objcopy -O binary -j .text -j .data modify_this.elf modify_this.bin 
 </pre></div><p>If so, then you will have two files, an elf file and a bin file. The elf file is your program in ELF format. You can inspect it, dissassemble it... with commands such as your arm objdump. The bin file is the raw code memory file which is an extract of the <code></code>.text and <code></code>.data section of your elf file. For the MBED platform, it is this file that you have to copy on the USB mass storage drive.</p>
 <p>To program your code on the MBED, you can issue a <code>make program</code>. This command will try to guess the mountpoint of your MBED (using the output of the <code>mount</code> command) and copy the bin file to it. After that, you just have to reset the MBED to actually flash the code.</p>
 <h2><a class="anchor" id="config"></a>
@@ -233,9 +233,8 @@ Fine tuning the library</h2>
 <p>The library can be configured so that some features are not included. This can save loads of code memory when you just need a few drivers. </p>
 <h3><a class="anchor" id="config-file"></a>
 Automatic generation of the configuration file</h3>
-<p>The configuration file is located in the config/config folder. When you clone the git repository, this file is NOT included. However, if you just use <code>make</code> in the library folder, a default full configuration file is generated</p>
-<p>This file is a list of defines that will be enabled at compile time. The file is read by the <code>rflpc-config</code> script when generating the compile flags. Each line represents a define that will be transformed to a <code>-Dxxxx</code> flag.</p>
-<p>To generate the file, you can use the makefile in the config folder. There are two main rules for generating a config file</p>
+<p>The configuration file is located in the rflpc17xx/config folder. When you clone the git repository, this file is NOT included. However, if you just use <code>make</code> in the library folder, a default full configuration file is generated</p>
+<p>This file is a C header file defining the needed MACRO to activate some functionalities To generate the file, you can use the makefile in the config folder. There are two main rules for generating a config file</p>
 <ul>
 <li><code>make empty_config</code></li>
 <li><code>make full_config</code></li>
@@ -257,12 +256,8 @@ Automatic generation of the configuration file</h3>
 <p>The second option (full_config) automatically extracts all the <code>RFLPC_CONFIG_ENABLE_xxx</code> macros from the library source code and add it to the config file. Thus, all the functionalities of the library are included. At the moment, this produce a library that is about 8kB of code.</p>
 <h3><a class="anchor" id="fine-tune"></a>
 Fine tuning the configuration file</h3>
-<p>The simplest way to fine tune the library is to start by a make full_config and then remove the line you do not want from the config/config file. You can either remove the lines completely or use the <code>#</code> character to make a line comment "à la" sh.</p>
-<p>For example, this config file builds a library that uses only UART</p>
-<div class="fragment"><pre class="fragment"><span class="preprocessor"> # You can use comments in the config file to disable a line or simply comment</span>
-<span class="preprocessor"></span><span class="preprocessor"> #RFLPC_CONFIG_ENABLE_TIMERS</span>
-<span class="preprocessor"> RFLPC_CONFIG_ENABLE_UART</span>
-</pre></div><h3><a class="anchor" id="warnings"></a>
+<p>The simplest way to fine tune the library is to start by a make full_config and then remove the line you do not want from the <a class="el" href="config-options_8h_source.html">rflpc17xx/config/config-options.h</a> file You can either remove the lines completely or comment them</p>
+<h3><a class="anchor" id="warnings"></a>
 Common configuration mistakes</h3>
 <p>When fine tuning the configuration be sure to:</p>
 <ul>
@@ -275,7 +270,7 @@ Common configuration mistakes</h3>
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated on Wed Mar 21 2012 18:01:01 for rfLPC by
+    <li class="footer">Generated on Wed May 16 2012 14:27:00 for rfLPC by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

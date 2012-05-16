@@ -138,44 +138,45 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00026"></a>00026 <span class="preprocessor">#ifndef __RFLPC_INTERRUPT_H__</span>
 <a name="l00027"></a>00027 <span class="preprocessor"></span><span class="preprocessor">#define __RFLPC_INTERRUPT_H__</span>
 <a name="l00028"></a>00028 <span class="preprocessor"></span>
-<a name="l00029"></a>00029 <span class="preprocessor">#include &quot;nxp/LPC17xx.h&quot;</span>
-<a name="l00030"></a>00030 
-<a name="l00037"></a><a class="code" href="group__irq.html#ga8ea383f190fd09d12cb5877bbad1f5a4">00037</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga8ea383f190fd09d12cb5877bbad1f5a4" title="Enables interrupts.">rflpc_irq_global_enable</a>()
-<a name="l00038"></a>00038 {
-<a name="l00039"></a>00039     __asm <span class="keyword">volatile</span>(<span class="stringliteral">&quot;cpsie i&quot;</span>);
-<a name="l00040"></a>00040 }
-<a name="l00041"></a>00041 
-<a name="l00043"></a><a class="code" href="group__irq.html#ga82af8d1796028ae92eeee92b3b6127ce">00043</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga82af8d1796028ae92eeee92b3b6127ce" title="Disable interrupts.">rflpc_irq_global_disable</a>()
-<a name="l00044"></a>00044 {
-<a name="l00045"></a>00045     __asm <span class="keyword">volatile</span>(<span class="stringliteral">&quot;cpsid i&quot;</span>);
-<a name="l00046"></a>00046 }
-<a name="l00047"></a>00047 
-<a name="l00049"></a><a class="code" href="group__irq.html#ga01316ea467ff4f3569f0d87231aa33b9">00049</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga01316ea467ff4f3569f0d87231aa33b9" title="Enables a specific interrupt.">rflpc_irq_enable</a>(IRQn_Type irq)
-<a name="l00050"></a>00050 {
-<a name="l00051"></a>00051     NVIC-&gt;ISER[irq &gt;&gt; 5] |= (1 &lt;&lt; irq);
-<a name="l00052"></a>00052 }
-<a name="l00053"></a>00053 
-<a name="l00055"></a><a class="code" href="group__irq.html#ga7d6587b57215a97c4d371152a61fda61">00055</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga7d6587b57215a97c4d371152a61fda61" title="Disables a specific interrupt.">rflpc_irq_disable</a>(IRQn_Type irq)
-<a name="l00056"></a>00056 {
-<a name="l00057"></a>00057     NVIC-&gt;ICER[irq &gt;&gt; 5] |= (1 &lt;&lt; irq);
-<a name="l00058"></a>00058 }
-<a name="l00059"></a>00059 
-<a name="l00061"></a><a class="code" href="group__irq.html#ga4970a8a2cf9b63e4c261982504669a1f">00061</a> <span class="keyword">typedef</span> void (*<a class="code" href="group__irq.html#ga4970a8a2cf9b63e4c261982504669a1f" title="Interrupt handler type.">rflpc_irq_handler_t</a>)();
-<a name="l00062"></a>00062 
-<a name="l00064"></a><a class="code" href="group__irq.html#ga1aece79f01da0cb3da00eff5fd3adb6c">00064</a> <span class="preprocessor">#define RFLPC_IRQ_HANDLER void __attribute__((interrupt(&quot;IRQ&quot;)))</span>
-<a name="l00065"></a>00065 <span class="preprocessor"></span>
-<a name="l00069"></a>00069 <span class="keywordtype">void</span> <a class="code" href="group__irq.html#gabae98defc31aa4c4296d06f9f0fe8340" title="Inits the interruption by relocating the interrupt vector to ram.">rflpc_irq_init</a>();
-<a name="l00070"></a>00070 
-<a name="l00072"></a>00072 <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga673c9a37d0577553390d3bc9828b0300" title="Sets an handler for the given IRQ.">rflpc_irq_set_handler</a>(IRQn_Type irq, <a class="code" href="group__irq.html#ga4970a8a2cf9b63e4c261982504669a1f" title="Interrupt handler type.">rflpc_irq_handler_t</a> handler);
-<a name="l00073"></a>00073 
-<a name="l00076"></a>00076 <span class="preprocessor">#endif</span>
+<a name="l00029"></a>00029 
+<a name="l00030"></a>00030 <span class="preprocessor">#include &quot;nxp/LPC17xx.h&quot;</span>
+<a name="l00031"></a>00031 
+<a name="l00038"></a><a class="code" href="group__irq.html#ga8ea383f190fd09d12cb5877bbad1f5a4">00038</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga8ea383f190fd09d12cb5877bbad1f5a4" title="Enables interrupts.">rflpc_irq_global_enable</a>()
+<a name="l00039"></a>00039 {
+<a name="l00040"></a>00040     __asm <span class="keyword">volatile</span>(<span class="stringliteral">&quot;cpsie i&quot;</span>);
+<a name="l00041"></a>00041 }
+<a name="l00042"></a>00042 
+<a name="l00044"></a><a class="code" href="group__irq.html#ga82af8d1796028ae92eeee92b3b6127ce">00044</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga82af8d1796028ae92eeee92b3b6127ce" title="Disable interrupts.">rflpc_irq_global_disable</a>()
+<a name="l00045"></a>00045 {
+<a name="l00046"></a>00046     __asm <span class="keyword">volatile</span>(<span class="stringliteral">&quot;cpsid i&quot;</span>);
+<a name="l00047"></a>00047 }
+<a name="l00048"></a>00048 
+<a name="l00050"></a><a class="code" href="group__irq.html#ga01316ea467ff4f3569f0d87231aa33b9">00050</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga01316ea467ff4f3569f0d87231aa33b9" title="Enables a specific interrupt.">rflpc_irq_enable</a>(IRQn_Type irq)
+<a name="l00051"></a>00051 {
+<a name="l00052"></a>00052     NVIC-&gt;ISER[irq &gt;&gt; 5] |= (1 &lt;&lt; irq);
+<a name="l00053"></a>00053 }
+<a name="l00054"></a>00054 
+<a name="l00056"></a><a class="code" href="group__irq.html#ga7d6587b57215a97c4d371152a61fda61">00056</a> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga7d6587b57215a97c4d371152a61fda61" title="Disables a specific interrupt.">rflpc_irq_disable</a>(IRQn_Type irq)
+<a name="l00057"></a>00057 {
+<a name="l00058"></a>00058     NVIC-&gt;ICER[irq &gt;&gt; 5] |= (1 &lt;&lt; irq);
+<a name="l00059"></a>00059 }
+<a name="l00060"></a>00060 
+<a name="l00062"></a><a class="code" href="group__irq.html#ga4970a8a2cf9b63e4c261982504669a1f">00062</a> <span class="keyword">typedef</span> void (*<a class="code" href="group__irq.html#ga4970a8a2cf9b63e4c261982504669a1f" title="Interrupt handler type.">rflpc_irq_handler_t</a>)();
+<a name="l00063"></a>00063 
+<a name="l00065"></a><a class="code" href="group__irq.html#ga1aece79f01da0cb3da00eff5fd3adb6c">00065</a> <span class="preprocessor">#define RFLPC_IRQ_HANDLER void __attribute__((interrupt(&quot;IRQ&quot;)))</span>
+<a name="l00066"></a>00066 <span class="preprocessor"></span>
+<a name="l00070"></a>00070 <span class="keywordtype">void</span> <a class="code" href="group__irq.html#gabae98defc31aa4c4296d06f9f0fe8340" title="Inits the interruption by relocating the interrupt vector to ram.">rflpc_irq_init</a>();
+<a name="l00071"></a>00071 
+<a name="l00073"></a>00073 <span class="keywordtype">void</span> <a class="code" href="group__irq.html#ga673c9a37d0577553390d3bc9828b0300" title="Sets an handler for the given IRQ.">rflpc_irq_set_handler</a>(IRQn_Type irq, <a class="code" href="group__irq.html#ga4970a8a2cf9b63e4c261982504669a1f" title="Interrupt handler type.">rflpc_irq_handler_t</a> handler);
+<a name="l00074"></a>00074 
+<a name="l00077"></a>00077 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="interrupt_8h.html">interrupt.h</a>      </li>
 
-    <li class="footer">Generated on Wed Mar 21 2012 18:01:01 for rfLPC by
+    <li class="footer">Generated on Wed May 16 2012 14:27:00 for rfLPC by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

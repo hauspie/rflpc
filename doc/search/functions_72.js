@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['rand',['rand',['../group__libc.html#gae23144bcbb8e3742b00eb687c36654d1',1,'rand.h']]],
+  ['rand_5fr',['rand_r',['../group__libc.html#ga48ccb326f8a50d01bc6d60660623bf56',1,'rand.h']]],
   ['rflpc_5fclock_5fget_5fsystem_5fclock',['rflpc_clock_get_system_clock',['../group__clock.html#ga7e496bb7f41ac1ff5ab79f7bd1d8ef47',1,'clock.h']]],
   ['rflpc_5fclock_5finit',['rflpc_clock_init',['../group__clock.html#ga00ad4cbad1cd13962e283bdfb3451f7f',1,'clock.h']]],
   ['rflpc_5fdma_5fchannel_5fready',['rflpc_dma_channel_ready',['../group__dma.html#ga36b6658b4994b20d9d08bbe9425950c3',1,'dma.h']]],
@@ -33,6 +35,7 @@ var searchData=
   ['rflpc_5feth_5fset_5ftx_5fbase_5faddresses',['rflpc_eth_set_tx_base_addresses',['../group__eth.html#ga582b528c504ffe38890f4c655b2084cb',1,'ethernet.h']]],
   ['rflpc_5feth_5fset_5ftx_5fcontrol_5fword',['rflpc_eth_set_tx_control_word',['../group__eth.html#gad8f2bfd64ec7401b1d19df89bd34ecfb',1,'ethernet.h']]],
   ['rflpc_5fgpio_5fuse_5fpin',['rflpc_gpio_use_pin',['../group__gpio.html#gae710c04d73fd0ccacc27175133f45bd1',1,'gpio.h']]],
+  ['rflpc_5fiap_5fget_5fserial_5fnumber',['rflpc_iap_get_serial_number',['../group__iap.html#gaf32e1fafe943abf8584956b678910f44',1,'iap.h']]],
   ['rflpc_5firq_5fdisable',['rflpc_irq_disable',['../group__irq.html#ga7d6587b57215a97c4d371152a61fda61',1,'interrupt.h']]],
   ['rflpc_5firq_5fenable',['rflpc_irq_enable',['../group__irq.html#ga01316ea467ff4f3569f0d87231aa33b9',1,'interrupt.h']]],
   ['rflpc_5firq_5fglobal_5fdisable',['rflpc_irq_global_disable',['../group__irq.html#ga82af8d1796028ae92eeee92b3b6127ce',1,'interrupt.h']]],

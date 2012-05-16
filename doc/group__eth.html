@@ -752,7 +752,7 @@ Link modes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="eth__const_8h_source.html#l00154">154</a> of file <a class="el" href="eth__const_8h_source.html">eth_const.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ethernet_8h_source.html#l00398">rflpc_eth_activate_rx_filter()</a>.</p>
+<p>Referenced by <a class="el" href="ethernet_8h_source.html#l00400">rflpc_eth_activate_rx_filter()</a>.</p>
 
 </div>
 </div>
@@ -814,7 +814,7 @@ Link modes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00398">398</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00400">400</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 <p>References <a class="el" href="eth__const_8h_source.html#l00154">RFLPC_ETH_RXFILTER_UNICAST_EN</a>.</p>
 
@@ -837,7 +837,7 @@ Link modes</h2></td></tr>
 <p>Deactivates the hardware receive filter. </p>
 <p>All received frames will now be received by the driver. </p>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00415">415</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00417">417</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -864,9 +864,9 @@ Link modes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00304">304</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00306">306</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
-<p>References <a class="el" href="ethernet_8h_source.html#l00258">TX_PRODUCE_INDEX_INC</a>.</p>
+<p>References <a class="el" href="ethernet_8h_source.html#l00260">TX_PRODUCE_INDEX_INC</a>.</p>
 
 </div>
 </div>
@@ -918,7 +918,7 @@ Link modes</h2></td></tr>
 <p>The returned descriptor is the one of the last received packet that has not been marked as processed by <a class="el" href="group__eth.html#gadf32019c43a12949903ce47e078d2b4e" title="This function has to be called when a packet (which descriptor is returned by rflpc_eth_get_current_r...">rflpc_eth_done_process_rx_packet()</a>; </p>
 <dl class="section return"><dt>Returns:</dt><dd>0 if receive queue is empty, 1 if pointers are valid </dd></dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00212">212</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00214">214</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -965,9 +965,9 @@ Link modes</h2></td></tr>
 <p>The return descriptor is the one that is prepared by software before sending it. When <a class="el" href="group__eth.html#ga537cc96b9f1332eec753bdd7a033ef52" title="When the packet has been generated, calling this function will make it owned by the hardware and queu...">rflpc_eth_done_process_tx_packet()</a> is called, the packet will be owned by the hardware and sent as soon as possible.</p>
 <dl class="section return"><dt>Returns:</dt><dd>0 if no more descriptor are available (which means that all the buffers are owned by the hardware and waiting to be sent). 1 if pointers are valid </dd></dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00274">274</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00276">276</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
-<p>References <a class="el" href="ethernet_8h_source.html#l00258">TX_PRODUCE_INDEX_INC</a>.</p>
+<p>References <a class="el" href="ethernet_8h_source.html#l00260">TX_PRODUCE_INDEX_INC</a>.</p>
 
 </div>
 </div>
@@ -988,7 +988,7 @@ Link modes</h2></td></tr>
 <p>Returns the index of the last send buffer. </p>
 <dl class="section return"><dt>Returns:</dt><dd>int </dd></dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00292">292</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00294">294</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1036,7 @@ Link modes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns:</dt><dd>The size of the corresponding buffer </dd></dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00181">181</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00183">183</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1063,7 +1063,7 @@ Link modes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00347">347</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00349">349</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1091,7 +1091,7 @@ Link modes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00337">337</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00339">339</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1118,7 +1118,7 @@ Link modes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00357">357</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00359">359</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1139,7 +1139,7 @@ Link modes</h2></td></tr>
 <p>gets the interrupt status. </p>
 <dl class="section return"><dt>Returns:</dt><dd>a bitwise ORed of eth pending interrupt bits </dd></dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00371">371</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00373">373</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1168,7 +1168,7 @@ Link modes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns:</dt><dd>void </dd></dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00383">383</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00385">385</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1236,7 +1236,7 @@ Link modes</h2></td></tr>
 <p>Returns true if a packet has been received and not yet processed available. </p>
 <dl class="section return"><dt>Returns:</dt><dd>true if a packet is available </dd></dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00227">227</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00229">229</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1381,7 +1381,7 @@ Link modes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00194">194</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
+<p>Definition at line <a class="el" href="ethernet_8h_source.html#l00196">196</a> of file <a class="el" href="ethernet_8h_source.html">ethernet.h</a>.</p>
 
 </div>
 </div>
@@ -1390,7 +1390,7 @@ Link modes</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated on Wed Mar 21 2012 18:01:01 for rfLPC by
+    <li class="footer">Generated on Wed May 16 2012 14:27:00 for rfLPC by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

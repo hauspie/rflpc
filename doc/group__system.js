@@ -1,5 +1,6 @@
 var group__system =
 [
+    [ "Flash memory In-Application Programming (IAP)", "group__iap.html", "group__iap" ],
     [ "Pin configuration", "group__pinconf.html", "group__pinconf" ],
     [ "Clock", "group__clock.html", "group__clock" ],
     [ "LIBC tiny subset", "group__libc.html", "group__libc" ],

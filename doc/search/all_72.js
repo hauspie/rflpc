@@ -1,5 +1,9 @@
 var searchData=
 [
+  ['rand',['rand',['../group__libc.html#gae23144bcbb8e3742b00eb687c36654d1',1,'rand.h']]],
+  ['rand_2eh',['rand.h',['../rand_8h.html',1,'']]],
+  ['rand_5fmax',['RAND_MAX',['../group__libc.html#ga690f251553b39fd4f31894826141b61a',1,'rand.h']]],
+  ['rand_5fr',['rand_r',['../group__libc.html#ga48ccb326f8a50d01bc6d60660623bf56',1,'rand.h']]],
   ['rflpc17xx_2eh',['rflpc17xx.h',['../rflpc17xx_8h.html',1,'']]],
   ['rflpc_5fassert',['RFLPC_ASSERT',['../group__debug.html#ga7a517cb585da0af34947fe3d3f110bbd',1,'debug.h']]],
   ['rflpc_5fcclk',['RFLPC_CCLK',['../group__clock.html#ggaf3b7fc561cd12dfdff9f7c1357c3f016a9cc79356f5343282b73a36bd7e6115ba',1,'clock.h']]],
@@ -119,6 +123,7 @@ var searchData=
   ['rflpc_5fgpio_5fset_5fpins_5ffrom_5fmask',['rflpc_gpio_set_pins_from_mask',['../group__gpio.html#ga49cfc85b1179f3084a9e30d84355ec86',1,'gpio.h']]],
   ['rflpc_5fgpio_5fset_5fval',['rflpc_gpio_set_val',['../group__gpio.html#ga8b76b243597a46c35ac3f31ab71590e9',1,'gpio.h']]],
   ['rflpc_5fgpio_5fuse_5fpin',['rflpc_gpio_use_pin',['../group__gpio.html#gae710c04d73fd0ccacc27175133f45bd1',1,'gpio.h']]],
+  ['rflpc_5fiap_5fget_5fserial_5fnumber',['rflpc_iap_get_serial_number',['../group__iap.html#gaf32e1fafe943abf8584956b678910f44',1,'iap.h']]],
   ['rflpc_5firq_5fdebug_5fenable',['RFLPC_IRQ_DEBUG_ENABLE',['../group__config.html#gaf855ea6f86cabcbdbb354c395fd08369',1,'config.h']]],
   ['rflpc_5firq_5fdisable',['rflpc_irq_disable',['../group__irq.html#ga7d6587b57215a97c4d371152a61fda61',1,'interrupt.h']]],
   ['rflpc_5firq_5fenable',['rflpc_irq_enable',['../group__irq.html#ga01316ea467ff4f3569f0d87231aa33b9',1,'interrupt.h']]],

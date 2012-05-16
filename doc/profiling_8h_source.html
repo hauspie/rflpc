@@ -137,37 +137,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00024"></a>00024 <span class="preprocessor">#ifndef __RFLPC_PROFILING_H__</span>
 <a name="l00025"></a>00025 <span class="preprocessor"></span><span class="preprocessor">#define __RFLPC_PROFILING_H__</span>
 <a name="l00026"></a>00026 <span class="preprocessor"></span>
-<a name="l00030"></a>00030 <span class="preprocessor">#ifdef RFLPC_CONFIG_ENABLE_PROFILING</span>
-<a name="l00031"></a>00031 <span class="preprocessor"></span>
-<a name="l00032"></a>00032 <span class="preprocessor">#include &quot;<a class="code" href="timer_8h.html" title="TIMER0/1/2/3 device driver.">drivers/timer.h</a>&quot;</span>
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034 <span class="preprocessor">#ifndef RFLPC_PROFILE_PRESCALE</span>
-<a name="l00035"></a>00035 <span class="preprocessor"></span>
-<a name="l00037"></a><a class="code" href="group__debug.html#gade638bd8e832b7cb23d79221bdd672b3">00037</a> <span class="preprocessor">   #define RFLPC_PROFILE_PRESCALE (rflpc_clock_get_system_clock() / 1000000)</span>
-<a name="l00038"></a>00038 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00039"></a>00039 <span class="preprocessor"></span>
-<a name="l00047"></a><a class="code" href="group__debug.html#ga140cad36269d6883574de7a6ebe1f219">00047</a> <span class="preprocessor">#define RFLPC_PROFILE_INIT(timer) do {rflpc_timer_enable(timer); rflpc_timer_set_clock(timer, RFLPC_CCLK); rflpc_timer_set_pre_scale_register(timer,RFLPC_PROFILE_PRESCALE); rflpc_timer_start(timer); } while(0)</span>
-<a name="l00048"></a>00048 <span class="preprocessor"></span>
-<a name="l00052"></a><a class="code" href="group__debug.html#gaf3dad1b7a2e3f333b1d176ec392127d8">00052</a> <span class="preprocessor">#define RFLPC_PROFILE_DECLARE_COUNTER(counter) volatile uint32_t rflpc_profile_total_##counter; volatile uint32_t rflpc_profile_start_##counter;</span>
-<a name="l00053"></a>00053 <span class="preprocessor"></span>
-<a name="l00057"></a><a class="code" href="group__debug.html#ga80914dfeedd73b1ac4eedc24df91d4f5">00057</a> <span class="preprocessor">#define RFLPC_PROFILE_DECLARE_EXTERN_COUNTER(counter) extern volatile uint32_t rflpc_profile_total_##counter;extern volatile uint32_t rflpc_profile_start_##counter;</span>
-<a name="l00058"></a>00058 <span class="preprocessor"></span>
-<a name="l00060"></a><a class="code" href="group__debug.html#ga820884ce2945c507ed1c87e431a54204">00060</a> <span class="preprocessor">#define RFLPC_PROFILE_START_COUNTER(counter,timer) do { rflpc_profile_start_##counter = rflpc_timer_get_counter(timer);} while(0)</span>
-<a name="l00061"></a>00061 <span class="preprocessor"></span>
-<a name="l00063"></a><a class="code" href="group__debug.html#ga6c4a36ae390f04ffbb5318aff065bd91">00063</a> <span class="preprocessor">#define RFLPC_PROFILE_STOP_COUNTER(counter,timer) do { rflpc_profile_total_##counter += rflpc_timer_get_counter(timer) - rflpc_profile_start_##counter;} while(0)</span>
-<a name="l00064"></a>00064 <span class="preprocessor"></span>
-<a name="l00066"></a><a class="code" href="group__debug.html#ga92127b7a49bbd56bb87b84263dab9b14">00066</a> <span class="preprocessor">#define RFLPC_PROFILE_GET_TOTAL(counter) rflpc_profile_total_##counter</span>
-<a name="l00067"></a>00067 <span class="preprocessor"></span>
-<a name="l00068"></a>00068 <span class="preprocessor">#endif</span>
-<a name="l00069"></a>00069 <span class="preprocessor"></span>
-<a name="l00070"></a>00070 <span class="preprocessor">#endif</span>
+<a name="l00031"></a>00031 <span class="preprocessor">#ifdef RFLPC_CONFIG_ENABLE_PROFILING</span>
+<a name="l00032"></a>00032 <span class="preprocessor"></span>
+<a name="l00033"></a>00033 <span class="preprocessor">#include &quot;<a class="code" href="timer_8h.html" title="TIMER0/1/2/3 device driver.">drivers/timer.h</a>&quot;</span>
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035 <span class="preprocessor">#ifndef RFLPC_PROFILE_PRESCALE</span>
+<a name="l00036"></a>00036 <span class="preprocessor"></span>
+<a name="l00038"></a><a class="code" href="group__debug.html#gade638bd8e832b7cb23d79221bdd672b3">00038</a> <span class="preprocessor">   #define RFLPC_PROFILE_PRESCALE (rflpc_clock_get_system_clock() / 1000000)</span>
+<a name="l00039"></a>00039 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00040"></a>00040 <span class="preprocessor"></span>
+<a name="l00048"></a><a class="code" href="group__debug.html#ga140cad36269d6883574de7a6ebe1f219">00048</a> <span class="preprocessor">#define RFLPC_PROFILE_INIT(timer) do {rflpc_timer_enable(timer); rflpc_timer_set_clock(timer, RFLPC_CCLK); rflpc_timer_set_pre_scale_register(timer,RFLPC_PROFILE_PRESCALE); rflpc_timer_start(timer); } while(0)</span>
+<a name="l00049"></a>00049 <span class="preprocessor"></span>
+<a name="l00053"></a><a class="code" href="group__debug.html#gaf3dad1b7a2e3f333b1d176ec392127d8">00053</a> <span class="preprocessor">#define RFLPC_PROFILE_DECLARE_COUNTER(counter) volatile uint32_t rflpc_profile_total_##counter; volatile uint32_t rflpc_profile_start_##counter;</span>
+<a name="l00054"></a>00054 <span class="preprocessor"></span>
+<a name="l00058"></a><a class="code" href="group__debug.html#ga80914dfeedd73b1ac4eedc24df91d4f5">00058</a> <span class="preprocessor">#define RFLPC_PROFILE_DECLARE_EXTERN_COUNTER(counter) extern volatile uint32_t rflpc_profile_total_##counter;extern volatile uint32_t rflpc_profile_start_##counter;</span>
+<a name="l00059"></a>00059 <span class="preprocessor"></span>
+<a name="l00061"></a><a class="code" href="group__debug.html#ga820884ce2945c507ed1c87e431a54204">00061</a> <span class="preprocessor">#define RFLPC_PROFILE_START_COUNTER(counter,timer) do { rflpc_profile_start_##counter = rflpc_timer_get_counter(timer);} while(0)</span>
+<a name="l00062"></a>00062 <span class="preprocessor"></span>
+<a name="l00064"></a><a class="code" href="group__debug.html#ga6c4a36ae390f04ffbb5318aff065bd91">00064</a> <span class="preprocessor">#define RFLPC_PROFILE_STOP_COUNTER(counter,timer) do { rflpc_profile_total_##counter += rflpc_timer_get_counter(timer) - rflpc_profile_start_##counter;} while(0)</span>
+<a name="l00065"></a>00065 <span class="preprocessor"></span>
+<a name="l00067"></a><a class="code" href="group__debug.html#ga92127b7a49bbd56bb87b84263dab9b14">00067</a> <span class="preprocessor">#define RFLPC_PROFILE_GET_TOTAL(counter) rflpc_profile_total_##counter</span>
+<a name="l00068"></a>00068 <span class="preprocessor"></span>
+<a name="l00069"></a>00069 <span class="preprocessor">#endif</span>
+<a name="l00070"></a>00070 <span class="preprocessor"></span>
+<a name="l00071"></a>00071 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="profiling_8h.html">profiling.h</a>      </li>
 
-    <li class="footer">Generated on Wed Mar 21 2012 18:01:01 for rfLPC by
+    <li class="footer">Generated on Wed May 16 2012 14:27:00 for rfLPC by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>

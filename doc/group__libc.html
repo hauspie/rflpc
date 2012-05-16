@@ -124,9 +124,36 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga14938524dcbeb59d7117ba5e151ad1b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies memory from one buffer to another.  <a href="#ga14938524dcbeb59d7117ba5e151ad1b1"></a><br/></td></tr>
 <tr class="memitem:ga362b656d9de3289b55b1035d14cb4b5d"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libc.html#ga362b656d9de3289b55b1035d14cb4b5d">memset</a> (void *dest, int c, size_t n)</td></tr>
 <tr class="memdesc:ga362b656d9de3289b55b1035d14cb4b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the first n bytes of the memory area pointed to by dest with the constant byte c.  <a href="#ga362b656d9de3289b55b1035d14cb4b5d"></a><br/></td></tr>
+<tr class="memitem:ga83a727cc697aea22e24cad5f39198dd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libc.html#ga83a727cc697aea22e24cad5f39198dd2">srand</a> (unsigned int seed)</td></tr>
+<tr class="memdesc:ga83a727cc697aea22e24cad5f39198dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the seed used by <a class="el" href="group__libc.html#gae23144bcbb8e3742b00eb687c36654d1" title="Returns a pseudo-random integer in the range of 0 to RAND_MAX.">rand()</a> to generate the pseudo-random sequence.  <a href="#ga83a727cc697aea22e24cad5f39198dd2"></a><br/></td></tr>
+<tr class="memitem:gae23144bcbb8e3742b00eb687c36654d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libc.html#gae23144bcbb8e3742b00eb687c36654d1">rand</a> (void)</td></tr>
+<tr class="memdesc:gae23144bcbb8e3742b00eb687c36654d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pseudo-random integer in the range of 0 to <a class="el" href="group__libc.html#ga690f251553b39fd4f31894826141b61a" title="The maximum value of a random number.">RAND_MAX</a>.  <a href="#gae23144bcbb8e3742b00eb687c36654d1"></a><br/></td></tr>
+<tr class="memitem:ga48ccb326f8a50d01bc6d60660623bf56"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libc.html#ga48ccb326f8a50d01bc6d60660623bf56">rand_r</a> (unsigned int *seed)</td></tr>
+<tr class="memdesc:ga48ccb326f8a50d01bc6d60660623bf56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pseudo-random integer in the range of 0 to <a class="el" href="group__libc.html#ga690f251553b39fd4f31894826141b61a" title="The maximum value of a random number.">RAND_MAX</a>.  <a href="#ga48ccb326f8a50d01bc6d60660623bf56"></a><br/></td></tr>
+<tr class="memitem:ga690f251553b39fd4f31894826141b61a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libc.html#ga690f251553b39fd4f31894826141b61a">RAND_MAX</a>&#160;&#160;&#160;2147483647</td></tr>
+<tr class="memdesc:ga690f251553b39fd4f31894826141b61a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum value of a random number.  <a href="#ga690f251553b39fd4f31894826141b61a"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <p>The rflpc library implement a very small subset of the libc. </p>
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="ga690f251553b39fd4f31894826141b61a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define <a class="el" href="group__libc.html#ga690f251553b39fd4f31894826141b61a">RAND_MAX</a>&#160;&#160;&#160;2147483647</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The maximum value of a random number. </p>
+<p>The <a class="el" href="group__libc.html#gae23144bcbb8e3742b00eb687c36654d1" title="Returns a pseudo-random integer in the range of 0 to RAND_MAX.">rand</a> function generate number in [0, <a class="el" href="group__libc.html#ga690f251553b39fd4f31894826141b61a" title="The maximum value of a random number.">RAND_MAX</a>] range. </p>
+
+<p>Definition at line <a class="el" href="rand_8h_source.html#l00041">41</a> of file <a class="el" href="rand_8h_source.html">rand.h</a>.</p>
+
+</div>
+</div>
 <hr/><h2>Function Documentation</h2>
 <a class="anchor" id="ga14938524dcbeb59d7117ba5e151ad1b1"></a>
 <div class="memitem">
@@ -264,6 +291,52 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="gae23144bcbb8e3742b00eb687c36654d1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="group__libc.html#gae23144bcbb8e3742b00eb687c36654d1">rand</a> </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a pseudo-random integer in the range of 0 to <a class="el" href="group__libc.html#ga690f251553b39fd4f31894826141b61a" title="The maximum value of a random number.">RAND_MAX</a>. </p>
+<dl class="section warning"><dt>Warning:</dt><dd>this function is not reentrant! </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga48ccb326f8a50d01bc6d60660623bf56"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="group__libc.html#ga48ccb326f8a50d01bc6d60660623bf56">rand_r</a> </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int *&#160;</td>
+          <td class="paramname"><em>seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a pseudo-random integer in the range of 0 to <a class="el" href="group__libc.html#ga690f251553b39fd4f31894826141b61a" title="The maximum value of a random number.">RAND_MAX</a>. </p>
+<dl class="section note"><dt>Note:</dt><dd>This function is reentrant as it uses a user defined pointer for its seed. </dd></dl>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">seed</td><td>pointer to the current value of the seed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="gadce147a756b0ce3fa99e928e32c44db4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -290,12 +363,37 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ga83a727cc697aea22e24cad5f39198dd2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="group__libc.html#ga83a727cc697aea22e24cad5f39198dd2">srand</a> </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the seed used by <a class="el" href="group__libc.html#gae23144bcbb8e3742b00eb687c36654d1" title="Returns a pseudo-random integer in the range of 0 to RAND_MAX.">rand()</a> to generate the pseudo-random sequence. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">seed</td><td>the seed to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div>
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated on Wed Mar 21 2012 18:01:01 for rfLPC by
+    <li class="footer">Generated on Wed May 16 2012 14:27:00 for rfLPC by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.0 </li>
    </ul>
