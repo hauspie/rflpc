@@ -27,6 +27,7 @@
 /** @addtogroup debug
  * @{ */
 
+
 #ifdef RFLPC_CONFIG_ENABLE_PROFILING
 
 #include "drivers/timer.h"

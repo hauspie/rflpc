@@ -1,4 +1,5 @@
 Next:
+	- modified library fine tuning (use C header file instead of -D gcc option)
 	- rand(), rand_r(), srand()
 	- Function to get LPC17xx serial number (useful to uniquely identify your device)
 0.8:

@@ -18,9 +18,11 @@
   Created:
   Time-stamp: <2011-07-13 14:18:07 (hauspie)>
 */
+
+
 #include "clock.h"
 #include "interrupt.h"
-#include "config.h"
+
 
 /* Internal RC Oscillator is 4Mhz. */
 #define RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY 4000000

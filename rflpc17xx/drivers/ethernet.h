@@ -19,6 +19,8 @@
 #ifndef __RFLPC_ETHERNET_H__
 #define __RFLPC_ETHERNET_H__
 
+
+
 #ifdef RFLPC_CONFIG_ENABLE_ETHERNET
 
 /** @addtogroup eth

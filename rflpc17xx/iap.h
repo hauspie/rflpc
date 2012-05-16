@@ -29,6 +29,8 @@
 #ifndef __RFLPC_IAP_H__
 #define __RFLPC_IAP_H__
 
+
+
 #ifdef RFLPC_CONFIG_ENABLE_IAP
 
 /** Gets the flash serial number.

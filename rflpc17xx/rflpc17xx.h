@@ -146,10 +146,10 @@
  * To compile, just type @p make. You should see something like that
  * 
  * @code
- * $ make
- * arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I/home/hauspie/work/git/rflpc -DRFLPC_CONFIG_ENABLE_ATOMIC_PRINTF -DRFLPC_CONFIG_ENABLE_DMA -DRFLPC_CONFIG_ENABLE_ETHERNET -DRFLPC_CONFIG_ENABLE_MEMCPY -DRFLPC_CONFIG_ENABLE_MEMSET -DRFLPC_CONFIG_ENABLE_PRINTF -DRFLPC_CONFIG_ENABLE_PROFILING -DRFLPC_CONFIG_ENABLE_RIT_TIMER -DRFLPC_CONFIG_ENABLE_SETJMP -DRFLPC_CONFIG_ENABLE_SPI -DRFLPC_CONFIG_ENABLE_SYS_TICK_TIMER -DRFLPC_CONFIG_ENABLE_TIMERS -DRFLPC_CONFIG_ENABLE_UART -DRFLPC_CONFIG_PLATFORM_MBED   -c -o main.o main.c
+ * $ makefile
+ * arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I/home/hauspie/work/git/rflpc -DRFLPC_CONFIG_PLATFORM_MBED -include /home/hauspie/work/git/rflpc/rflpc17xx/config/config.h   -c -o main.o main.c
  * arm-none-eabi-gcc -o modify_this.elf main.o -nostdlib -L/home/hauspie/work/git/rflpc/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map -lrflpc17xx 
- * arm-none-eabi-objcopy -O binary -j .text -j .data modify_this.elf modify_this.bin
+ * arm-none-eabi-objcopy -O binary -j .text -j .data modify_this.elf modify_this.bin 
  * @endcode
  * 
  * If so, then you will have two files, an elf file and a bin file. The elf file is your program in ELF format. You can inspect it, dissassemble it... with commands such as your arm objdump.
@@ -162,13 +162,10 @@
  * The library can be configured so that some features are not included. This can save loads of code memory when you just need a few drivers.
  * @subsection config-file Automatic generation of the configuration file
  *
- * The configuration file is located in the config/config folder. When you clone the git repository, this file is NOT included.
+ * The configuration file is located in the rflpc17xx/config folder. When you clone the git repository, this file is NOT included.
  * However, if you just use @p make in the library folder, a default full configuration file is generated
  *
- * This file is a list of defines that will be enabled at compile time. 
- * The file is read by the @p rflpc-config script when generating the compile flags. 
- * Each line represents a define that will be transformed to a @p -Dxxxx flag.
- * 
+ * This file is a C header file defining the needed MACRO to activate some functionalities
  * To generate the file, you can use the makefile in the config folder. There are two main rules for generating a config file 
  * - <tt>make empty_config</tt>
  * - <tt>make full_config</tt>
@@ -191,16 +188,9 @@
  * 
  * @subsection fine-tune Fine tuning the configuration file
  * 
- * The simplest way to fine tune the library is to start by a make full_config and then remove the line you do not want from the config/config file. 
- * You can either remove the lines completely or use the @p # character to make a line comment "à la" sh.
+ * The simplest way to fine tune the library is to start by a make full_config and then remove the line you do not want from the rflpc17xx/config/config-options.h file
+ * You can either remove the lines completely or comment them
  * 
- * For example, this config file builds a library that uses only UART
- * 
- * @code
- * # You can use comments in the config file to disable a line or simply comment
- * #RFLPC_CONFIG_ENABLE_TIMERS
- * RFLPC_CONFIG_ENABLE_UART
- * @endcode
  * 
  * @subsection warnings Common configuration mistakes
  * 
@@ -261,9 +251,10 @@
 #include "nxp/LPC17xx.h"
 #include "nxp/core_cm3.h"
 
+/* Library configuration */
+#include "config/config.h"
 
 /* Base system includes */
-#include "config.h"
 #include "clock.h"
 #include "debug.h"
 #include "interrupt.h"
