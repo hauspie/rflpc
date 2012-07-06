@@ -146,7 +146,7 @@
  * To compile, just type @p make. You should see something like that
  * 
  * @code
- * $ makefile
+ * $ make
  * arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I/home/hauspie/work/git/rflpc -DRFLPC_CONFIG_PLATFORM_MBED -include /home/hauspie/work/git/rflpc/rflpc17xx/config/config.h   -c -o main.o main.c
  * arm-none-eabi-gcc -o modify_this.elf main.o -nostdlib -L/home/hauspie/work/git/rflpc/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map -lrflpc17xx 
  * arm-none-eabi-objcopy -O binary -j .text -j .data modify_this.elf modify_this.bin 
