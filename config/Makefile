@@ -44,6 +44,13 @@ __set_PSP
 
 .PHONY: all $(RFLPC_LIB_FILE)
 
+all:
+	@test -f $(RFLPC_LIB_CONFIG_FILE) || make full_config
+
+clean:
+
+mrproper:
+
 check_empty_config: $(RFLPC_LIB_FILE)
 # Get the list of symbols in the library */	
 	$(eval SYMBOLS := $(shell $(NM) $(RFLPC_LIB_FILE) | grep -i ' T ' | cut -d' ' -f 3))
