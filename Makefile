@@ -1,4 +1,4 @@
-DIRS=rflpc17xx $(wildcard samples/*)
+DIRS=config rflpc17xx $(wildcard samples/*)
 
 .PHONY: all doc $(DIRS)
 
