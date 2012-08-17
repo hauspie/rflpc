@@ -63,7 +63,7 @@ SECTIONS
   _interrupt_start = .;
   *(.interrupt_vector) ;
   _interrupt_end = .;
-  *(.text) ;
+  *(.text*) ;
   /* Constant data is also put in flash */
   *(.rodata*) ;
   } 
@@ -98,7 +98,7 @@ SECTIONS
  the section in ram */
  .data : { 
   _data_start = .; 
-  *(.data) ;
+  *(.data*) ;
 } > ram AT>flash
  _data_end = .; 
  /* declares a global constant _data_end which contains the address of the end of the section in ram */
