@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-14 16:55:26 (hauspie)>
+ * Time-stamp: <2012-12-14 17:27:38 (hauspie)>
  */
 /** @file
  * Pulse Width Modulation driver
@@ -24,9 +24,10 @@
 #ifndef __RFLPC_PWM_H__
 #define __RFLPC_PWM_H__
 
-
-
 #ifdef RFLPC_CONFIG_ENABLE_PWM
+
+#include <stdint.h>
+#include "../pinconf.h"
 
 /** @addtogroup pwm Pulse Width Modulation
  * @ingroup drivers
@@ -44,8 +45,10 @@
  * - P1_23 and P2_3 for PWM4
  * - P1_24 and P2_4 for PWM5
  * - P1_26 and P2_5 for PWM6
+ *
+ * @return returns -1 on error and 0 if no problem occurs
  */
-void rflpc_pwm_init(rflpc_pin_t pin);
+extern int rflpc_pwm_init(rflpc_pin_t pin);
 
 /** Sets the pwm parameters in single edge mode.
  * This call makes the PWM outputs a signal of a given micro seconds
@@ -56,7 +59,7 @@ void rflpc_pwm_init(rflpc_pin_t pin);
  * @param period The period of the pwm cycle in micro seconds
  * @param pulsewidth The width of the pulse in micro seconds
  */
-void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t period, uint32_t pulsewidth)
+extern void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t period, uint32_t pulsewidth)
 
 /** @} */
 #endif /* ENABLE_PWM */
