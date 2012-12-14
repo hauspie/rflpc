@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-14 11:45:56 (hauspie)>
+ * Time-stamp: <2012-12-14 16:55:26 (hauspie)>
  */
 /** @file
  * Pulse Width Modulation driver
@@ -33,25 +33,30 @@
  * @{ */
 
 
-/** Identifies PWM outputs */
-typedef enum
-{
-    RFLPC_PWM_1,
-    RFLPC_PWM_2,
-    RFLPC_PWM_3,
-    RFLPC_PWM_4,
-    RFLPC_PWM_5,
-    RFLPC_PWM_6,
-} rflpc_pwm_output_t;
-
 /** 
- * Inits the PWM peripheral and set the selected pin to work as PWM
+ * Inits the PWM peripheral for use with selected pin
  * 
- * @param output the PWM output to enable
- * @param port the port to connect the PWM output to
- * @param pin  the pin to connect the PWM output to
+ * @note not all pins are available! And one PWM channel can only be used on one pin at a time.
+ * Available pins are:
+ * - P1_18 and P2_0 for PWM1
+ * - P1_20, P2_1 and P3_25 for PWM2
+ * - P1_21, P2_2 and P3_26 for PWM3
+ * - P1_23 and P2_3 for PWM4
+ * - P1_24 and P2_4 for PWM5
+ * - P1_26 and P2_5 for PWM6
  */
-void rflpc_pwm_init(rflpc_pwm_output_t output, int port, int pin);
+void rflpc_pwm_init(rflpc_pin_t pin);
+
+/** Sets the pwm parameters in single edge mode.
+ * This call makes the PWM outputs a signal of a given micro seconds
+ * period. The signal will be high for pulsewidth microsecond and low for the
+ * remainder of the period
+ * 
+ * @param pin the PWM pin (same restriction as ::rflpc_pwm_init apply)
+ * @param period The period of the pwm cycle in micro seconds
+ * @param pulsewidth The width of the pulse in micro seconds
+ */
+void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t period, uint32_t pulsewidth)
 
 /** @} */
 #endif /* ENABLE_PWM */
