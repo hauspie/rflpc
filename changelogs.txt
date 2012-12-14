@@ -1,3 +1,6 @@
+New version:
+	- Changes pinsel API to make things easier
+	- Also adds MBED_DIP* symbol to name breadboard pins
 0.9b:
 	- Fix makefiles to generate config if not present
 0.9a:

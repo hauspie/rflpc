@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-08-28 12:32:26 (hauspie)>
+  Time-stamp: <2012-12-14 16:10:18 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -25,6 +25,23 @@ int main()
     int j,i = 0;
     rflpc_led_init();
     
+    rflpc_led_set(RFLPC_LED_1);
+    for (j = 0 ; j < 10000000 ; ++j);
+    rflpc_led_set(RFLPC_LED_2);
+    for (j = 0 ; j < 10000000 ; ++j);
+    rflpc_led_set(RFLPC_LED_3);
+    for (j = 0 ; j < 10000000 ; ++j);
+    rflpc_led_set(RFLPC_LED_4);
+
+    for (j = 0 ; j < 10000000 ; ++j);
+    rflpc_led_clr(RFLPC_LED_1);
+    for (j = 0 ; j < 10000000 ; ++j);
+    rflpc_led_clr(RFLPC_LED_2);
+    for (j = 0 ; j < 10000000 ; ++j);
+    rflpc_led_clr(RFLPC_LED_3);
+    for (j = 0 ; j < 10000000 ; ++j);
+    rflpc_led_clr(RFLPC_LED_4);
+
 
     while (1)
     {

@@ -17,7 +17,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2012-03-21 10:51:35 (hauspie)>
+  Time-stamp: <2012-12-14 14:27:31 (hauspie)>
 */
 
 
@@ -68,16 +68,16 @@ static uint16_t _read_from_phy_register_with_addr(uint8_t addr, uint8_t reg)
 static void _eth_setup_pins()
 {
 
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_TXD0,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_TXD1,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_TX_EN,   1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_CRS,     1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_RXD0,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_RXD1,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_RX_ER,   1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_REF_CLK, 1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_MDC,     1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-    rflpc_pin_set(RFLPC_ETH_PIN_PORT, RFLPC_ETH_PIN_MDIO,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_TXD0,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_TXD1,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_TX_EN,   1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_CRS,     1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_RXD0,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_RXD1,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_RX_ER,   1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_REF_CLK, 1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_MDC,     1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+    rflpc_pin_set(RFLPC_ETH_PIN_MDIO,    1, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
 }
 
 #define _read_from_phy_register(reg) _read_from_phy_register_with_addr(RFLPC_ETH_PHY_ADDR, (reg))

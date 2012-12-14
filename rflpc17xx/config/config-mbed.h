@@ -21,7 +21,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2012-03-21 14:43:38 (hauspie)>
+  Time-stamp: <2012-12-14 15:49:44 (hauspie)>
 
   This files provides the configuration of the lib for the mbed platform
 
@@ -79,22 +79,63 @@
 #define RFLPC_CLOCK_CPU_DIVIDER                      3
 /** @} */
 
+
+
+
+/**************************************
+ *        DIP Pins                    *
+ **************************************/
+/** @name MBED DIP Pins.
+    This represents the mapping between MBED breadboard and LPC17xx pins.
+    They are never used in the library in itself, by can be used for application
+    that targets only MBED
+ */
+/** @{ */
+#define MBED_DIP5  RFLPC_PIN_P0_9
+#define MBED_DIP6  RFLPC_PIN_P0_8
+#define MBED_DIP7  RFLPC_PIN_P0_7
+#define MBED_DIP8  RFLPC_PIN_P0_6
+#define MBED_DIP9  RFLPC_PIN_P0_0
+#define MBED_DIP10 RFLPC_PIN_P0_1
+#define MBED_DIP11 RFLPC_PIN_P0_18
+#define MBED_DIP12 RFLPC_PIN_P0_17
+#define MBED_DIP13 RFLPC_PIN_P0_15
+#define MBED_DIP14 RFLPC_PIN_P0_16
+#define MBED_DIP15 RFLPC_PIN_P0_23
+#define MBED_DIP16 RFLPC_PIN_P0_24
+#define MBED_DIP17 RFLPC_PIN_P0_25
+#define MBED_DIP18 RFLPC_PIN_P0_26
+#define MBED_DIP19 RFLPC_PIN_P1_30
+#define MBED_DIP20 RFLPC_PIN_P1_31
+#define MBED_DIP21 RFLPC_PIN_P2_5
+#define MBED_DIP22 RFLPC_PIN_P2_4
+#define MBED_DIP23 RFLPC_PIN_P2_3
+#define MBED_DIP24 RFLPC_PIN_P2_2
+#define MBED_DIP25 RFLPC_PIN_P2_1
+#define MBED_DIP26 RFLPC_PIN_P2_0
+#define MBED_DIP27 RFLPC_PIN_P0_11
+#define MBED_DIP28 RFLPC_PIN_P0_10
+#define MBED_DIP29 RFLPC_PIN_P0_5
+#define MBED_DIP30 RFLPC_PIN_P0_4
+
+/** @} */
+
+
+
 /**************************************
  *          LEDS configuration        *
  **************************************/
 
 /** @name LEDs configuration */
 /** @{ */
-/** Which GPIO port is used for leds? */
-#define RFLPC_LED_PORT   1
 /** On which pin is the LED1 ? */
-#define RFLPC_LED_1_PIN 18
+#define RFLPC_LED_1_PIN RFLPC_PIN_P1_18
 /** On which pin is the LED2 ? */
-#define RFLPC_LED_2_PIN 20
+#define RFLPC_LED_2_PIN RFLPC_PIN_P1_20
 /** On which pin is the LED3 ? */
-#define RFLPC_LED_3_PIN 21
+#define RFLPC_LED_3_PIN RFLPC_PIN_P1_21
 /** On which pin is the LED4 ? */
-#define RFLPC_LED_4_PIN 23
+#define RFLPC_LED_4_PIN RFLPC_PIN_P1_23
 /** @} */
 
 /**************************************
@@ -125,17 +166,13 @@
 /** @name UART Configuration */
 /** @{ */
 /* UART0 settings */
-/** UART0 PORT */
-#define RFLPC_UART0_PORT    0
 /** UART0 TX Pin */
-#define RFLPC_UART0_TXD_PIN 2
+#define RFLPC_UART0_TXD_PIN RFLPC_PIN_P0_2
 /** UART0 RX Pin */
-#define RFLPC_UART0_RXD_PIN 3
+#define RFLPC_UART0_RXD_PIN RFLPC_PIN_P0_3
 #define RFLPC_UART0_PIN_FUNCTION 1 /**< Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf. user manual PINSEL* registers) . */
 
 /* UART2 settings */
-/** UART2 PORT */
-#define RFLPC_UART2_PORT    0
 /** UART2 TX Pin */
 #define RFLPC_UART2_TXD_PIN 10
 /** UART2 RX Pin */
@@ -143,8 +180,6 @@
 #define RFLPC_UART2_PIN_FUNCTION 1 /**< Depending on the platform, the pins used for uart0 are not the same and they do not use the same value for configuring multi-purpose pins (cf. user manual PINSEL* registers) . */
 
 /* UART3 settings */
-/** UART3 PORT */
-#define RFLPC_UART3_PORT    0
 /** UART3 TX Pin */
 #define RFLPC_UART3_TXD_PIN 0
 /** UART3 RX Pin */

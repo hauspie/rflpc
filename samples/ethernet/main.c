@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-08 16:10:52 (hauspie)>
+  Time-stamp: <2012-12-14 16:12:05 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -264,6 +264,7 @@ void ethernet()
     rflpc_eth_set_mac_address(mac_addr.addr);
     rflpc_eth_get_mac_address(mac_addr.addr);
     printf("My mac: %x:%x:%x:%x:%x:%x\r\n", mac_addr.addr[0], mac_addr.addr[1], mac_addr.addr[2], mac_addr.addr[3], mac_addr.addr[4], mac_addr.addr[5]);
+    printf("My ip: %d.%d.%d.%d\r\n", ((uint8_t*)&my_ip)[3], ((uint8_t*)&my_ip)[2], ((uint8_t*)&my_ip)[1], ((uint8_t*)&my_ip)[0]);
     rflpc_led_val(0);
 
     printf("Autonegociating to 100Mbps full duplex\r\n");
@@ -322,6 +323,7 @@ int main()
 {
     if (rflpc_uart_init(RFLPC_UART0) == -1)
 	RFLPC_STOP(RFLPC_LED_1 | RFLPC_LED_3, 1000000);
+    rflpc_led_init();
     printf("rflpc ethernet sample\r\n");
 
     ethernet();

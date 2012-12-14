@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2012-03-21 14:25:49 (hauspie)>
+  Time-stamp: <2012-12-14 15:59:52 (hauspie)>
 
   all ethernet constants, register definition, bits etc..
 
@@ -45,29 +45,27 @@
  * to use the ethernet device. This values are for LPC17xx devices.
  */
 /** @{ */
-/** Number of the port the eth is connected to */
-#define RFLPC_ETH_PIN_PORT      1
 
 /** Transmit data bit 0 */
-#define RFLPC_ETH_PIN_TXD0      0
+#define RFLPC_ETH_PIN_TXD0      RFLPC_PIN_P1_0
 /** Transmit data bit 1 */
-#define RFLPC_ETH_PIN_TXD1      1
+#define RFLPC_ETH_PIN_TXD1      RFLPC_PIN_P1_1
 /** Transmit data enable pin */
-#define RFLPC_ETH_PIN_TX_EN     4
+#define RFLPC_ETH_PIN_TX_EN     RFLPC_PIN_P1_4
 /** Carrier sense Pin */
-#define RFLPC_ETH_PIN_CRS       8
+#define RFLPC_ETH_PIN_CRS       RFLPC_PIN_P1_8
 /** Receive data bit 0 */
-#define RFLPC_ETH_PIN_RXD0      9
+#define RFLPC_ETH_PIN_RXD0      RFLPC_PIN_P1_9
 /** Receive data bit 1 */
-#define RFLPC_ETH_PIN_RXD1     10
+#define RFLPC_ETH_PIN_RXD1     RFLPC_PIN_P1_10
 /** Receive error */
-#define RFLPC_ETH_PIN_RX_ER    14
+#define RFLPC_ETH_PIN_RX_ER    RFLPC_PIN_P1_14
 /** Reference clock */
-#define RFLPC_ETH_PIN_REF_CLK  15
+#define RFLPC_ETH_PIN_REF_CLK  RFLPC_PIN_P1_15
 /** MIIM Clock pin */
-#define RFLPC_ETH_PIN_MDC      16
+#define RFLPC_ETH_PIN_MDC      RFLPC_PIN_P1_16
 /** MI data input and output pin */
-#define RFLPC_ETH_PIN_MDIO     17
+#define RFLPC_ETH_PIN_MDIO     RFLPC_PIN_P1_17
 /** @} */
 
 /** 
