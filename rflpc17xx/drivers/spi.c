@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created: 2011-10-06
- Time-stamp: <2012-03-21 09:29:01 (hauspie)>
+ Time-stamp: <2012-12-14 15:50:34 (hauspie)>
 */
 #ifdef RFLPC_CONFIG_ENABLE_SPI
 
@@ -26,18 +26,16 @@
 
 #define PINFUNC_SPI 2
 
-#define SPI0_PORT  0
-#define SCK0_PIN  15
-#define SSEL0_PIN 16
-#define MISO0_PIN 17
-#define MOSI0_PIN 18
+#define SCK0_PIN  RFLPC_PIN_P0_15
+#define SSEL0_PIN RFLPC_PIN_P0_16
+#define MISO0_PIN RFLPC_PIN_P0_17
+#define MOSI0_PIN RFLPC_PIN_P0_18
 
 
-#define SPI1_PORT  0
-#define SSEL1_PIN  6
-#define SCK1_PIN   7
-#define MISO1_PIN  8
-#define MOSI1_PIN  9
+#define SSEL1_PIN  RFLPC_PIN_P0_6
+#define SCK1_PIN   RFLPC_PIN_P0_7
+#define MISO1_PIN  RFLPC_PIN_P0_8
+#define MOSI1_PIN  RFLPC_PIN_P0_9
 
 void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t data_size_transfert, uint8_t clock_prescale, uint8_t serial_clock_rate)
 {
@@ -50,10 +48,10 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
       LPC_SC->PCLKSEL1 &= ~(0x3 << 10);
       LPC_SC->PCLKSEL1 |= ((cpu_clock_divider & 0x3)<< 10);
 
-      rflpc_pin_set(SPI0_PORT, SCK0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI0_PORT, MISO0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI0_PORT, MOSI0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);      
-      rflpc_pin_set(SPI0_PORT, SSEL0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(SCK0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(MISO0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(MOSI0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);      
+      rflpc_pin_set(SSEL0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
    }
    else if (port == RFLPC_SPI1)
    {
@@ -61,10 +59,10 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
       LPC_SC->PCLKSEL0 &= ~(0x3 << 20);
       LPC_SC->PCLKSEL0 |= ((cpu_clock_divider & 0x3)<< 20);
 
-      rflpc_pin_set(SPI1_PORT, SCK1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI1_PORT, MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI1_PORT, MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SPI1_PORT, SSEL1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(SCK1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      rflpc_pin_set(SSEL1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
    }
 
    /* user manual p. 422. Set the data transfert size */

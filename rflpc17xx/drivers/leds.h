@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-21 10:55:37 (hauspie)>
+  Time-stamp: <2012-12-14 14:07:53 (hauspie)>
 */
 #ifndef __RFLPC_LEDS_H__
 #define __RFLPC_LEDS_H__
@@ -38,13 +38,13 @@
  */
 /** @{ */
 /** LED 1 */
-#define RFLPC_LED_1 (1 << RFLPC_LED_1_PIN)
+#define RFLPC_LED_1 (1 << RFLPC_PIN_GET_PIN(RFLPC_LED_1_PIN))
 /** LED 2 */
-#define RFLPC_LED_2 (1 << RFLPC_LED_2_PIN)
+#define RFLPC_LED_2 (1 << RFLPC_PIN_GET_PIN(RFLPC_LED_2_PIN))
 /** LED 3 */
-#define RFLPC_LED_3 (1 << RFLPC_LED_3_PIN)
+#define RFLPC_LED_3 (1 << RFLPC_PIN_GET_PIN(RFLPC_LED_3_PIN))
 /** LED 4 */
-#define RFLPC_LED_4 (1 << RFLPC_LED_4_PIN)
+#define RFLPC_LED_4 (1 << RFLPC_PIN_GET_PIN(RFLPC_LED_4_PIN))
 /** @} */
 
 
@@ -53,35 +53,35 @@
 static inline void rflpc_led_init()
 {
     /* Connect GPIO1 to physical pins */
-    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_1_PIN);
-    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_2_PIN);
-    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_3_PIN);
-    rflpc_gpio_use_pin(RFLPC_LED_PORT, RFLPC_LED_4_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_1_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_2_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_3_PIN);
+    rflpc_gpio_use_pin(RFLPC_LED_4_PIN);
     /* Connect LED pins */
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_1_PIN);
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_2_PIN);
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_3_PIN);
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_PORT, RFLPC_LED_4_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_1_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_2_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_3_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_4_PIN);
 }
 
 /** Turns the given led(s) on */
 static inline void rflpc_led_set(uint32_t l)
 {
-    rflpc_gpio_set_pins_from_mask(RFLPC_LED_PORT, l);
+    rflpc_gpio_set_pins_from_mask(RFLPC_PIN_GET_PORT(RFLPC_LED_1_PIN), l);
 }
 
 
 /** Clears the given led(s) (turn them off) */
 static inline void rflpc_led_clr(uint32_t l)
 {
-    rflpc_gpio_clr_pins_from_mask(RFLPC_LED_PORT, l);
+    rflpc_gpio_clr_pins_from_mask(RFLPC_PIN_GET_PORT(RFLPC_LED_1_PIN), l);
 }
 
 
 /** Turns on the leds included in the mask */
 static inline void rflpc_led_val(uint32_t l)
 {
-    rflpc_gpio_set_val(RFLPC_LED_PORT, l, ~(RFLPC_LED_1 | RFLPC_LED_2 | RFLPC_LED_3 | RFLPC_LED_4));
+    rflpc_gpio_set_val(RFLPC_PIN_GET_PORT(RFLPC_LED_1_PIN), l, ~(RFLPC_LED_1 | RFLPC_LED_2 | RFLPC_LED_3 | RFLPC_LED_4));
 }
 
 /**
