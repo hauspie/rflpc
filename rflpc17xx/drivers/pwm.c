@@ -16,11 +16,12 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-14 17:27:46 (hauspie)>
+ * Time-stamp: <2012-12-16 18:42:56 (mickey)>
  */
 #ifdef RFLPC_CONFIG_ENABLE_PWM
 
 #include "pwm.h"
+#include "timer.h"
 #include "../nxp/LPC17xx.h"
 
 int rflpc_pwm_init(rflpc_pin_t pin)
@@ -72,10 +73,41 @@ int rflpc_pwm_init(rflpc_pin_t pin)
     return 0;
 }
 
+void rflpc_pwm_set_period(uint32_t period)
+{
+    /* Set period using MR0 */
+    LPC_PWM1->MR0 = period;
+}
+
+void rflpc_pwm_start(rflpc_pin_t pin)
+{
+    rflpc_timer_reset(RFLPC_TIMER_PWM);
+    rflpc_timer_start(RFLPC_TIMER_PWM);
+
+    switch (pin)
+    {
+	/* PWM1 */
+	case RFLPC_PIN_P1_18:
+	case RFLPC_PIN_P2_0:
+	    
+	    break;
+}
+
+void rflpc_pwm_stop(rflpc_pin_t pin)
+{
+}
 
 void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t period, uint32_t pulsewidth)
 {
     
+    switch (pin)
+    {
+	/* PWM1 */
+	case RFLPC_PIN_P1_18:
+	case RFLPC_PIN_P2_0:
+	    
+	    break;
+    }
 }
 
 

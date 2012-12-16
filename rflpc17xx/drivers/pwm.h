@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-14 17:27:38 (hauspie)>
+ * Time-stamp: <2012-12-16 18:40:44 (mickey)>
  */
 /** @file
  * Pulse Width Modulation driver
@@ -50,16 +50,33 @@
  */
 extern int rflpc_pwm_init(rflpc_pin_t pin);
 
+/** 
+ * Sets the period in micro seconds. 
+ * @param period 
+ */
+extern void rflpc_pwm_set_period(uint32_t period);
+
 /** Sets the pwm parameters in single edge mode.
- * This call makes the PWM outputs a signal of a given micro seconds
- * period. The signal will be high for pulsewidth microsecond and low for the
- * remainder of the period
- * 
+ * This call makes the PWM outputs a pulse of a given width at the start of each period
+ *
  * @param pin the PWM pin (same restriction as ::rflpc_pwm_init apply)
- * @param period The period of the pwm cycle in micro seconds
  * @param pulsewidth The width of the pulse in micro seconds
  */
-extern void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t period, uint32_t pulsewidth)
+extern void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t pulsewidth);
+
+/** 
+ * Starts the PWM on the given pin
+ * 
+ * @param pin 
+ */
+extern void rflpc_pwm_start(rflpc_pin_t pin);
+
+/** 
+ * Stops the PWM output on the given pin
+ * 
+ * @param pin 
+ */
+extern void rflpc_pwm_stop(rflpc_pint_t pin);
 
 /** @} */
 #endif /* ENABLE_PWM */

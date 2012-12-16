@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-21 09:59:04 (hauspie)>
+  Time-stamp: <2012-12-16 18:18:13 (mickey)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
@@ -51,6 +51,7 @@ typedef enum
     RFLPC_TIMER1 = 1, /**< Timer 1 */
     RFLPC_TIMER2 = 2, /**< Timer 2 */
     RFLPC_TIMER3 = 3  /**< Timer 3 */
+    RFLPC_TIMER_PWM = 4 /**< PWM Timer */
 } rflpc_timer_t;
 
 
@@ -87,6 +88,10 @@ static inline LPC_TIM_TypeDef *rflpc_timer_base(rflpc_timer_t timer)
 	case RFLPC_TIMER1: return LPC_TIM1;
 	case RFLPC_TIMER2: return LPC_TIM2;
 	case RFLPC_TIMER3: return LPC_TIM3;
+	    /* For all register up to CR1, the PWM timer memory mapping is
+	     * exactly the same as a timer one. Thus, the timer functions can
+	     * be used also for PWM timer configuration */
+	case RFLPC_TIMER_PWM: return (LPC_TIM_TypeDef*) LPC_PWM1;
 	default: break;
     }
     return (LPC_TIM_TypeDef*)0;

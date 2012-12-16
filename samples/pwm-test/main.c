@@ -20,7 +20,7 @@
 */
 #include <rflpc17xx/rflpc17xx.h>
 
-#define LED_PIN MBED_DIP26
+#define LED_PIN RFLPC_LED_1_PIN
 
 int main()
 {
