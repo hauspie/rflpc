@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-17 15:42:47 (hauspie)>
+ * Time-stamp: <2012-12-17 16:30:45 (hauspie)>
  */
 /** @file
  * Pulse Width Modulation driver
@@ -71,6 +71,12 @@ extern void rflpc_pwm_single_edge(rflpc_pin_t pin, uint32_t pulsewidth);
  * @param pin the PWM pin (same restrictions as in ::rflpc_pwm_init)
  * @param high_edge time at which the PWM ouput goes in high state (in microseconds)
  * @param low_edge time at which the PWM ouput goes in low state (in microseconds)
+ *
+ * @warning In double edge mode, the match register used to select low and high
+ * state can are shared with previous and next PWM channel. See user manual
+ * page 512 to see how match registers are shared between PWM channels.
+ *
+ * @warning PWM1 can not be used as double edged
  */
 extern void rflpc_pwm_double_edge(rflpc_pin_t pin, uint32_t high_edge, uint32_t low_edge);
 
