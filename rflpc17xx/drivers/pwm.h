@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-17 16:30:45 (hauspie)>
+ * Time-stamp: <2012-12-17 16:38:18 (hauspie)>
  */
 /** @file
  * Pulse Width Modulation driver
@@ -81,18 +81,20 @@ extern void rflpc_pwm_single_edge(rflpc_pin_t pin, uint32_t pulsewidth);
 extern void rflpc_pwm_double_edge(rflpc_pin_t pin, uint32_t high_edge, uint32_t low_edge);
 
 /** 
- * Starts the PWM on the given pin (do not reset the timer, only enable PWM output)
+ * Enable the PWM on the given pin (do not reset the timer, only enable PWM output)
  * 
  * @param pin 
  */
-extern void rflpc_pwm_start(rflpc_pin_t pin);
+extern void rflpc_pwm_enable(rflpc_pin_t pin);
 
 /** 
- * Stops the PWM output on the given pin
+ * Disable the PWM output on the given pin.
+ * 
+ * @warning This will let the pin at the state it has.
  * 
  * @param pin 
  */
-extern void rflpc_pwm_stop(rflpc_pin_t pin);
+extern void rflpc_pwm_disable(rflpc_pin_t pin);
 
 /** @} */
 #endif /* ENABLE_PWM */

@@ -16,13 +16,14 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-17 16:17:23 (hauspie)>
+  Time-stamp: <2012-12-17 16:40:50 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
 #define LED_PIN RFLPC_LED_1_PIN
-#define PWM_PIN1 MBED_DIP23
-#define PWM_PIN2 MBED_DIP21
+#define PWM_PIN1 RFLPC_LED_2_PIN
+#define PWM_PIN2 RFLPC_LED_3_PIN
+#define PWM_PIN3 MBED_DIP21
 
 #define PERIOD 10000
 
@@ -49,17 +50,17 @@ RFLPC_IRQ_HANDLER uart_rx(void)
 	    rflpc_pwm_single_edge(PWM_PIN2, ps);
 	    break;
 	case 'a':
-	    rflpc_pwm_start(PWM_PIN1);
+	    rflpc_pwm_enable(PWM_PIN1);
 	    break;
 	case 'A':
-	    rflpc_pwm_stop(PWM_PIN1);
+	    rflpc_pwm_disable(PWM_PIN1);
 	    break;
 
 	case 'z':
-	    rflpc_pwm_start(PWM_PIN2);
+	    rflpc_pwm_enable(PWM_PIN2);
 	    break;
 	case 'Z':
-	    rflpc_pwm_stop(PWM_PIN2);
+	    rflpc_pwm_disable(PWM_PIN2);
 	    break;	    
     }
 }
@@ -78,17 +79,22 @@ int main()
     rflpc_gpio_use_pin(LED_PIN);
     rflpc_gpio_set_pin_mode_output(LED_PIN);
 
+    /* Init the PWM peripheral */
     rflpc_pwm_init(PWM_PIN1);
     rflpc_pwm_init(PWM_PIN2);
-    rflpc_pwm_init(MBED_DIP25);
+    rflpc_pwm_init(PWM_PIN3);
     
     ps = 500;
+    /* Set duty-cycle parameters (period and pulse width for single edged, or
+     * start and stop of pulse with double edged) */
     rflpc_pwm_single_edge(PWM_PIN1, ps);
     rflpc_pwm_single_edge(PWM_PIN2, 0);
-    rflpc_pwm_double_edge(MBED_DIP25, 1000, 2000);
-    rflpc_pwm_start(PWM_PIN1);
-    rflpc_pwm_start(PWM_PIN2);
-    rflpc_pwm_start(MBED_DIP25);
+    rflpc_pwm_double_edge(PWM_PIN3, 1000, 2000);
+
+    /* Enable output */
+    rflpc_pwm_enable(PWM_PIN1);
+    rflpc_pwm_enable(PWM_PIN2);
+    rflpc_pwm_enable(PWM_PIN3);
     rflpc_pwm_set_period(PERIOD);
 
     while (1)

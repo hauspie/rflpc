@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-17 15:49:45 (hauspie)>
+ * Time-stamp: <2012-12-17 16:39:10 (hauspie)>
  */
 #ifdef RFLPC_CONFIG_ENABLE_PWM
 
@@ -109,7 +109,7 @@ void rflpc_pwm_set_period(uint32_t period)
     rflpc_timer_start(RFLPC_TIMER_PWM);
 }
 
-void rflpc_pwm_start(rflpc_pin_t pin)
+void rflpc_pwm_enable(rflpc_pin_t pin)
 {
     /* Enable the PWM output for selected pin (p. 519) */
     switch (pin)
@@ -135,7 +135,7 @@ void rflpc_pwm_start(rflpc_pin_t pin)
     }
 }
 
-void rflpc_pwm_stop(rflpc_pin_t pin)
+void rflpc_pwm_disable(rflpc_pin_t pin)
 {
     /* Disable the PWM output for selected pin (p. 519) */
     switch (pin)
