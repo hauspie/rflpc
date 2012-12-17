@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-14 14:03:23 (hauspie)>
+  Time-stamp: <2012-12-17 14:41:24 (hauspie)>
 
   Provides macro to set pin function and modes
 */
@@ -27,6 +27,7 @@
 #define __RFLPC_PINCONF_H__
 
 #include <stdint.h>
+#include "nxp/LPC17xx.h"
 
 /** @defgroup pinconf Pin configuration
  * @ingroup system
@@ -162,8 +163,7 @@ typedef enum
  * Sets the operational mode for a given pin on a given port.
  * @note See the LPC17xx user manual to get a description of functions as the functions are dependent on the pin
  *
- * @param port The port of the pin (0..4)
- * @param pin The pin (0..31)
+ * @param pin The pin
  * @param function How the pin is used (0..3).
  * @param mode The pin mode (see ::rflpc_pin_mode_t)
  * @param opendrain Control the open drain mode for pins used as output. 0 for normal mode (no open drain), 1 for open drain.

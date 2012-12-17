@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-21 09:59:04 (hauspie)>
+  Time-stamp: <2012-12-17 14:42:27 (hauspie)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
@@ -47,20 +47,21 @@
  */
 typedef enum
 {
-    RFLPC_TIMER0 = 0, /**< Timer 0 */
-    RFLPC_TIMER1 = 1, /**< Timer 1 */
-    RFLPC_TIMER2 = 2, /**< Timer 2 */
-    RFLPC_TIMER3 = 3  /**< Timer 3 */
+    RFLPC_TIMER0, /**< Timer 0 */
+    RFLPC_TIMER1, /**< Timer 1 */
+    RFLPC_TIMER2, /**< Timer 2 */
+    RFLPC_TIMER3,  /**< Timer 3 */
+    RFLPC_TIMER_PWM /**< PWM Timer */
 } rflpc_timer_t;
 
 
 /** Match registers for interrupt generation */
 typedef enum
 {
-    RFLPC_TIMER_MATCH0 = 0, /**< Match register 0 */
-    RFLPC_TIMER_MATCH1 = 1, /**< Match register 1 */
-    RFLPC_TIMER_MATCH2 = 2, /**< Match register 2 */
-    RFLPC_TIMER_MATCH3 = 3, /**< Match register 3 */
+    RFLPC_TIMER_MATCH0, /**< Match register 0 */
+    RFLPC_TIMER_MATCH1, /**< Match register 1 */
+    RFLPC_TIMER_MATCH2, /**< Match register 2 */
+    RFLPC_TIMER_MATCH3, /**< Match register 3 */
 } rflpc_timer_match_t;
 
 
@@ -87,6 +88,10 @@ static inline LPC_TIM_TypeDef *rflpc_timer_base(rflpc_timer_t timer)
 	case RFLPC_TIMER1: return LPC_TIM1;
 	case RFLPC_TIMER2: return LPC_TIM2;
 	case RFLPC_TIMER3: return LPC_TIM3;
+	    /* For all register up to CR1, the PWM timer memory mapping is
+	     * exactly the same as a timer one. Thus, the timer functions can
+	     * be used also for PWM timer configuration */
+	case RFLPC_TIMER_PWM: return (LPC_TIM_TypeDef*) LPC_PWM1;
 	default: break;
     }
     return (LPC_TIM_TypeDef*)0;
@@ -111,6 +116,8 @@ static inline void rflpc_timer_enable(rflpc_timer_t timer)
 	case RFLPC_TIMER3:
 	    LPC_SC->PCONP |= (1UL << (20 + timer));
 	    break;
+	default:
+	    break;
     }
 }
 
@@ -131,6 +138,8 @@ static inline void rflpc_timer_disable(rflpc_timer_t timer)
 	case RFLPC_TIMER2:
 	case RFLPC_TIMER3:
 	    LPC_SC->PCONP &= ~(1UL << (20 + timer));
+	    break;
+	default:
 	    break;
     }
 }
@@ -155,6 +164,8 @@ static inline void rflpc_timer_set_clock(rflpc_timer_t timer, rflpc_clock_divide
 	case RFLPC_TIMER3:
 	    LPC_SC->PCLKSEL1 &= ~( 3UL << ((timer+4)<<1));
 	    LPC_SC->PCLKSEL1 |= ( divider << ((timer+4)<<1));
+	    break;
+	case RFLPC_TIMER_PWM:
 	    break;
     }
 }
