@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created: 2011-10-06
- Time-stamp: <2012-12-17 14:55:05 (hauspie)>
+ Time-stamp: <2012-12-17 15:03:52 (hauspie)>
 */
 #ifdef RFLPC_CONFIG_ENABLE_SPI
 
@@ -65,7 +65,7 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
    }
 
    /* user manual p. 422. Set the data transfert size */
-   spi_base->CR0 = ((data_size_transfert - 1) & 0xF); /* | (serial_clock_rate - 1) << 8; */
+   spi_base->CR0 = ((data_size_transfert - 1) & 0xF);
    /* No loop back, enable ssp controler */
    spi_base->CR1 = (1UL << 1);
    if (mode == RFLPC_SPI_SLAVE)
@@ -74,7 +74,7 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
    {
        /* Set clock parameters */
        spi_base->CPSR = clock_prescale;
-       spi_base->CR0 |= (serial_clock_rate - 1) << 8;
+       RFLPC_SET_BITS_VAL(spi_base->CR0, 8, serial_clock_rate-1, 8);
    }
 }
 
@@ -85,7 +85,7 @@ void rflpc_spi_set_rx_callback(rflpc_spi_t port, rflpc_irq_handler_t callback)
     rflpc_irq_set_handler(SSP0_IRQn + port, callback);
     /* enable the interrupt vector */
     rflpc_irq_enable(SSP0_IRQn + port);    
-    spi_base->IMSC |= (1UL << 2); /* Enable interrupt generation on RX Fifo half full event */
+    RFLPC_SET_BIT(spi_base->IMSC, 2); /* Enable interrupt generation on RX Fifo half full event */
 }
 
 #endif
