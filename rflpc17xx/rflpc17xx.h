@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created:
- Time-stamp: <2012-03-21 15:26:19 (hauspie)>
+ Time-stamp: <2012-12-17 15:14:43 (hauspie)>
  */
 #ifndef __RFLPC_RFLPC17XX_H__
 #define __RFLPC_RFLPC17XX_H__
@@ -281,5 +281,6 @@
 #include "drivers/timer.h"
 #include "drivers/uart.h"
 #include "drivers/dma.h"
+#include "drivers/pwm.h"
 
 #endif

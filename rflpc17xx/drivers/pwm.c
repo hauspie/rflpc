@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-17 14:52:16 (hauspie)>
+ * Time-stamp: <2012-12-17 15:49:45 (hauspie)>
  */
 #ifdef RFLPC_CONFIG_ENABLE_PWM
 
@@ -94,20 +94,23 @@ int rflpc_pwm_init(rflpc_pin_t pin)
     /* Set timer parameters */
     /* Pre scale value is set to system clock / 8000000 to have TC counts in microsecond */
     LPC_PWM1->PR = rflpc_clock_get_system_clock() / 8000000;
+    
+    /* Reset on match. The PWM will constantly output its duty cycle */
+    RFLPC_SET_BIT(LPC_PWM1->MCR, 1);
     return 0;
 }
 
 void rflpc_pwm_set_period(uint32_t period)
 {
-    /* Set period using MR0 */
+    /* Stop, set new period, reset and restart. */
+    rflpc_timer_stop(RFLPC_TIMER_PWM);
     LPC_PWM1->MR0 = period;
+    rflpc_timer_reset(RFLPC_TIMER_PWM);
+    rflpc_timer_start(RFLPC_TIMER_PWM);
 }
 
 void rflpc_pwm_start(rflpc_pin_t pin)
 {
-    rflpc_timer_reset(RFLPC_TIMER_PWM);
-    rflpc_timer_start(RFLPC_TIMER_PWM);
-
     /* Enable the PWM output for selected pin (p. 519) */
     switch (pin)
     {
@@ -127,24 +130,118 @@ void rflpc_pwm_start(rflpc_pin_t pin)
 	    RFLPC_SET_BIT(LPC_PWM1->PCR, 13);
 	    break;
 	case PWM6_PINS:
-	    RFLPC_SET_BIT(LPC_PWM1->PCR, 13);
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 14);
 	    break;
     }
 }
 
 void rflpc_pwm_stop(rflpc_pin_t pin)
 {
+    /* Disable the PWM output for selected pin (p. 519) */
+    switch (pin)
+    {
+	case PWM1_PINS:
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 9);
+	    break;
+	case PWM2_PINS:
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 10);
+	    break;
+	case PWM3_PINS:
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 11);
+	    break;
+	case PWM4_PINS:
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 12);
+	    break;
+	case PWM5_PINS:
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 13);
+	    break;
+	case PWM6_PINS:
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 14);
+	    break;
+    }
 }
 
 void rflpc_pwm_single_edge(rflpc_pin_t pin, uint32_t pulsewidth)
 {
     switch (pin)
     {
-	/* PWM1 */
-	case RFLPC_PIN_P1_18:
-	case RFLPC_PIN_P2_0:
+	case PWM1_PINS:
+	    /* PWM1 can not be a double edge register and thus is always a
+	     * single edge, hence not selecting mode here */
+	    LPC_PWM1->MR1 = pulsewidth;
+	    break;
+	case PWM2_PINS:
+	    /* Select singled edge */
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 2);
+	    LPC_PWM1->MR2 = pulsewidth;
+	    break;
+	case PWM3_PINS:
+	    /* Select singled edge */
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 3);
+	    LPC_PWM1->MR3 = pulsewidth;
+	    break;
+	case PWM4_PINS:
+	    /* Select singled edge */
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 4);
+	    LPC_PWM1->MR4 = pulsewidth;
+	    break;
+	case PWM5_PINS:
+	    /* Select singled edge */
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 5);
+	    LPC_PWM1->MR5 = pulsewidth;
+	    break;
+	case PWM6_PINS:
+	    /* Select singled edge */
+	    RFLPC_CLR_BIT(LPC_PWM1->PCR, 6);
+	    LPC_PWM1->MR6 = pulsewidth;
+	    break;
+	default:
 	    break;
     }
 }
+
+void rflpc_pwm_double_edge(rflpc_pin_t pin, uint32_t high_edge, uint32_t low_edge)
+{
+    switch (pin)
+    {
+	case PWM1_PINS:
+	    /* PWM1 can not be a double edge register and thus is always a
+	     * single edge, hence not seting anything here */
+	    break;
+	case PWM2_PINS:
+	    /* Select double edge */
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 2);
+	    LPC_PWM1->MR1 = high_edge;
+	    LPC_PWM1->MR2 = low_edge;
+	    break;
+	case PWM3_PINS:
+	    /* Select double edge */
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 3);
+	    LPC_PWM1->MR2 = high_edge;
+	    LPC_PWM1->MR3 = low_edge;
+	    break;
+	case PWM4_PINS:
+	    /* Select double edge */
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 4);
+	    LPC_PWM1->MR3 = high_edge;
+	    LPC_PWM1->MR4 = low_edge;
+	    break;
+	case PWM5_PINS:
+	    /* Select double edge */
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 5);
+	    LPC_PWM1->MR4 = high_edge;
+	    LPC_PWM1->MR5 = low_edge;
+	    break;
+	case PWM6_PINS:
+	    /* Select double edge */
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 6);
+	    LPC_PWM1->MR5 = high_edge;
+	    LPC_PWM1->MR6 = low_edge;
+	    break;
+	default: 
+	    break;
+    }
+}
+
 
 #endif
