@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-14 17:09:27 (hauspie)>
+  Time-stamp: <2012-12-17 14:41:24 (hauspie)>
 
   Provides macro to set pin function and modes
 */
@@ -27,6 +27,7 @@
 #define __RFLPC_PINCONF_H__
 
 #include <stdint.h>
+#include "nxp/LPC17xx.h"
 
 /** @defgroup pinconf Pin configuration
  * @ingroup system

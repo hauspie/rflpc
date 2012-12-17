@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-16 18:40:44 (mickey)>
+ * Time-stamp: <2012-12-17 14:41:53 (hauspie)>
  */
 /** @file
  * Pulse Width Modulation driver
@@ -62,7 +62,7 @@ extern void rflpc_pwm_set_period(uint32_t period);
  * @param pin the PWM pin (same restriction as ::rflpc_pwm_init apply)
  * @param pulsewidth The width of the pulse in micro seconds
  */
-extern void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t pulsewidth);
+extern void rflpc_pwm_single_edge(rflpc_pin_t pin, uint32_t pulsewidth);
 
 /** 
  * Starts the PWM on the given pin
@@ -76,7 +76,7 @@ extern void rflpc_pwm_start(rflpc_pin_t pin);
  * 
  * @param pin 
  */
-extern void rflpc_pwm_stop(rflpc_pint_t pin);
+extern void rflpc_pwm_stop(rflpc_pin_t pin);
 
 /** @} */
 #endif /* ENABLE_PWM */

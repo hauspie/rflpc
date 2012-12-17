@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-04 15:17:22 (mickey)>
+  Time-stamp: <2012-12-17 10:28:30 (hauspie)>
 
   This file contains some macro tools used in rflpc
 
@@ -32,5 +32,21 @@
 
 /** This macro allows concatenation of tokens even in recursive macro */
 #define TOKEN_PASTE(x, y) TOKEN_PASTE2(x, y)
+
+
+/** Sets a given bit to 1 */
+#define RFLPC_SET_BIT(val, bit) (val) |= (1UL << (bit))
+/** Clears a given bit to 0 */
+#define RFLPC_CLR_BIT(val, bit) (val) &= ~(1UL << (bit))
+
+/** Sets some bits values from the position of the LSB bit and the number of bits to set.
+    The bit_val is the values of the bits BEFORE shift
+*/
+#define RFLPC_SET_BITS_VAL(val, bit_pos, bit_val, bit_count) do {	\
+    uint32_t mask = ((1 << (bit_count)) - 1) << (bit_pos);		\
+    /* Clear bits */							\
+    (val) &= ~mask;							\
+    (val) |= ((bit_val) << (bit_pos)) & mask;				\
+} while(0)
 
 #endif

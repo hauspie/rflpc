@@ -16,13 +16,14 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created: 2011-10-06
- Time-stamp: <2012-12-14 15:50:34 (hauspie)>
+ Time-stamp: <2012-12-17 14:55:05 (hauspie)>
 */
 #ifdef RFLPC_CONFIG_ENABLE_SPI
 
 #include "spi.h"
 #include "../nxp/LPC17xx.h"
 #include "../pinconf.h"
+#include "../tools.h"
 
 #define PINFUNC_SPI 2
 
@@ -44,9 +45,8 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
    /* Power and clock the SPI device */
    if (port == RFLPC_SPI0)
    {
-      LPC_SC->PCONP |= (1UL << 21);
-      LPC_SC->PCLKSEL1 &= ~(0x3 << 10);
-      LPC_SC->PCLKSEL1 |= ((cpu_clock_divider & 0x3)<< 10);
+      RFLPC_SET_BIT(LPC_SC->PCONP, 21);
+      RFLPC_SET_BITS_VAL(LPC_SC->PCLKSEL1, 10, cpu_clock_divider, 2);
 
       rflpc_pin_set(SCK0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(MISO0_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
@@ -55,9 +55,8 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
    }
    else if (port == RFLPC_SPI1)
    {
-      LPC_SC->PCONP |= (1UL << 10);
-      LPC_SC->PCLKSEL0 &= ~(0x3 << 20);
-      LPC_SC->PCLKSEL0 |= ((cpu_clock_divider & 0x3)<< 20);
+      RFLPC_SET_BIT(LPC_SC->PCONP, 10);
+      RFLPC_SET_BITS_VAL(LPC_SC->PCLKSEL0, 20, cpu_clock_divider, 2);
 
       rflpc_pin_set(SCK1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
@@ -70,7 +69,7 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
    /* No loop back, enable ssp controler */
    spi_base->CR1 = (1UL << 1);
    if (mode == RFLPC_SPI_SLAVE)
-       spi_base->CR1 |= (1UL << 2);
+       RFLPC_SET_BIT(spi_base->CR1, 2);
    else /* master mode */
    {
        /* Set clock parameters */

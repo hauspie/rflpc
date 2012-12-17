@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-08-31 16:16:02 (hauspie)>
+  Time-stamp: <2012-12-17 14:55:38 (hauspie)>
 */
 /** @file
  * Debug functions such as delay and stack dump.
@@ -45,6 +45,9 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
    int i;uint32_t j;            \
    for (i=0 ; i < (c) ; ++i)    \
       j = LPC_SC->SCS;          \
+   /* avoids an unused variable 'j' warning */	\
+   if (j == (c))		\
+       break;			\
    } while (0)
 
 /** Stops execution by an infinite loop, switching between led pattern l and its opposite. */

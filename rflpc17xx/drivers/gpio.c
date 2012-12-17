@@ -14,6 +14,7 @@
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "gpio.h"
+#include "../tools.h"
 
 void rflpc_gpio_use_pin(rflpc_pin_t pin)
 {
@@ -37,27 +38,27 @@ static LPC_GPIO_TypeDef * const _gpio_ports[] =
 /** Sets a pin to input mode */
 void rflpc_gpio_set_pin_mode_input(rflpc_pin_t pin)
 {
-    RFLPC_GPIO_BASE(pin)->FIODIR &= ~(1 << (RFLPC_PIN_GET_PIN(pin))); 
+    RFLPC_CLR_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
 }
 
 /** Sets a pin to output mode */
 void rflpc_gpio_set_pin_mode_output(rflpc_pin_t pin)
 {
-    RFLPC_GPIO_BASE(pin)->FIODIR |= (1 << (RFLPC_PIN_GET_PIN(pin)));
+    RFLPC_SET_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
 }
 
 /** Set a pin (put a logical 1 on it) */
 void rflpc_gpio_set_pin(rflpc_pin_t pin)
 {
-    RFLPC_GPIO_BASE(pin)->FIOMASK &= (1 << (RFLPC_PIN_GET_PIN(pin)));
-    RFLPC_GPIO_BASE(pin)->FIOSET |= (1 << RFLPC_PIN_GET_PIN(pin));
+    RFLPC_GPIO_BASE(pin)->FIOMASK = ~(1 << (RFLPC_PIN_GET_PIN(pin)));
+    RFLPC_GPIO_BASE(pin)->FIOSET = 0xffffffff;
 }
 
 /** Clear a pin (put a logical 0 on it) */
 void rflpc_gpio_clr_pin(rflpc_pin_t pin)
 {
-    RFLPC_GPIO_BASE(pin)->FIOMASK &= (1 << RFLPC_PIN_GET_PIN(pin));
-    RFLPC_GPIO_BASE(pin)->FIOCLR |= (1 << RFLPC_PIN_GET_PIN(pin));
+    RFLPC_GPIO_BASE(pin)->FIOMASK = ~(1 << RFLPC_PIN_GET_PIN(pin));
+    RFLPC_GPIO_BASE(pin)->FIOCLR = 0xffffffff;
 }
 
 /** Set multiple pins from a mask */
@@ -93,8 +94,8 @@ void rflpc_gpio_set_val(uint8_t gpio, uint32_t val, uint32_t mask)
 /** Gets the value of a pin */
 int rflpc_gpio_get_pin(rflpc_pin_t pin)
 {
-    RFLPC_GPIO_BASE(pin)->FIOMASK = ~(1 << (pin));
-    return (RFLPC_GPIO_BASE(pin)->FIOPIN >> (pin)) & 1;
+    RFLPC_GPIO_BASE(pin)->FIOMASK = ~(1 << (RFLPC_PIN_GET_PIN(pin)));
+    return (RFLPC_GPIO_BASE(pin)->FIOPIN >> RFLPC_PIN_GET_PIN(pin)) & 1;
 }
 /** Gets the value of the entire port */
 uint32_t rflpc_gpio_get_val(uint8_t gpio)

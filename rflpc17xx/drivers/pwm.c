@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-16 18:42:56 (mickey)>
+ * Time-stamp: <2012-12-17 14:52:16 (hauspie)>
  */
 #ifdef RFLPC_CONFIG_ENABLE_PWM
 
@@ -24,14 +24,38 @@
 #include "timer.h"
 #include "../nxp/LPC17xx.h"
 
+
+/* Some macros to clarify the switch cases in the driver functions */
+#define PWM1_PINS RFLPC_PIN_P1_18: \
+                  case RFLPC_PIN_P2_0
+
+#define PWM2_PINS RFLPC_PIN_P1_20: \
+                  case RFLPC_PIN_P2_1:  \
+                  case RFLPC_PIN_P3_25
+
+#define PWM3_PINS RFLPC_PIN_P1_21: \
+                  case RFLPC_PIN_P2_2:  \
+                  case RFLPC_PIN_P3_26
+
+#define PWM4_PINS RFLPC_PIN_P1_23: \
+                  case RFLPC_PIN_P2_3
+
+#define PWM5_PINS RFLPC_PIN_P1_24: \
+                  case RFLPC_PIN_P2_4
+
+#define PWM6_PINS RFLPC_PIN_P1_26: \
+                  case RFLPC_PIN_P2_5
+
+
+
+
 int rflpc_pwm_init(rflpc_pin_t pin)
 {
     /* Enable PWM1 peripheral */
-    LPC_SC->PCONP |= 1 << 6; /* p. 63 */
+    RFLPC_SET_BIT(LPC_SC->PCONP, 6); /* p. 63 */
 
     /* Clock the PWM to System Clock / 8 */
-    LPC_SC->PCLKSEL0 &= ~(0x3 << 12);
-    LPC_SC->PCLKSEL0 |= ((RFLPC_CCLK_8 & 0x3)<< 12);
+    RFLPC_SET_BITS_VAL(LPC_SC->PCLKSEL0, 12, RFLPC_CCLK_8, 2);
 
     /* Check if the pin to use and set function accordingly, or return with error */
     
@@ -84,31 +108,43 @@ void rflpc_pwm_start(rflpc_pin_t pin)
     rflpc_timer_reset(RFLPC_TIMER_PWM);
     rflpc_timer_start(RFLPC_TIMER_PWM);
 
+    /* Enable the PWM output for selected pin (p. 519) */
     switch (pin)
     {
-	/* PWM1 */
-	case RFLPC_PIN_P1_18:
-	case RFLPC_PIN_P2_0:
-	    
+	case PWM1_PINS:
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 9);
 	    break;
+	case PWM2_PINS:
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 10);
+	    break;
+	case PWM3_PINS:
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 11);
+	    break;
+	case PWM4_PINS:
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 12);
+	    break;
+	case PWM5_PINS:
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 13);
+	    break;
+	case PWM6_PINS:
+	    RFLPC_SET_BIT(LPC_PWM1->PCR, 13);
+	    break;
+    }
 }
 
 void rflpc_pwm_stop(rflpc_pin_t pin)
 {
 }
 
-void rflpc_pwm_single_edge(rflpc_pint_t pin, uint32_t period, uint32_t pulsewidth)
+void rflpc_pwm_single_edge(rflpc_pin_t pin, uint32_t pulsewidth)
 {
-    
     switch (pin)
     {
 	/* PWM1 */
 	case RFLPC_PIN_P1_18:
 	case RFLPC_PIN_P2_0:
-	    
 	    break;
     }
 }
-
 
 #endif
