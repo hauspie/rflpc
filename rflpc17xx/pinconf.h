@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-17 14:41:24 (hauspie)>
+  Time-stamp: <2012-12-19 16:05:24 (hauspie)>
 
   Provides macro to set pin function and modes
 */
@@ -168,30 +168,6 @@ typedef enum
  * @param mode The pin mode (see ::rflpc_pin_mode_t)
  * @param opendrain Control the open drain mode for pins used as output. 0 for normal mode (no open drain), 1 for open drain.
  **/
-static inline void rflpc_pin_set(rflpc_pin_t p, int function, rflpc_pin_mode_t mode, int opendrain)
-{
-    int register_idx = 2*RFLPC_PIN_GET_PORT(p);
-    int pin = RFLPC_PIN_GET_PIN(p);
-
-    if (pin >= 16)
-    {
-	pin -= 16;
-	register_idx++;
-    }
-
-    /* Configure function */
-    *(&(LPC_PINCON->PINSEL0) + register_idx) &= ~(3 << (pin * 2));
-    *(&(LPC_PINCON->PINSEL0) + register_idx) |= ((function & 0x3) << (pin * 2));
-
-    /* Configure mode */
-    *(&(LPC_PINCON->PINMODE0) + register_idx) &= ~(3 << (pin * 2));
-    *(&(LPC_PINCON->PINMODE0) + register_idx) |= ((mode & 0x3) << (pin * 2));
-
-    /* Configure opendrain */
-    if (opendrain)
-	*(&(LPC_PINCON->PINMODE_OD0) + RFLPC_PIN_GET_PORT(p)) |= (1 << pin);
-    else
-	*(&(LPC_PINCON->PINMODE_OD0) + RFLPC_PIN_GET_PORT(p)) &= ~(1 << pin);
-}
+void rflpc_pin_set(rflpc_pin_t p, int function, rflpc_pin_mode_t mode, int opendrain);
 /** @} */
 #endif
