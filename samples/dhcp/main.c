@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-22 16:46:04 (hauspie)>
+  Time-stamp: <2013-02-22 16:50:02 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -156,7 +156,9 @@ void dhcp_request(FullPacket *p)
     dhcp_create_option(dhcp_request.options+4, DHCP_MESSAGE_TYPE, 1);
     dhcp_request.options[6] = DHCPREQUEST;
     
-    
+    /* TODO: add DHCP server identifier (54)
+       TODO: add DHCP requested IP (50)
+    */
 
     dhcp_send(&dhcp_request, p->dhcp.yiaddr, p->dhcp.siaddr, p->eth.src.addr);
 }
