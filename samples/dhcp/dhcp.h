@@ -9,21 +9,22 @@
 #define DHCPNAK      6     
 #define DHCPRELEASE  7     
 #define DHCPINFORM   8     
+#define DHCP_SERVER_PORT 67
+#define DHCP_CLIENT_PORT 68
 
-
-struct dhcp_message {
+typedef struct dhcp_message {
   /* Each line corresponds to the RFC 2131 spec page 8 */
-  unsigned char op, htype, hlen, hops;
-  unsigned char xid[4];
-  unsigned char secs[2], flags[2];
-  unsigned char ciaddr[4];
-  unsigned char yiaddr[4];
-  unsigned char siaddr[4];
-  unsigned char giaddr[4];
-  unsigned char chaddr[16];
-  unsigned char sname[64];
-  unsigned char file[128];
-  unsigned char options[64];
-};
+  uint8_t op, htype, hlen, hops;
+  uint8_t xid[4];
+  uint8_t secs[2], flags[2];
+  uint8_t ciaddr[4];
+  uint8_t yiaddr[4];
+  uint8_t siaddr[4];
+  uint8_t giaddr[4];
+  uint8_t chaddr[16];
+  uint8_t sname[64];
+  uint8_t file[128];
+  uint8_t options[64];
+} DhcpHead;
 
 #endif /* __DHCP_PACKET_H__ */
