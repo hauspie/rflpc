@@ -17,7 +17,7 @@
   
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2013-02-22 14:51:37 (hauspie)>
+    Time-stamp: <2013-02-22 16:01:58 (hauspie)>
 
     Basic protocol handling.  Not meant to be trully used, but just useful
     tools for basic protocol handling for the ethernet sample.
@@ -61,6 +61,8 @@ typedef struct
     uint16_t type;
 } EthHead;
 
+
+#define MAC_ADDR_EQUAL(a,b) (((a)[0] == (b)[0]) && ((a)[1] == (b)[1]) && ((a)[2] == (b)[2]) && ((a)[3] == (b)[3]) && ((a)[4] == (b)[4]) && ((a)[5] == (b)[5]))
 
 typedef struct
 {

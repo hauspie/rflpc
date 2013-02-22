@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define DHCPDISCOVER 1     
-#define ODCPOFFER    2     
+#define DHCPOFFER    2     
 #define DHCPREQUEST  3    
 #define DHCPDECLINE  4     
 #define DHCPACK      5     
@@ -13,6 +13,11 @@
 #define DHCPINFORM   8     
 #define DHCP_SERVER_PORT 67
 #define DHCP_CLIENT_PORT 68
+
+#define BOOTREQUEST 1
+
+#define DHCP_MESSAGE_TYPE 53
+#define DHCP_END_OPTIONS 0xff
 
 typedef struct dhcp_message {
   /* Each line corresponds to the RFC 2131 spec page 8 */

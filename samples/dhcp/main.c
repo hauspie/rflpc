@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-22 15:33:57 (hauspie)>
+  Time-stamp: <2013-02-22 16:30:01 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -25,10 +25,19 @@
 #include "dhcp.h"
 
 static uint8_t ip[4];
+const static uint8_t _bmac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 #define IP_OFFSET PROTO_MAC_HLEN
 #define UDP_OFFSET (IP_OFFSET + PROTO_IP_HLEN)
 #define DHCP_OFFSET (UDP_OFFSET + PROTO_UDP_HLEN)
+
+typedef struct
+{
+    EthHead eth;
+    IpHead ip;
+    UdpHead udp;
+    DhcpHead dhcp;
+}FullPacket;
 
 void print_packet(uint8_t *data, uint16_t size)
 {
@@ -50,42 +59,9 @@ void print_ip(uint32_t ip_)
     printf("%d.%d.%d.%d", ip[3], ip[2], ip[1], ip[0]);
 }
 
-void packet_in(uint8_t *data, uint16_t size)
-{
-    EthHead eth;
-    IpHead ip;
-    UdpHead udp;
-    DhcpHead dhcp;
-    
 
-/*    print_packet(data, size);*/
-    proto_eth_demangle(&eth, data);
-    printf("Eth received\r\n");
-    
-    if (eth.type != PROTO_IP)
-	return;
 
-    proto_ip_demangle(&ip, data + IP_OFFSET);
-    printf("IP received\r\n");
-    printf("Src: ");
-    print_ip(ip.src_addr);
-    printf("\r\nDst: ");
-    print_ip(ip.dst_addr);
-    printf("\r\n");
-
-    if (ip.protocol != PROTO_UDP)
-	return;
-
-    proto_udp_demangle(&udp, data + UDP_OFFSET);
-    printf("UDP received %d %d\r\n", udp.src_port, udp.dst_port);
-
-    if (udp.dst_port != DHCP_CLIENT_PORT || udp.src_port != DHCP_SERVER_PORT)
-	return;
-    printf("Received DHCP packet\r\n");
-    proto_dhcp_demangle(&dhcp, data + DHCP_OFFSET);
-}
-
-void dhcp_send(DhcpHead *dh, uint32_t src_ip, uint32_t dst_ip, uint8_t *dst_mac)
+void dhcp_send(DhcpHead *dh, uint32_t src_ip, uint32_t dst_ip, const uint8_t *dst_mac)
 {
     uint8_t *tx;
     EthHead eth;
@@ -127,17 +103,110 @@ void dhcp_send(DhcpHead *dh, uint32_t src_ip, uint32_t dst_ip, uint8_t *dst_mac)
     printf("Paf\r\n");
 }
 
-void dhcp_request(void)
+
+void dhcp_create_option(uint8_t *options, uint8_t code, uint8_t len)
+{
+    options[0] = code;
+    options[1] = len;
+}
+
+void dhcp_discover(void)
 {
     DhcpHead dhcp;
-    uint8_t bmac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-    
+    memset(&dhcp, 0, sizeof(DhcpHead));
+
     dhcp.op = BOOTREQUEST;
+    dhcp.htype = 1; /* ethernet */
+    dhcp.hlen = 6;
+    dhcp.hops = 0;
+    *((uint32_t *)dhcp.xid) = rand();
+    
+    memcpy(dhcp.chaddr, simple_net_get_mac(), 6);
+
+    dhcp.options[0] = 99;
+    dhcp.options[1] = 130;
+    dhcp.options[2] = 83;
+    dhcp.options[3] = 99;
+    dhcp_create_option(dhcp.options+4, DHCP_MESSAGE_TYPE, 1);
+    dhcp.options[6] = DHCPDISCOVER;
+    
+    dhcp_send(&dhcp, 0, 0xffffffff, _bmac);
+}
+
+void dhcp_request(FullPacket *p)
+{
+    DhcpHead dhcp_request;
+
+    memcpy(&dhcp_request, &p->dhcp, sizeof(DhcpHead));
+    
     
 
-    dhcp_send(&dhcp, 0, 0xffffffff, bmac);
+    dhcp_send(&dhcp_request, p->dhcp.yiaddr, p->dhcp.yiaddr, p->eth.src.addr);
 }
+
+void dhcp_process_packet(FullPacket *p)
+{
+    DhcpHead *dhcp = &p->dhcp;
+    uint8_t *current = dhcp->options + 4;
+    
+    
+
+    for ( ;current <= dhcp->options + 64 && *current != DHCP_END_OPTIONS; current += current[1]+2 /* 2 == size of code + len */)
+    {
+	if (*current != DHCP_MESSAGE_TYPE)
+	    continue;
+	switch(current[2])
+	{
+	    case DHCPOFFER:
+		printf("DHCPOFFER ip: ");
+		print_ip(*((uint32_t*)dhcp->yiaddr));
+		printf("\r\n");
+		dhcp_request(p);
+		break;
+	    default:
+		break;
+	}
+    }
+}
+
+void packet_in(uint8_t *data, uint16_t size)
+{
+    FullPacket p;
+    
+
+/*    print_packet(data, size);*/
+    proto_eth_demangle(&p.eth, data);
+    printf("Eth received\r\n");
+
+    if (!MAC_ADDR_EQUAL(p.eth.dst.addr, _bmac) && !MAC_ADDR_EQUAL(p.eth.dst.addr, simple_net_get_mac()))
+	return;
+    
+    if (p.eth.type != PROTO_IP)
+	return;
+
+    proto_ip_demangle(&p.ip, data + IP_OFFSET);
+    printf("IP received\r\n");
+    printf("Src: ");
+    print_ip(p.ip.src_addr);
+    printf("\r\nDst: ");
+    print_ip(p.ip.dst_addr);
+    printf("\r\n");
+
+    if (p.ip.protocol != PROTO_UDP)
+	return;
+
+    proto_udp_demangle(&p.udp, data + UDP_OFFSET);
+    printf("UDP received %d %d\r\n", p.udp.src_port, p.udp.dst_port);
+
+    if (p.udp.dst_port != DHCP_CLIENT_PORT || p.udp.src_port != DHCP_SERVER_PORT)
+	return;
+    printf("Received DHCP packet\r\n");
+    proto_dhcp_demangle(&p.dhcp, data + DHCP_OFFSET);
+    dhcp_process_packet(&p);
+}
+
+
 
 int main()
 {
@@ -146,7 +215,7 @@ int main()
     simple_net_ethernet_init();
     simple_net_set_rx_callback(packet_in);
 
-    dhcp_request();
+    dhcp_discover();
 
     while (1)
     {
