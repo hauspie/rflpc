@@ -17,7 +17,7 @@
 typedef struct dhcp_message {
   /* Each line corresponds to the RFC 2131 spec page 8 */
   uint8_t op, htype, hlen, hops;
-  uint8_t xid[4];
+  uint32_t xid;
   uint16_t secs, flags;
   uint32_t ciaddr;
   uint32_t yiaddr;
