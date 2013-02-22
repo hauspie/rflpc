@@ -41,6 +41,9 @@
 #define PROTO_ICMP_ECHO_REQUEST 8
 #define PROTO_ICMP_ECHO_REPLY   0
 
+#define PROTO_UDP_HLEN 8
+#define PROTO_UDP 0x11 /* 17 */
+
 typedef struct
 {
     uint8_t addr[6];
@@ -99,6 +102,12 @@ typedef struct
     } data;
 }IcmpHead;
 
+typedef struct
+{
+		uint16_t src_port, dst_port;
+		uint16_t len, checksum;
+}UdpHead;
+
 void proto_eth_demangle(EthHead *eh, const uint8_t *data);
 void proto_eth_mangle(EthHead *eh, uint8_t *data);
 
@@ -110,6 +119,10 @@ void proto_ip_mangle(IpHead *ih, uint8_t *data);
 
 void proto_icmp_demangle(IcmpHead *ih, const uint8_t *data);
 void proto_icmp_mangle(IcmpHead *ih, uint8_t *data);
+
+/* Todo:  maybe constify packet header */
+void proto_udp_demangle(UdpHead *uh, const uint8_t *data);
+void proto_udp_mangle(UdpHead *uh, uint8_t *data);
 
 /* 16 bits checksum */
 uint16_t proto_checksum(uint8_t *buffer, unsigned int bytes_count);

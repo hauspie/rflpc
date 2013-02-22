@@ -186,3 +186,22 @@ void proto_icmp_mangle(IcmpHead *ih, uint8_t *data)
     }
     PUT_FOUR(data, idx, ih->data.raw);
 }
+
+
+void proto_udp_demangle(UdpHead *uh, const uint8_t *data)
+{
+		int idx = 0;
+		GET_TWO(data, uh->src_port, idx);
+		GET_TWO(data, uh->dst_port, idx);
+		GET_TWO(data, uh->len, idx);
+		GET_TWO(data, uh->checksum, idx);
+}
+
+void proto_udp_mangle(UdpHead *uh, uint8_t *data)
+{
+		int idx = 0;
+		PUT_TWO(data, idx, uh->src_port);
+		PUT_TWO(data, idx, uh->dst_port);
+		PUT_TWO(data, idx, uh->len);
+		PUT_TWO(data, idx, uh->checksum);
+}
