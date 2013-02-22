@@ -17,7 +17,7 @@
   
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2013-02-22 14:21:58 (hauspie)>
+    Time-stamp: <2013-02-22 14:47:05 (hauspie)>
 
  */
 #include "protocols.h"
@@ -151,7 +151,7 @@ void proto_ip_mangle(IpHead *ih, uint8_t *data)
     /* set checksum */
     if (ih->header_checksum  == 0) /* need to compute checksum */
     {
-	ih->header_checksum = checksum(data, (ih->version_length & 0xF)<<2);
+	ih->header_checksum = proto_checksum(data, (ih->version_length & 0xF)<<2);
 	idx = 10;
 	PUT_TWO(data, idx, ih->header_checksum);
     }
@@ -191,10 +191,10 @@ void proto_icmp_mangle(IcmpHead *ih, uint8_t *data)
 void proto_udp_demangle(UdpHead *uh, const uint8_t *data)
 {
 		int idx = 0;
-		GET_TWO(data, uh->src_port, idx);
-		GET_TWO(data, uh->dst_port, idx);
-		GET_TWO(data, uh->len, idx);
-		GET_TWO(data, uh->checksum, idx);
+		GET_TWO(uh->src_port, data, idx);
+		GET_TWO(uh->dst_port, data, idx);
+		GET_TWO(uh->len,      data, idx);
+		GET_TWO(uh->checksum, data, idx);
 }
 
 void proto_udp_mangle(UdpHead *uh, uint8_t *data)

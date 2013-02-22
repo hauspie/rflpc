@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-22 11:06:27 (hauspie)>
+  Time-stamp: <2013-02-22 14:42:32 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -134,23 +134,7 @@ void simple_net_set_rx_callback(void (*rx_callback)(uint8_t *data, uint16_t size
     _rx_callback = rx_callback;
 }
 
-
-#define NTOHS(v) ((((v) >> 8)&0xFF) | (((v)&0xFF)<<8))
-
-
-uint16_t simple_net_checksum(uint8_t *buffer, unsigned int bytes_count)
+const uint8_t *simple_net_get_mac()
 {
-    uint32_t csum = 0;
-    while (bytes_count >= 2)
-    {
-	csum += NTOHS(*((uint16_t*)buffer));
-	buffer += 2;
-	bytes_count -= 2;
-    }
-    if (bytes_count)
-	csum += (*buffer << 8);
-    /* add carry */
-    while (csum & 0xFFFF0000)
-	csum = (csum & 0xFFFF) + ((csum >> 16) & 0xFFFF);
-    return (~csum) & 0xFFFF;
+    return _mac_addr;
 }

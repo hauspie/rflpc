@@ -17,7 +17,7 @@
   
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2013-02-22 14:21:45 (hauspie)>
+    Time-stamp: <2013-02-22 14:51:37 (hauspie)>
 
     Basic protocol handling.  Not meant to be trully used, but just useful
     tools for basic protocol handling for the ethernet sample.
@@ -36,6 +36,9 @@
 
 #define PROTO_ARP 0x0806
 #define PROTO_IP  0x0800
+
+#define PROTO_IP_HLEN 20
+
 
 #define PROTO_ICMP 1
 #define PROTO_ICMP_ECHO_REQUEST 8

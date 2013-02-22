@@ -1,6 +1,8 @@
 #ifndef __DHCP_PACKET_H__
 #define __DHCP_PACKET_H__
 
+#include <stdint.h>
+
 #define DHCPDISCOVER 1     
 #define ODCPOFFER    2     
 #define DHCPREQUEST  3    
@@ -26,5 +28,12 @@ typedef struct dhcp_message {
   uint8_t file[128];
   uint8_t options[64];
 } DhcpHead;
+
+#define DHCP_HLEN 300
+
+
+extern void proto_dhcp_demangle(DhcpHead *dh, const uint8_t *data);
+extern void proto_dhcp_mangle(DhcpHead *dh, uint8_t *data);
+
 
 #endif /* __DHCP_PACKET_H__ */

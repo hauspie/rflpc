@@ -13,24 +13,16 @@
  * You should have received a copy of the GNU General Public License
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
-  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
-  Created:
-  Time-stamp: <2013-02-22 14:42:56 (hauspie)>
-*/
-#ifndef __SIMPLE_NET__
-#define __SIMPLE_NET__
+#include <rflpc17xx/rflpc17xx.h>
+#include "dhcp.h"
 
 
-extern void simple_net_ethernet_init();
+void proto_dhcp_demangle(DhcpHead *dh, const uint8_t *data)
+{
+    memcpy(dh, data, sizeof(DhcpHead));
+}
+void proto_dhcp_mangle(DhcpHead *dh, uint8_t *data)
+{
+    memcpy(data, dh, sizeof(DhcpHead));
+}
 
-extern void simple_net_set_rx_callback(void (*rx_callback)(uint8_t *data, uint16_t size));
-
-extern uint8_t *simple_net_get_tx_buffer();
-extern void simple_net_emit_buffer(uint16_t size, int auto_mac);
-
-const uint8_t *simple_net_get_mac();
-
-
-
-#endif
