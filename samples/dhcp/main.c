@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-22 16:30:01 (hauspie)>
+  Time-stamp: <2013-02-22 16:46:04 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -120,7 +120,7 @@ void dhcp_discover(void)
     dhcp.htype = 1; /* ethernet */
     dhcp.hlen = 6;
     dhcp.hops = 0;
-    *((uint32_t *)dhcp.xid) = rand();
+    dhcp.xid = rand();
     
     memcpy(dhcp.chaddr, simple_net_get_mac(), 6);
 
@@ -138,11 +138,27 @@ void dhcp_request(FullPacket *p)
 {
     DhcpHead dhcp_request;
 
-    memcpy(&dhcp_request, &p->dhcp, sizeof(DhcpHead));
+    memset(&dhcp_request, 0, sizeof(DhcpHead));
+
+    dhcp_request.op = BOOTREQUEST;
+    dhcp_request.htype = 1; /* ethernet */
+    dhcp_request.hlen = 6;
+    dhcp_request.hops = 0;
+    dhcp_request.xid = p->dhcp.xid;
+    dhcp_request.ciaddr = p->dhcp.yiaddr;
+    
+    memcpy(dhcp_request.chaddr, simple_net_get_mac(), 6);
+
+    dhcp_request.options[0] = 99;
+    dhcp_request.options[1] = 130;
+    dhcp_request.options[2] = 83;
+    dhcp_request.options[3] = 99;
+    dhcp_create_option(dhcp_request.options+4, DHCP_MESSAGE_TYPE, 1);
+    dhcp_request.options[6] = DHCPREQUEST;
     
     
 
-    dhcp_send(&dhcp_request, p->dhcp.yiaddr, p->dhcp.yiaddr, p->eth.src.addr);
+    dhcp_send(&dhcp_request, p->dhcp.yiaddr, p->dhcp.siaddr, p->eth.src.addr);
 }
 
 void dhcp_process_packet(FullPacket *p)
@@ -160,7 +176,7 @@ void dhcp_process_packet(FullPacket *p)
 	{
 	    case DHCPOFFER:
 		printf("DHCPOFFER ip: ");
-		print_ip(*((uint32_t*)dhcp->yiaddr));
+		print_ip(dhcp->yiaddr);
 		printf("\r\n");
 		dhcp_request(p);
 		break;

@@ -17,12 +17,34 @@
 #include "dhcp.h"
 
 
+uint32_t ntohl(uint32_t val)
+{
+    uint8_t *c = (uint8_t*)&val;
+
+    return (c[0] << 24) | (c[1] << 16) | (c[2] << 8) | (c[3]);
+}
+
 void proto_dhcp_demangle(DhcpHead *dh, const uint8_t *data)
 {
     memcpy(dh, data, sizeof(DhcpHead));
+
+    dh->ciaddr = ntohl(dh->ciaddr);
+    dh->yiaddr = ntohl(dh->yiaddr);
+    dh->siaddr = ntohl(dh->siaddr);
+    dh->giaddr = ntohl(dh->giaddr);
 }
 void proto_dhcp_mangle(DhcpHead *dh, uint8_t *data)
 {
+    dh->ciaddr = ntohl(dh->ciaddr);
+    dh->yiaddr = ntohl(dh->yiaddr);
+    dh->siaddr = ntohl(dh->siaddr);
+    dh->giaddr = ntohl(dh->giaddr);
+
     memcpy(data, dh, sizeof(DhcpHead));
+
+    dh->ciaddr = ntohl(dh->ciaddr);
+    dh->yiaddr = ntohl(dh->yiaddr);
+    dh->siaddr = ntohl(dh->siaddr);
+    dh->giaddr = ntohl(dh->giaddr);
 }
 
