@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-22 10:51:56 (hauspie)>
+  Time-stamp: <2013-02-22 11:04:44 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -25,7 +25,6 @@
 void packet_in(uint8_t *data, uint16_t size)
 {
     int i;
-    uint8_t *tx;
     printf("Received packet\r\n");
 
     for (i = 0 ; i < size ; ++i)
@@ -37,9 +36,6 @@ void packet_in(uint8_t *data, uint16_t size)
 	printf("%02x ", data[i]);
     }
     printf("\r\n");
-    tx = simple_net_get_tx_buffer();
-    memcpy(tx, data, size);
-    simple_net_emit_buffer(size);
 }
 
 int main()
@@ -49,6 +45,16 @@ int main()
     simple_net_ethernet_init();
     simple_net_set_rx_callback(packet_in);
 
-    while (1);
+    while (1)
+    {
+	int i;
+	uint8_t *tx;
+/*	tx = simple_net_get_tx_buffer();
+	for (i = 0 ; i < 6 ; ++i)
+	    tx[i] = 0xff;
+	for (i = 6 ; i < 30 ; ++i)
+	    tx[i] = rand() & 0xff;
+	    simple_net_emit_buffer(30, 1);*/
+    }
     return 0;
 }

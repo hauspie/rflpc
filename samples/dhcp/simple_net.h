@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-22 10:52:08 (hauspie)>
+  Time-stamp: <2013-02-22 11:07:17 (hauspie)>
 */
 #ifndef __SIMPLE_NET__
 #define __SIMPLE_NET__
@@ -27,7 +27,9 @@ extern void simple_net_ethernet_init();
 extern void simple_net_set_rx_callback(void (*rx_callback)(uint8_t *data, uint16_t size));
 
 extern uint8_t *simple_net_get_tx_buffer();
-extern void simple_net_emit_buffer(uint16_t size);
+extern void simple_net_emit_buffer(uint16_t size, int auto_mac);
+extern uint16_t simple_net_checksum(uint8_t *buffer, unsigned int bytes_count);
+
 
 
 #endif
