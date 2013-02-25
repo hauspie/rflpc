@@ -17,7 +17,7 @@
   
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created: 
-    Time-stamp: <2013-02-22 16:01:58 (hauspie)>
+    Time-stamp: <2013-02-25 10:32:40 (hauspie)>
 
     Basic protocol handling.  Not meant to be trully used, but just useful
     tools for basic protocol handling for the ethernet sample.
@@ -63,6 +63,13 @@ typedef struct
 
 
 #define MAC_ADDR_EQUAL(a,b) (((a)[0] == (b)[0]) && ((a)[1] == (b)[1]) && ((a)[2] == (b)[2]) && ((a)[3] == (b)[3]) && ((a)[4] == (b)[4]) && ((a)[5] == (b)[5]))
+
+static inline uint32_t ntohl(uint32_t val)
+{
+    uint8_t *c = (uint8_t*)&val;
+
+    return (c[0] << 24) | (c[1] << 16) | (c[2] << 8) | (c[3]);
+}
 
 typedef struct
 {

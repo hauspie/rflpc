@@ -14,15 +14,9 @@
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <rflpc17xx/rflpc17xx.h>
+#include "protocols.h"
 #include "dhcp.h"
 
-
-uint32_t ntohl(uint32_t val)
-{
-    uint8_t *c = (uint8_t*)&val;
-
-    return (c[0] << 24) | (c[1] << 16) | (c[2] << 8) | (c[3]);
-}
 
 void proto_dhcp_demangle(DhcpHead *dh, const uint8_t *data)
 {

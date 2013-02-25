@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-22 16:50:02 (hauspie)>
+  Time-stamp: <2013-02-25 11:33:06 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -98,21 +98,50 @@ void dhcp_send(DhcpHead *dh, uint32_t src_ip, uint32_t dst_ip, const uint8_t *ds
     proto_dhcp_mangle(dh, tx + DHCP_OFFSET);
 
     print_packet(tx, DHCP_OFFSET + DHCP_HLEN);
-
     simple_net_emit_buffer(DHCP_OFFSET + DHCP_HLEN,1);
-    printf("Paf\r\n");
 }
 
 
-void dhcp_create_option(uint8_t *options, uint8_t code, uint8_t len)
+uint8_t *dhcp_create_option_array(uint8_t *options, uint8_t code, uint8_t len, void *val)
 {
     options[0] = code;
     options[1] = len;
+    memcpy(options+2, val, len);
+    return options + len + 2;
+}
+
+uint8_t *dhcp_create_option_simple(uint8_t *options, uint8_t code, uint8_t len, uint32_t val)
+{
+    return dhcp_create_option_array(options, code, len, &val);
+}
+
+uint32_t dhcp_get_option_array(uint8_t *options, uint8_t code, void *array, uint8_t max_size)
+{
+    uint8_t *current = options;
+    for ( ;current <= options + 60 && *current != OPTION_END; current += current[1]+2 /* 2 == size of code + len */)
+    {
+	if (*current == code)
+	{
+	    uint8_t len = current[1] > max_size ? max_size : current[1];
+	    memcpy(array, current+2, len);
+	    return code;
+	}
+    }
+    return OPTION_END;
+}
+
+uint32_t dhcp_get_option_simple(uint8_t *options, uint8_t code)
+{
+    uint32_t val = 0;
+    if (dhcp_get_option_array(options, code, &val, sizeof(uint32_t)) == OPTION_END)
+	return OPTION_END;
+    return val;
 }
 
 void dhcp_discover(void)
 {
     DhcpHead dhcp;
+    uint8_t *op;
 
     memset(&dhcp, 0, sizeof(DhcpHead));
 
@@ -124,19 +153,21 @@ void dhcp_discover(void)
     
     memcpy(dhcp.chaddr, simple_net_get_mac(), 6);
 
+    /* DHCP Magic Cookie */
     dhcp.options[0] = 99;
     dhcp.options[1] = 130;
     dhcp.options[2] = 83;
     dhcp.options[3] = 99;
-    dhcp_create_option(dhcp.options+4, DHCP_MESSAGE_TYPE, 1);
-    dhcp.options[6] = DHCPDISCOVER;
-    
+    op = dhcp_create_option_simple(dhcp.options+4, OPTION_DHCP_MESSAGE_TYPE, 1, DHCPDISCOVER);
+    op[0] = OPTION_END;
+
     dhcp_send(&dhcp, 0, 0xffffffff, _bmac);
 }
 
 void dhcp_request(FullPacket *p)
 {
     DhcpHead dhcp_request;
+    uint8_t *op;
 
     memset(&dhcp_request, 0, sizeof(DhcpHead));
 
@@ -146,6 +177,7 @@ void dhcp_request(FullPacket *p)
     dhcp_request.hops = 0;
     dhcp_request.xid = p->dhcp.xid;
     dhcp_request.ciaddr = p->dhcp.yiaddr;
+    dhcp_request.siaddr = ntohl(dhcp_get_option_simple(p->dhcp.options+4, OPTION_DHCP_SERVER_IDENTIFIER));
     
     memcpy(dhcp_request.chaddr, simple_net_get_mac(), 6);
 
@@ -153,26 +185,31 @@ void dhcp_request(FullPacket *p)
     dhcp_request.options[1] = 130;
     dhcp_request.options[2] = 83;
     dhcp_request.options[3] = 99;
-    dhcp_create_option(dhcp_request.options+4, DHCP_MESSAGE_TYPE, 1);
-    dhcp_request.options[6] = DHCPREQUEST;
-    
-    /* TODO: add DHCP server identifier (54)
-       TODO: add DHCP requested IP (50)
-    */
+    op = dhcp_create_option_simple(dhcp_request.options+4, OPTION_DHCP_MESSAGE_TYPE, 1, DHCPREQUEST);
+    op = dhcp_create_option_simple(op, OPTION_DHCP_REQUESTED_IP, 4, ntohl(dhcp_request.ciaddr));
+    op = dhcp_create_option_simple(op, OPTION_DHCP_SERVER_IDENTIFIER, 4, ntohl(dhcp_request.siaddr));
+    op[0] = OPTION_END;
+    dhcp_send(&dhcp_request, dhcp_request.ciaddr, dhcp_request.siaddr, p->eth.src.addr);
+}
 
-    dhcp_send(&dhcp_request, p->dhcp.yiaddr, p->dhcp.siaddr, p->eth.src.addr);
+void dhcp_handle_ack(FullPacket *p)
+{
+    printf("DHCP Server: "); print_ip(ntohl(dhcp_get_option_simple(p->dhcp.options+4, OPTION_DHCP_SERVER_IDENTIFIER))); printf("\r\n");
+
+    printf("My ip: "); print_ip(p->dhcp.yiaddr); printf("\r\n");
+    printf("Subnet mask: "); print_ip(ntohl(dhcp_get_option_simple(p->dhcp.options+4, OPTION_SUBNET_MASK))); printf("\r\n");
+    printf("Router: "); print_ip(ntohl(dhcp_get_option_simple(p->dhcp.options+4, OPTION_ROUTER))); printf("\r\n");
+    printf("Lease time: %d s\r\n", ntohl(dhcp_get_option_simple(p->dhcp.options+4, OPTION_DHCP_LEASE_TIME)));
 }
 
 void dhcp_process_packet(FullPacket *p)
 {
     DhcpHead *dhcp = &p->dhcp;
     uint8_t *current = dhcp->options + 4;
-    
-    
-
-    for ( ;current <= dhcp->options + 64 && *current != DHCP_END_OPTIONS; current += current[1]+2 /* 2 == size of code + len */)
+        
+    for ( ;current <= dhcp->options + 64 && *current != OPTION_END; current += current[1]+2 /* 2 == size of code + len */)
     {
-	if (*current != DHCP_MESSAGE_TYPE)
+	if (*current != OPTION_DHCP_MESSAGE_TYPE)
 	    continue;
 	switch(current[2])
 	{
@@ -181,7 +218,11 @@ void dhcp_process_packet(FullPacket *p)
 		print_ip(dhcp->yiaddr);
 		printf("\r\n");
 		dhcp_request(p);
-		break;
+		return;
+	    case DHCPACK:
+		printf("ACK Received\r\n");
+		dhcp_handle_ack(p);
+		return;
 	    default:
 		break;
 	}

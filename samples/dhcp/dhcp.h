@@ -16,8 +16,14 @@
 
 #define BOOTREQUEST 1
 
-#define DHCP_MESSAGE_TYPE 53
-#define DHCP_END_OPTIONS 0xff
+/* Options Code */
+#define OPTION_SUBNET_MASK 1
+#define OPTION_ROUTER 3
+#define OPTION_DHCP_REQUESTED_IP 50
+#define OPTION_DHCP_LEASE_TIME 51
+#define OPTION_DHCP_MESSAGE_TYPE 53
+#define OPTION_DHCP_SERVER_IDENTIFIER 54
+#define OPTION_END 0xff
 
 typedef struct dhcp_message {
   /* Each line corresponds to the RFC 2131 spec page 8 */
