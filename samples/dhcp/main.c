@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-25 11:33:06 (hauspie)>
+  Time-stamp: <2013-02-25 15:07:06 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -164,20 +164,21 @@ void dhcp_discover(void)
     dhcp_send(&dhcp, 0, 0xffffffff, _bmac);
 }
 
-void dhcp_request(FullPacket *p)
+void dhcp_send_request(uint32_t xid, uint32_t requested_ip, uint32_t server_ip, int offer_answer)
 {
     DhcpHead dhcp_request;
     uint8_t *op;
-
+    
     memset(&dhcp_request, 0, sizeof(DhcpHead));
-
+    
     dhcp_request.op = BOOTREQUEST;
     dhcp_request.htype = 1; /* ethernet */
     dhcp_request.hlen = 6;
     dhcp_request.hops = 0;
-    dhcp_request.xid = p->dhcp.xid;
-    dhcp_request.ciaddr = p->dhcp.yiaddr;
-    dhcp_request.siaddr = ntohl(dhcp_get_option_simple(p->dhcp.options+4, OPTION_DHCP_SERVER_IDENTIFIER));
+    dhcp_request.xid = xid;
+    if (offer_answer)
+	dhcp_request.ciaddr = requested_ip;
+    dhcp_request.siaddr = server_ip;
     
     memcpy(dhcp_request.chaddr, simple_net_get_mac(), 6);
 
@@ -186,10 +187,18 @@ void dhcp_request(FullPacket *p)
     dhcp_request.options[2] = 83;
     dhcp_request.options[3] = 99;
     op = dhcp_create_option_simple(dhcp_request.options+4, OPTION_DHCP_MESSAGE_TYPE, 1, DHCPREQUEST);
-    op = dhcp_create_option_simple(op, OPTION_DHCP_REQUESTED_IP, 4, ntohl(dhcp_request.ciaddr));
+    op = dhcp_create_option_simple(op, OPTION_DHCP_REQUESTED_IP, 4, ntohl(requested_ip));
     op = dhcp_create_option_simple(op, OPTION_DHCP_SERVER_IDENTIFIER, 4, ntohl(dhcp_request.siaddr));
     op[0] = OPTION_END;
-    dhcp_send(&dhcp_request, dhcp_request.ciaddr, dhcp_request.siaddr, p->eth.src.addr);
+    dhcp_send(&dhcp_request, requested_ip, 0xffffffff, _bmac);
+}
+
+/* Called at the reception of a DHCP Offer packet.
+   p points to the DHCP Offer
+*/
+void dhcp_request(FullPacket *p)
+{
+    dhcp_send_request(p->dhcp.xid, p->dhcp.yiaddr, ntohl(dhcp_get_option_simple(p->dhcp.options+4, OPTION_DHCP_SERVER_IDENTIFIER)), 1);
 }
 
 void dhcp_handle_ack(FullPacket *p)
@@ -266,26 +275,27 @@ void packet_in(uint8_t *data, uint16_t size)
 }
 
 
+uint32_t make_ip(uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4)
+{
+    return (c1 << 24) | (c2 << 16) | (c3 << 8) | c4;
+}
 
 int main()
 {
     rflpc_uart_init(RFLPC_UART0);
+
+    /* Init random number generator using RTC value */
+    srand(LPC_RTC->CTIME0);
     
     simple_net_ethernet_init();
     simple_net_set_rx_callback(packet_in);
 
     dhcp_discover();
+    
+/*    dhcp_send_request(rand(), make_ip(192,168,100,110), make_ip(192,168,100,1),0);*/
 
     while (1)
     {
-/*	int i;
-	uint8_t *tx;
-	tx = simple_net_get_tx_buffer();
-	for (i = 0 ; i < 6 ; ++i)
-	    tx[i] = 0xff;
-	for (i = 6 ; i < 30 ; ++i)
-	    tx[i] = rand() & 0xff;
-	    simple_net_emit_buffer(30, 1);*/
     }
     return 0;
 }
