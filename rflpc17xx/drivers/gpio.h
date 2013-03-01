@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2012-12-14 14:02:40 (hauspie)>
+  Time-stamp: <2013-03-01 13:27:44 (hauspie)>
 
   GPIO driver for LPC.
 */
@@ -42,11 +42,19 @@
  */
 extern void rflpc_gpio_use_pin(rflpc_pin_t pin);
 
-/** Sets a pin to input mode */
+/** Sets a pin to input mode 
+ * @note This automatically calls ::rflpc_gpio_use_pin
+*/
 extern void rflpc_gpio_set_pin_mode_input(rflpc_pin_t pin);
 
-/** Sets a pin to output mode */
-extern void rflpc_gpio_set_pin_mode_output(rflpc_pin_t pin);
+/** Sets a pin to output mode 
+* Uses a pin as output pin and sets its value.
+* @note This automatically calls ::rflpc_gpio_use_pin
+* 
+* @param pin pin to use
+* @param val value to set on pin
+*/
+extern void rflpc_gpio_set_pin_mode_output(rflpc_pin_t pin, uint8_t val);
 
 /** Set a pin (put a logical 1 on it) */
 extern void rflpc_gpio_set_pin(rflpc_pin_t pin);

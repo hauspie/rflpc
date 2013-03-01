@@ -38,12 +38,15 @@ static LPC_GPIO_TypeDef * const _gpio_ports[] =
 /** Sets a pin to input mode */
 void rflpc_gpio_set_pin_mode_input(rflpc_pin_t pin)
 {
+    rflpc_gpio_use_pin(pin);
     RFLPC_CLR_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
 }
 
 /** Sets a pin to output mode */
-void rflpc_gpio_set_pin_mode_output(rflpc_pin_t pin)
+void rflpc_gpio_set_pin_mode_output(rflpc_pin_t pin, uint8_t val)
 {
+    rflpc_gpio_use_pin(pin);
+    rflpc_gpio_set_pin_val(pin, val);
     RFLPC_SET_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
 }
 

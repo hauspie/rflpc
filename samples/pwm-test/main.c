@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-17 16:40:50 (hauspie)>
+  Time-stamp: <2013-03-01 13:30:39 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -76,8 +76,7 @@ int main()
     printf("Hello World\r\n");
 #endif
 
-    rflpc_gpio_use_pin(LED_PIN);
-    rflpc_gpio_set_pin_mode_output(LED_PIN);
+    rflpc_gpio_set_pin_mode_output(LED_PIN,0);
 
     /* Init the PWM peripheral */
     rflpc_pwm_init(PWM_PIN1);
