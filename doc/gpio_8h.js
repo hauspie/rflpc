@@ -1,15 +1,14 @@
 var gpio_8h =
 [
-    [ "RFLPC_GPIO_BASE", "group__gpio.html#ga77a6978d3b35080d5c7712e376e94932", null ],
-    [ "rflpc_gpio_clr_pin", "group__gpio.html#ga78443ec84514dd058fc7dba315072805", null ],
-    [ "rflpc_gpio_clr_pins_from_mask", "group__gpio.html#ga93d66d192a15b2fba0d56a5e08a517e0", null ],
-    [ "rflpc_gpio_get_pin", "group__gpio.html#gae58db90c4c5ca13f5aa85075d133d609", null ],
-    [ "rflpc_gpio_get_val", "group__gpio.html#ga853dcfdb3881c55b5a75a2e5fdb6487f", null ],
-    [ "rflpc_gpio_set_pin", "group__gpio.html#ga4f616402c6e4fc8686a73b6a3146c245", null ],
-    [ "rflpc_gpio_set_pin_mode_input", "group__gpio.html#ga8ca3eecfb4561a44221a78d3bbf01f36", null ],
-    [ "rflpc_gpio_set_pin_mode_output", "group__gpio.html#ga31769f3fff2e201eb4ddf05c4c50597c", null ],
-    [ "rflpc_gpio_set_pin_val", "group__gpio.html#ga30bc67d5a8c99ac9146b53817fac6ce3", null ],
-    [ "rflpc_gpio_set_pins_from_mask", "group__gpio.html#ga49cfc85b1179f3084a9e30d84355ec86", null ],
-    [ "rflpc_gpio_set_val", "group__gpio.html#ga8b76b243597a46c35ac3f31ab71590e9", null ],
-    [ "rflpc_gpio_use_pin", "group__gpio.html#gae710c04d73fd0ccacc27175133f45bd1", null ]
+    [ "rflpc_gpio_clr_pin", "gpio_8h.html#ga6df350c25f25ae23ef178bbaae88eb8c", null ],
+    [ "rflpc_gpio_clr_pins_from_mask", "gpio_8h.html#ga02a1e81322261a4adcc8abf420b68b88", null ],
+    [ "rflpc_gpio_get_pin", "gpio_8h.html#gaaaaac8eb313a3762eb591c1db5b986af", null ],
+    [ "rflpc_gpio_get_val", "gpio_8h.html#gad00bc9084f4254d9ac6465432e22dadd", null ],
+    [ "rflpc_gpio_set_pin", "gpio_8h.html#ga857d66023183e3afe542e02784f2d738", null ],
+    [ "rflpc_gpio_set_pin_mode_input", "gpio_8h.html#ga64f0a991c393ebd13a3096b65f8dd089", null ],
+    [ "rflpc_gpio_set_pin_mode_output", "gpio_8h.html#gadd22c5eba9c2d22665119f7fa76fb195", null ],
+    [ "rflpc_gpio_set_pin_val", "gpio_8h.html#ga4db874d959b4436bf7cdd2bd956cd34e", null ],
+    [ "rflpc_gpio_set_pins_from_mask", "gpio_8h.html#ga4b2170234cd6579a655fa791a2011606", null ],
+    [ "rflpc_gpio_set_val", "gpio_8h.html#ga0cd68c27f67f42bbdaadcd0235cfe76b", null ],
+    [ "rflpc_gpio_use_pin", "gpio_8h.html#gaf60ec8122737bd2382e37abd6764f319", null ]
 ];

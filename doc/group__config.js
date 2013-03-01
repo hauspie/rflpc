@@ -13,18 +13,14 @@ var group__config =
     [ "RFLPC_LED_2_PIN", "group__config.html#ga6faf6042aee47250aa8581072c96ef71", null ],
     [ "RFLPC_LED_3_PIN", "group__config.html#ga81cffd6a00d32da136b5852b70bab8e6", null ],
     [ "RFLPC_LED_4_PIN", "group__config.html#gaa2342a982cef2535071bfb723e6694e0", null ],
-    [ "RFLPC_LED_PORT", "group__config.html#gafc180ae44e9f400ffb8dd696d5b91c0e", null ],
     [ "RFLPC_STACK_SIZE", "group__config.html#gabbee8373de1e5bcee5553825999d55c4", null ],
     [ "RFLPC_UART0_PIN_FUNCTION", "group__config.html#ga16df9509883b14d96ddf30f831a0fae5", null ],
-    [ "RFLPC_UART0_PORT", "group__config.html#ga5cdbffcf41fc063af9cfcb1473c80332", null ],
     [ "RFLPC_UART0_RXD_PIN", "group__config.html#ga752305019118b083adfaa2b341912ee4", null ],
     [ "RFLPC_UART0_TXD_PIN", "group__config.html#gadf8bc56f69f4501e5960ea79ed4f300d", null ],
     [ "RFLPC_UART2_PIN_FUNCTION", "group__config.html#ga407dd3739a66a95a6252951ec28b7ae0", null ],
-    [ "RFLPC_UART2_PORT", "group__config.html#gad108f2b9ae2d6aa85bbc58c2e98438df", null ],
     [ "RFLPC_UART2_RXD_PIN", "group__config.html#ga48508620183c256d73ea0e6cd27e8832", null ],
     [ "RFLPC_UART2_TXD_PIN", "group__config.html#ga7fb82741537cdfd04bb47663c3f51859", null ],
     [ "RFLPC_UART3_PIN_FUNCTION", "group__config.html#ga96ec09a4733c111eb037839112f7ae3a", null ],
-    [ "RFLPC_UART3_PORT", "group__config.html#gae693d2010094f1d87d124a7888758645", null ],
     [ "RFLPC_UART3_RXD_PIN", "group__config.html#ga447d22f8b082919d45f6b38c10c770a5", null ],
     [ "RFLPC_UART3_TXD_PIN", "group__config.html#ga9f0d2ed7c6a82bc0abdb2a29f63ff5dc", null ]
 ];

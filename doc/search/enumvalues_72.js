@@ -21,6 +21,7 @@ var searchData=
   ['rflpc_5ftimer_5fmatch1',['RFLPC_TIMER_MATCH1',['../group__timer.html#gga6be569cd5e74a2e35678ee2de31e853aaab7e73a250d7f795c42ff3bb71034ea5',1,'timer.h']]],
   ['rflpc_5ftimer_5fmatch2',['RFLPC_TIMER_MATCH2',['../group__timer.html#gga6be569cd5e74a2e35678ee2de31e853aaa462318df3ce136257723a8981683de2',1,'timer.h']]],
   ['rflpc_5ftimer_5fmatch3',['RFLPC_TIMER_MATCH3',['../group__timer.html#gga6be569cd5e74a2e35678ee2de31e853aa06295ccf9c85b81b2344e5c4abf75008',1,'timer.h']]],
+  ['rflpc_5ftimer_5fpwm',['RFLPC_TIMER_PWM',['../group__timer.html#ggac08825cb88d61086e74638b859cb8b34a1d04d50b43e4d74e475a40213b276f9f',1,'timer.h']]],
   ['rflpc_5ftimer_5freset_5fon_5fmatch',['RFLPC_TIMER_RESET_ON_MATCH',['../group__timer.html#gga06fc87d81c62e9abb8790b6e5713c55bab7c018a7a66bfd59c5fd7d88ca50c669',1,'timer.h']]],
   ['rflpc_5ftimer_5fstop_5fon_5fmatch',['RFLPC_TIMER_STOP_ON_MATCH',['../group__timer.html#gga06fc87d81c62e9abb8790b6e5713c55ba6eccf4b61667dfffc4d2850a10495480',1,'timer.h']]],
   ['rflpc_5fuart0',['RFLPC_UART0',['../group__uart.html#ggab5996edf55ac7654ec4040e6aedaa7caa7203ffec58658c5e01ace4b2b7f22678',1,'uart.h']]],

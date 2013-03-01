@@ -1,4 +1,4 @@
 var iap_8h =
 [
-    [ "rflpc_iap_get_serial_number", "group__iap.html#gaf32e1fafe943abf8584956b678910f44", null ]
+    [ "rflpc_iap_get_serial_number", "iap_8h.html#gaf32e1fafe943abf8584956b678910f44", null ]
 ];
