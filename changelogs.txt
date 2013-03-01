@@ -1,3 +1,8 @@
+0.10:
+	- DHCP Client sample (includes a simple network api)
+	- Adds PWM driver
+	- Changes pinsel API to make things easier
+	- Also adds MBED_DIP* symbol to name breadboard pins
 0.9b:
 	- Fix makefiles to generate config if not present
 0.9a:

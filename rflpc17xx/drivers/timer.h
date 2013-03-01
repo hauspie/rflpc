@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-21 09:59:04 (hauspie)>
+  Time-stamp: <2012-12-19 16:10:47 (hauspie)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
@@ -47,20 +47,21 @@
  */
 typedef enum
 {
-    RFLPC_TIMER0 = 0, /**< Timer 0 */
-    RFLPC_TIMER1 = 1, /**< Timer 1 */
-    RFLPC_TIMER2 = 2, /**< Timer 2 */
-    RFLPC_TIMER3 = 3  /**< Timer 3 */
+    RFLPC_TIMER0, /**< Timer 0 */
+    RFLPC_TIMER1, /**< Timer 1 */
+    RFLPC_TIMER2, /**< Timer 2 */
+    RFLPC_TIMER3,  /**< Timer 3 */
+    RFLPC_TIMER_PWM /**< PWM Timer */
 } rflpc_timer_t;
 
 
 /** Match registers for interrupt generation */
 typedef enum
 {
-    RFLPC_TIMER_MATCH0 = 0, /**< Match register 0 */
-    RFLPC_TIMER_MATCH1 = 1, /**< Match register 1 */
-    RFLPC_TIMER_MATCH2 = 2, /**< Match register 2 */
-    RFLPC_TIMER_MATCH3 = 3, /**< Match register 3 */
+    RFLPC_TIMER_MATCH0, /**< Match register 0 */
+    RFLPC_TIMER_MATCH1, /**< Match register 1 */
+    RFLPC_TIMER_MATCH2, /**< Match register 2 */
+    RFLPC_TIMER_MATCH3, /**< Match register 3 */
 } rflpc_timer_match_t;
 
 
@@ -73,67 +74,18 @@ enum
 };
 
 /**
- * This function is used by the driver to convert the timer id to the base address of its configuration register.
- *
- * @param timer The timer to get
- * @return LPC_TIM_TypeDef*
- **/
-
-static inline LPC_TIM_TypeDef *rflpc_timer_base(rflpc_timer_t timer)
-{
-    switch (timer)
-    {
-	case RFLPC_TIMER0: return LPC_TIM0;
-	case RFLPC_TIMER1: return LPC_TIM1;
-	case RFLPC_TIMER2: return LPC_TIM2;
-	case RFLPC_TIMER3: return LPC_TIM3;
-	default: break;
-    }
-    return (LPC_TIM_TypeDef*)0;
-}
-
-
-/**
  * @brief Power and clock the given timer
  *
  * @param timer
  */
-static inline void rflpc_timer_enable(rflpc_timer_t timer)
-{
-    /* p. 490 and p. 63 */
-    switch (timer)
-    {
-	case RFLPC_TIMER0:
-	case RFLPC_TIMER1:
-	    LPC_SC->PCONP |= (1UL << (1 + timer));
-	    break;
-	case RFLPC_TIMER2:
-	case RFLPC_TIMER3:
-	    LPC_SC->PCONP |= (1UL << (20 + timer));
-	    break;
-    }
-}
+extern void rflpc_timer_enable(rflpc_timer_t timer);
 
 /**
  * @brief disable the given timer
  *
  * @param timer
  */
-static inline void rflpc_timer_disable(rflpc_timer_t timer)
-{
-    /* p. 490 and p. 63 */
-    switch (timer)
-    {
-	case RFLPC_TIMER0:
-	case RFLPC_TIMER1:
-	    LPC_SC->PCONP &= ~(1UL << (1 + timer));
-	    break;
-	case RFLPC_TIMER2:
-	case RFLPC_TIMER3:
-	    LPC_SC->PCONP &= ~(1UL << (20 + timer));
-	    break;
-    }
-}
+extern void rflpc_timer_disable(rflpc_timer_t timer);
 
 /**
  * @brief Sets the cpu clock divider for a given timer.
@@ -141,23 +93,7 @@ static inline void rflpc_timer_disable(rflpc_timer_t timer)
  * @param timer
  * @param divider @sa ::rflpc_clock_divider_t
  */
-static inline void rflpc_timer_set_clock(rflpc_timer_t timer, rflpc_clock_divider_t divider)
-{
-    /* p. 490 and p. 56 */
-    switch (timer)
-    {
-	case RFLPC_TIMER0:
-	case RFLPC_TIMER1:
-	    LPC_SC->PCLKSEL0 &= ~( 3UL << ((timer+1)<<1));
-	    LPC_SC->PCLKSEL0 |= ( divider << ((timer+1)<<1));
-	    break;
-	case RFLPC_TIMER2:
-	case RFLPC_TIMER3:
-	    LPC_SC->PCLKSEL1 &= ~( 3UL << ((timer+4)<<1));
-	    LPC_SC->PCLKSEL1 |= ( divider << ((timer+4)<<1));
-	    break;
-    }
-}
+extern void rflpc_timer_set_clock(rflpc_timer_t timer, rflpc_clock_divider_t divider);
 
 /**
  * @brief Sets the timer interrupt callback. Also enables timer interrupt to be received.
@@ -165,13 +101,7 @@ static inline void rflpc_timer_set_clock(rflpc_timer_t timer, rflpc_clock_divide
  * @param timer
  * @param callback
  */
-static inline void rflpc_timer_set_callback(rflpc_timer_t timer, rflpc_irq_handler_t callback)
-{
-    /* Set the interrupt vector entry */
-    rflpc_irq_set_handler(TIMER0_IRQn + timer, callback);
-    /* enable the interrupt vector */
-    rflpc_irq_enable(TIMER0_IRQn + timer);
-}
+extern void rflpc_timer_set_callback(rflpc_timer_t timer, rflpc_irq_handler_t callback);
 
 
 /**
@@ -181,11 +111,7 @@ static inline void rflpc_timer_set_callback(rflpc_timer_t timer, rflpc_irq_handl
  *
  * @param timer
  */
-static inline void rflpc_timer_start(rflpc_timer_t timer)
-{
-    /* Start the timer, see p. 494 */
-    rflpc_timer_base(timer)->TCR |= 1;
-}
+extern void rflpc_timer_start(rflpc_timer_t timer);
 
 /**
  * Stops the timer.
@@ -193,21 +119,12 @@ static inline void rflpc_timer_start(rflpc_timer_t timer)
  * Does not modify timer registers value
  * @param timer
  */
-static inline void rflpc_timer_stop(rflpc_timer_t timer)
-{
-    /* Stop the timer, see p. 494 */
-    rflpc_timer_base(timer)->TCR &= ~1UL;
-}
+extern void rflpc_timer_stop(rflpc_timer_t timer);
 
 /** Resets the timer
     @param timer
 */
-static inline void rflpc_timer_reset(rflpc_timer_t timer)
-{
-    /* To reset the timer, set bit 1 of TCR to 1, then reset to 0 */
-    rflpc_timer_base(timer)->TCR |= 2UL;
-    rflpc_timer_base(timer)->TCR &= ~2UL;
-}
+extern void rflpc_timer_reset(rflpc_timer_t timer);
 
 /**
  * Returns the timer counter value. This value is incremented each time the
@@ -217,10 +134,7 @@ static inline void rflpc_timer_reset(rflpc_timer_t timer)
  *
  * @return
  */
-static inline uint32_t rflpc_timer_get_counter(rflpc_timer_t timer)
-{
-    return rflpc_timer_base(timer)->TC;
-}
+extern uint32_t rflpc_timer_get_counter(rflpc_timer_t timer);
 
 /**
  * Returns the prescale counter value. This value is incremented at each clock
@@ -230,10 +144,7 @@ static inline uint32_t rflpc_timer_get_counter(rflpc_timer_t timer)
  *
  * @return
  */
-static inline uint32_t rflpc_timer_get_pre_scale_counter(rflpc_timer_t timer)
-{
-    return rflpc_timer_base(timer)->PC;
-}
+extern uint32_t rflpc_timer_get_pre_scale_counter(rflpc_timer_t timer);
 
 /**
  * Returns the value of the prescale register. This register contains the
@@ -245,11 +156,7 @@ static inline uint32_t rflpc_timer_get_pre_scale_counter(rflpc_timer_t timer)
  *
  * @return
  */
-static inline uint32_t rflpc_timer_get_pre_scale_register(rflpc_timer_t timer)
-{
-    return rflpc_timer_base(timer)->PR;
-}
-
+extern uint32_t rflpc_timer_get_pre_scale_register(rflpc_timer_t timer);
 
 /**
  * Sets the timer counter value. This value is incremented each time the
@@ -259,10 +166,7 @@ static inline uint32_t rflpc_timer_get_pre_scale_register(rflpc_timer_t timer)
  * @param value
  *
  */
-static inline void rflpc_timer_set_counter(rflpc_timer_t timer, uint32_t value)
-{
-    rflpc_timer_base(timer)->TC = value;
-}
+extern void rflpc_timer_set_counter(rflpc_timer_t timer, uint32_t value);
 
 /**
  * Sets the prescale counter value. This value is incremented at each clock
@@ -272,10 +176,7 @@ static inline void rflpc_timer_set_counter(rflpc_timer_t timer, uint32_t value)
  * @param value
  *
  */
-static inline void rflpc_timer_set_pre_scale_counter(rflpc_timer_t timer, uint32_t value)
-{
-    rflpc_timer_base(timer)->PC = value;
-}
+extern void rflpc_timer_set_pre_scale_counter(rflpc_timer_t timer, uint32_t value);
 
 /**
  * Sets the value of the prescale register. This register contains the
@@ -287,10 +188,7 @@ static inline void rflpc_timer_set_pre_scale_counter(rflpc_timer_t timer, uint32
  * @param value
  *
  */
-static inline void rflpc_timer_set_pre_scale_register(rflpc_timer_t timer, uint32_t value)
-{
-    rflpc_timer_base(timer)->PR = value;
-}
+extern void rflpc_timer_set_pre_scale_register(rflpc_timer_t timer, uint32_t value);
 
 /**
  * Set the match register value for a given timer. Interrupt can be generated
@@ -302,10 +200,7 @@ static inline void rflpc_timer_set_pre_scale_register(rflpc_timer_t timer, uint3
  *
  * @return
  */
-static inline void rflpc_timer_set_match_value(rflpc_timer_t timer, rflpc_timer_match_t match_register, uint32_t match_value)
-{
-    ((uint32_t *)&(rflpc_timer_base(timer)->MR0))[match_register] = match_value;
-}
+extern void rflpc_timer_set_match_value(rflpc_timer_t timer, rflpc_timer_match_t match_register, uint32_t match_value);
 
 /**
  * Enable IRQ generation when the timer counter reaches the value of a match register
@@ -316,11 +211,7 @@ static inline void rflpc_timer_set_match_value(rflpc_timer_t timer, rflpc_timer_
  *
  * @return
  */
-static inline void rflpc_timer_set_irq_on_match(rflpc_timer_t timer, rflpc_timer_match_t match_register, uint32_t options)
-{
-    rflpc_timer_base(timer)->MCR &= ~(7UL << (match_register*3)); /* clear old options */
-    rflpc_timer_base(timer)->MCR |= (options << (match_register*3)); /* set new */
-}
+extern void rflpc_timer_set_irq_on_match(rflpc_timer_t timer, rflpc_timer_match_t match_register, uint32_t options);
 
 
 /**
@@ -329,10 +220,7 @@ static inline void rflpc_timer_set_irq_on_match(rflpc_timer_t timer, rflpc_timer
  * @param timer
  * @param match_register
  */
-static inline void rflpc_timer_reset_irq(rflpc_timer_t timer, rflpc_timer_match_t match_register)
-{
-    rflpc_timer_base(timer)->IR |= (1 << match_register);
-}
+extern void rflpc_timer_reset_irq(rflpc_timer_t timer, rflpc_timer_match_t match_register);
 
 /**
  * Check if an interrupt has been generated for a given match register
@@ -342,10 +230,7 @@ static inline void rflpc_timer_reset_irq(rflpc_timer_t timer, rflpc_timer_match_
  *
  * @return true if an interrupt is pending for the given match register
  */
-static inline int rflpc_timer_test_irq(rflpc_timer_t timer, rflpc_timer_match_t match_register)
-{
-    return rflpc_timer_base(timer)->IR & (1 << match_register);
-}
+extern int rflpc_timer_test_irq(rflpc_timer_t timer, rflpc_timer_match_t match_register);
 
 /** @} */
 
