@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-03-01 13:30:39 (hauspie)>
+  Time-stamp: <2013-03-01 13:50:37 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -89,12 +89,15 @@ int main()
     rflpc_pwm_single_edge(PWM_PIN1, ps);
     rflpc_pwm_single_edge(PWM_PIN2, 0);
     rflpc_pwm_double_edge(PWM_PIN3, 1000, 2000);
+    rflpc_pwm_set_period(PERIOD);
 
     /* Enable output */
     rflpc_pwm_enable(PWM_PIN1);
     rflpc_pwm_enable(PWM_PIN2);
     rflpc_pwm_enable(PWM_PIN3);
-    rflpc_pwm_set_period(PERIOD);
+
+    /* Start pwm ! */
+    rflpc_pwm_start();
 
     while (1)
     {

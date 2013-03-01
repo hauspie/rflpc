@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-17 16:38:18 (hauspie)>
+ * Time-stamp: <2013-03-01 13:51:44 (hauspie)>
  */
 /** @file
  * Pulse Width Modulation driver
@@ -50,9 +50,16 @@
  */
 extern int rflpc_pwm_init(rflpc_pin_t pin);
 
+/** Starts pwm duty cycle. */
+extern void rflpc_pwm_start(void);
+/** Stops pwm duty cycle. */
+extern void rflpc_pwm_stop(void);
+/** Resets pwm duty cycle (restart at the start of a period. */
+extern void rflpc_pwm_reset(void);
+
 /** 
  * Sets the period in micro seconds. 
- * This also starts and reset the PWM timer so that all PWM outputs restarts with the new period
+ * If the PWM timer was running, it is stop, reset and restarted to start on the new period.
  * @param period 
  */
 extern void rflpc_pwm_set_period(uint32_t period);
