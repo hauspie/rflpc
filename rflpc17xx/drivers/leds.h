@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-14 14:07:53 (hauspie)>
+  Time-stamp: <2013-03-01 13:29:36 (hauspie)>
 */
 #ifndef __RFLPC_LEDS_H__
 #define __RFLPC_LEDS_H__
@@ -52,16 +52,11 @@
  * pins */
 static inline void rflpc_led_init()
 {
-    /* Connect GPIO1 to physical pins */
-    rflpc_gpio_use_pin(RFLPC_LED_1_PIN);
-    rflpc_gpio_use_pin(RFLPC_LED_2_PIN);
-    rflpc_gpio_use_pin(RFLPC_LED_3_PIN);
-    rflpc_gpio_use_pin(RFLPC_LED_4_PIN);
     /* Connect LED pins */
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_1_PIN);
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_2_PIN);
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_3_PIN);
-    rflpc_gpio_set_pin_mode_output(RFLPC_LED_4_PIN);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_1_PIN,0);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_2_PIN,0);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_3_PIN,0);
+    rflpc_gpio_set_pin_mode_output(RFLPC_LED_4_PIN,0);
 }
 
 /** Turns the given led(s) on */

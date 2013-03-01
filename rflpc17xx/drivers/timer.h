@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-19 16:10:47 (hauspie)>
+  Time-stamp: <2013-03-01 13:48:26 (hauspie)>
 */
 #ifndef __RFLPC_TIMER_H__
 #define __RFLPC_TIMER_H__
@@ -86,6 +86,16 @@ extern void rflpc_timer_enable(rflpc_timer_t timer);
  * @param timer
  */
 extern void rflpc_timer_disable(rflpc_timer_t timer);
+
+
+/** 
+ * Query the running state of the timer.
+ * 
+ * @param timer 
+ * 
+ * @return 1 if running, 0 otherwise
+ */
+int rflpc_timer_running(rflpc_timer_t timer);
 
 /**
  * @brief Sets the cpu clock divider for a given timer.

@@ -1,3 +1,6 @@
+0.10a:
+	- Changes to GPIO api
+	- Setting the PWM period does not start it anymore. Separated start/stop/reset function available
 0.10:
 	- DHCP Client sample (includes a simple network api)
 	- Adds PWM driver

@@ -16,7 +16,7 @@
 /*
  * Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  * Created: 2012-12-14
- * Time-stamp: <2012-12-17 16:39:10 (hauspie)>
+ * Time-stamp: <2013-03-01 13:49:21 (hauspie)>
  */
 #ifdef RFLPC_CONFIG_ENABLE_PWM
 
@@ -47,10 +47,11 @@
                   case RFLPC_PIN_P2_5
 
 
-
+static uint8_t _pwm_running;
 
 int rflpc_pwm_init(rflpc_pin_t pin)
 {
+    _pwm_running = 0;
     /* Enable PWM1 peripheral */
     RFLPC_SET_BIT(LPC_SC->PCONP, 6); /* p. 63 */
 
@@ -100,13 +101,31 @@ int rflpc_pwm_init(rflpc_pin_t pin)
     return 0;
 }
 
+void rflpc_pwm_start(void)
+{
+    rflpc_timer_start(RFLPC_TIMER_PWM);
+}
+void rflpc_pwm_stop(void)
+{
+    rflpc_timer_stop(RFLPC_TIMER_PWM);
+}
+void rflpc_pwm_reset(void)
+{
+    rflpc_timer_reset(RFLPC_TIMER_PWM);
+}
+
 void rflpc_pwm_set_period(uint32_t period)
 {
     /* Stop, set new period, reset and restart. */
-    rflpc_timer_stop(RFLPC_TIMER_PWM);
-    LPC_PWM1->MR0 = period;
-    rflpc_timer_reset(RFLPC_TIMER_PWM);
-    rflpc_timer_start(RFLPC_TIMER_PWM);
+    if (rflpc_timer_running(RFLPC_TIMER_PWM))
+    {
+	rflpc_timer_stop(RFLPC_TIMER_PWM);
+	LPC_PWM1->MR0 = period;
+	rflpc_timer_reset(RFLPC_TIMER_PWM);
+	rflpc_timer_start(RFLPC_TIMER_PWM);
+    }
+    else
+	LPC_PWM1->MR0 = period;
 }
 
 void rflpc_pwm_enable(rflpc_pin_t pin)

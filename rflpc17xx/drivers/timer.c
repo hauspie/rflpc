@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-19 16:08:52 (hauspie)>
+  Time-stamp: <2013-03-01 13:47:47 (hauspie)>
 */
 #ifdef RFLPC_CONFIG_ENABLE_TIMERS
 
@@ -109,6 +109,11 @@ void rflpc_timer_start(rflpc_timer_t timer)
 {
     /* Start the timer, see p. 494 */
     rflpc_timer_base(timer)->TCR |= 1;
+}
+
+int rflpc_timer_running(rflpc_timer_t timer)
+{
+    return rflpc_timer_base(timer)->TCR & 1;
 }
 
 void rflpc_timer_stop(rflpc_timer_t timer)
