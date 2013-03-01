@@ -1,4 +1,4 @@
-New version:
+0.10a:
 	- Changes to GPIO api
 	- Setting the PWM period does not start it anymore. Separated start/stop/reset function available
 0.10:
