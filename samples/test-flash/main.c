@@ -28,14 +28,12 @@
 
 static char data[DATA_SIZE];
 
-int main()
-{
+static char buffer[] = { 0xCA, 0xFE, 0xBA, 0xBE, 0xDE, 0xAD,0xBE,0xEF};
+
+int test_simple_copy() {
     int i, count;
 
-    rflpc_clock_init();
-    rflpc_uart_init(RFLPC_UART0);
-
-    printf("RAM to Flash Test started\r\n");
+    printf("Simple RAM to Flash Test started\r\n");
 
     count = DATA_SIZE;
     for(i = 0; i < count; i++)
@@ -46,14 +44,48 @@ int main()
 
     count = SECTOR_START_ADDRESS + DATA_SIZE;
     for(i = SECTOR_START_ADDRESS; i < count; i++) {
-	printf("Checking 0x%x\r\n", i);
+	printf("Checking 0x%x (%d)\r\n", i, *((char *)i));
 	if(*((char *)i) != ((i -SECTOR_START_ADDRESS) % 256)) {
             printf("Test Failed at %d\r\n", (i -SECTOR_START_ADDRESS));
             return -1;
         }
     }
 
-    printf("RAM to Flash Test done successfully\r\n");
+    printf("Simple RAM to Flash Test done successfully\r\n\r\n");
+    return 0;
+}
+
+int test_writing() {
+    int i, count, ret;
+    printf("RAM to Flash Test started\r\n");
+
+    count = SECTOR_START_ADDRESS + sizeof(buffer);
+    for(i = SECTOR_START_ADDRESS;  i < count; i++)
+      printf("%02x ", *((char *)i));
+
+    printf("\r\n");
+    
+
+    ret = rflpc_iap_write_ram_to_flash((void *)SECTOR_START_ADDRESS, buffer, sizeof(buffer));
+
+    if(ret != 0) {
+      printf("Test Failed : %d\r\n", ret);
+      return -1;
+    }
+
+    for(i = SECTOR_START_ADDRESS;  i < count; i++)
+      printf("%02x ", *((char *)i));
+
+    printf("\r\nRAM to Flash Test done\r\n");
+}
+
+int main()
+{
+    rflpc_clock_init();
+    rflpc_uart_init(RFLPC_UART0);
+
+    test_simple_copy();
+    test_writing();
 
     while (1);
     return 0;
