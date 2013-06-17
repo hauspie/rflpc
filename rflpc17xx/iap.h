@@ -40,6 +40,24 @@
  */
 extern int rflpc_iap_get_serial_number(unsigned long result[4]);
 
+/** Prepare sectors for a writing operation (write/erase).
+ * Needed to unprotect the sectors for the writing operation.
+ *
+ * @param [in] start_sector, a valid sector to start with.
+ * @param [in] end_sector, should be greater than or equal to start_sector.
+ * @return 0 if successful, -1 otherwise
+ */
+extern int rflpc_iap_prepare_sectors_for_writing(int start_sector, int end_sector); 
+
+/** Copy RAM to Flash.
+ * After preparing the pending sectors, call this function to write RAM contents to flash
+ * @param [out] destination, destination Flash address where bytes are to be written. Should be a 256 bytes boundary.
+ * @param [in] source, source RAM address from which bytes are to be read. Should be a word boundary.
+ * @param length, the number of bytes to be written. Should be 256 | 512 | 1024 | 4096.
+ * @return 0 if successful, -1 otherwise
+ */
+extern int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int length);
+
 /** @} */
 #endif /* ENABLE_IAP */
 
