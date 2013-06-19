@@ -24,14 +24,31 @@
 
 #include "iap.h"
 #include "nxp/LPC17xx.h"
+#include "clock.h"
+#include "tinylibc/memcpy.h"
+#include "tinylibc/printf.h"
 
-#define IAP_READ_SERIAL_COMMAND 58
-#define IAP_FUNCTION_ADDR 0x1FFF1FF1
+/* IAP writing buffer */
+#ifndef IAP_WRITING_BUFFER_SIZE
+#define IAP_WRITING_BUFFER_SIZE  256
+#endif
+
+char iap_writing_buffer[IAP_WRITING_BUFFER_SIZE];
+
+
+/* IAP commands */
+#define IAP_PREPARE_SECTORS_FOR_WRITING 50
+#define IAP_COPY_RAM_TO_FLASH           51
+#define IAP_ERASE_SECTORS               52
+#define IAP_READ_SERIAL_COMMAND         58
+
+/* IAP Function */
+#define IAP_FUNCTION_ADDR               0x1FFF1FF1
 
 typedef void (*iap_function_t)(unsigned long[], unsigned long[]);
-
 #define DECLARE_IAP_FUNCTION iap_function_t iap = (iap_function_t) IAP_FUNCTION_ADDR
 
+/* IAP return values.*/
 enum
 {
     IAP_CMD_SUCCESS,
@@ -62,6 +79,164 @@ int rflpc_iap_get_serial_number(unsigned long result[4])
     result[2] = command[3];
     result[3] = command[4];
     return 0;
+}
+
+int rflpc_iap_prepare_sectors_for_writing(int start_sector, int end_sector) {
+    unsigned long command[3] = {IAP_PREPARE_SECTORS_FOR_WRITING, 0L, 0L};
+    DECLARE_IAP_FUNCTION;
+
+    command[1] = (unsigned long)start_sector;
+    command[2] = (unsigned long)end_sector;
+
+    iap(command, command);
+
+//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
+    return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
+}
+
+int rflpc_iap_erase_sectors(int start_sector, int end_sector) {
+    unsigned long command[4] = {IAP_ERASE_SECTORS, 0L, 0L, 0L};
+    DECLARE_IAP_FUNCTION;
+
+    command[1] = (unsigned long)start_sector;
+    command[2] = (unsigned long)end_sector;
+    // Clock in KHz.
+    command[3] = (unsigned long)(rflpc_clock_get_system_clock() / 1000);
+
+    iap(command, command);
+//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
+
+    return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
+}
+
+int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int length) {
+    unsigned long command[5] = { IAP_COPY_RAM_TO_FLASH, 0L, 0L, 0L, 0L};
+    DECLARE_IAP_FUNCTION;
+  
+    command[1] = (unsigned long)destination;
+    command[2] = (unsigned long)source;
+    command[3] = (unsigned long)length;
+    // Clock in KHz.
+    command[4] = (unsigned long)(rflpc_clock_get_system_clock() / 1000);
+
+    iap(command, command);
+
+//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
+
+    return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
+}
+
+static const int WRITING_WINDOW_SIZES [] = {
+   4096, 1024, 512, 256
+};
+
+/* IAP memory map */
+static int getSectorFromAddress(const void *address) {
+
+  if(address< (const void *)0x00010000)
+	return ((int)address) >> 12/*/ 4096*/;
+
+  return 16 + ((int)(address - (const void *)0x00010000)>>15); /*/32768*/
+}
+
+int rflpc_iap_write_ram_to_flash(void *destination, const void *source, int length) {
+   int i, window_size, ret, startSector, endSector;
+
+   // destination must be on 256 boundaries.
+   unsigned int offset = ((unsigned int)destination) % 256;
+   if(offset != 0) {
+	void *dest = (void *)((unsigned int)destination - offset);
+	// retrieve the destination content to the writing buffer
+	memcpy(iap_writing_buffer, dest, IAP_WRITING_BUFFER_SIZE);
+
+	if(length < IAP_WRITING_BUFFER_SIZE)
+        	window_size = length;
+	else
+		window_size = IAP_WRITING_BUFFER_SIZE - offset;
+
+        // in the buffer, overwrite with the source content at the offset.
+        memcpy(iap_writing_buffer + offset, source, window_size);
+
+        // write down the buffer to flash
+	startSector = getSectorFromAddress(dest);
+	endSector   = getSectorFromAddress(dest + IAP_WRITING_BUFFER_SIZE);
+
+	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+        if(ret != 0) 
+          return ret;
+
+        ret = rflpc_iap_erase_sectors(startSector,endSector);
+	if(ret != 0)
+          return ret;
+
+	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+        if(ret != 0) 
+          return ret;
+
+        ret = rflpc_iap_copy_ram_to_flash(dest, iap_writing_buffer, IAP_WRITING_BUFFER_SIZE);
+	if(ret != 0)
+	  return ret;
+
+        
+        destination = dest + IAP_WRITING_BUFFER_SIZE;
+	source      += IAP_WRITING_BUFFER_SIZE - offset;
+	length      -= IAP_WRITING_BUFFER_SIZE - offset;
+   }
+
+   for(i  = 0; i < 4; i++) {
+   
+     window_size = WRITING_WINDOW_SIZES[i];
+     while(length > window_size) {
+
+       startSector = getSectorFromAddress(destination);
+       endSector   = getSectorFromAddress(destination + window_size);
+
+
+       ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+       if(ret != 0) 
+         return ret;
+
+       ret = rflpc_iap_erase_sectors(startSector, endSector);
+       if(ret != 0) 
+         return ret;
+
+       ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+       if(ret != 0) 
+         return ret;
+
+       ret = rflpc_iap_copy_ram_to_flash(destination, source, window_size);
+       if(ret != 0)
+          return ret;
+
+	destination += window_size;
+	source      += window_size;
+	length      -= window_size;
+     }
+   }
+
+   // remaining (<256)
+   if(length>0) {
+	startSector = getSectorFromAddress(destination);
+	endSector   = getSectorFromAddress(destination + IAP_WRITING_BUFFER_SIZE);
+	memcpy(iap_writing_buffer, destination, IAP_WRITING_BUFFER_SIZE);
+        memcpy(iap_writing_buffer, source, length);
+
+        ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+        if(ret != 0) 
+          return ret;
+
+        ret = rflpc_iap_erase_sectors(startSector, endSector);
+	if(ret != 0)
+          return ret;
+
+	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+        if(ret != 0) 
+          return ret;
+
+        return rflpc_iap_copy_ram_to_flash(destination, iap_writing_buffer, IAP_WRITING_BUFFER_SIZE);
+   }
+
+   return 0;
 }
 
 #endif /* ENABLE_IAP */
