@@ -87,9 +87,10 @@ int rflpc_iap_prepare_sectors_for_writing(int start_sector, int end_sector) {
 
     command[1] = (unsigned long)start_sector;
     command[2] = (unsigned long)end_sector;
-    printf("rflpc_iap_prepare_sectors_for_writing %d %d \r\n", start_sector, end_sector);
+
     iap(command, command);
 
+//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
 
@@ -101,8 +102,9 @@ int rflpc_iap_erase_sectors(int start_sector, int end_sector) {
     command[2] = (unsigned long)end_sector;
     // Clock in KHz.
     command[3] = (unsigned long)(rflpc_clock_get_system_clock() / 1000);
-    printf("rflpc_iap_erase_sectors %d %d \r\n", start_sector, end_sector);
+
     iap(command, command);
+//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
 
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
@@ -117,9 +119,9 @@ int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int lengt
     // Clock in KHz.
     command[4] = (unsigned long)(rflpc_clock_get_system_clock() / 1000);
 
-   printf("rflpc_iap_copy_ram_to_flash dest %p source %p, length %d \r\n", destination, source, length);
-
     iap(command, command);
+
+//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
 
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
@@ -139,7 +141,48 @@ static int getSectorFromAddress(const void *address) {
 
 int rflpc_iap_write_ram_to_flash(void *destination, const void *source, int length) {
    int i, window_size, ret, startSector, endSector;
-   
+
+   // destination must be on 256 boundaries.
+   unsigned int offset = ((unsigned int)destination) % 256;
+   if(offset != 0) {
+	void *dest = (void *)((unsigned int)destination - offset);
+	// retrieve the destination content to the writing buffer
+	memcpy(iap_writing_buffer, dest, IAP_WRITING_BUFFER_SIZE);
+
+	if(length < IAP_WRITING_BUFFER_SIZE)
+        	window_size = length;
+	else
+		window_size = IAP_WRITING_BUFFER_SIZE - offset;
+
+        // in the buffer, overwrite with the source content at the offset.
+        memcpy(iap_writing_buffer + offset, source, window_size);
+
+        // write down the buffer to flash
+	startSector = getSectorFromAddress(dest);
+	endSector   = getSectorFromAddress(dest + IAP_WRITING_BUFFER_SIZE);
+
+	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+        if(ret != 0) 
+          return ret;
+
+        ret = rflpc_iap_erase_sectors(startSector,endSector);
+	if(ret != 0)
+          return ret;
+
+	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
+        if(ret != 0) 
+          return ret;
+
+        ret = rflpc_iap_copy_ram_to_flash(dest, iap_writing_buffer, IAP_WRITING_BUFFER_SIZE);
+	if(ret != 0)
+	  return ret;
+
+        
+        destination = dest + IAP_WRITING_BUFFER_SIZE;
+	source      += IAP_WRITING_BUFFER_SIZE - offset;
+	length      -= IAP_WRITING_BUFFER_SIZE - offset;
+   }
+
    for(i  = 0; i < 4; i++) {
    
      window_size = WRITING_WINDOW_SIZES[i];
@@ -172,22 +215,17 @@ int rflpc_iap_write_ram_to_flash(void *destination, const void *source, int leng
    }
 
    // remaining (<256)
-   if(length) {
-	int startSector = getSectorFromAddress(destination);
-	int endSector   = getSectorFromAddress(destination + IAP_WRITING_BUFFER_SIZE);
+   if(length>0) {
+	startSector = getSectorFromAddress(destination);
+	endSector   = getSectorFromAddress(destination + IAP_WRITING_BUFFER_SIZE);
 	memcpy(iap_writing_buffer, destination, IAP_WRITING_BUFFER_SIZE);
         memcpy(iap_writing_buffer, source, length);
-
-        for(i = 0; i < length;i++) {
-		printf("=>%02x \r\n", iap_writing_buffer[i]);
-	}
 
         ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
         if(ret != 0) 
           return ret;
 
-        ret = rflpc_iap_erase_sectors(getSectorFromAddress(destination), 
-                                      getSectorFromAddress(destination + IAP_WRITING_BUFFER_SIZE));
+        ret = rflpc_iap_erase_sectors(startSector, endSector);
 	if(ret != 0)
           return ret;
 
