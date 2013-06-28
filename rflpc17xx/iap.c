@@ -28,12 +28,18 @@
 #include "tinylibc/memcpy.h"
 #include "tinylibc/printf.h"
 
-/* IAP writing buffer */
+/* IAP buffers */
 #ifndef IAP_WRITING_BUFFER_SIZE
 #define IAP_WRITING_BUFFER_SIZE  256
 #endif
 
 char iap_writing_buffer[IAP_WRITING_BUFFER_SIZE];
+
+#ifndef IAP_SECTOR_BUFFER_SIZE
+#define IAP_SECTOR_BUFFER_SIZE  4096
+#endif
+
+char iap_sector_buffer[IAP_SECTOR_BUFFER_SIZE];
 
 
 /* IAP commands */
@@ -84,13 +90,14 @@ int rflpc_iap_get_serial_number(unsigned long result[4])
 int rflpc_iap_prepare_sectors_for_writing(int start_sector, int end_sector) {
     unsigned long command[3] = {IAP_PREPARE_SECTORS_FOR_WRITING, 0L, 0L};
     DECLARE_IAP_FUNCTION;
+    /*printf("%s %d %d\r\n", __FUNCTION__, start_sector, end_sector);*/
 
     command[1] = (unsigned long)start_sector;
     command[2] = (unsigned long)end_sector;
 
     iap(command, command);
 
-//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
+    /*printf("%s status %d\r\n", __FUNCTION__, command[0]);*/
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
 
@@ -100,11 +107,11 @@ int rflpc_iap_erase_sectors(int start_sector, int end_sector) {
 
     command[1] = (unsigned long)start_sector;
     command[2] = (unsigned long)end_sector;
-    // Clock in KHz.
+    /* Clock in KHz.*/
     command[3] = (unsigned long)(rflpc_clock_get_system_clock() / 1000);
 
     iap(command, command);
-//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
+    printf("=======>%s status %d\r\n", __FUNCTION__, command[0]);
 
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
@@ -116,127 +123,162 @@ int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int lengt
     command[1] = (unsigned long)destination;
     command[2] = (unsigned long)source;
     command[3] = (unsigned long)length;
-    // Clock in KHz.
+    /* Clock in KHz.*/
     command[4] = (unsigned long)(rflpc_clock_get_system_clock() / 1000);
 
     iap(command, command);
 
-//    printf("%s status %d\r\n", __FUNCTION__, command[0]);
+    /*printf("%s status %d\r\n", __FUNCTION__, command[0]);*/
 
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
 
-static const int WRITING_WINDOW_SIZES [] = {
-   4096, 1024, 512, 256
-};
-
 /* IAP memory map */
-static int getSectorFromAddress(const void *address) {
+int getSectorFromAddress(const void *address) {
 
   if(address< (const void *)0x00010000)
-	return ((int)address) >> 12/*/ 4096*/;
+	return ((uint32_t)address) >> 12/*/ 4096*/;
 
-  return 16 + ((int)(address - (const void *)0x00010000)>>15); /*/32768*/
+  return 16 + ((uint32_t)(address - (const void *)0x00010000)>>15); /*/32768*/
 }
 
-int rflpc_iap_write_ram_to_flash(void *destination, const void *source, int length) {
-   int i, window_size, ret, startSector, endSector;
+static void *getAddressFromSector(int aSector) {
+  if(aSector < 16)
+	return (void *)(aSector << 12);
 
-   // destination must be on 256 boundaries.
-   unsigned int offset = ((unsigned int)destination) % 256;
-   if(offset != 0) {
-	void *dest = (void *)((unsigned int)destination - offset);
-	// retrieve the destination content to the writing buffer
-	memcpy(iap_writing_buffer, dest, IAP_WRITING_BUFFER_SIZE);
+  return (void *)(0x00010000 + ((aSector - 16) << 15));
+}
 
-	if(length < IAP_WRITING_BUFFER_SIZE)
-        	window_size = length;
-	else
-		window_size = IAP_WRITING_BUFFER_SIZE - offset;
+static void memory_dump(const char *title, const void *memory, int length) {
+  int i, index, maxInfosPerLine;
+  int size = length;
+  char *mem = (char *)memory;
 
-        // in the buffer, overwrite with the source content at the offset.
-        memcpy(iap_writing_buffer + offset, source, window_size);
+  maxInfosPerLine = 16;
+  
+  printf("\r\n%s Dump:\r\n", title);
+  printf("---------\r\n");
 
-        // write down the buffer to flash
-	startSector = getSectorFromAddress(dest);
-	endSector   = getSectorFromAddress(dest + IAP_WRITING_BUFFER_SIZE);
+  index = 0;
+  while(size > maxInfosPerLine) {
 
-	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
-        if(ret != 0) 
-          return ret;
+    printf("%p ", mem + index);
 
-        ret = rflpc_iap_erase_sectors(startSector,endSector);
-	if(ret != 0)
-          return ret;
+    for(i = 0; i < maxInfosPerLine; i++, index++)
+      printf("%02x, ", mem[index]);
 
-	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
-        if(ret != 0) 
-          return ret;
+    printf("\r\n");
+    size -= maxInfosPerLine;
+  }
 
-        ret = rflpc_iap_copy_ram_to_flash(dest, iap_writing_buffer, IAP_WRITING_BUFFER_SIZE);
-	if(ret != 0)
-	  return ret;
+  if(size>0) {
+    printf("%p ", mem + index);
+    for(i = 0; i < size; i++, index++)
+      printf("%02x, ", mem[index]);
+    printf("\r\n");
+  }
 
-        
-        destination = dest + IAP_WRITING_BUFFER_SIZE;
-	source      += IAP_WRITING_BUFFER_SIZE - offset;
-	length      -= IAP_WRITING_BUFFER_SIZE - offset;
-   }
+  printf("\r\n");
+}
 
-   for(i  = 0; i < 4; i++) {
-   
-     window_size = WRITING_WINDOW_SIZES[i];
-     while(length > window_size) {
+#define sector_dump(_length) \
+memory_dump("Sector Buffer", iap_sector_buffer, _length);
 
-       startSector = getSectorFromAddress(destination);
-       endSector   = getSectorFromAddress(destination + window_size);
+#define mem_dump(_source, _length) \
+memory_dump("Memory", _source, _length)
+
+int rflpc_iap_write_buffer_to_sector(const void *buffer, int sector_number) {
+
+  uint8_t *destination = (uint8_t *) getAddressFromSector(sector_number);
+
+  printf("%s(%p, %d)\r\n", __FUNCTION__, buffer, sector_number);
+  
+  int ret = rflpc_iap_prepare_sectors_for_writing(sector_number, sector_number);
+  if(ret != 0) {
+    return ret;
+  }
+
+  ret = rflpc_iap_erase_sectors(sector_number, sector_number);
+  if(ret != 0)
+    return ret;
+
+  ret = rflpc_iap_prepare_sectors_for_writing(sector_number, sector_number);
+  if(ret != 0)
+    return ret;
+
+  ret = rflpc_iap_copy_ram_to_flash(destination, buffer, 4096);
+
+  /*delay*
+  {
+    int i;
+    for(i = 0; i < 100000000;)
+      i++;
+  }*/
+
+  //mem_dump(destination, 128);
+
+  return ret;
+}
+
+/*
+void fake_memcpy2(void *dest, const void *source, int len) {
+  int i;
+  char *      dst = (char *)dest;
+  const char *src = (const char *)source;
+  for(i = 0; i < len; i++)
+	dst[i] = src[i];
+}*/
+
+int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length) {
+  int offset;
+
+  printf("%s(%p, %p, %d)\r\n", __FUNCTION__, destination, buffer, length);
+
+  int sector = getSectorFromAddress(destination);
+
+  // Not over multiple sectors.
+  if( sector != getSectorFromAddress(destination + length - 1)) {
+    printf("Buffer lies over multiple sectors\r\n");
+    return -1;
+  }
+
+  /* Retrieve the sector content into the buffer*/
+  memcpy(iap_sector_buffer, getAddressFromSector(sector), IAP_SECTOR_BUFFER_SIZE);
 
 
-       ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
-       if(ret != 0) 
-         return ret;
+  offset = (int)(destination - getAddressFromSector(sector));
 
-       ret = rflpc_iap_erase_sectors(startSector, endSector);
-       if(ret != 0) 
-         return ret;
+  /* In the buffer, at offset, copy the data*/
+  memcpy(iap_sector_buffer + offset, buffer, length);
+  
+  /* Burn down the sector buffer to the flash*/
+  return rflpc_iap_write_buffer_to_sector(iap_sector_buffer, sector);
+}
 
-       ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
-       if(ret != 0) 
-         return ret;
+int rflpc_iap_write_buffer(void *destination, const void *buffer, int length) {
 
-       ret = rflpc_iap_copy_ram_to_flash(destination, source, window_size);
-       if(ret != 0)
-          return ret;
+  int sector = getSectorFromAddress(destination);
+  if( sector != getSectorFromAddress(destination + length)) {
 
-	destination += window_size;
-	source      += window_size;
-	length      -= window_size;
-     }
-   }
+    int len, ret;
+    len = (int)(getAddressFromSector(sector) - destination);
 
-   // remaining (<256)
-   if(length>0) {
-	startSector = getSectorFromAddress(destination);
-	endSector   = getSectorFromAddress(destination + IAP_WRITING_BUFFER_SIZE);
-	memcpy(iap_writing_buffer, destination, IAP_WRITING_BUFFER_SIZE);
-        memcpy(iap_writing_buffer, source, length);
+    while(length>0) {
 
-        ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
-        if(ret != 0) 
-          return ret;
+      ret = rflpc_iap_write_to_sector(destination, buffer, len);
+      if(ret != 0)
+        return ret;
 
-        ret = rflpc_iap_erase_sectors(startSector, endSector);
-	if(ret != 0)
-          return ret;
+      destination += len;
+      buffer      += len;
+      length      -= len;
+      len         = length;
+    }
 
-	ret = rflpc_iap_prepare_sectors_for_writing(startSector, endSector);
-        if(ret != 0) 
-          return ret;
+    return 0;
+  }
 
-        return rflpc_iap_copy_ram_to_flash(destination, iap_writing_buffer, IAP_WRITING_BUFFER_SIZE);
-   }
-
-   return 0;
+  return rflpc_iap_write_to_sector(destination, buffer, length);
 }
 
 #endif /* ENABLE_IAP */

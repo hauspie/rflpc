@@ -58,12 +58,38 @@ extern int rflpc_iap_erase_sectors(int start_sector, int end_sector);
  * After preparing the sectors, call this function to write RAM contents to flash
  * @param [out] destination, destination Flash address where bytes are to be written. Should be a 256 bytes boundary.
  * @param [in] source, source RAM address from which bytes are to be read. Should be a word boundary.
- * @param length, the number of bytes to be written. Should be 256 | 512 | 1024 | 4096.
+ * @param [in] length, the number of bytes to be written. Should be 256 | 512 | 1024 | 4096.
  * @return 0 if successful, -1 otherwise
  */
 extern int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int length);
 
+/** Copy a 4k buffer to Flash.
+ * @param [in] buffer, a 4K buffer.
+ * @param [in] sector_number, see nxp user's manual.
+ * @return 0 if successful, -1 otherwise
+ */
+extern int rflpc_iap_write_buffer_to_sector(const void *buffer, int sector_number);
+
+/** Copy a buffer <= 4K to Flash. If the buffer is over multiple sectors the function returns -1.
+ * @param [in] destination
+ * @param [in] buffer, a buffer less than or equal to 4K, inside the same sector.
+ * @param [in] length, <= 4k.
+ * @return 0 if successful, -1 otherwise
+ */
+extern int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length);
+
+/** Copy a buffer to Flash. This function handles multiple sectors overlap.
+ * @param [in] destination
+ * @param [in] buffer, a buffer less than or equal to 4K.
+ * @param [in] length, <= 4k.
+ * @return 0 if successful, -1 otherwise
+ */
+extern int rflpc_iap_write_buffer(void *destination, const void *buffer, int length);
+
+
 extern int rflpc_iap_write_ram_to_flash(void *destination, const void *source, int length);
+
+extern int getSectorFromAddress(const void *address);
 
 /** @} */
 #endif /* ENABLE_IAP */
