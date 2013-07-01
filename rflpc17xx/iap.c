@@ -173,7 +173,7 @@ int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length)
   /*printf("%s(%p, %p, %d)\r\n", __FUNCTION__, destination, buffer, length);*/
 
   int sector = getSectorFromAddress(destination);
-  void *startSectorAddress = getSectorFromAddress(sector);
+  void *startSectorAddress = getAddressFromSector(sector);
 
   // Not over multiple sectors.
   if( sector != getSectorFromAddress(destination + length - 1)) {
