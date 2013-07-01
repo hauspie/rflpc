@@ -37,13 +37,13 @@ int test_simple_copy(void *anAddress, int aStartSector, int anEndSector) {
     int i, count;
     uint8_t *address = (uint8_t *)anAddress;
 
-    printf("Simple RAM to Flash Test started\r\n");
+  printf("------------------------%s------------------------\r\n", __FUNCTION__);
 
     for(i = 0; i < DATA_SIZE; i++)
       data[i] = i % 256;
 
-/*    rflpc_iap_prepare_sectors_for_writing(aStartSector, anEndSector);
-    rflpc_iap_erase_sectors(aStartSector, anEndSector);*/
+    rflpc_iap_prepare_sectors_for_writing(aStartSector, anEndSector);
+    rflpc_iap_erase_sectors(aStartSector, anEndSector);
 
     rflpc_iap_prepare_sectors_for_writing(aStartSector, anEndSector);
     rflpc_iap_copy_ram_to_flash(anAddress, data, DATA_SIZE);
@@ -53,7 +53,7 @@ int test_simple_copy(void *anAddress, int aStartSector, int anEndSector) {
 	printf("Checking 0x%x (%d)\r\n", i, address[i]);
 
 	if( address[i] != data[i]) {
-            printf("Test Failed at %d\r\n", (i -SECTOR_START_ADDRESS));
+            printf("%s Failed at %d\r\n", __FUNCTION__, i);
             return -1;
         }
     }
@@ -76,7 +76,7 @@ int test_writing(void *anAddress) {
     ret = rflpc_iap_write_to_sector(anAddress, buffer, sizeof(buffer));
 
     if(ret != 0) {
-      printf("Test Failed : %d\r\n", ret);
+      printf("%s Failed : %d\r\n", __FUNCTION__, ret);
       return -1;
     }
 
@@ -90,16 +90,22 @@ int test_writing(void *anAddress) {
 char testBuffer[4096];
 
 int test_writing_from_ram(void *anAddress) {
-    int i;
+    int i, sector, ret;
+    printf("------------------------%s------------------------\r\n", __FUNCTION__);
+
+    
+    /*Fill the buffer with random*/
+    srand(10);
+    for(i = 0; i < 4096; i++)
+	testBuffer[i] =rand() & 0xFF;
+
 
     /*Write the buffer down to flash*/
-    int ret = rflpc_iap_prepare_sectors_for_writing(getSectorFromAddress(anAddress),
-				       getSectorFromAddress(anAddress));
-    ret = rflpc_iap_erase_sectors(getSectorFromAddress(anAddress),
-				       getSectorFromAddress(anAddress));
+    sector = getSectorFromAddress(anAddress);
+    ret = rflpc_iap_prepare_sectors_for_writing(sector, sector);
+    ret = rflpc_iap_erase_sectors(sector, sector);
 
-    ret = rflpc_iap_prepare_sectors_for_writing(getSectorFromAddress(anAddress),
-				       getSectorFromAddress(anAddress));
+    ret = rflpc_iap_prepare_sectors_for_writing(sector, sector);
     ret = rflpc_iap_copy_ram_to_flash(anAddress, testBuffer, 4096);
 
     if(ret != 0) {
@@ -139,7 +145,7 @@ int testSequence(void *anAddress) {
     ret = rflpc_iap_write_to_sector(destination, buffer, sizeof(buffer));
 
     if(ret != 0) {
-      printf("Test Failed : %d\r\n", ret);
+      printf("%s Failed : %d\r\n", __FUNCTION__, ret);
       return -1;
     }
 
@@ -150,19 +156,8 @@ int testSequence(void *anAddress) {
 	    if(!(j % 16))
 		    printf("\r\n");
 	    printf("%02x ", ((uint8_t*)anAddress)[j]);
-/*      sequenceBuffer[j] = ((uint8_t*)anAddress)[j];*/
     }
     printf("\r\n");
-
-
-    /*printf("From Sequence buffer \r\n");
-    for(j = 0; j < 128; j++) {
-
-	    if(!(j % 16))
-		    printf("\r\n");
-	    printf("%02x ", sequenceBuffer[j]);
-    }
-    printf("\r\n");*/
   }
 
   return 0;
@@ -170,34 +165,27 @@ int testSequence(void *anAddress) {
 
 int main() {
 
-    uint8_t address;
-    int i;
+    uint8_t *address;
+    int      sector;
 
     rflpc_clock_init();
     rflpc_uart_init(RFLPC_UART0);
 
     /*char *start_address = (char *)(&_text_end + (&_data_end - &_data_start));*/
-    test_simple_copy((void *)0x8000, 8, 8);
 
-/*    test_writing(0x00006000);
-    test_writing(0x00006005);
-    test_writing(0x00006010);*/
 
-    address = 0x8000;
-    srand(12);
-    /*Fill the buffer*/
-    for(i = 0; i < 4096; i++) {
-    	testBuffer[i] = (char)(rand() & 0xFF);
-    }
+    // Sector is 8. @see NXP's user manual to set the sector accordingly with the address or use getSectorFromAddress.
+    address = (uint8_t*)0x8000;
+    sector  = getSectorFromAddress(address);
 
+    test_simple_copy(address, sector, sector);
+
+    printf("---------------------------------------------------------------\r\n");
     test_writing_from_ram(address);
 
 
     printf("---------------------------------------------------------------\r\n");
-
-///    test_writing_from_ram(0x8000);
-
-    testSequence((void *)0x8000);
+    testSequence(address);
 
 
     while (1);

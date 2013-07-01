@@ -29,12 +29,6 @@
 #include "tinylibc/printf.h"
 
 /* IAP buffers */
-#ifndef IAP_WRITING_BUFFER_SIZE
-#define IAP_WRITING_BUFFER_SIZE  256
-#endif
-
-char iap_writing_buffer[IAP_WRITING_BUFFER_SIZE];
-
 #ifndef IAP_SECTOR_BUFFER_SIZE
 #define IAP_SECTOR_BUFFER_SIZE  4096
 #endif
@@ -111,7 +105,7 @@ int rflpc_iap_erase_sectors(int start_sector, int end_sector) {
     command[3] = (unsigned long)(rflpc_clock_get_system_clock() / 1000);
 
     iap(command, command);
-    printf("=======>%s status %d\r\n", __FUNCTION__, command[0]);
+    /*printf("=======>%s status %d\r\n", __FUNCTION__, command[0]);*/
 
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
@@ -142,56 +136,18 @@ int getSectorFromAddress(const void *address) {
   return 16 + ((uint32_t)(address - (const void *)0x00010000)>>15); /*/32768*/
 }
 
-static void *getAddressFromSector(int aSector) {
+void *getAddressFromSector(int aSector) {
   if(aSector < 16)
 	return (void *)(aSector << 12);
 
   return (void *)(0x00010000 + ((aSector - 16) << 15));
 }
 
-static void memory_dump(const char *title, const void *memory, int length) {
-  int i, index, maxInfosPerLine;
-  int size = length;
-  char *mem = (char *)memory;
-
-  maxInfosPerLine = 16;
-  
-  printf("\r\n%s Dump:\r\n", title);
-  printf("---------\r\n");
-
-  index = 0;
-  while(size > maxInfosPerLine) {
-
-    printf("%p ", mem + index);
-
-    for(i = 0; i < maxInfosPerLine; i++, index++)
-      printf("%02x, ", mem[index]);
-
-    printf("\r\n");
-    size -= maxInfosPerLine;
-  }
-
-  if(size>0) {
-    printf("%p ", mem + index);
-    for(i = 0; i < size; i++, index++)
-      printf("%02x, ", mem[index]);
-    printf("\r\n");
-  }
-
-  printf("\r\n");
-}
-
-#define sector_dump(_length) \
-memory_dump("Sector Buffer", iap_sector_buffer, _length);
-
-#define mem_dump(_source, _length) \
-memory_dump("Memory", _source, _length)
-
 int rflpc_iap_write_buffer_to_sector(const void *buffer, int sector_number) {
 
   uint8_t *destination = (uint8_t *) getAddressFromSector(sector_number);
 
-  printf("%s(%p, %d)\r\n", __FUNCTION__, buffer, sector_number);
+/*  printf("%s(%p, %d)\r\n", __FUNCTION__, buffer, sector_number);*/
   
   int ret = rflpc_iap_prepare_sectors_for_writing(sector_number, sector_number);
   if(ret != 0) {
@@ -208,33 +164,16 @@ int rflpc_iap_write_buffer_to_sector(const void *buffer, int sector_number) {
 
   ret = rflpc_iap_copy_ram_to_flash(destination, buffer, 4096);
 
-  /*delay*
-  {
-    int i;
-    for(i = 0; i < 100000000;)
-      i++;
-  }*/
-
-  //mem_dump(destination, 128);
-
   return ret;
 }
-
-/*
-void fake_memcpy2(void *dest, const void *source, int len) {
-  int i;
-  char *      dst = (char *)dest;
-  const char *src = (const char *)source;
-  for(i = 0; i < len; i++)
-	dst[i] = src[i];
-}*/
 
 int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length) {
   int offset;
 
-  printf("%s(%p, %p, %d)\r\n", __FUNCTION__, destination, buffer, length);
+  /*printf("%s(%p, %p, %d)\r\n", __FUNCTION__, destination, buffer, length);*/
 
   int sector = getSectorFromAddress(destination);
+  void *startSectorAddress = getSectorFromAddress(sector);
 
   // Not over multiple sectors.
   if( sector != getSectorFromAddress(destination + length - 1)) {
@@ -243,7 +182,7 @@ int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length)
   }
 
   /* Retrieve the sector content into the buffer*/
-  memcpy(iap_sector_buffer, getAddressFromSector(sector), IAP_SECTOR_BUFFER_SIZE);
+  memcpy(iap_sector_buffer, startSectorAddress, IAP_SECTOR_BUFFER_SIZE);
 
 
   offset = (int)(destination - getAddressFromSector(sector));

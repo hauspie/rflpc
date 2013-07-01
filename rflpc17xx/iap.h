@@ -40,6 +40,22 @@
  */
 extern int rflpc_iap_get_serial_number(unsigned long result[4]);
 
+
+/** Flash memory sector-address mapping.
+ * Use this function when an address is needed for a given sector.
+ * @param [in] aSector, a sector identifier
+ * @return the start address of the sector
+ */
+extern void *getAddressFromSector(int aSector);
+
+/** Flash memory address-sector mapping.
+ * For a given address, returns the sector it belongs to.
+ * @param [in] anAddress
+ * @return the sector.
+ */
+extern int getSectorFromAddress(const void *address);
+
+
 /** Prepare sectors for a writing operation (write/erase).
  * Needed to unprotect the sectors for the writing operation.
  *
@@ -85,11 +101,6 @@ extern int rflpc_iap_write_to_sector(void *destination, const void *buffer, int 
  * @return 0 if successful, -1 otherwise
  */
 extern int rflpc_iap_write_buffer(void *destination, const void *buffer, int length);
-
-
-extern int rflpc_iap_write_ram_to_flash(void *destination, const void *source, int length);
-
-extern int getSectorFromAddress(const void *address);
 
 /** @} */
 #endif /* ENABLE_IAP */
