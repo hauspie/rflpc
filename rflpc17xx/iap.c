@@ -200,9 +200,11 @@ int rflpc_iap_write_buffer(void *destination, const void *buffer, int length) {
   if( sector != getSectorFromAddress(destination + length)) {
 
     int len, ret;
-    len = (int)(getAddressFromSector(sector) - destination);
 
     while(length>0) {
+
+      len = (int)(getAddressFromSector(sector + 1) - getAddressFromSector(sector) - 1);
+      len = (len<length) ? len : length;
 
       ret = rflpc_iap_write_to_sector(destination, buffer, len);
       if(ret != 0)
