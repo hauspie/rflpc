@@ -220,6 +220,41 @@ int testBufferedWriting(void *anAddress) {
   return 0;
 }
 
+char largeBuffer[6000];
+
+int testLargeBuffer(void *anAddress) {
+  int i;
+  int size = sizeof(largeBuffer);
+  char *address = (char *)anAddress;
+
+  printf("------------------------%s------------------------\r\n", __FUNCTION__);
+
+  printf("Size %d\r\n", size);
+  printf("Generating...\r\n");
+  for(i = 0; i < size; i++) {
+
+    largeBuffer[i] = (char)(i % 256);
+  }
+
+  if(rflpc_iap_write_buffer(anAddress, largeBuffer, size) != 0) {
+      printf("%s Failed at writing large buffer\r\n", __FUNCTION__);
+      return -1;
+  }
+
+  printf("Checking...\r\n");
+  for(i = 0; i < size; i++)
+    if(address[i] != largeBuffer[i]){
+      printf("%s Failed at %d\r\n", __FUNCTION__, i);
+      return -2;
+    }
+
+
+  printf("Done.\r\n");
+  return 0;
+}
+
+const char *ok = {0};
+
 int main() {
 
     uint8_t *address;
@@ -246,8 +281,11 @@ int main() {
     testSequence(address);*/
 
 
+/*    printf("---------------------------------------------------------------\r\n");
+    testBufferedWriting(address);*/
+
     printf("---------------------------------------------------------------\r\n");
-    testBufferedWriting(address);
+    testLargeBuffer(address);
 
     while (1);
     return 0;
