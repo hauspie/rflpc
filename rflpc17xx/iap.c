@@ -199,40 +199,42 @@ int rflpc_iap_write_buffer(void *destination, const void *buffer, int length) {
 
   int sector = getSectorFromAddress(destination);
   int len, ret;
+  /*printf("%s Sector %d Next Sector %d\r\n", __FUNCTION__, sector, getSectorFromAddress(destination + length));*/
 
-  // Copy from destination till the end of the current buffer.
-
-  len = getAddressFromSector(sector + 1) - destination;
-/*  printf("0) Len %d\r\n", len);*/
-  ret = rflpc_iap_write_to_sector(destination, buffer, len);
-  if(ret != 0)
-      return ret;
-
-  length      -= len;
-  destination += len;
-  buffer      += len;
-  sector++;
-/*  printf("0) a) Destination %p Buffer %p length %d Sector %d\r\n", destination, buffer, length, sector);
-  printf("1) Sector %d Next Sector %d\r\n", sector, getSectorFromAddress(destination + length));
-*/
-  // Copy full sectors
-  while(sector != getSectorFromAddress(destination + length)) {
-
-    len = (int)(getAddressFromSector(sector + 1) - getAddressFromSector(sector) - 1);
-
-/*    printf("Len %d\r\n", len);*/
-
+  
+  if(sector != getSectorFromAddress(destination + length)) {
+    // Copy from destination till the end of the current sector.
+    len = getAddressFromSector(sector + 1) - destination;
+/*    printf("0) Len %d\r\n", len);*/
     ret = rflpc_iap_write_to_sector(destination, buffer, len);
     if(ret != 0)
       return ret;
 
+    length      -= len;
     destination += len;
     buffer      += len;
-    length      -= len;
-    sector      = getSectorFromAddress(destination);
-/*    printf("Destination %p Buffer %p length %d Sector %d\r\n", destination, buffer, length, sector);*/
-  }
+    sector++;
+/*    printf("0) a) Destination %p Buffer %p length %d Sector %d\r\n", destination, buffer, length, sector);
+    printf("1) Sector %d Next Sector %d\r\n", sector, getSectorFromAddress(destination + length));
+*/
+    // Copy full sectors
+    while(sector != getSectorFromAddress(destination + length) && (length>0)) {
 
+      len = (int)(getAddressFromSector(sector + 1) - getAddressFromSector(sector) - 1);
+
+/*      printf("Len %d\r\n", len);
+*/
+      ret = rflpc_iap_write_to_sector(destination, buffer, len);
+      if(ret != 0)
+        return ret;
+
+      destination += len;
+      buffer      += len;
+      length      -= len;
+      sector      = getSectorFromAddress(destination);
+/*      printf("Destination %p Buffer %p length %d Sector %d\r\n", destination, buffer, length, sector);*/
+    }
+  }
   // Copy remaining data
   return (length >0) ? rflpc_iap_write_to_sector(destination, buffer, length) : 0;
 }
