@@ -96,11 +96,19 @@ extern int rflpc_iap_write_to_sector(void *destination, const void *buffer, int 
 
 /** Copy a buffer to Flash. This function handles multiple sectors overlap.
  * @param [in] destination
- * @param [in] buffer, a buffer less than or equal to 4K.
- * @param [in] length, <= 4k.
+ * @param [in] buffer, a buffer.
+ * @param [in] length.
  * @return 0 if successful, -1 otherwise
  */
 extern int rflpc_iap_write_buffer(void *destination, const void *buffer, int length);
+
+/** Transfer memory from the 4k sectors to one 32k sector.
+ * @param [in] destination32k
+ * @param [in] source4ks, memory lying into 4ks sectors.
+ * @param [in] length <= 32k.
+ * @return 0 if successful, negative otherwise
+ */
+extern int rflpc_iap_transfert_4ks_to_32k(void *destination32k, const void *source4ks, int length);
 
 /** @} */
 #endif /* ENABLE_IAP */

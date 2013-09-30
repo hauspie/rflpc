@@ -253,6 +253,42 @@ int testLargeBuffer(void *anAddress) {
   return 0;
 }
 
+int testWritingInto32k() {
+  int sector32k    = 16;
+  char *address32k = (char *)getAddressFromSector(sector32k);
+  int sector4k     = 9;
+  char *address4k  = (char *)getAddressFromSector(sector4k);
+  int length       = sizeof(largeBuffer);
+  int i;
+
+  printf("%s started..\r\n", __FUNCTION__);
+
+  for(i = 0; i < length; i++)
+    largeBuffer[i] = i % 256;
+
+  if(rflpc_iap_write_buffer(address4k, largeBuffer, length) != 0) {
+      printf("%s Failed at writing large buffer\r\n", __FUNCTION__);
+      return -1;
+  }
+
+  if(rflpc_iap_transfert_4ks_to_32k(address32k, address4k, length) != 0) {
+      printf("%s Failed at transferring %p to %p (%d bytes)\r\n", __FUNCTION__, address4k, address32k, length);
+      return -2;
+  }
+
+  printf("Checking...\r\n");
+
+  for(i = 0; i < length; i++) {
+    if(address32k[i] != largeBuffer[i]) {
+      printf("%s Failed at %d\r\n", __FUNCTION__, i);
+      return -3;
+    }
+  }
+
+  printf("%s done.\r\n", __FUNCTION__);
+  return 0;
+}
+
 const char *ok = {0};
 
 int main() {
@@ -267,15 +303,15 @@ int main() {
 
 
     // Sector is 8. @see NXP's user manual to set the sector accordingly with the address or use getSectorFromAddress.
-    address = (uint8_t*)(&_text_end + (&_data_end - &_data_start));
+    address = 0x9000/*(uint8_t*)(&_text_end + (&_data_end - &_data_start))*/;
     sector  = getSectorFromAddress(address);
     printf("Address is %p Sector is %d\r\n", address, sector);
 
-/*    test_simple_copy(address, sector, sector);
-
+/*    test_simple_copy(address, sector, sector);*/
+/*
     printf("---------------------------------------------------------------\r\n");
-    test_writing_from_ram(address);
-*/
+    test_writing_from_ram(address);*/
+
 
 /*    printf("---------------------------------------------------------------\r\n");
     testSequence(address);*/
@@ -284,8 +320,10 @@ int main() {
 /*    printf("---------------------------------------------------------------\r\n");
     testBufferedWriting(address);*/
 
-    printf("---------------------------------------------------------------\r\n");
-    testLargeBuffer(address);
+/*    printf("---------------------------------------------------------------\r\n");
+    testLargeBuffer(address);*/
+
+    testWritingInto32k();
 
     while (1);
     return 0;

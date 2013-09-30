@@ -122,7 +122,7 @@ int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int lengt
 
     iap(command, command);
 
-    /*printf("%s status %d\r\n", __FUNCTION__, command[0]);*/
+/*    printf("%s status %d\r\n", __FUNCTION__, command[0]);*/
 
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
@@ -237,6 +237,59 @@ int rflpc_iap_write_buffer(void *destination, const void *buffer, int length) {
   }
   // Copy remaining data
   return (length >0) ? rflpc_iap_write_to_sector(destination, buffer, length) : 0;
+}
+
+// erase once 32k, write multiple times.
+int rflpc_iap_transfert_4ks_to_32k(void *destination32k, const void *source4ks, int length) {
+  int sector = getSectorFromAddress(destination32k);  
+  int offset = 0;
+
+  // erase 32ks
+  if(rflpc_iap_prepare_sectors_for_writing(sector, sector) != 0) {
+/*    printf("Failed at preparing sector for erasing %d \r\n", sector);*/
+    return -1;
+  }
+
+  if(rflpc_iap_erase_sectors(sector, sector) != 0) {
+/*    printf("Failed at erasing sector %d \r\n", sector);*/
+    return -2;
+  }
+
+  // write down 4ks
+  while(length>IAP_SECTOR_BUFFER_SIZE) {
+
+    memcpy(iap_sector_buffer, source4ks + offset, IAP_SECTOR_BUFFER_SIZE);
+
+    if(rflpc_iap_prepare_sectors_for_writing(sector, sector) != 0) {
+/*      printf("Failed at preparing sector for writing %d \r\n", sector);*/
+      return -3;
+    }
+
+    if(rflpc_iap_copy_ram_to_flash(destination32k + offset, iap_sector_buffer, IAP_SECTOR_BUFFER_SIZE) != 0) {
+/*      printf("Failed at writing sector %d \r\n", sector);*/
+      return -4;
+    }
+
+    length -= IAP_SECTOR_BUFFER_SIZE;
+    offset += IAP_SECTOR_BUFFER_SIZE;
+  }
+
+  if(length > 0) {
+
+    memcpy(iap_sector_buffer, source4ks + offset, length);
+
+    if(rflpc_iap_prepare_sectors_for_writing(sector, sector) != 0) {
+/*      printf("Failed at preparing sector for writing %d \r\n", sector);*/
+      return -5;
+    }
+
+    if(rflpc_iap_copy_ram_to_flash(destination32k + offset, iap_sector_buffer, IAP_SECTOR_BUFFER_SIZE) != 0) {
+/*      printf("Failed at writing remaining %d \r\n", length);*/
+      return -6;
+    }
+  }
+
+  return 0;
 }
 
 #endif /* ENABLE_IAP */
