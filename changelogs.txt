@@ -1,3 +1,5 @@
+0.11:
+	- Adds functions to write in flash memory
 0.10a:
 	- Changes to GPIO api
 	- Setting the PWM period does not start it anymore. Separated start/stop/reset function available
