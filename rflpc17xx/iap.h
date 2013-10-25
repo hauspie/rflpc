@@ -23,7 +23,7 @@
  * @{
  */
 /*
-  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Author: Gregory Guche <gregory.guche@lifl.fr>
   Created: 2012-03-28
 */
 #ifndef __RFLPC_IAP_H__

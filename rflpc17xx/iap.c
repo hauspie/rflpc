@@ -14,7 +14,7 @@
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
-  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Author: Gregory Guche <gregory.guche@lifl.fr>
   Created: 2012-03-28
 */
 
