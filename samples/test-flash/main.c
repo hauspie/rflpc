@@ -14,9 +14,9 @@
  * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
-  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
+  Author: Gregory Guche <gregory.guche@lifl.fr>
   Created:
-  Time-stamp: <2013-10-24 16:26:23 (hauspie)>
+  Time-stamp: <2013-10-25 10:10:39 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
