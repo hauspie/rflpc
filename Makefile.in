@@ -6,8 +6,8 @@
 include $(RFLPC_DIR)/Makefile.vars
 
 ## Compiling variables
-CFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --cflags)
-LDFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --libs)
+CFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --cflags) $(ADD_INCLUDES)
+LDFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --libs) $(ADD_LIBS)
 
 ## Library configuration
 
