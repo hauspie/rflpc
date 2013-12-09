@@ -139,7 +139,7 @@ void *rflpc_iap_get_address_from_sector(int aSector) {
     return (void *)(0x00010000 + ((aSector - 16) << 15));
 }
 
-#define DEBUG
+/*#define DEBUG*/
 #ifdef DEBUG
 #include "tinylibc/printf.h"
 /* To check if trying to write to initial code */
