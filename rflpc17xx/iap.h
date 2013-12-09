@@ -46,14 +46,14 @@ extern int rflpc_iap_get_serial_number(unsigned long result[4]);
  * @param [in] aSector, a sector identifier
  * @return the start address of the sector
  */
-extern void *getAddressFromSector(int aSector);
+extern void *rflpc_iap_get_address_from_sector(int aSector);
 
 /** Flash memory address-sector mapping.
  * For a given address, returns the sector it belongs to.
  * @param [in] anAddress
  * @return the sector.
  */
-extern int getSectorFromAddress(const void *address);
+extern int rflpc_iap_get_sector_from_address(const void *address);
 
 
 /** Prepare sectors for a writing operation (write/erase).
