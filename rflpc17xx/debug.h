@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-17 14:55:38 (hauspie)>
+  Time-stamp: <2013-12-17 15:54:31 (hauspie)>
 */
 /** @file
  * Debug functions such as delay and stack dump.
@@ -61,25 +61,39 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
    }                            \
    while(0)
 
+
+/** Stores the content of a register in var
+    @param var an uint32_t variable which will be used to store the register
+*/
+#define RFLPC_ARM_GET_REGISTER(reg, var) do {			\
+	__ASM volatile ("MOV %0, "#reg"\n" : "=r" ((var)));	\
+    } while(0)
+
 /** Dumps 64 bytes from the current value of the stack pointer.
  * @note this maccro uses ::printf()
  * */
-#define RFLPC_DUMP_STACK() do {                                 \
-	register uint8_t *mstack =(uint8_t*) __get_MSP();       \
-	register int i;                                         \
-	for (i = 0 ; i < 128 ; ++i)                              \
-	{                                                       \
-	    if (i % 16 == 0)                                    \
-		printf("\n\r%p: ", mstack  + i);                \
-	    printf("%02x ", mstack[i]);                         \
-	}                                                       \
-	printf("\n\r");                                         \
+
+#define RFLPC_DUMP_STACK() do {					 \
+	register uint32_t sp;					 \
+	register uint8_t *mstack;				 \
+	register int i;						 \
+	RFLPC_ARM_GET_REGISTER(sp,sp);				 \
+	mstack = (uint8_t *) sp;				 \
+	for (i = 0 ; i < 128 ; ++i)				 \
+	{							 \
+	    if (i % 16 == 0)					 \
+		printf("\n\r%p: ", mstack  + i);		 \
+	    printf("%02x ", mstack[i]);				 \
+	}							 \
+	printf("\n\r");						 \
     } while(0)
 
 /** Asserts a condition.
  * @param cond If false, stop the device and blink all leds
  */
 #define RFLPC_ASSERT(cond) do { if (!(cond)) { RFLPC_STOP(0, 50000); } } while (0)
+
+
 
 /** @} */
 #endif
