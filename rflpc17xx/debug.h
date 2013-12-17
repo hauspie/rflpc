@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-12-17 15:54:31 (hauspie)>
+  Time-stamp: <2013-12-17 17:09:43 (hauspie)>
 */
 /** @file
  * Debug functions such as delay and stack dump.
@@ -74,10 +74,9 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
  * */
 
 #define RFLPC_DUMP_STACK() do {					 \
-	register uint32_t sp;					 \
 	register uint8_t *mstack;				 \
 	register int i;						 \
-	RFLPC_ARM_GET_REGISTER(sp,sp);				 \
+	RFLPC_ARM_GET_REGISTER(sp,(uint32_t)mstack);			 \
 	mstack = (uint8_t *) sp;				 \
 	for (i = 0 ; i < 128 ; ++i)				 \
 	{							 \
