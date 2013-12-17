@@ -1,3 +1,5 @@
+0.12:
+	- Default fault handler display useful and correct information (PC, LR...)
 0.11:
 	- Adds functions to write in flash memory
 0.10a:
