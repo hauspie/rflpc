@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-21 09:38:35 (hauspie)>
+  Time-stamp: <2013-12-17 17:36:44 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "nxp/core_cm3.h"
@@ -37,12 +37,17 @@ static volatile rflpc_irq_handler_t _ram_interrupts[RFLPC_IRQn_COUNT] __attribut
 /* this array is defined in init.c and is the rom interrupt vector */
 extern void* _rom_interrupts[RFLPC_IRQn_COUNT];
 
+/* The naked attribute is needed to get the correct stack frame at the very begining of the handler */
+RFLPC_IRQ_HANDLER _default_exception_handler() __attribute__ ((naked));
 RFLPC_IRQ_HANDLER _default_exception_handler()
 {
 #ifdef RFLPC_IRQ_DEBUG_ENABLE
-    printf("CFSR: %0x\r\n", SCB->CFSR);
-    printf("HFSR: %0x\r\n", SCB->HFSR);
-    printf("DFSR: %0x\r\n", SCB->DFSR);
+    uint32_t *sp;
+    RFLPC_ARM_GET_REGISTER(sp, (uint32_t)sp); /* first get sp to read the stack frame */
+    printf("CFSR: %p\r\n", SCB->CFSR);
+    printf("HFSR: %p\r\n", SCB->HFSR);
+    printf("DFSR: %p\r\n", SCB->DFSR);
+    printf("SP  : %p\r\n", sp); 
     if (SCB->CFSR & (1UL << 7)) /* Memory Management Fault Address Register Valid */
        printf("Mem Managment Fault Adress: %p\r\n", SCB->MMFAR);
     if (SCB->CFSR & (1UL << 4)) /* MSTKERR */
@@ -60,7 +65,7 @@ RFLPC_IRQ_HANDLER _default_exception_handler()
     if (SCB->CFSR & (1UL << (8+3))) /* UNSTKERR */
        printf("Bus fault caused by unstacking for return from exception\r\n");
     if (SCB->CFSR & (1UL << (8+2))) /* IMPRECISERR */
-       printf("Imprecise bus fault\r\n");
+       printf("Imprecise bus fault (Write to invalid address)\r\n");
     if (SCB->CFSR & (1UL << (8+1))) /* PRECISERR */
        printf("Precise bus fault\r\n");
     if (SCB->CFSR & (1UL << (8+0))) /* IBUSERR */
@@ -81,15 +86,22 @@ RFLPC_IRQ_HANDLER _default_exception_handler()
 
     if (SCB->HFSR & (1UL << (30))) /* FORCED */
        printf("Forced hardware fault\r\n");
-    if (SCB->HFSR & (1UL << (1))) /* FORCED */
+    if (SCB->HFSR & (1UL << (1))) /* VECTTBL */
        printf("Bus fault on vector table read\r\n");
     /* Stack frame when entering exception is:
-     * R0-R3, R12 [0->4]
-     * PC [5]
-     * PSR [6]
-     * LR [7]
+     * R0-R3, R12,R14 [0->5]
+     * Return address [6]
+     * PSR [7]
      */
-    printf("PC value at exception: %p\r\n", ((uint32_t*)__get_MSP())[5+4]); /* +4 is because GCC pushes r0,r4,r5 and lr on the stack */
+    printf("Stack frame dump\r\n");
+    printf("R0:  %p\r\n", sp[0]);
+    printf("R1:  %p\r\n", sp[1]);
+    printf("R2:  %p\r\n", sp[2]);
+    printf("R3:  %p\r\n", sp[3]);
+    printf("R12: %p\r\n", sp[4]);
+    printf("LR:  %p (return address of the function causing the faulty instruction)\r\n", sp[5]);
+    printf("PC:  %p (for imprecise fault, this can be several instructions after the faulty one)\r\n", sp[6]);
+    printf("PSR: %p\r\n", sp[7]);
     RFLPC_DUMP_STACK();
     /* stops the execution with a O--O <-> -OO- led pattern. */
     RFLPC_STOP(RFLPC_LED_1|RFLPC_LED_4, 2000000);
