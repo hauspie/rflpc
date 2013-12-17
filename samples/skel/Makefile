@@ -1,4 +1,4 @@
-OUTPUT_NAME=modify_this
+OUTPUT_NAME=$(shell basename $(shell pwd))
 SRC=$(wildcard *.c)
 OBJS=$(SRC:.c=.o)
 
