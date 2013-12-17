@@ -16,7 +16,7 @@
 /*
   Author: Gregory Guche <gregory.guche@lifl.fr>
   Created:
-  Time-stamp: <2013-10-25 10:10:39 (hauspie)>
+  Time-stamp: <2013-12-17 11:32:32 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -101,7 +101,7 @@ int test_writing_from_ram(void *anAddress) {
 
 
     /*Write the buffer down to flash*/
-    sector = getSectorFromAddress(anAddress);
+    sector = rflpc_iap_get_sector_from_address(anAddress);
     ret = rflpc_iap_prepare_sectors_for_writing(sector, sector);
     ret = rflpc_iap_erase_sectors(sector, sector);
 
@@ -255,9 +255,9 @@ int testLargeBuffer(void *anAddress) {
 
 int testWritingInto32k() {
     int sector32k    = 16;
-    char *address32k = (char *)getAddressFromSector(sector32k);
+    char *address32k = (char *)rflpc_iap_get_address_from_sector(sector32k);
     int sector4k     = 9;
-    char *address4k  = (char *)getAddressFromSector(sector4k);
+    char *address4k  = (char *)rflpc_iap_get_address_from_sector(sector4k);
     int length       = sizeof(largeBuffer);
     int i;
 
@@ -302,9 +302,9 @@ int main() {
     /*char *start_address = (char *)(&_text_end + (&_data_end - &_data_start));*/
 
 
-    // Sector is 8. @see NXP's user manual to set the sector accordingly with the address or use getSectorFromAddress.
+    /* Sector is 8. @see NXP's user manual to set the sector accordingly with the address */
     address = 0x9000/*(uint8_t*)(&_text_end + (&_data_end - &_data_start))*/;
-    sector  = getSectorFromAddress(address);
+    sector  = rflpc_iap_get_sector_from_address(address);
     printf("Address is %p Sector is %d\r\n", address, sector);
 
 /*    test_simple_copy(address, sector, sector);*/
