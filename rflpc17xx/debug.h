@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-12-17 17:09:43 (hauspie)>
+  Time-stamp: <2013-12-20 12:38:52 (hauspie)>
 */
 /** @file
  * Debug functions such as delay and stack dump.
@@ -92,7 +92,14 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
  */
 #define RFLPC_ASSERT(cond) do { if (!(cond)) { RFLPC_STOP(0, 50000); } } while (0)
 
-
+/** 
+ * True if addr in [inf..sup[
+ */
+#define RFLPC_ADDR_IN(addr, inf, sup) ( ((void*)(addr)) >= ((void*)(inf)) ? (((void*)(addr)) < ((void*)(sup))) : 0)
+#ifdef RFLPC_CONFIG_PLATFORM_MBED
+#define RFLPC_ADDR_IN_FLASH(addr) RFLPC_ADDR_IN((addr), 0, 0x7ffff)
+#define RFLPC_ADDR_IN_RAM(addr) (RFLPC_ADDR_IN((addr), 0x1000000, 0x10007FFF) || RFLPC_ADDR_IN((addr), 0x2007c000, 0x2007ffff))
+#endif
 
 /** @} */
 #endif

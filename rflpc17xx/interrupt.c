@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-12-17 17:36:44 (hauspie)>
+  Time-stamp: <2013-12-20 12:39:09 (hauspie)>
 */
 #include "nxp/LPC17xx.h" /* for IRQn enum */
 #include "nxp/core_cm3.h"
@@ -102,6 +102,9 @@ RFLPC_IRQ_HANDLER _default_exception_handler()
     printf("LR:  %p (return address of the function causing the faulty instruction)\r\n", sp[5]);
     printf("PC:  %p (for imprecise fault, this can be several instructions after the faulty one)\r\n", sp[6]);
     printf("PSR: %p\r\n", sp[7]);
+    /* dump the code memory from PC if PC is in flash or ram */
+    if (RFLPC_ADDR_IN_FLASH(sp[6]) || RFLPC_ADDR_IN_RAM(sp[6]))
+	printf("Words at PC: %04x %04x %04x\r\n", *((uint32_t*)sp[6]), *((uint32_t*)sp[6]), *((uint32_t*)sp[6]));
     RFLPC_DUMP_STACK();
     /* stops the execution with a O--O <-> -OO- led pattern. */
     RFLPC_STOP(RFLPC_LED_1|RFLPC_LED_4, 2000000);
