@@ -107,7 +107,7 @@ int rflpc_iap_erase_sectors(int start_sector, int end_sector) {
     return (command[0] == IAP_CMD_SUCCESS) ? 0 : -1;
 }
 
-int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int length) {
+int rflpc_iap_copy_ram_to_flash(const void *destination, const void *source, int length) {
     unsigned long command[5] = { IAP_COPY_RAM_TO_FLASH, 0L, 0L, 0L, 0L};
     DECLARE_IAP_FUNCTION;
   
@@ -183,7 +183,7 @@ int rflpc_iap_write_buffer_to_sector(const void *buffer, int sector_number) {
     return ret;
 }
 
-int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length) {
+int rflpc_iap_write_to_sector(const void *destination, const void *buffer, int length) {
     int offset;
 
     int sector = rflpc_iap_get_sector_from_address(destination);
@@ -215,7 +215,7 @@ int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length)
     return rflpc_iap_write_buffer_to_sector(iap_sector_buffer, sector);
 }
 
-int rflpc_iap_write_buffer(void *destination, const void *buffer, int length) {
+int rflpc_iap_write_buffer(const void *destination, const void *buffer, int length) {
 
     int sector = rflpc_iap_get_sector_from_address(destination);
     int len, ret;
@@ -253,7 +253,7 @@ int rflpc_iap_write_buffer(void *destination, const void *buffer, int length) {
 }
 
 /* erase once 32k, write multiple times. */
-int rflpc_iap_transfert_4ks_to_32k(void *destination32k, const void *source4ks, int length) {
+int rflpc_iap_transfert_4ks_to_32k(const void *destination32k, const void *source4ks, int length) {
     int sector = rflpc_iap_get_sector_from_address(destination32k);  
     int offset = 0;
 

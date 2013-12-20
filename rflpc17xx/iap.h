@@ -77,7 +77,7 @@ extern int rflpc_iap_erase_sectors(int start_sector, int end_sector);
  * @param [in] length, the number of bytes to be written. Should be 256 | 512 | 1024 | 4096.
  * @return 0 if successful, -1 otherwise
  */
-extern int rflpc_iap_copy_ram_to_flash(void *destination, const void *source, int length);
+extern int rflpc_iap_copy_ram_to_flash(const void *destination, const void *source, int length);
 
 /** Copy a 4k buffer to Flash.
  * @param [in] buffer, a 4K buffer.
@@ -92,7 +92,7 @@ extern int rflpc_iap_write_buffer_to_sector(const void *buffer, int sector_numbe
  * @param [in] length, <= 4k.
  * @return 0 if successful, -1 otherwise
  */
-extern int rflpc_iap_write_to_sector(void *destination, const void *buffer, int length);
+extern int rflpc_iap_write_to_sector(const void *destination, const void *buffer, int length);
 
 /** Copy a buffer to Flash. This function handles multiple sectors overlap.
  * @param [in] destination
@@ -100,7 +100,7 @@ extern int rflpc_iap_write_to_sector(void *destination, const void *buffer, int 
  * @param [in] length.
  * @return 0 if successful, -1 otherwise
  */
-extern int rflpc_iap_write_buffer(void *destination, const void *buffer, int length);
+extern int rflpc_iap_write_buffer(const void *destination, const void *buffer, int length);
 
 /** Transfer memory from the 4k sectors to one 32k sector.
  * @param [in] destination32k
@@ -108,7 +108,7 @@ extern int rflpc_iap_write_buffer(void *destination, const void *buffer, int len
  * @param [in] length <= 32k.
  * @return 0 if successful, negative otherwise
  */
-extern int rflpc_iap_transfert_4ks_to_32k(void *destination32k, const void *source4ks, int length);
+extern int rflpc_iap_transfert_4ks_to_32k(const void *destination32k, const void *source4ks, int length);
 
 /** @} */
 #endif /* ENABLE_IAP */
