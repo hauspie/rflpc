@@ -30,7 +30,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2014-02-14 12:23:58 (hauspie)>
+  Time-stamp: <2014-02-14 17:09:46 (hauspie)>
 */
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -106,7 +106,7 @@ extern int rflpc_eth_get_link_mode();
 */
 typedef struct
 {
-    volatile uint8_t *packet;		/**< pointer to buffer where the ethernet frame
+    uint8_t *packet;		/**< pointer to buffer where the ethernet frame
 				 * (or frame fragment) is stored */
    /** Control word where we find data buffer size and other information relative to reception/emission
     *  of the buffer.
