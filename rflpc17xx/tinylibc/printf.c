@@ -16,7 +16,7 @@
 /*
     Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
     Created:
-    Time-stamp: <2012-03-21 10:07:49 (hauspie)>
+    Time-stamp: <2014-02-14 12:25:22 (hauspie)>
 */
 
 #ifdef RFLPC_CONFIG_ENABLE_PRINTF
@@ -166,8 +166,7 @@ int printf(const char *format, ...)
 		    default:
 		    {
 			/* not handled arg, assume int and get next */
-			int i = (int) va_arg(args, int);
-			i = 0;
+			(int) va_arg(args, int);
 #ifdef RFLPC_VERBOSE_PRINTF
 			PUTS("!Not handled format char: '");
 			PUTCHAR(*format);
