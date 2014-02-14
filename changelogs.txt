@@ -1,3 +1,5 @@
+0.13:
+	- Fixes some ethernet drivers issues
 0.12:
 	- Default fault handler display useful and correct information (PC, LR...)
 0.11:
