@@ -30,7 +30,7 @@
 /*
   Author: Michael Hauspie <Michael.Hauspie@univ-lille1.fr>
   Created: Jun. 28 2011
-  Time-stamp: <2012-03-21 09:04:06 (hauspie)>
+  Time-stamp: <2014-02-14 12:23:58 (hauspie)>
 */
 #include <stdint.h>
 #include "../nxp/LPC17xx.h"
@@ -106,7 +106,7 @@ extern int rflpc_eth_get_link_mode();
 */
 typedef struct
 {
-    uint8_t *packet;		/**< pointer to buffer where the ethernet frame
+    volatile uint8_t *packet;		/**< pointer to buffer where the ethernet frame
 				 * (or frame fragment) is stored */
    /** Control word where we find data buffer size and other information relative to reception/emission
     *  of the buffer.
@@ -123,7 +123,7 @@ typedef struct
     * - Bit 30 : Last fragment
     * - Bit 31 : IRQ on transmission enabled/disabled
     */
-    uint32_t control;
+    volatile uint32_t control;
 } rflpc_eth_descriptor_t;
 
 /** This structure holds the reception status associated to a descriptor.
@@ -147,12 +147,12 @@ typedef struct
     * - Bit 30 : Last flag. This is the last fragment of the frame
     * - Bit 31 : Error occured.
     */
-    uint32_t status_info;
+    volatile uint32_t status_info;
     /** hash CRC calculated from source and destination address.
      * - Bits 8:0 : CRC calcultated from the source address
      * - Bits 24:16 : CRC calcultated from the destination address
      */
-    uint32_t status_hash_crc;
+    volatile uint32_t status_hash_crc;
 } rflpc_eth_rx_status_t;
 
 
@@ -170,7 +170,7 @@ typedef struct
     * - Bit 30 : No descriptor. Transmit stream interrupted because not enough descriptor
     * - Bit 31 : Error occurred during transmission.
     */
-   uint32_t status_info;
+   volatile uint32_t status_info;
 } rflpc_eth_tx_status_t;
 
 
@@ -193,9 +193,12 @@ static inline uint32_t rflpc_eth_get_packet_size(uint32_t status_info)
  * @param [in] trigger_it Should the transmission of this buffer produce an interrupt
  * @param [in] last_fragment Is this fragment the last of the frame
  **/
-static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, uint32_t *control, int trigger_it, int last_fragment)
+static inline void rflpc_eth_set_tx_control_word(uint32_t size_to_send, volatile uint32_t *control, int trigger_it, int last_fragment)
 {
-    *control = ((size_to_send-1) & 0x7FF) | ((last_fragment & 1) << 30) | ((trigger_it & 1) << 31);
+    *control = ((size_to_send-1) & 0x7FF) | ((last_fragment & 1) << 30) | ((trigger_it & 1) << 31) | 
+	(1 << 26) | /* Override MAC defaults for pad, crc and last */
+	(1 << 28) | /* Pads small frames to 64 bytes */
+	(1 << 29); /* Appends a CRC to the frame */
 }
 
 /** Sets rx descriptors and status base address
@@ -306,8 +309,8 @@ static inline int rflpc_eth_get_last_sent_packet_idx()
 static inline void rflpc_eth_done_process_tx_packet(int count)
 {
     /* queue full */
-    if (TX_PRODUCE_INDEX_INC(count) == LPC_EMAC->TxConsumeIndex - 1 ||
-	((TX_PRODUCE_INDEX_INC(count) == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
+    if (TX_PRODUCE_INDEX_INC(count-1) == LPC_EMAC->TxConsumeIndex - 1 ||
+	((TX_PRODUCE_INDEX_INC(count-1) == LPC_EMAC->TxDescriptorNumber) && LPC_EMAC->TxConsumeIndex == 0))
     {
 	return;
     }
