@@ -23,3 +23,5 @@ $(patsubst %, _dump_%, $(DIRS)):
 
 doc:
 	make -C doc
+tags:
+	find . -name "*.[chS]" | xargs etags

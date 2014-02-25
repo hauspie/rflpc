@@ -1,0 +1,2482 @@
+
+samples/simple_udp/protocol.h,92
+#define __PROTOCOL_H__17,722
+#define ETH_ADDR_SIZE 26,870
+#define ETH_HEADER_SIZE 27,894
+
+samples/simple_udp/protocol.c,978
+#define NTOHS(19,755
+uint16_t checksum(22,812
+const uint8_t *eth_get_src(eth_get_src40,1204
+const uint8_t *eth_get_dst(eth_get_dst44,1294
+uint16_t eth_get_type(48,1368
+uint8_t *eth_get_payload(eth_get_payload53,1503
+void eth_set_src(58,1587
+void eth_set_dst(62,1701
+void eth_set_type(66,1799
+static uint32_t ip4_get_addr(75,1961
+uint32_t ip4_get_src(84,2150
+uint32_t ip4_get_dst(88,2253
+uint8_t  ip4_get_version(92,2356
+uint8_t  ip4_get_header_length(97,2483
+uint16_t ip4_get_total_lenght(103,2625
+uint16_t ip4_get_packet_id(108,2772
+uint8_t  ip4_get_flags(113,2916
+uint8_t  ip4_get_fragment_offset(118,3046
+uint8_t  ip4_get_ttl(123,3188
+uint8_t  ip4_get_protocol(130,3312
+uint16_t  ip4_get_checksum(135,3439
+void ip4_set_addr(141,3583
+void ip4_set_header(149,3778
+uint16_t udp_get_src_port(178,4545
+uint16_t udp_get_dst_port(183,4714
+uint16_t udp_get_length(189,4888
+void udp_set_header(196,5061
+uint8_t *udp_get_payload(udp_get_payload213,5477
+
+samples/simple_udp/main.c,588
+#define TX_BUFFER_COUNT 24,877
+#define RX_BUFFER_COUNT 25,903
+#define BUFFER_SIZE 27,930
+#define UDP 29,978
+#define PORT 30,993
+rflpc_eth_rx_status_t rx_status[rx_status35,1184
+rflpc_eth_tx_status_t tx_status[tx_status36,1264
+uint8_t rx_buffers[rx_buffers38,1345
+uint8_t tx_buffers[tx_buffers39,1394
+uint8_t _mac_addr[_mac_addr41,1444
+uint32_t my_ip 43,1467
+void print_ip4(46,1525
+void process_packet(54,1662
+RFLPC_IRQ_HANDLER eth_handler(90,2664
+void mbed_auto_set_mac(109,3152
+void ethernet_init(126,3433
+RFLPC_IRQ_HANDLER uart_handler(159,4595
+int main(165,4711
+
+samples/skel/main.c,17
+int main(23,855
+
+samples/rand/main.c,116
+void configure_timer(24,856
+void wait(32,1131
+void test_rand(40,1298
+void test_rand_r(52,1492
+int main(66,1716
+
+samples/memcpy/main.c,212
+#define ARRAY_SIZE 23,855
+uint8_t src_buffer[src_buffer25,880
+uint8_t dst_buffer[dst_buffer26,912
+int test(29,946
+void fill_with_magic(53,1463
+void dump(66,1718
+void init_timer(86,2084
+int main(94,2292
+
+samples/spi-simple/main.c,209
+void configure_timer(34,1149
+void wait(42,1424
+#define MASTER_SPI 49,1590
+#define SLAVE_SPI 50,1620
+RFLPC_IRQ_HANDLER master_interrupt(52,1650
+RFLPC_IRQ_HANDLER slave_interrupt(61,1837
+int main(70,2021
+
+samples/test_exception_handler/main.c,115
+RFLPC_IRQ_HANDLER svc_handler(28,1073
+RFLPC_IRQ_HANDLER svc_handler(29,1134
+void func(50,1991
+int main(67,2401
+
+samples/dhcp/protocols.c,534
+#define GET_TWO(26,940
+#define GET_FOUR(27,1012
+#define GET_MAC(29,1136
+#define PUT_TWO(38,1342
+#define PUT_FOUR(39,1429
+#define PUT_MAC(41,1583
+#define NTOHS(50,1789
+uint16_t proto_checksum(52,1845
+void proto_eth_demangle(69,2228
+void proto_eth_mangle(79,2479
+void proto_arp_demangle(90,2723
+void proto_arp_mangle(110,3293
+void proto_ip_demangle(124,3709
+void proto_ip_mangle(138,4169
+void proto_icmp_demangle(160,4853
+void proto_icmp_mangle(175,5261
+void proto_udp_demangle(191,5658
+void proto_udp_mangle(200,5880
+
+samples/dhcp/dhcp.c,65
+void proto_dhcp_demangle(21,775
+void proto_dhcp_mangle(30,1024
+
+samples/dhcp/main.c,810
+static uint8_t ip[ip27,921
+const static uint8_t _bmac[_bmac28,943
+#define IP_OFFSET 30,1014
+#define UDP_OFFSET 31,1047
+#define DHCP_OFFSET 32,1094
+    EthHead eth;36,1162
+    IpHead ip;37,1179
+    UdpHead udp;38,1194
+    DhcpHead dhcp;39,1211
+}FullPacket;FullPacket40,1230
+void print_packet(42,1244
+void print_ip(56,1455
+void dhcp_send(64,1579
+uint8_t *dhcp_create_option_array(dhcp_create_option_array105,2630
+uint8_t *dhcp_create_option_simple(dhcp_create_option_simple113,2833
+uint32_t dhcp_get_option_array(118,2995
+uint32_t dhcp_get_option_simple(133,3427
+void dhcp_discover(141,3638
+void dhcp_send_request(167,4222
+void dhcp_request(199,5349
+void dhcp_handle_ack(204,5523
+void dhcp_process_packet(214,6116
+void packet_in(241,6688
+uint32_t make_ip(278,7615
+int main(283,7738
+
+samples/dhcp/simple_net.h,30
+#define __SIMPLE_NET__22,844
+
+samples/dhcp/protocols.h,1682
+#define __PROTOCOLS_H__28,1116
+#define PROTO_MAC_HLEN 32,1162
+#define PROTO_ARP_HLEN 33,1189
+#define PROTO_ICMP_HLEN 34,1216
+#define PROTO_ICMP_CSUM_OFFSET 35,1243
+#define PROTO_ARP 37,1277
+#define PROTO_IP 38,1302
+#define PROTO_IP_HLEN 40,1328
+#define PROTO_ICMP 43,1355
+#define PROTO_ICMP_ECHO_REQUEST 44,1376
+#define PROTO_ICMP_ECHO_REPLY 45,1410
+#define PROTO_UDP_HLEN 47,1445
+#define PROTO_UDP 48,1470
+    uint8_t addr[addr52,1520
+} EthAddr;53,1541
+    EthAddr src;59,1572
+    EthAddr dst;60,1589
+    uint16_t type;61,1606
+} EthHead;62,1625
+#define MAC_ADDR_EQUAL(65,1638
+static inline uint32_t ntohl(67,1798
+    uint16_t hard_type;76,1960
+    uint16_t protocol_type;77,1984
+    uint8_t hlen;78,2012
+    uint8_t plen;79,2030
+    uint16_t opcode;80,2048
+    EthAddr sender_mac;81,2069
+    uint32_t sender_ip;82,2093
+    EthAddr target_mac;83,2117
+    uint32_t target_ip;84,2141
+} ArpHead;85,2165
+    uint8_t version_length;89,2194
+    uint8_t dscp_ecn;90,2222
+    uint16_t total_length;91,2244
+    uint16_t identification;92,2271
+    uint16_t flags_frag_offset;93,2300
+    uint8_t  ttl;94,2332
+    uint8_t  protocol;95,2350
+    uint16_t header_checksum;96,2373
+    uint32_t src_addr;97,2403
+    uint32_t dst_addr;98,2426
+} IpHead;99,2449
+    uint8_t type;103,2477
+    uint8_t code;104,2495
+    uint16_t checksum;105,2513
+	    uint16_t identifier;110,2563
+	    uint16_t sn;111,2589
+	} echo;112,2607
+	uint32_t raw;113,2616
+    } data;114,2631
+}IcmpHead;IcmpHead115,2643
+		uint16_t src_port,119,2672
+		uint16_t src_port, dst_port;119,2672
+		uint16_t len,120,2703
+		uint16_t len, checksum;120,2703
+}UdpHead;UdpHead121,2729
+
+samples/dhcp/simple_net.c,772
+#define RX_BUFFER_SIZE 23,855
+#define RX_BUFFER_COUNT 24,906
+#define TX_BUFFER_SIZE 26,933
+#define TX_BUFFER_COUNT 27,984
+rflpc_eth_descriptor_t _rx_desc[_rx_desc29,1011
+rflpc_eth_rx_status_t _rx_status[_rx_status30,1061
+rflpc_eth_descriptor_t _tx_desc[_tx_desc32,1113
+rflpc_eth_tx_status_t _tx_status[_tx_status33,1163
+uint8_t rxbuffers[rxbuffers35,1215
+uint8_t txbuffers[txbuffers36,1267
+static uint8_t _mac_addr[_mac_addr40,1387
+RFLPC_IRQ_HANDLER eth_handler(42,1417
+void mbed_auto_set_mac(59,1883
+void simple_net_ethernet_init(76,2164
+uint8_t *simple_net_get_tx_buffer(simple_net_get_tx_buffer109,3158
+void simple_net_emit_buffer(119,3365
+void simple_net_set_rx_callback(132,3733
+const uint8_t *simple_net_get_mac(simple_net_get_mac137,3853
+
+samples/dhcp/dhcp.h,1103
+#define __DHCP_PACKET_H__2,26
+#define DHCPDISCOVER 6,74
+#define DHCPOFFER 7,102
+#define DHCPREQUEST 8,130
+#define DHCPDECLINE 9,157
+#define DHCPACK 10,185
+#define DHCPNAK 11,213
+#define DHCPRELEASE 12,241
+#define DHCPINFORM 13,269
+#define DHCP_SERVER_PORT 14,297
+#define DHCP_CLIENT_PORT 15,325
+#define BOOTREQUEST 17,354
+#define OPTION_SUBNET_MASK 20,396
+#define OPTION_ROUTER 21,425
+#define OPTION_DHCP_REQUESTED_IP 22,449
+#define OPTION_DHCP_LEASE_TIME 23,485
+#define OPTION_DHCP_MESSAGE_TYPE 24,519
+#define OPTION_DHCP_SERVER_IDENTIFIER 25,555
+#define OPTION_END 26,596
+typedef struct dhcp_message 28,621
+  uint8_t op,30,709
+  uint8_t op, htype,30,709
+  uint8_t op, htype, hlen,30,709
+  uint8_t op, htype, hlen, hops;30,709
+  uint32_t xid;31,742
+  uint16_t secs,32,758
+  uint16_t secs, flags;32,758
+  uint32_t ciaddr;33,782
+  uint32_t yiaddr;34,801
+  uint32_t siaddr;35,820
+  uint32_t giaddr;36,839
+  uint8_t chaddr[chaddr37,858
+  uint8_t sname[sname38,880
+  uint8_t file[file39,901
+  uint8_t options[options40,922
+} DhcpHead;41,945
+#define DHCP_HLEN 43,958
+
+samples/leds/main.c,17
+int main(23,855
+
+samples/basic_tests/main.c,838
+uint32_t data 23,855
+uint32_t data2 24,898
+char test1 25,927
+void *add_data add_data26,946
+void *add_data2 add_data227,970
+int a,29,997
+int a,b,29,997
+int a,b,c,29,997
+int a,b,c,d;29,997
+char e;30,1010
+void test_data_bss(32,1019
+void test_uart(65,1812
+void test_echo(84,2044
+void test_printf(97,2276
+void print_interrupts(120,2965
+RFLPC_IRQ_HANDLER uart0_rx(129,3123
+void test_echo_irq(134,3252
+RFLPC_IRQ_HANDLER _rit_callback(141,3394
+void test_rit(146,3541
+RFLPC_IRQ_HANDLER _sys_timer_callback(152,3645
+void test_sys_timer(170,3932
+void print_sections(186,4287
+volatile static int request_autoneg 194,4580
+volatile static int autoneg_mode 195,4621
+RFLPC_IRQ_HANDLER _test_ethernet_serial_handler(197,4684
+void test_ethernet(215,5041
+void test_led(265,6472
+int my_silly_putchar(284,6831
+int main(291,6958
+
+samples/serial-number/main.c,17
+int main(22,822
+
+samples/spi-leds/main.c,124
+#define SPI_PORT 25,878
+void wait(27,907
+void led_matrix_display_buffer(34,1073
+void test_spi(47,1430
+int main(99,2730
+
+samples/spi-leds/scroller.h,30
+#define __SCROLLER_H__22,890
+
+samples/spi-leds/scroller.c,136
+uint8_t font[font25,979
+int font_size 284,18436
+#define GET_BIT(286,18483
+void display_char(289,18525
+void display_text(311,18983
+
+samples/ethernet/protocols.c,462
+#define GET_TWO(26,939
+#define GET_FOUR(27,1011
+#define GET_MAC(29,1135
+#define PUT_TWO(38,1341
+#define PUT_FOUR(39,1428
+#define PUT_MAC(41,1582
+#define NTOHS(50,1788
+uint16_t checksum(52,1844
+void proto_eth_demangle(69,2221
+void proto_eth_mangle(79,2472
+void proto_arp_demangle(90,2716
+void proto_arp_mangle(110,3286
+void proto_ip_demangle(124,3702
+void proto_ip_mangle(138,4162
+void proto_icmp_demangle(160,4840
+void proto_icmp_mangle(175,5248
+
+samples/ethernet/main.c,768
+void dump_packet(25,879
+volatile static int request_autoneg 80,1983
+volatile static int autoneg_mode 81,2024
+RFLPC_IRQ_HANDLER _serial_handler(83,2087
+RFLPC_IRQ_HANDLER _rit_handler(101,2430
+#define RX_BUFFER_SIZE 110,2608
+#define RX_BUFFER_COUNT 111,2659
+#define TX_BUFFER_SIZE 113,2686
+#define TX_BUFFER_COUNT 114,2737
+rflpc_eth_descriptor_t _rx_desc[_rx_desc116,2764
+rflpc_eth_rx_status_t _rx_status[_rx_status117,2814
+rflpc_eth_descriptor_t _tx_desc[_tx_desc119,2866
+rflpc_eth_tx_status_t _tx_status[_tx_status120,2916
+uint8_t rxbuffers[rxbuffers122,2968
+uint8_t txbuffers[txbuffers123,3020
+EthAddr mac_addr;127,3075
+uint32_t my_ip 128,3093
+void process_packet(130,3156
+void eth_handler(234,6354
+void ethernet(254,6861
+int main(322,8995
+
+samples/ethernet/protocols.h,1357
+#define __PROTOCOLS_H__28,1115
+#define PROTO_MAC_HLEN 32,1161
+#define PROTO_ARP_HLEN 33,1188
+#define PROTO_ICMP_HLEN 34,1215
+#define PROTO_ICMP_CSUM_OFFSET 35,1242
+#define PROTO_ARP 37,1276
+#define PROTO_IP 38,1301
+#define PROTO_ICMP 40,1327
+#define PROTO_ICMP_ECHO_REQUEST 41,1348
+#define PROTO_ICMP_ECHO_REPLY 42,1382
+    uint8_t addr[addr46,1434
+} EthAddr;47,1455
+    EthAddr src;53,1486
+    EthAddr dst;54,1503
+    uint16_t type;55,1520
+} EthHead;56,1539
+    uint16_t hard_type;61,1569
+    uint16_t protocol_type;62,1593
+    uint8_t hlen;63,1621
+    uint8_t plen;64,1639
+    uint16_t opcode;65,1657
+    EthAddr sender_mac;66,1678
+    uint32_t sender_ip;67,1702
+    EthAddr target_mac;68,1726
+    uint32_t target_ip;69,1750
+} ArpHead;70,1774
+    uint8_t version_length;74,1803
+    uint8_t dscp_ecn;75,1831
+    uint16_t total_length;76,1853
+    uint16_t identification;77,1880
+    uint16_t flags_frag_offset;78,1909
+    uint8_t  ttl;79,1941
+    uint8_t  protocol;80,1959
+    uint16_t header_checksum;81,1982
+    uint32_t src_addr;82,2012
+    uint32_t dst_addr;83,2035
+} IpHead;84,2058
+    uint8_t type;88,2086
+    uint8_t code;89,2104
+    uint16_t checksum;90,2122
+	    uint16_t identifier;95,2172
+	    uint16_t sn;96,2198
+	} echo;97,2216
+	uint32_t raw;98,2225
+    } data;99,2240
+}IcmpHead;IcmpHead100,2252
+
+samples/pwm-test/main.c,205
+#define LED_PIN 23,855
+#define PWM_PIN1 24,887
+#define PWM_PIN2 25,920
+#define PWM_PIN3 26,953
+#define PERIOD 28,982
+volatile uint16_t ps;30,1004
+RFLPC_IRQ_HANDLER uart_rx(32,1027
+int main(68,1696
+
+samples/test-uarts/main.c,206
+void configure_timer(23,855
+void wait(31,1130
+int broadcast_uarts(38,1296
+RFLPC_IRQ_HANDLER uart0_irq(46,1462
+RFLPC_IRQ_HANDLER uart2_irq(52,1623
+RFLPC_IRQ_HANDLER uart3_irq(57,1783
+int main(64,1945
+
+samples/memset/main.c,154
+#define BUFFER_SIZE 23,855
+#define MAGIC 24,880
+static uint8_t buffer[buffer25,899
+void fill_magic(27,936
+int test_memset(36,1042
+int main(78,1928
+
+samples/timer/main.c,120
+#define TIMER_TO_TEST 24,856
+RFLPC_IRQ_HANDLER _timer_cb(26,892
+RFLPC_IRQ_HANDLER _uart_cb(40,1253
+int main(58,1546
+
+samples/dma/main.c,218
+#define BUFFER_SIZE 23,855
+#define BUFFER_BYTES 24,879
+static uint32_t source_buffer[source_buffer25,931
+static uint32_t destination_buffer[destination_buffer26,975
+void copy_and_check(28,1025
+int main(62,2047
+
+samples/test-flash/main.c,722
+#define DATA_SIZE 23,844
+#define SECTOR_START_INDEX 24,877
+#define SECTOR_END_INDEX 25,909
+#define SECTOR_START_ADDRESS 26,941
+static char data[data32,1054
+static char buffer[buffer34,1084
+int test_simple_copy(36,1157
+int test_writing(65,1991
+char testBuffer[testBuffer90,2547
+int test_writing_from_ram(92,2571
+char sequenceBuffer[sequenceBuffer134,3674
+int testSequence(137,3702
+const char object 166,4264
+const int object_size 169,7558
+#define WRITING_BUFFER_SIZE 171,7599
+char writingBuffer[writingBuffer173,7632
+int testBufferedWriting(175,7674
+char largeBuffer[largeBuffer223,8778
+int testLargeBuffer(225,8803
+int testWritingInto32k(256,9518
+const char *ok ok292,10513
+int main(294,10536
+
+rflpc17xx/clock.h,168
+#define __RFLPC_CLOCK_H__28,944
+    RFLPC_CCLK_4 40,1128
+    RFLPC_CCLK 41,1186
+    RFLPC_CCLK_2 42,1253
+    RFLPC_CCLK_8 43,1320
+} rflpc_clock_divider_t;44,1387
+
+rflpc17xx/tinylibc/setjmp.h,75
+#define __RFLPC_SETJMP_H__22,848
+typedef uint32_t jmp_buf[jmp_buf28,932
+
+rflpc17xx/tinylibc/printf.h,34
+#define __RFLPC_PRINTF_H__18,727
+
+rflpc17xx/tinylibc/printf.c,306
+static int _rflpc_default_putchar(32,1018
+#define PUTCHAR(42,1220
+#define PUTS(43,1285
+#define PUT_HEXA_DIGIT(46,1365
+#define PUT_HEXA_BYTE(53,1542
+#define PUT_HEXA_VAL(58,1692
+#define PUT_INT_DIGIT(69,1996
+#define PUT_INT_NUMBER(73,2072
+int printf(84,2370
+void rflpc_printf_set_putchar(192,4442
+
+rflpc17xx/tinylibc/memcpy.h,34
+#define __RFLPC_MEMCPY_H__25,868
+
+rflpc17xx/tinylibc/memcpy.c,214
+#define IS_WORD_ALIGNED(36,1450
+static void *rflpc_memcpy_unaligned_fast(rflpc_memcpy_unaligned_fast38,1503
+static void *rflpc_memcpy_aligned_fast(rflpc_memcpy_aligned_fast58,2016
+void *memcpy(memcpy81,2717
+
+rflpc17xx/tinylibc/memset.h,34
+#define __RFLPC_MEMSET_H__23,802
+
+rflpc17xx/tinylibc/rand.h,83
+#define __RFLPC_RAND_H__27,1004
+#undef RAND_MAX35,1107
+#define RAND_MAX 41,1242
+
+rflpc17xx/tinylibc/rand.c,90
+static unsigned int _seed;24,804
+void srand(26,832
+int rand(31,885
+int rand_r(40,1060
+
+rflpc17xx/tinylibc/memset.c,214
+#define IS_WORD_ALIGNED(29,1124
+static void *rflpc_memset_unaligned_fast(rflpc_memset_unaligned_fast31,1177
+static void *rflpc_memset_aligned_fast(rflpc_memset_aligned_fast51,1606
+void *memset(memset75,2292
+
+rflpc17xx/tinylibc/setjmp.c,40
+int setjmp(26,878
+int longjmp(41,1175
+
+rflpc17xx/init.c,206
+unsigned char _stack[_stack50,1580
+void* _rom_interrupts[_rom_interrupts57,1864
+static void _zero_bss(112,4534
+static void _copy_data_section(120,4679
+void _init_stack(129,4827
+void _start(141,4993
+
+rflpc17xx/interrupt.h,332
+#define __RFLPC_INTERRUPT_H__27,900
+static inline void rflpc_irq_global_enable(38,1080
+static inline void rflpc_irq_global_disable(44,1209
+static inline void rflpc_irq_enable(50,1328
+static inline void rflpc_irq_disable(56,1462
+typedef void (*rflpc_irq_handler_t)rflpc_irq_handler_t62,1589
+#define RFLPC_IRQ_HANDLER 65,1675
+
+rflpc17xx/iap.h,32
+#define __RFLPC_IAP_H__30,1015
+
+rflpc17xx/pinconf.c,27
+void rflpc_pin_set(26,892
+
+rflpc17xx/iap.c,1312
+#define IAP_SMALL_SECTOR_BUFFER_SIZE 32,956
+#define IAP_LARGE_SECTOR_BUFFER_SIZE 33,999
+char iap_sector_buffer[iap_sector_buffer36,1050
+#define IAP_PREPARE_SECTORS_FOR_WRITING 40,1125
+#define IAP_COPY_RAM_TO_FLASH 41,1168
+#define IAP_ERASE_SECTORS 42,1211
+#define IAP_READ_SERIAL_COMMAND 43,1254
+#define IAP_FUNCTION_ADDR 46,1317
+typedef void (*iap_function_t)iap_function_t48,1369
+#define DECLARE_IAP_FUNCTION 49,1435
+    IAP_CMD_SUCCESS,54,1552
+    IAP_CMD_INVALID_COMMAND,55,1573
+    IAP_SRC_ADDR_ERROR,56,1602
+    IAP_DST_ADDR_ERROR,57,1626
+    IAP_SRC_ADDR_NOT_MAPPED,58,1650
+    IAP_DST_ADDR_NOT_MAPPED,59,1679
+    IAP_COUNT_ERROR,60,1708
+    IAP_INVALID_SECTOR,61,1729
+    IAP_SECTOR_NOT_BLANK,62,1753
+    IAP_SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION,63,1779
+    IAP_COMPARE_ERROR,64,1828
+    IAP_BUSY,65,1851
+int rflpc_iap_get_serial_number(68,1869
+int rflpc_iap_prepare_sectors_for_writing(84,2241
+int rflpc_iap_erase_sectors(96,2595
+int rflpc_iap_copy_ram_to_flash(110,3021
+int rflpc_iap_get_sector_from_address(127,3542
+void *rflpc_iap_get_address_from_sector(rflpc_iap_get_address_from_sector135,3776
+int rflpc_iap_write_buffer_to_sector(150,4119
+int rflpc_iap_write_to_sector(186,5138
+int rflpc_iap_write_buffer(218,6157
+int rflpc_iap_transfert_4ks_to_32k(256,7366
+
+rflpc17xx/clock.c,217
+#define RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY 28,905
+static uint32_t _rflpc_system_clock 29,963
+#define RFLPC_PLL0_DO_FEED(36,1265
+void rflpc_clock_init(41,1417
+uint32_t rflpc_clock_get_system_clock(113,3995
+
+rflpc17xx/pinconf.h,2949
+#define __RFLPC_PINCONF_H__27,958
+typedef uint8_t rflpc_pin_t;44,1257
+#define RFLPC_PIN_MAKE(47,1364
+#define RFLPC_PIN_GET_PORT(49,1421
+#define RFLPC_PIN_GET_PIN(50,1474
+    RFLPC_PIN_P0_0,56,1581
+    RFLPC_PIN_P0_1,57,1601
+    RFLPC_PIN_P0_2,58,1621
+    RFLPC_PIN_P0_3,59,1641
+    RFLPC_PIN_P0_4,60,1661
+    RFLPC_PIN_P0_5,61,1681
+    RFLPC_PIN_P0_6,62,1701
+    RFLPC_PIN_P0_7,63,1721
+    RFLPC_PIN_P0_8,64,1741
+    RFLPC_PIN_P0_9,65,1761
+    RFLPC_PIN_P0_10,66,1781
+    RFLPC_PIN_P0_11,67,1802
+    RFLPC_PIN_P0_12,68,1823
+    RFLPC_PIN_P0_13,69,1844
+    RFLPC_PIN_P0_14,70,1865
+    RFLPC_PIN_P0_15,71,1886
+    RFLPC_PIN_P0_16,72,1907
+    RFLPC_PIN_P0_17,73,1928
+    RFLPC_PIN_P0_18,74,1949
+    RFLPC_PIN_P0_19,75,1970
+    RFLPC_PIN_P0_20,76,1991
+    RFLPC_PIN_P0_21,77,2012
+    RFLPC_PIN_P0_22,78,2033
+    RFLPC_PIN_P0_23,79,2054
+    RFLPC_PIN_P0_24,80,2075
+    RFLPC_PIN_P0_25,81,2096
+    RFLPC_PIN_P0_26,82,2117
+    RFLPC_PIN_P0_27,83,2138
+    RFLPC_PIN_P0_28,84,2159
+    RFLPC_PIN_P0_29,85,2180
+    RFLPC_PIN_P0_30,86,2201
+    RFLPC_PIN_P0_31,87,2222
+    RFLPC_PIN_P1_0 91,2262
+    RFLPC_PIN_P1_0 = RFLPC_PIN_MAKE(91,2262
+    RFLPC_PIN_P1_1,92,2304
+    RFLPC_PIN_P1_2,93,2324
+    RFLPC_PIN_P1_3,94,2344
+    RFLPC_PIN_P1_4,95,2364
+    RFLPC_PIN_P1_5,96,2384
+    RFLPC_PIN_P1_6,97,2404
+    RFLPC_PIN_P1_7,98,2424
+    RFLPC_PIN_P1_8,99,2444
+    RFLPC_PIN_P1_9,100,2464
+    RFLPC_PIN_P1_10,101,2484
+    RFLPC_PIN_P1_11,102,2505
+    RFLPC_PIN_P1_12,103,2526
+    RFLPC_PIN_P1_13,104,2547
+    RFLPC_PIN_P1_14,105,2568
+    RFLPC_PIN_P1_15,106,2589
+    RFLPC_PIN_P1_16,107,2610
+    RFLPC_PIN_P1_17,108,2631
+    RFLPC_PIN_P1_18,109,2652
+    RFLPC_PIN_P1_19,110,2673
+    RFLPC_PIN_P1_20,111,2694
+    RFLPC_PIN_P1_21,112,2715
+    RFLPC_PIN_P1_22,113,2736
+    RFLPC_PIN_P1_23,114,2757
+    RFLPC_PIN_P1_24,115,2778
+    RFLPC_PIN_P1_25,116,2799
+    RFLPC_PIN_P1_26,117,2820
+    RFLPC_PIN_P1_27,118,2841
+    RFLPC_PIN_P1_28,119,2862
+    RFLPC_PIN_P1_29,120,2883
+    RFLPC_PIN_P1_30,121,2904
+    RFLPC_PIN_P1_31,122,2925
+    RFLPC_PIN_P2_0 125,2964
+    RFLPC_PIN_P2_0 = RFLPC_PIN_MAKE(125,2964
+    RFLPC_PIN_P2_1,126,3006
+    RFLPC_PIN_P2_2,127,3026
+    RFLPC_PIN_P2_3,128,3046
+    RFLPC_PIN_P2_4,129,3066
+    RFLPC_PIN_P2_5,130,3086
+    RFLPC_PIN_P2_6,131,3106
+    RFLPC_PIN_P2_7,132,3126
+    RFLPC_PIN_P2_8,133,3146
+    RFLPC_PIN_P2_9,134,3166
+    RFLPC_PIN_P2_10,135,3186
+    RFLPC_PIN_P2_11,136,3207
+    RFLPC_PIN_P2_12,137,3228
+    RFLPC_PIN_P2_13,138,3249
+    RFLPC_PIN_P3_25 141,3288
+    RFLPC_PIN_P3_25 = RFLPC_PIN_MAKE(141,3288
+    RFLPC_PIN_P3_26,142,3332
+    RFLPC_PIN_P4_28 145,3371
+    RFLPC_PIN_P4_28 = RFLPC_PIN_MAKE(145,3371
+    RFLPC_PIN_P4_29,146,3415
+   RFLPC_PIN_MODE_RESISTOR_PULL_UP,156,3532
+   RFLPC_PIN_MODE_REPEATER,157,3623
+   RFLPC_PIN_MODE_RESISTOR_NONE,158,3714
+   RFLPC_PIN_MODE_RESISTOR_PULL_DOWN,159,3805
+} rflpc_pin_mode_t;160,3896
+
+rflpc17xx/profiling.h,347
+#define __RFLPC_PROFILING_H__25,942
+   #define RFLPC_PROFILE_PRESCALE 38,1302
+#define RFLPC_PROFILE_INIT(48,1646
+#define RFLPC_PROFILE_DECLARE_COUNTER(53,2039
+#define RFLPC_PROFILE_DECLARE_EXTERN_COUNTER(58,2321
+#define RFLPC_PROFILE_START_COUNTER(61,2562
+#define RFLPC_PROFILE_STOP_COUNTER(64,2785
+#define RFLPC_PROFILE_GET_TOTAL(67,3055
+
+rflpc17xx/drivers/pwm.c,494
+#define PWM1_PINS 29,1004
+#define PWM2_PINS 32,1080
+#define PWM3_PINS 36,1199
+#define PWM4_PINS 40,1318
+#define PWM5_PINS 43,1394
+#define PWM6_PINS 46,1470
+static uint8_t _pwm_running;50,1547
+int rflpc_pwm_init(52,1577
+void rflpc_pwm_start(104,3101
+void rflpc_pwm_stop(108,3172
+void rflpc_pwm_reset(112,3241
+void rflpc_pwm_set_period(117,3313
+void rflpc_pwm_enable(131,3639
+void rflpc_pwm_disable(157,4177
+void rflpc_pwm_single_edge(183,4717
+void rflpc_pwm_double_edge(222,5677
+
+rflpc17xx/drivers/dma.h,254
+#define __RFLPC_DMA_H__25,904
+   RFLPC_DMAC0,38,1085
+   RFLPC_DMAC1,39,1101
+   RFLPC_DMAC2,40,1117
+   RFLPC_DMAC3,41,1133
+   RFLPC_DMAC4,42,1149
+   RFLPC_DMAC5,43,1165
+   RFLPC_DMAC6,44,1181
+   RFLPC_DMAC7,45,1197
+} rflpc_dma_channel_t;46,1213
+
+rflpc17xx/drivers/rit.h,255
+#define __RFLPC_RIT_H__28,1001
+static inline void rflpc_rit_enable(45,1524
+static inline uint32_t rflpc_rit_get_counter_value(51,1650
+static inline void rflpc_rit_set_counter_value(54,1784
+static inline void rflpc_rit_clear_pending_interrupt(58,2015
+
+rflpc17xx/drivers/sys_tick_timer.h,198
+#define __RFLPC_SYS_TICK_TIMER_H__25,905
+static inline void rflpc_sys_timer_start(54,1789
+static inline void rflpc_sys_timer_stop(60,1891
+static inline void rflpc_sys_timer_set_callback(66,2014
+
+rflpc17xx/drivers/gpio.h,32
+#define __RFLPC_GPIO_H__27,921
+
+rflpc17xx/drivers/spi.h,521
+#define __RFLPC_SPI_H__20,758
+   RFLPC_SPI0,40,1100
+   RFLPC_SPI1 41,1142
+} rflpc_spi_t;42,1184
+    RFLPC_SPI_MASTER,47,1260
+    RFLPC_SPI_SLAVE,48,1312
+} rflpc_spi_mode_t;49,1363
+static inline LPC_SSP_TypeDef *rflpc_spi_get_base_addr(rflpc_spi_get_base_addr73,2894
+static inline int rflpc_spi_tx_fifo_empty(84,3138
+static inline int rflpc_spi_tx_fifo_full(96,3406
+static inline int rflpc_spi_rx_fifo_empty(108,3685
+static inline void rflpc_spi_write(121,4317
+static inline uint16_t rflpc_spi_read(133,4708
+
+rflpc17xx/drivers/rit.c,36
+void rflpc_rit_set_callback(25,960
+
+rflpc17xx/drivers/pwm.h,31
+#define __RFLPC_PWM_H__25,907
+
+rflpc17xx/drivers/uart.h,131
+#define __RFLPC_UART_H__25,876
+    RFLPC_UART0 46,1506
+    RFLPC_UART2 47,1546
+    RFLPC_UART3 48,1585
+} rflpc_uart_t;49,1627
+
+rflpc17xx/drivers/gpio.c,512
+void rflpc_gpio_use_pin(19,740
+static LPC_GPIO_TypeDef * const _gpio_ports[_gpio_ports26,936
+#define RFLPC_GPIO_BASE(36,1132
+void rflpc_gpio_set_pin_mode_input(39,1233
+void rflpc_gpio_set_pin_mode_output(46,1425
+void rflpc_gpio_set_pin(54,1677
+void rflpc_gpio_clr_pin(61,1883
+void rflpc_gpio_set_pins_from_mask(68,2081
+void rflpc_gpio_clr_pins_from_mask(75,2316
+void rflpc_gpio_set_pin_val(82,2552
+void rflpc_gpio_set_val(91,2766
+int rflpc_gpio_get_pin(98,2993
+uint32_t rflpc_gpio_get_val(104,3221
+
+rflpc17xx/drivers/ethernet.h,1651
+#define __RFLPC_ETHERNET_H__20,772
+#define RFLPC_ETH_LINK_MODE_SPEED_BIT 55,1498
+#define RFLPC_ETH_LINK_MODE_DUPLEX_BIT 57,1595
+#define RFLPC_ETH_LINK_MODE_100HD 59,1672
+#define RFLPC_ETH_LINK_MODE_10HD 61,1765
+#define RFLPC_ETH_LINK_MODE_100FD 63,1831
+#define RFLPC_ETH_LINK_MODE_10FD 65,1957
+    uint8_t *packet;packet109,3632
+    volatile uint32_t control;126,4478
+} rflpc_eth_descriptor_t;127,4509
+    volatile uint32_t status_info;150,5322
+    volatile uint32_t status_hash_crc;155,5557
+} rflpc_eth_rx_status_t;156,5596
+   volatile uint32_t status_info;173,6397
+} rflpc_eth_tx_status_t;174,6431
+static inline uint32_t rflpc_eth_get_packet_size(183,6745
+static inline void rflpc_eth_set_tx_control_word(196,7333
+static inline int rflpc_eth_get_current_rx_packet_descriptor(217,8306
+static inline int rflpc_eth_rx_available(232,8862
+static inline void rflpc_eth_done_process_rx_packet(245,9195
+#define TX_PRODUCE_INDEX_INC(263,9818
+static inline int rflpc_eth_get_current_tx_packet_descriptor(279,10605
+static inline int rflpc_eth_get_last_sent_packet_idx(297,11237
+static inline void rflpc_eth_done_process_tx_packet(309,11611
+static inline void rflpc_eth_set_irq_handler(329,12207
+static inline void rflpc_eth_irq_enable(342,12576
+static inline void rflpc_eth_irq_disable(352,12817
+static inline void rflpc_eth_irq_enable_set(362,13093
+static inline void rflpc_eth_irq_clear(368,13227
+static inline uint32_t rflpc_eth_irq_get_status(376,13409
+static inline void rflpc_eth_irq_trigger(388,13701
+static inline void rflpc_eth_activate_rx_filter(403,14166
+static inline void rflpc_eth_deactivate_rx_filter(420,14828
+
+rflpc17xx/drivers/timer.h,467
+#define __RFLPC_TIMER_H__25,855
+    RFLPC_TIMER0,50,1487
+    RFLPC_TIMER1,51,1521
+    RFLPC_TIMER2,52,1555
+    RFLPC_TIMER3,53,1589
+    RFLPC_TIMER_PWM 54,1624
+} rflpc_timer_t;55,1662
+    RFLPC_TIMER_MATCH0,61,1744
+    RFLPC_TIMER_MATCH1,62,1793
+    RFLPC_TIMER_MATCH2,63,1842
+    RFLPC_TIMER_MATCH3,64,1891
+} rflpc_timer_match_t;65,1940
+    RFLPC_TIMER_IRQ_ON_MATCH 71,2012
+    RFLPC_TIMER_RESET_ON_MATCH 72,2118
+    RFLPC_TIMER_STOP_ON_MATCH 73,2219
+
+rflpc17xx/drivers/timer.c,787
+static LPC_TIM_TypeDef *rflpc_timer_base(rflpc_timer_base25,840
+void rflpc_timer_enable(43,1386
+void rflpc_timer_disable(61,1709
+void rflpc_timer_set_clock(79,2035
+void rflpc_timer_set_callback(99,2530
+void rflpc_timer_start(108,2797
+int rflpc_timer_running(114,2923
+void rflpc_timer_stop(119,3018
+void rflpc_timer_reset(125,3145
+uint32_t rflpc_timer_get_counter(132,3346
+uint32_t rflpc_timer_get_pre_scale_counter(137,3445
+uint32_t rflpc_timer_get_pre_scale_register(142,3554
+void rflpc_timer_set_counter(148,3665
+void rflpc_timer_set_pre_scale_counter(153,3777
+void rflpc_timer_set_pre_scale_register(158,3899
+void rflpc_timer_set_match_value(163,4022
+void rflpc_timer_set_irq_on_match(168,4220
+void rflpc_timer_reset_irq(175,4508
+int rflpc_timer_test_irq(180,4655
+
+rflpc17xx/drivers/uart.c,579
+struct uart_pin_conf33,1093
+      uint8_t tx_pin;37,1155
+      uint8_t rx_pin;38,1177
+      unsigned char pin_function:pin_function39,1199
+  }gpio;gpio40,1235
+  LPC_UART_TypeDef *base_address;base_address42,1247
+typedef struct uart_pin_conf uart_pin_conf_t;45,1285
+static uart_pin_conf_t _rflpc_uart_config[_rflpc_uart_config47,1332
+#define BASE_ADDR(69,1794
+void rflpc_uart_putchar(71,1855
+int rflpc_uart_byte_available(77,2050
+char rflpc_uart_getchar(82,2151
+int _rflpc_uart_init(99,2529
+int rflpc_uart_init(129,3492
+void rflpc_uart_set_rx_callback(169,4605
+
+rflpc17xx/drivers/dma.c,715
+static LPC_GPDMACH_TypeDef *rflpc_dma_get_chan(rflpc_dma_get_chan26,914
+static volatile uint32_t *rflpc_dma_get_chan_control_register(rflpc_dma_get_chan_control_register44,1436
+static volatile uint32_t *rflpc_dma_get_chan_config_register(rflpc_dma_get_chan_config_register52,1659
+static volatile uint32_t *rflpc_dma_get_chan_source(rflpc_dma_get_chan_source60,1880
+static volatile uint32_t *rflpc_dma_get_chan_destination(rflpc_dma_get_chan_destination68,2093
+static void rflpc_dma_set_channel_control(76,2312
+static void rflpc_dma_set_channel_config(81,2496
+static void rflpc_dma_set_channel_lli(86,2608
+void rflpc_dma_init(94,2804
+int rflpc_dma_channel_ready(103,3009
+int rflpc_dma_start(108,3127
+
+rflpc17xx/drivers/leds.h,368
+#define __RFLPC_LEDS_H__25,896
+#define RFLPC_LED_1 41,1253
+#define RFLPC_LED_2 43,1328
+#define RFLPC_LED_3 45,1403
+#define RFLPC_LED_4 47,1478
+static inline void rflpc_led_init(53,1649
+static inline void rflpc_led_set(63,1970
+static inline void rflpc_led_clr(70,2143
+static inline void rflpc_led_val(77,2315
+static inline void rflpc_led_binary_value(89,2644
+
+rflpc17xx/drivers/ethernet.c,755
+#define ETH_DELAY 34,1007
+static const uint8_t clock_dividers[clock_dividers36,1078
+static void _write_to_phy_register_with_addr(41,1245
+static uint16_t _read_from_phy_register_with_addr(55,1625
+static void _eth_setup_pins(68,2072
+#define _read_from_phy_register(83,2918
+#define _write_to_phy_register(84,3016
+int rflpc_eth_init(86,3125
+int rflpc_eth_link_state(158,5518
+int rflpc_eth_link_auto_negociate(163,5667
+void rflpc_eth_set_link_mode(230,7624
+int rflpc_eth_get_link_mode(276,8756
+void rflpc_eth_set_rx_base_addresses(306,9759
+void rflpc_eth_set_tx_base_addresses(322,10476
+void rflpc_eth_get_mac_address(336,11053
+void rflpc_eth_set_mac_address(348,11349
+#define DUMP_REGISTER(356,11570
+void rflpc_eth_dump_internals(357,11630
+
+rflpc17xx/drivers/sys_tick_timer.c,122
+void rflpc_sys_timer_init(27,1030
+void rflpc_sys_timer_set_period(36,1185
+void rflpc_sys_timer_set_tick_period(56,1780
+
+rflpc17xx/drivers/spi.c,310
+#define PINFUNC_SPI 28,953
+#define SCK0_PIN 30,976
+#define SSEL0_PIN 31,1010
+#define MISO0_PIN 32,1044
+#define MOSI0_PIN 33,1078
+#define SSEL1_PIN 36,1114
+#define SCK1_PIN 37,1148
+#define MISO1_PIN 38,1182
+#define MOSI1_PIN 39,1216
+void rflpc_spi_init(41,1251
+void rflpc_spi_set_rx_callback(81,2935
+
+rflpc17xx/drivers/eth_const.h,6013
+#define __RFLPC_ETH_CONST_H__28,965
+#define RFLPC_ETH_PCENET_BIT 40,1297
+#define RFLPC_ETH_PIN_TXD0 50,1547
+#define RFLPC_ETH_PIN_TXD1 52,1621
+#define RFLPC_ETH_PIN_TX_EN 54,1700
+#define RFLPC_ETH_PIN_CRS 56,1772
+#define RFLPC_ETH_PIN_RXD0 58,1845
+#define RFLPC_ETH_PIN_RXD1 60,1918
+#define RFLPC_ETH_PIN_RX_ER 62,1986
+#define RFLPC_ETH_PIN_REF_CLK 64,2056
+#define RFLPC_ETH_PIN_MDC 66,2125
+#define RFLPC_ETH_PIN_MDIO 68,2208
+#define RFLPC_ETH_MAC1_RECEIVE_ENABLE 77,2402
+#define RFLPC_ETH_MAC1_PASS_ALL_FRAMES 79,2483
+#define RFLPC_ETH_MAC1_RX_FLOW_CONTROL 81,2573
+#define RFLPC_ETH_MAC1_TX_FLOW_CONTROL 83,2664
+#define RFLPC_ETH_MAC1_LOOPBACK 85,2775
+#define RFLPC_ETH_MAC1_RESET_TX 87,2849
+#define RFLPC_ETH_MAC1_RESET_MCS_TX 89,2946
+#define RFLPC_ETH_MAC1_RESET_RX 91,3020
+#define RFLPC_ETH_MAC1_RESET_MCS_RX 93,3117
+#define RFLPC_ETH_MAC1_SIM_RESET 95,3232
+#define RFLPC_ETH_MAC1_SOFT_RESET 97,3309
+#define RFLPC_ETH_MAC2_FULL_DUPLEX 101,3440
+#define RFLPC_ETH_MAC2_FRAME_LENGTH_CHK 103,3575
+#define RFLPC_ETH_MAC2_HUGE_FRAME_ENABLE 105,3659
+#define RFLPC_ETH_MAC2_DELAYED_CRC 107,3820
+#define RFLPC_ETH_MAC2_CRC_ENABLE 109,3906
+#define RFLPC_ETH_MAC2_PAD_CRC_ENABLE 111,3996
+#define RFLPC_ETH_MAC2_VLAN_PAD_ENABLE 113,4116
+#define RFLPC_ETH_MAC2_AUTO_DETECT_PAD_ENABLE 115,4204
+#define RFLPC_ETH_MAC2_PURE_PREAMBLE_ENFORCE 117,4297
+#define RFLPC_ETH_MAC2_LONG_PREAMBLE_ENFORCE 119,4390
+#define RFLPC_ETH_MAC2_NO_BACKOFF 121,4492
+#define RFLPC_ETH_MAC2_BACK_PRESSURE 123,4616
+#define RFLPC_ETH_MAC2_EXCESS_DEFER 127,4861
+#define RFLPC_ETH_CMD_RX_ENABLE 136,5014
+#define RFLPC_ETH_CMD_TX_ENABLE 137,5062
+#define RFLPC_ETH_CMD_REG_RESET 138,5110
+#define RFLPC_ETH_CMD_TX_RESET 139,5158
+#define RFLPC_ETH_CMD_RX_RESET 140,5206
+#define RFLPC_ETH_CMD_PASS_RUNT_FRAMES 141,5254
+#define RFLPC_ETH_CMD_PASS_RX_FILTER 142,5302
+#define RFLPC_ETH_CMD_TX_FLOW_CONTROL 143,5350
+#define RFLPC_ETH_CMD_RMII 144,5398
+#define RFLPC_ETH_CMD_FULL_DUPLEX 145,5446
+#define RFLPC_ETH_RXFILTER_UNICAST_EN 152,5570
+#define RFLPC_ETH_RXFILTER_BROADCAST_EN 153,5625
+#define RFLPC_ETH_RXFILTER_MULTICAST_EN 154,5680
+#define RFLPC_ETH_RXFILTER_UNICAST_HASH_EN 155,5735
+#define RFLPC_ETH_RXFILTER_MULTICAST_HASH_EN 156,5790
+#define RFLPC_ETH_RXFILTER_PERFECT_EN 157,5845
+#define RFLPC_ETH_RXFILTER_MAGIC_WOL_EN 158,5900
+#define RFLPC_ETH_RXFILTER_RXFILTER_WOL_EN 159,5956
+#define RFLPC_ETH_MIND_BUSY 167,6100
+#define RFLPC_ETH_MIND_SCANNING 168,6143
+#define RFLPC_ETH_MIND_NOT_VALID 169,6191
+#define RFLPC_ETH_MIND_MII_LINK_FAIL 170,6239
+#define RFLPC_ETH_SUPP_10MBPS 177,6347
+#define RFLPC_ETH_SUPP_100MBPS 178,6390
+#define RFLPC_ETH_MCFG_SCAN_INCREMENT 185,6502
+#define RFLPC_ETH_MCFG_SUPPRESS_PREAMBLE 186,6552
+#define RFLPC_ETH_MCFG_RESET_MIIM 187,6602
+#define RFLPC_ETH_MAX_FRAME_LENGTH 199,6908
+#define RFLPC_ETH_MAX_CLOCK 201,7049
+#define RFLPC_ETH_PHY_BMCR 209,7172
+#define RFLPC_ETH_PHY_BMSR 210,7209
+#define RFLPC_ETH_PHY_PHYIDR1 214,7310
+#define RFLPC_ETH_PHY_PHYIDR2 215,7347
+#define RFLPC_ETH_PHY_ANAR 216,7384
+#define RFLPC_ETH_PHY_ANLPAR 217,7421
+#define RFLPC_ETH_PHY_ANLPARNP 218,7458
+#define RFLPC_ETH_PHY_ANER 219,7565
+#define RFLPC_ETH_PHY_ANNPTR 220,7602
+#define RFLPC_ETH_PHY_PHYSTS 221,7639
+#define RFLPC_ETH_PHY_FCSCR 222,7677
+#define RFLPC_ETH_PHY_RECR 223,7715
+#define RFLPC_ETH_PHY_PCSR 224,7753
+#define RFLPC_ETH_PHY_RBR 225,7791
+#define RFLPC_ETH_PHY_LEDCR 226,7829
+#define RFLPC_ETH_PHY_PHYCR 227,7867
+#define RFLPC_ETH_PHY_10BTSCR 228,7905
+#define RFLPC_ETH_PHY_CDCTRL1 229,7943
+#define RFLPC_ETH_PHY_EDCR 230,7981
+#define RFLPC_ETH_BMCR_RESET 239,8153
+#define RFLPC_ETH_BMCR_LOOPBACK 240,8203
+#define RFLPC_ETH_BMCR_SPEED_SELECT 241,8253
+#define RFLPC_ETH_BMCR_ENABLE_AUTO_NEG 242,8303
+#define RFLPC_ETH_BMCR_POWER_DOWN 243,8353
+#define RFLPC_ETH_BMCR_ISOLATE 244,8403
+#define RFLPC_ETH_BMCR_RESTART_AUTO_NEG 245,8453
+#define RFLPC_ETH_BMCR_DUPLEX_MODE 246,8502
+#define RFLPC_ETH_BMCR_COLLISION_TEST 247,8551
+#define RFLPC_ETH_BMSR_100BASET4 254,8677
+#define RFLPC_ETH_BMSR_100BASETX_FULL 255,8735
+#define RFLPC_ETH_BMSR_100BASETX_HALF 256,8793
+#define RFLPC_ETH_BMSR_10BASET_FULL 257,8851
+#define RFLPC_ETH_BMSR_10BASET_HALF 258,8909
+#define RFLPC_ETH_BMSR_MF_PREAMBLE_SUPPRESSION 259,8967
+#define RFLPC_ETH_BMSR_AUTO_NEG_COMPLETE 260,9024
+#define RFLPC_ETH_BMSR_REMOTE_FAULT 261,9081
+#define RFLPC_ETH_BMSR_CAN_AUTO_NEG 262,9138
+#define RFLPC_ETH_BMSR_LINK_STATUS 263,9195
+#define RFLPC_ETH_BMSR_JABBER_DETECT 264,9252
+#define RFLPC_ETH_BMSR_EXT_REGISTER_CAPS 265,9309
+#define RFLPC_ETH_ANAR_ASM_DIR 275,9520
+#define RFLPC_ETH_ANAR_PAUSE 276,9561
+#define RFLPC_ETH_ANAR_T4 277,9602
+#define RFLPC_ETH_ANAR_TX_FD 278,9642
+#define RFLPC_ETH_ANAR_TX 279,9682
+#define RFLPC_ETH_ANAR_10_FD 280,9722
+#define RFLPC_ETH_ANAR_10 281,9762
+#define RFLPC_ETH_PHYSTS_MDI_X 288,9874
+#define RFLPC_ETH_PHYSTS_RX_ERROR_LATCH 289,9935
+#define RFLPC_ETH_PHYSTS_POLARITY_STATUS 290,9996
+#define RFLPC_ETH_PHYSTS_FALSE_CARRIER_SENSE_LATCH 291,10057
+#define RFLPC_ETH_PHYSTS_SIGNAL_DETECT 292,10118
+#define RFLPC_ETH_PHYSTS_DESCRAMBLER_LOCK 293,10179
+#define RFLPC_ETH_PHYSTS_PAGE_RECEIVED 294,10239
+#define RFLPC_ETH_PHYSTS_REMOTE_FAULT 295,10299
+#define RFLPC_ETH_PHYSTS_JABBER_DETECT 296,10359
+#define RFLPC_ETH_PHYSTS_AUTO_NEG_COMPLETE 297,10419
+#define RFLPC_ETH_PHYSTS_LOOPBACK_STATUS 298,10479
+#define RFLPC_ETH_PHYSTS_DUPLEX_STATUS 299,10539
+#define RFLPC_ETH_PHYSTS_SPEED_STATUS 300,10599
+#define RFLPC_ETH_PHYSTS_LINK_STATUS 301,10659
+#define RFLPC_ETH_IRQ_EN_RX_OVERRUN 310,10832
+#define RFLPC_ETH_IRQ_EN_RX_ERROR 311,10878
+#define RFLPC_ETH_IRQ_EN_RX_FINISHED 312,10924
+#define RFLPC_ETH_IRQ_EN_RX_DONE 313,10970
+#define RFLPC_ETH_IRQ_EN_TX_UNDERRUN 314,11016
+#define RFLPC_ETH_IRQ_EN_TX_ERROR 315,11062
+#define RFLPC_ETH_IRQ_EN_TX_FINISHED 316,11108
+#define RFLPC_ETH_IRQ_EN_TX_DONE 317,11154
+#define RFLPC_ETH_IRQ_EN_SOFT 318,11200
+#define RFLPC_ETH_IRQ_EN_WAKE_UP 319,11247
+
+rflpc17xx/nxp/LPC17xx.h,27200
+#define __LPC17xx_H__27,1072
+typedef enum IRQn35,1345
+  NonMaskableInt_IRQn 38,1469
+  MemoryManagement_IRQn 39,1571
+  BusFault_IRQn 40,1673
+  UsageFault_IRQn 41,1775
+  SVCall_IRQn 42,1877
+  DebugMonitor_IRQn 43,1979
+  PendSV_IRQn 44,2081
+  SysTick_IRQn 45,2183
+  WDT_IRQn 48,2389
+  TIMER0_IRQn 49,2491
+  TIMER1_IRQn 50,2593
+  TIMER2_IRQn 51,2695
+  TIMER3_IRQn 52,2797
+  UART0_IRQn 53,2899
+  UART1_IRQn 54,3001
+  UART2_IRQn 55,3103
+  UART3_IRQn 56,3205
+  PWM1_IRQn 57,3307
+  I2C0_IRQn 58,3409
+  I2C1_IRQn 59,3511
+  I2C2_IRQn 60,3613
+  SPI_IRQn 61,3715
+  SSP0_IRQn 62,3817
+  SSP1_IRQn 63,3919
+  PLL0_IRQn 64,4021
+  RTC_IRQn 65,4123
+  EINT0_IRQn 66,4225
+  EINT1_IRQn 67,4327
+  EINT2_IRQn 68,4429
+  EINT3_IRQn 69,4531
+  ADC_IRQn 70,4633
+  BOD_IRQn 71,4735
+  USB_IRQn 72,4837
+  CAN_IRQn 73,4939
+  DMA_IRQn 74,5041
+  I2S_IRQn 75,5143
+  ENET_IRQn 76,5245
+  RIT_IRQn 77,5347
+  MCPWM_IRQn 78,5449
+  QEI_IRQn 79,5551
+  PLL1_IRQn 80,5653
+} IRQn_Type;81,5755
+#define __MPU_PRESENT 91,6090
+#define __NVIC_PRIO_BITS 92,6192
+#define __Vendor_SysTickConfig 93,6294
+  __IO uint32_t FLASHCFG;112,7049
+       uint32_t RESERVED0[RESERVED0113,7131
+  __IO uint32_t PLL0CON;114,7163
+  __IO uint32_t PLL0CFG;115,7245
+  __I  uint32_t PLL0STAT;116,7271
+  __O  uint32_t PLL0FEED;117,7298
+       uint32_t RESERVED1[RESERVED1118,7325
+  __IO uint32_t PLL1CON;119,7356
+  __IO uint32_t PLL1CFG;120,7382
+  __I  uint32_t PLL1STAT;121,7408
+  __O  uint32_t PLL1FEED;122,7435
+       uint32_t RESERVED2[RESERVED2123,7462
+  __IO uint32_t PCON;124,7493
+  __IO uint32_t PCONP;125,7516
+       uint32_t RESERVED3[RESERVED3126,7540
+  __IO uint32_t CCLKCFG;127,7572
+  __IO uint32_t USBCLKCFG;128,7598
+  __IO uint32_t CLKSRCSEL;129,7626
+       uint32_t RESERVED4[RESERVED4130,7654
+  __IO uint32_t EXTINT;131,7686
+       uint32_t RESERVED5;132,7768
+  __IO uint32_t EXTMODE;133,7796
+  __IO uint32_t EXTPOLAR;134,7822
+       uint32_t RESERVED6[RESERVED6135,7849
+  __IO uint32_t RSID;136,7881
+       uint32_t RESERVED7[RESERVED7137,7963
+  __IO uint32_t SCS;138,7994
+  __IO uint32_t IRCTRIM;139,8076
+  __IO uint32_t PCLKSEL0;140,8158
+  __IO uint32_t PCLKSEL1;141,8185
+       uint32_t RESERVED8[RESERVED8142,8212
+  __IO uint32_t USBIntSt;143,8243
+  __IO uint32_t DMAREQSEL;144,8325
+  __IO uint32_t CLKOUTCFG;145,8353
+ } LPC_SC_TypeDef;146,8435
+  __IO uint32_t PINSEL0;151,8558
+  __IO uint32_t PINSEL1;152,8584
+  __IO uint32_t PINSEL2;153,8610
+  __IO uint32_t PINSEL3;154,8636
+  __IO uint32_t PINSEL4;155,8662
+  __IO uint32_t PINSEL5;156,8688
+  __IO uint32_t PINSEL6;157,8714
+  __IO uint32_t PINSEL7;158,8740
+  __IO uint32_t PINSEL8;159,8766
+  __IO uint32_t PINSEL9;160,8792
+  __IO uint32_t PINSEL10;161,8818
+       uint32_t RESERVED0[RESERVED0162,8845
+  __IO uint32_t PINMODE0;163,8876
+  __IO uint32_t PINMODE1;164,8903
+  __IO uint32_t PINMODE2;165,8930
+  __IO uint32_t PINMODE3;166,8957
+  __IO uint32_t PINMODE4;167,8984
+  __IO uint32_t PINMODE5;168,9011
+  __IO uint32_t PINMODE6;169,9038
+  __IO uint32_t PINMODE7;170,9065
+  __IO uint32_t PINMODE8;171,9092
+  __IO uint32_t PINMODE9;172,9119
+  __IO uint32_t PINMODE_OD0;173,9146
+  __IO uint32_t PINMODE_OD1;174,9176
+  __IO uint32_t PINMODE_OD2;175,9206
+  __IO uint32_t PINMODE_OD3;176,9236
+  __IO uint32_t PINMODE_OD4;177,9266
+  __IO uint32_t I2CPADCFG;178,9296
+} LPC_PINCON_TypeDef;179,9324
+    __IO uint32_t FIODIR;185,9461
+      __IO uint16_t FIODIRL;187,9502
+      __IO uint16_t FIODIRH;188,9532
+      __IO uint8_t  FIODIR0;191,9584
+      __IO uint8_t  FIODIR1;192,9614
+      __IO uint8_t  FIODIR2;193,9644
+      __IO uint8_t  FIODIR3;194,9674
+  uint32_t RESERVED0[RESERVED0197,9718
+    __IO uint32_t FIOMASK;199,9755
+      __IO uint16_t FIOMASKL;201,9797
+      __IO uint16_t FIOMASKH;202,9828
+      __IO uint8_t  FIOMASK0;205,9881
+      __IO uint8_t  FIOMASK1;206,9912
+      __IO uint8_t  FIOMASK2;207,9943
+      __IO uint8_t  FIOMASK3;208,9974
+    __IO uint32_t FIOPIN;212,10030
+      __IO uint16_t FIOPINL;214,10071
+      __IO uint16_t FIOPINH;215,10101
+      __IO uint8_t  FIOPIN0;218,10153
+      __IO uint8_t  FIOPIN1;219,10183
+      __IO uint8_t  FIOPIN2;220,10213
+      __IO uint8_t  FIOPIN3;221,10243
+    __IO uint32_t FIOSET;225,10298
+      __IO uint16_t FIOSETL;227,10339
+      __IO uint16_t FIOSETH;228,10369
+      __IO uint8_t  FIOSET0;231,10421
+      __IO uint8_t  FIOSET1;232,10451
+      __IO uint8_t  FIOSET2;233,10481
+      __IO uint8_t  FIOSET3;234,10511
+    __O  uint32_t FIOCLR;238,10566
+      __O  uint16_t FIOCLRL;240,10607
+      __O  uint16_t FIOCLRH;241,10637
+      __O  uint8_t  FIOCLR0;244,10689
+      __O  uint8_t  FIOCLR1;245,10719
+      __O  uint8_t  FIOCLR2;246,10749
+      __O  uint8_t  FIOCLR3;247,10779
+} LPC_GPIO_TypeDef;250,10823
+  __I  uint32_t IntStatus;254,10865
+  __I  uint32_t IO0IntStatR;255,10893
+  __I  uint32_t IO0IntStatF;256,10923
+  __O  uint32_t IO0IntClr;257,10953
+  __IO uint32_t IO0IntEnR;258,10981
+  __IO uint32_t IO0IntEnF;259,11009
+       uint32_t RESERVED0[RESERVED0260,11037
+  __I  uint32_t IO2IntStatR;261,11068
+  __I  uint32_t IO2IntStatF;262,11098
+  __O  uint32_t IO2IntClr;263,11128
+  __IO uint32_t IO2IntEnR;264,11156
+  __IO uint32_t IO2IntEnF;265,11184
+} LPC_GPIOINT_TypeDef;266,11212
+  __IO uint32_t IR;271,11339
+  __IO uint32_t TCR;272,11360
+  __IO uint32_t TC;273,11382
+  __IO uint32_t PR;274,11403
+  __IO uint32_t PC;275,11424
+  __IO uint32_t MCR;276,11445
+  __IO uint32_t MR0;277,11467
+  __IO uint32_t MR1;278,11489
+  __IO uint32_t MR2;279,11511
+  __IO uint32_t MR3;280,11533
+  __IO uint32_t CCR;281,11555
+  __I  uint32_t CR0;282,11577
+  __I  uint32_t CR1;283,11599
+       uint32_t RESERVED0[RESERVED0284,11621
+  __IO uint32_t EMR;285,11652
+       uint32_t RESERVED1[RESERVED1286,11674
+  __IO uint32_t CTCR;287,11706
+} LPC_TIM_TypeDef;288,11729
+  __IO uint32_t IR;293,11852
+  __IO uint32_t TCR;294,11873
+  __IO uint32_t TC;295,11895
+  __IO uint32_t PR;296,11916
+  __IO uint32_t PC;297,11937
+  __IO uint32_t MCR;298,11958
+  __IO uint32_t MR0;299,11980
+  __IO uint32_t MR1;300,12002
+  __IO uint32_t MR2;301,12024
+  __IO uint32_t MR3;302,12046
+  __IO uint32_t CCR;303,12068
+  __I  uint32_t CR0;304,12090
+  __I  uint32_t CR1;305,12112
+  __I  uint32_t CR2;306,12134
+  __I  uint32_t CR3;307,12156
+       uint32_t RESERVED0;308,12178
+  __IO uint32_t MR4;309,12206
+  __IO uint32_t MR5;310,12228
+  __IO uint32_t MR6;311,12250
+  __IO uint32_t PCR;312,12272
+  __IO uint32_t LER;313,12294
+       uint32_t RESERVED1[RESERVED1314,12316
+  __IO uint32_t CTCR;315,12347
+} LPC_PWM_TypeDef;316,12370
+  __I  uint8_t  RBR;322,12504
+  __O  uint8_t  THR;323,12526
+  __IO uint8_t  DLL;324,12548
+       uint32_t RESERVED0;325,12570
+  __IO uint8_t  DLM;328,12615
+  __IO uint32_t IER;329,12637
+  __I  uint32_t IIR;332,12676
+  __O  uint8_t  FCR;333,12698
+  __IO uint8_t  LCR;335,12726
+       uint8_t  RESERVED1[RESERVED1336,12748
+  __I  uint8_t  LSR;337,12779
+       uint8_t  RESERVED2[RESERVED2338,12801
+  __IO uint8_t  SCR;339,12832
+       uint8_t  RESERVED3[RESERVED3340,12854
+  __IO uint32_t ACR;341,12885
+  __IO uint8_t  ICR;342,12907
+       uint8_t  RESERVED4[RESERVED4343,12929
+  __IO uint8_t  FDR;344,12960
+       uint8_t  RESERVED5[RESERVED5345,12982
+  __IO uint8_t  TER;346,13013
+       uint8_t  RESERVED6[RESERVED6347,13035
+  __I  uint8_t  FIFOLVL;348,13067
+} LPC_UART_TypeDef;349,13093
+  __I  uint8_t  RBR;354,13146
+  __O  uint8_t  THR;355,13168
+  __IO uint8_t  DLL;356,13190
+       uint32_t RESERVED0;357,13212
+  __IO uint8_t  DLM;360,13257
+  __IO uint32_t IER;361,13279
+  __I  uint32_t IIR;364,13318
+  __O  uint8_t  FCR;365,13340
+  __IO uint8_t  LCR;367,13368
+       uint8_t  RESERVED1[RESERVED1368,13390
+  __I  uint8_t  LSR;369,13421
+       uint8_t  RESERVED2[RESERVED2370,13443
+  __IO uint8_t  SCR;371,13474
+       uint8_t  RESERVED3[RESERVED3372,13496
+  __IO uint32_t ACR;373,13527
+  __IO uint8_t  ICR;374,13549
+       uint8_t  RESERVED4[RESERVED4375,13571
+  __IO uint8_t  FDR;376,13602
+       uint8_t  RESERVED5[RESERVED5377,13624
+  __IO uint8_t  TER;378,13655
+       uint8_t  RESERVED6[RESERVED6379,13677
+  __I  uint8_t  FIFOLVL;380,13709
+} LPC_UART0_TypeDef;381,13735
+  __I  uint8_t  RBR;386,13789
+  __O  uint8_t  THR;387,13811
+  __IO uint8_t  DLL;388,13833
+       uint32_t RESERVED0;389,13855
+  __IO uint8_t  DLM;392,13900
+  __IO uint32_t IER;393,13922
+  __I  uint32_t IIR;396,13961
+  __O  uint8_t  FCR;397,13983
+  __IO uint8_t  LCR;399,14011
+       uint8_t  RESERVED1[RESERVED1400,14033
+  __IO uint8_t  MCR;401,14064
+       uint8_t  RESERVED2[RESERVED2402,14086
+  __I  uint8_t  LSR;403,14117
+       uint8_t  RESERVED3[RESERVED3404,14139
+  __I  uint8_t  MSR;405,14170
+       uint8_t  RESERVED4[RESERVED4406,14192
+  __IO uint8_t  SCR;407,14223
+       uint8_t  RESERVED5[RESERVED5408,14245
+  __IO uint32_t ACR;409,14276
+       uint32_t RESERVED6;410,14298
+  __IO uint32_t FDR;411,14326
+       uint32_t RESERVED7;412,14348
+  __IO uint8_t  TER;413,14376
+       uint8_t  RESERVED8[RESERVED8414,14398
+  __IO uint8_t  RS485CTRL;415,14430
+       uint8_t  RESERVED9[RESERVED9416,14458
+  __IO uint8_t  ADRMATCH;417,14489
+       uint8_t  RESERVED10[RESERVED10418,14516
+  __IO uint8_t  RS485DLY;419,14548
+       uint8_t  RESERVED11[RESERVED11420,14575
+  __I  uint8_t  FIFOLVL;421,14607
+} LPC_UART1_TypeDef;422,14633
+  __IO uint32_t SPCR;427,14758
+  __I  uint32_t SPSR;428,14781
+  __IO uint32_t SPDR;429,14804
+  __IO uint32_t SPCCR;430,14827
+       uint32_t RESERVED0[RESERVED0431,14851
+  __IO uint32_t SPINT;432,14882
+} LPC_SPI_TypeDef;433,14906
+  __IO uint32_t CR0;438,15029
+  __IO uint32_t CR1;439,15051
+  __IO uint32_t DR;440,15073
+  __I  uint32_t SR;441,15094
+  __IO uint32_t CPSR;442,15115
+  __IO uint32_t IMSC;443,15138
+  __IO uint32_t RIS;444,15161
+  __IO uint32_t MIS;445,15183
+  __IO uint32_t ICR;446,15205
+  __IO uint32_t DMACR;447,15227
+} LPC_SSP_TypeDef;448,15251
+  __IO uint32_t I2CONSET;453,15374
+  __I  uint32_t I2STAT;454,15401
+  __IO uint32_t I2DAT;455,15426
+  __IO uint32_t I2ADR0;456,15450
+  __IO uint32_t I2SCLH;457,15475
+  __IO uint32_t I2SCLL;458,15500
+  __O  uint32_t I2CONCLR;459,15525
+  __IO uint32_t MMCTRL;460,15552
+  __IO uint32_t I2ADR1;461,15577
+  __IO uint32_t I2ADR2;462,15602
+  __IO uint32_t I2ADR3;463,15627
+  __I  uint32_t I2DATA_BUFFER;464,15652
+  __IO uint32_t I2MASK0;465,15684
+  __IO uint32_t I2MASK1;466,15710
+  __IO uint32_t I2MASK2;467,15736
+  __IO uint32_t I2MASK3;468,15762
+} LPC_I2C_TypeDef;469,15788
+  __IO uint32_t I2SDAO;474,15911
+  __IO uint32_t I2SDAI;475,15936
+  __O  uint32_t I2STXFIFO;476,15961
+  __I  uint32_t I2SRXFIFO;477,15989
+  __I  uint32_t I2SSTATE;478,16017
+  __IO uint32_t I2SDMA1;479,16044
+  __IO uint32_t I2SDMA2;480,16070
+  __IO uint32_t I2SIRQ;481,16096
+  __IO uint32_t I2STXRATE;482,16121
+  __IO uint32_t I2SRXRATE;483,16149
+  __IO uint32_t I2STXBITRATE;484,16177
+  __IO uint32_t I2SRXBITRATE;485,16208
+  __IO uint32_t I2STXMODE;486,16239
+  __IO uint32_t I2SRXMODE;487,16267
+} LPC_I2S_TypeDef;488,16295
+  __IO uint32_t RICOMPVAL;493,16418
+  __IO uint32_t RIMASK;494,16446
+  __IO uint8_t  RICTRL;495,16471
+       uint8_t  RESERVED0[RESERVED0496,16496
+  __IO uint32_t RICOUNTER;497,16527
+} LPC_RIT_TypeDef;498,16555
+  __IO uint8_t  ILR;503,16678
+       uint8_t  RESERVED0[RESERVED0504,16700
+  __IO uint8_t  CCR;505,16731
+       uint8_t  RESERVED1[RESERVED1506,16753
+  __IO uint8_t  CIIR;507,16784
+       uint8_t  RESERVED2[RESERVED2508,16807
+  __IO uint8_t  AMR;509,16838
+       uint8_t  RESERVED3[RESERVED3510,16860
+  __I  uint32_t CTIME0;511,16891
+  __I  uint32_t CTIME1;512,16916
+  __I  uint32_t CTIME2;513,16941
+  __IO uint8_t  SEC;514,16966
+       uint8_t  RESERVED4[RESERVED4515,16988
+  __IO uint8_t  MIN;516,17019
+       uint8_t  RESERVED5[RESERVED5517,17041
+  __IO uint8_t  HOUR;518,17072
+       uint8_t  RESERVED6[RESERVED6519,17095
+  __IO uint8_t  DOM;520,17126
+       uint8_t  RESERVED7[RESERVED7521,17148
+  __IO uint8_t  DOW;522,17179
+       uint8_t  RESERVED8[RESERVED8523,17201
+  __IO uint16_t DOY;524,17232
+       uint16_t RESERVED9;525,17254
+  __IO uint8_t  MONTH;526,17282
+       uint8_t  RESERVED10[RESERVED10527,17306
+  __IO uint16_t YEAR;528,17338
+       uint16_t RESERVED11;529,17361
+  __IO uint32_t CALIBRATION;530,17390
+  __IO uint32_t GPREG0;531,17420
+  __IO uint32_t GPREG1;532,17445
+  __IO uint32_t GPREG2;533,17470
+  __IO uint32_t GPREG3;534,17495
+  __IO uint32_t GPREG4;535,17520
+  __IO uint8_t  RTC_AUXEN;536,17545
+       uint8_t  RESERVED12[RESERVED12537,17573
+  __IO uint8_t  RTC_AUX;538,17605
+       uint8_t  RESERVED13[RESERVED13539,17631
+  __IO uint8_t  ALSEC;540,17663
+       uint8_t  RESERVED14[RESERVED14541,17687
+  __IO uint8_t  ALMIN;542,17719
+       uint8_t  RESERVED15[RESERVED15543,17743
+  __IO uint8_t  ALHOUR;544,17775
+       uint8_t  RESERVED16[RESERVED16545,17800
+  __IO uint8_t  ALDOM;546,17832
+       uint8_t  RESERVED17[RESERVED17547,17856
+  __IO uint8_t  ALDOW;548,17888
+       uint8_t  RESERVED18[RESERVED18549,17912
+  __IO uint16_t ALDOY;550,17944
+       uint16_t RESERVED19;551,17968
+  __IO uint8_t  ALMON;552,17997
+       uint8_t  RESERVED20[RESERVED20553,18021
+  __IO uint16_t ALYEAR;554,18053
+       uint16_t RESERVED21;555,18078
+} LPC_RTC_TypeDef;556,18107
+  __IO uint8_t  WDMOD;561,18230
+       uint8_t  RESERVED0[RESERVED0562,18254
+  __IO uint32_t WDTC;563,18285
+  __O  uint8_t  WDFEED;564,18308
+       uint8_t  RESERVED1[RESERVED1565,18333
+  __I  uint32_t WDTV;566,18364
+  __IO uint32_t WDCLKSEL;567,18387
+} LPC_WDT_TypeDef;568,18414
+  __IO uint32_t ADCR;573,18537
+  __IO uint32_t ADGDR;574,18560
+       uint32_t RESERVED0;575,18584
+  __IO uint32_t ADINTEN;576,18612
+  __I  uint32_t ADDR0;577,18638
+  __I  uint32_t ADDR1;578,18662
+  __I  uint32_t ADDR2;579,18686
+  __I  uint32_t ADDR3;580,18710
+  __I  uint32_t ADDR4;581,18734
+  __I  uint32_t ADDR5;582,18758
+  __I  uint32_t ADDR6;583,18782
+  __I  uint32_t ADDR7;584,18806
+  __I  uint32_t ADSTAT;585,18830
+  __IO uint32_t ADTRM;586,18855
+} LPC_ADC_TypeDef;587,18879
+  __IO uint32_t DACR;592,19002
+  __IO uint32_t DACCTRL;593,19025
+  __IO uint16_t DACCNTVAL;594,19051
+} LPC_DAC_TypeDef;595,19079
+  __I  uint32_t MCCON;600,19202
+  __O  uint32_t MCCON_SET;601,19226
+  __O  uint32_t MCCON_CLR;602,19254
+  __I  uint32_t MCCAPCON;603,19282
+  __O  uint32_t MCCAPCON_SET;604,19309
+  __O  uint32_t MCCAPCON_CLR;605,19340
+  __IO uint32_t MCTIM0;606,19371
+  __IO uint32_t MCTIM1;607,19396
+  __IO uint32_t MCTIM2;608,19421
+  __IO uint32_t MCPER0;609,19446
+  __IO uint32_t MCPER1;610,19471
+  __IO uint32_t MCPER2;611,19496
+  __IO uint32_t MCPW0;612,19521
+  __IO uint32_t MCPW1;613,19545
+  __IO uint32_t MCPW2;614,19569
+  __IO uint32_t MCDEADTIME;615,19593
+  __IO uint32_t MCCCP;616,19622
+  __IO uint32_t MCCR0;617,19646
+  __IO uint32_t MCCR1;618,19670
+  __IO uint32_t MCCR2;619,19694
+  __I  uint32_t MCINTEN;620,19718
+  __O  uint32_t MCINTEN_SET;621,19744
+  __O  uint32_t MCINTEN_CLR;622,19774
+  __I  uint32_t MCCNTCON;623,19804
+  __O  uint32_t MCCNTCON_SET;624,19831
+  __O  uint32_t MCCNTCON_CLR;625,19862
+  __I  uint32_t MCINTFLAG;626,19893
+  __O  uint32_t MCINTFLAG_SET;627,19921
+  __O  uint32_t MCINTFLAG_CLR;628,19953
+  __O  uint32_t MCCAP_CLR;629,19985
+} LPC_MCPWM_TypeDef;630,20013
+  __O  uint32_t QEICON;635,20138
+  __I  uint32_t QEISTAT;636,20163
+  __IO uint32_t QEICONF;637,20189
+  __I  uint32_t QEIPOS;638,20215
+  __IO uint32_t QEIMAXPOS;639,20240
+  __IO uint32_t CMPOS0;640,20268
+  __IO uint32_t CMPOS1;641,20293
+  __IO uint32_t CMPOS2;642,20318
+  __I  uint32_t INXCNT;643,20343
+  __IO uint32_t INXCMP;644,20368
+  __IO uint32_t QEILOAD;645,20393
+  __I  uint32_t QEITIME;646,20419
+  __I  uint32_t QEIVEL;647,20445
+  __I  uint32_t QEICAP;648,20470
+  __IO uint32_t VELCOMP;649,20495
+  __IO uint32_t FILTER;650,20521
+       uint32_t RESERVED0[RESERVED0651,20546
+  __O  uint32_t QEIIEC;652,20579
+  __O  uint32_t QEIIES;653,20604
+  __I  uint32_t QEIINTSTAT;654,20629
+  __I  uint32_t QEIIE;655,20658
+  __O  uint32_t QEICLR;656,20682
+  __O  uint32_t QEISET;657,20707
+} LPC_QEI_TypeDef;658,20732
+  __IO uint32_t mask[mask663,20855
+} LPC_CANAF_RAM_TypeDef;664,20937
+  __IO uint32_t AFMR;668,21050
+  __IO uint32_t SFF_sa;669,21073
+  __IO uint32_t SFF_GRP_sa;670,21098
+  __IO uint32_t EFF_sa;671,21127
+  __IO uint32_t EFF_GRP_sa;672,21152
+  __IO uint32_t ENDofTable;673,21181
+  __I  uint32_t LUTerrAd;674,21210
+  __I  uint32_t LUTerr;675,21237
+  __IO uint32_t FCANIE;676,21262
+  __IO uint32_t FCANIC0;677,21287
+  __IO uint32_t FCANIC1;678,21313
+} LPC_CANAF_TypeDef;679,21339
+  __I  uint32_t CANTxSR;683,21448
+  __I  uint32_t CANRxSR;684,21474
+  __I  uint32_t CANMSR;685,21500
+} LPC_CANCR_TypeDef;686,21525
+  __IO uint32_t MOD;690,21634
+  __O  uint32_t CMR;691,21656
+  __IO uint32_t GSR;692,21678
+  __I  uint32_t ICR;693,21700
+  __IO uint32_t IER;694,21722
+  __IO uint32_t BTR;695,21744
+  __IO uint32_t EWL;696,21766
+  __I  uint32_t SR;697,21788
+  __IO uint32_t RFS;698,21809
+  __IO uint32_t RID;699,21831
+  __IO uint32_t RDA;700,21853
+  __IO uint32_t RDB;701,21875
+  __IO uint32_t TFI1;702,21897
+  __IO uint32_t TID1;703,21920
+  __IO uint32_t TDA1;704,21943
+  __IO uint32_t TDB1;705,21966
+  __IO uint32_t TFI2;706,21989
+  __IO uint32_t TID2;707,22012
+  __IO uint32_t TDA2;708,22035
+  __IO uint32_t TDB2;709,22058
+  __IO uint32_t TFI3;710,22081
+  __IO uint32_t TID3;711,22104
+  __IO uint32_t TDA3;712,22127
+  __IO uint32_t TDB3;713,22150
+} LPC_CAN_TypeDef;714,22173
+  __I  uint32_t DMACIntStat;719,22362
+  __I  uint32_t DMACIntTCStat;720,22392
+  __O  uint32_t DMACIntTCClear;721,22424
+  __I  uint32_t DMACIntErrStat;722,22457
+  __O  uint32_t DMACIntErrClr;723,22490
+  __I  uint32_t DMACRawIntTCStat;724,22522
+  __I  uint32_t DMACRawIntErrStat;725,22557
+  __I  uint32_t DMACEnbldChns;726,22593
+  __IO uint32_t DMACSoftBReq;727,22625
+  __IO uint32_t DMACSoftSReq;728,22656
+  __IO uint32_t DMACSoftLBReq;729,22687
+  __IO uint32_t DMACSoftLSReq;730,22719
+  __IO uint32_t DMACConfig;731,22751
+  __IO uint32_t DMACSync;732,22780
+} LPC_GPDMA_TypeDef;733,22807
+  __IO uint32_t DMACCSrcAddr;737,22916
+  __IO uint32_t DMACCDestAddr;738,22947
+  __IO uint32_t DMACCLLI;739,22979
+  __IO uint32_t DMACCControl;740,23006
+  __IO uint32_t DMACCConfig;741,23037
+} LPC_GPDMACH_TypeDef;742,23067
+  __I  uint32_t HcRevision;747,23194
+  __IO uint32_t HcControl;748,23276
+  __IO uint32_t HcCommandStatus;749,23304
+  __IO uint32_t HcInterruptStatus;750,23338
+  __IO uint32_t HcInterruptEnable;751,23374
+  __IO uint32_t HcInterruptDisable;752,23410
+  __IO uint32_t HcHCCA;753,23447
+  __I  uint32_t HcPeriodCurrentED;754,23472
+  __IO uint32_t HcControlHeadED;755,23508
+  __IO uint32_t HcControlCurrentED;756,23542
+  __IO uint32_t HcBulkHeadED;757,23579
+  __IO uint32_t HcBulkCurrentED;758,23610
+  __I  uint32_t HcDoneHead;759,23644
+  __IO uint32_t HcFmInterval;760,23673
+  __I  uint32_t HcFmRemaining;761,23704
+  __I  uint32_t HcFmNumber;762,23736
+  __IO uint32_t HcPeriodicStart;763,23765
+  __IO uint32_t HcLSTreshold;764,23799
+  __IO uint32_t HcRhDescriptorA;765,23830
+  __IO uint32_t HcRhDescriptorB;766,23864
+  __IO uint32_t HcRhStatus;767,23898
+  __IO uint32_t HcRhPortStatus1;768,23927
+  __IO uint32_t HcRhPortStatus2;769,23961
+       uint32_t RESERVED0[RESERVED0770,23995
+  __I  uint32_t Module_ID;771,24027
+  __I  uint32_t OTGIntSt;773,24057
+  __IO uint32_t OTGIntEn;774,24139
+  __O  uint32_t OTGIntSet;775,24166
+  __O  uint32_t OTGIntClr;776,24194
+  __IO uint32_t OTGStCtrl;777,24222
+  __IO uint32_t OTGTmr;778,24250
+       uint32_t RESERVED1[RESERVED1779,24275
+  __I  uint32_t USBDevIntSt;781,24309
+  __IO uint32_t USBDevIntEn;782,24391
+  __O  uint32_t USBDevIntClr;783,24421
+  __O  uint32_t USBDevIntSet;784,24452
+  __O  uint32_t USBCmdCode;786,24485
+  __I  uint32_t USBCmdData;787,24567
+  __I  uint32_t USBRxData;789,24598
+  __O  uint32_t USBTxData;790,24680
+  __I  uint32_t USBRxPLen;791,24708
+  __O  uint32_t USBTxPLen;792,24736
+  __IO uint32_t USBCtrl;793,24764
+  __O  uint32_t USBDevIntPri;794,24790
+  __I  uint32_t USBEpIntSt;796,24823
+  __IO uint32_t USBEpIntEn;797,24905
+  __O  uint32_t USBEpIntClr;798,24934
+  __O  uint32_t USBEpIntSet;799,24964
+  __O  uint32_t USBEpIntPri;800,24994
+  __IO uint32_t USBReEp;802,25026
+  __O  uint32_t USBEpInd;803,25108
+  __IO uint32_t USBMaxPSize;804,25135
+  __I  uint32_t USBDMARSt;806,25167
+  __O  uint32_t USBDMARClr;807,25249
+  __O  uint32_t USBDMARSet;808,25278
+       uint32_t RESERVED2[RESERVED2809,25307
+  __IO uint32_t USBUDCAH;810,25338
+  __I  uint32_t USBEpDMASt;811,25365
+  __O  uint32_t USBEpDMAEn;812,25394
+  __O  uint32_t USBEpDMADis;813,25423
+  __I  uint32_t USBDMAIntSt;814,25453
+  __IO uint32_t USBDMAIntEn;815,25483
+       uint32_t RESERVED3[RESERVED3816,25513
+  __I  uint32_t USBEoTIntSt;817,25544
+  __O  uint32_t USBEoTIntClr;818,25574
+  __O  uint32_t USBEoTIntSet;819,25605
+  __I  uint32_t USBNDDRIntSt;820,25636
+  __O  uint32_t USBNDDRIntClr;821,25667
+  __O  uint32_t USBNDDRIntSet;822,25699
+  __I  uint32_t USBSysErrIntSt;823,25731
+  __O  uint32_t USBSysErrIntClr;824,25764
+  __O  uint32_t USBSysErrIntSet;825,25798
+       uint32_t RESERVED4[RESERVED4826,25832
+  __I  uint32_t I2C_RX;828,25866
+  __O  uint32_t I2C_WO;829,25948
+  __I  uint32_t I2C_STS;830,25973
+  __IO uint32_t I2C_CTL;831,25999
+  __IO uint32_t I2C_CLKHI;832,26025
+  __O  uint32_t I2C_CLKLO;833,26053
+       uint32_t RESERVED5[RESERVED5834,26081
+  __IO uint32_t USBClkCtrl;837,26127
+  __IO uint32_t OTGClkCtrl;838,26209
+  __I  uint32_t USBClkSt;841,26255
+  __I  uint32_t OTGClkSt;842,26282
+} LPC_USB_TypeDef;844,26315
+  __IO uint32_t MAC1;849,26438
+  __IO uint32_t MAC2;850,26520
+  __IO uint32_t IPGT;851,26543
+  __IO uint32_t IPGR;852,26566
+  __IO uint32_t CLRT;853,26589
+  __IO uint32_t MAXF;854,26612
+  __IO uint32_t SUPP;855,26635
+  __IO uint32_t TEST;856,26658
+  __IO uint32_t MCFG;857,26681
+  __IO uint32_t MCMD;858,26704
+  __IO uint32_t MADR;859,26727
+  __O  uint32_t MWTD;860,26750
+  __I  uint32_t MRDD;861,26773
+  __I  uint32_t MIND;862,26796
+       uint32_t RESERVED0[RESERVED0863,26819
+  __IO uint32_t SA0;864,26850
+  __IO uint32_t SA1;865,26872
+  __IO uint32_t SA2;866,26894
+       uint32_t RESERVED1[RESERVED1867,26916
+  __IO uint32_t Command;868,26948
+  __I  uint32_t Status;869,27030
+  __IO uint32_t RxDescriptor;870,27055
+  __IO uint32_t RxStatus;871,27086
+  __IO uint32_t RxDescriptorNumber;872,27113
+  __I  uint32_t RxProduceIndex;873,27150
+  __IO uint32_t RxConsumeIndex;874,27183
+  __IO uint32_t TxDescriptor;875,27216
+  __IO uint32_t TxStatus;876,27247
+  __IO uint32_t TxDescriptorNumber;877,27274
+  __IO uint32_t TxProduceIndex;878,27311
+  __I  uint32_t TxConsumeIndex;879,27344
+       uint32_t RESERVED2[RESERVED2880,27377
+  __I  uint32_t TSV0;881,27409
+  __I  uint32_t TSV1;882,27432
+  __I  uint32_t RSV;883,27455
+       uint32_t RESERVED3[RESERVED3884,27477
+  __IO uint32_t FlowControlCounter;885,27508
+  __I  uint32_t FlowControlStatus;886,27545
+       uint32_t RESERVED4[RESERVED4887,27581
+  __IO uint32_t RxFilterCtrl;888,27613
+  __IO uint32_t RxFilterWoLStatus;889,27695
+  __IO uint32_t RxFilterWoLClear;890,27731
+       uint32_t RESERVED5;891,27766
+  __IO uint32_t HashFilterL;892,27794
+  __IO uint32_t HashFilterH;893,27824
+       uint32_t RESERVED6[RESERVED6894,27854
+  __I  uint32_t IntStatus;895,27887
+  __IO uint32_t IntEnable;896,27969
+  __O  uint32_t IntClear;897,27997
+  __O  uint32_t IntSet;898,28024
+       uint32_t RESERVED7;899,28049
+  __IO uint32_t PowerDown;900,28077
+       uint32_t RESERVED8;901,28105
+  __IO uint32_t Module_ID;902,28133
+} LPC_EMAC_TypeDef;903,28161
+#define LPC_FLASH_BASE 914,28576
+#define LPC_RAM_BASE 915,28622
+#define LPC_GPIO_BASE 916,28668
+#define LPC_APB0_BASE 917,28714
+#define LPC_APB1_BASE 918,28760
+#define LPC_AHB_BASE 919,28806
+#define LPC_CM3_BASE 920,28852
+#define LPC_WDT_BASE 923,28982
+#define LPC_TIM0_BASE 924,29039
+#define LPC_TIM1_BASE 925,29096
+#define LPC_UART0_BASE 926,29153
+#define LPC_UART1_BASE 927,29210
+#define LPC_PWM1_BASE 928,29267
+#define LPC_I2C0_BASE 929,29324
+#define LPC_SPI_BASE 930,29381
+#define LPC_RTC_BASE 931,29438
+#define LPC_GPIOINT_BASE 932,29495
+#define LPC_PINCON_BASE 933,29552
+#define LPC_SSP1_BASE 934,29609
+#define LPC_ADC_BASE 935,29666
+#define LPC_CANAF_RAM_BASE 936,29723
+#define LPC_CANAF_BASE 937,29780
+#define LPC_CANCR_BASE 938,29837
+#define LPC_CAN1_BASE 939,29894
+#define LPC_CAN2_BASE 940,29951
+#define LPC_I2C1_BASE 941,30008
+#define LPC_SSP0_BASE 944,30149
+#define LPC_DAC_BASE 945,30206
+#define LPC_TIM2_BASE 946,30263
+#define LPC_TIM3_BASE 947,30320
+#define LPC_UART2_BASE 948,30377
+#define LPC_UART3_BASE 949,30434
+#define LPC_I2C2_BASE 950,30491
+#define LPC_I2S_BASE 951,30548
+#define LPC_RIT_BASE 952,30605
+#define LPC_MCPWM_BASE 953,30662
+#define LPC_QEI_BASE 954,30719
+#define LPC_SC_BASE 955,30776
+#define LPC_EMAC_BASE 958,30917
+#define LPC_GPDMA_BASE 959,30974
+#define LPC_GPDMACH0_BASE 960,31031
+#define LPC_GPDMACH1_BASE 961,31088
+#define LPC_GPDMACH2_BASE 962,31145
+#define LPC_GPDMACH3_BASE 963,31202
+#define LPC_GPDMACH4_BASE 964,31259
+#define LPC_GPDMACH5_BASE 965,31316
+#define LPC_GPDMACH6_BASE 966,31373
+#define LPC_GPDMACH7_BASE 967,31430
+#define LPC_USB_BASE 968,31487
+#define LPC_GPIO0_BASE 971,31628
+#define LPC_GPIO1_BASE 972,31685
+#define LPC_GPIO2_BASE 973,31742
+#define LPC_GPIO3_BASE 974,31799
+#define LPC_GPIO4_BASE 975,31856
+#define LPC_SC 981,32163
+#define LPC_GPIO0 982,32241
+#define LPC_GPIO1 983,32319
+#define LPC_GPIO2 984,32397
+#define LPC_GPIO3 985,32475
+#define LPC_GPIO4 986,32553
+#define LPC_WDT 987,32631
+#define LPC_TIM0 988,32709
+#define LPC_TIM1 989,32787
+#define LPC_TIM2 990,32865
+#define LPC_TIM3 991,32943
+#define LPC_RIT 992,33021
+#define LPC_UART0 993,33099
+#define LPC_UART1 994,33177
+#define LPC_UART2 995,33255
+#define LPC_UART3 996,33333
+#define LPC_PWM1 997,33411
+#define LPC_I2C0 998,33489
+#define LPC_I2C1 999,33567
+#define LPC_I2C2 1000,33645
+#define LPC_I2S 1001,33723
+#define LPC_SPI 1002,33801
+#define LPC_RTC 1003,33879
+#define LPC_GPIOINT 1004,33957
+#define LPC_PINCON 1005,34035
+#define LPC_SSP0 1006,34113
+#define LPC_SSP1 1007,34191
+#define LPC_ADC 1008,34269
+#define LPC_DAC 1009,34347
+#define LPC_CANAF_RAM 1010,34425
+#define LPC_CANAF 1011,34503
+#define LPC_CANCR 1012,34581
+#define LPC_CAN1 1013,34659
+#define LPC_CAN2 1014,34737
+#define LPC_MCPWM 1015,34815
+#define LPC_QEI 1016,34893
+#define LPC_EMAC 1017,34971
+#define LPC_GPDMA 1018,35049
+#define LPC_GPDMACH0 1019,35127
+#define LPC_GPDMACH1 1020,35205
+#define LPC_GPDMACH2 1021,35283
+#define LPC_GPDMACH3 1022,35361
+#define LPC_GPDMACH4 1023,35439
+#define LPC_GPDMACH5 1024,35517
+#define LPC_GPDMACH6 1025,35595
+#define LPC_GPDMACH7 1026,35673
+#define LPC_USB 1027,35751
+
+rflpc17xx/nxp/core_cm3.c,1828
+  #define __ASM 28,1094
+  #define __INLINE 29,1211
+  #define __ASM 32,1360
+  #define __INLINE 33,1477
+  #define __ASM 36,1664
+  #define __INLINE 37,1781
+  #define __ASM 40,1935
+  #define __INLINE 41,2052
+__ASM uint32_t __get_PSP(58,2534
+__ASM void __set_PSP(72,2815
+__ASM uint32_t __get_MSP(86,3076
+__ASM void __set_MSP(100,3345
+__ASM uint32_t __REV16(114,3618
+__ASM int32_t __REVSH(128,3941
+__ASM void __CLREX(142,4175
+__ASM uint32_t  __get_BASEPRI(154,4357
+__ASM void __set_BASEPRI(167,4557
+__ASM uint32_t __get_PRIMASK(180,4792
+__ASM void __set_PRIMASK(193,5011
+__ASM uint32_t  __get_FAULTMASK(206,5221
+__ASM void __set_FAULTMASK(219,5424
+__ASM uint32_t __get_CONTROL(232,5648
+__ASM void __set_CONTROL(245,5845
+uint32_t __get_PSP(266,6256
+void __set_PSP(280,6551
+uint32_t __get_MSP(294,6826
+void __set_MSP(308,7109
+uint32_t __REV16(322,7392
+uint32_t __RBIT(336,7637
+uint8_t __LDREXB(350,7892
+uint16_t __LDREXH(364,8153
+uint32_t __LDREXW(378,8415
+uint32_t __STREXB(393,8708
+uint32_t __STREXH(408,9022
+uint32_t __STREXW(423,9338
+uint32_t __get_PSP(442,9741
+uint32_t __get_PSP(443,9795
+void __set_PSP(461,10221
+void __set_PSP(462,10290
+uint32_t __get_MSP(476,10623
+uint32_t __get_MSP(477,10677
+void __set_MSP(495,11091
+void __set_MSP(496,11160
+uint32_t __get_BASEPRI(509,11450
+void __set_BASEPRI(524,11720
+uint32_t __get_PRIMASK(536,11975
+void __set_PRIMASK(551,12259
+uint32_t __get_FAULTMASK(563,12493
+void __set_FAULTMASK(578,12762
+uint32_t __get_CONTROL(590,13011
+void __set_CONTROL(605,13273
+uint32_t __REV(619,13555
+uint32_t __REV16(635,13895
+int32_t __REVSH(651,14297
+uint32_t __RBIT(667,14607
+uint8_t __LDREXB(683,14929
+uint16_t __LDREXH(699,15258
+uint32_t __LDREXW(715,15590
+uint32_t __STREXB(732,15953
+uint32_t __STREXH(749,16367
+uint32_t __STREXW(766,16783
+
+rflpc17xx/nxp/core_cm3.h,18030
+#define __CM3_CORE_H__25,1027
+#define __CM3_CMSIS_VERSION_MAIN 84,2815
+#define __CM3_CMSIS_VERSION_SUB 85,2950
+#define __CM3_CMSIS_VERSION 86,3085
+#define __CORTEX_M 88,3222
+  #define __NVIC_PRIO_BITS 98,3571
+  #define     __I 111,3795
+  #define     __I 113,3894
+#define     __O 115,3994
+#define     __IO 116,4086
+  __IO uint32_t ISER[ISER134,4619
+       uint32_t RESERVED0[RESERVED0135,4729
+  __IO uint32_t ICER[ICER136,4796
+       uint32_t RSERVED1[RSERVED1137,4906
+  __IO uint32_t ISPR[ISPR138,4973
+       uint32_t RESERVED2[RESERVED2139,5083
+  __IO uint32_t ICPR[ICPR140,5150
+       uint32_t RESERVED3[RESERVED3141,5260
+  __IO uint32_t IABR[IABR142,5327
+       uint32_t RESERVED4[RESERVED4143,5437
+  __IO uint8_t  IP[IP144,5504
+       uint32_t RESERVED5[RESERVED5145,5614
+  __O  uint32_t STIR;146,5681
+}  NVIC_Type;147,5791
+  __I  uint32_t CPUID;157,6032
+  __IO uint32_t ICSR;158,6155
+  __IO uint32_t VTOR;159,6278
+  __IO uint32_t AIRCR;160,6401
+  __IO uint32_t SCR;161,6524
+  __IO uint32_t CCR;162,6647
+  __IO uint8_t  SHP[SHP163,6770
+  __IO uint32_t SHCSR;164,6893
+  __IO uint32_t CFSR;165,7016
+  __IO uint32_t HFSR;166,7139
+  __IO uint32_t DFSR;167,7262
+  __IO uint32_t MMFAR;168,7385
+  __IO uint32_t BFAR;169,7508
+  __IO uint32_t AFSR;170,7631
+  __I  uint32_t PFR[PFR171,7754
+  __I  uint32_t DFR;172,7877
+  __I  uint32_t ADR;173,8000
+  __I  uint32_t MMFR[MMFR174,8123
+  __I  uint32_t ISAR[ISAR175,8246
+} SCB_Type;176,8369
+#define SCB_CPUID_IMPLEMENTER_Pos 179,8470
+#define SCB_CPUID_IMPLEMENTER_Msk 180,8601
+#define SCB_CPUID_VARIANT_Pos 182,8730
+#define SCB_CPUID_VARIANT_Msk 183,8857
+#define SCB_CPUID_PARTNO_Pos 185,8982
+#define SCB_CPUID_PARTNO_Msk 186,9108
+#define SCB_CPUID_REVISION_Pos 188,9232
+#define SCB_CPUID_REVISION_Msk 189,9360
+#define SCB_ICSR_NMIPENDSET_Pos 192,9542
+#define SCB_ICSR_NMIPENDSET_Msk 193,9671
+#define SCB_ICSR_PENDSVSET_Pos 195,9798
+#define SCB_ICSR_PENDSVSET_Msk 196,9926
+#define SCB_ICSR_PENDSVCLR_Pos 198,10052
+#define SCB_ICSR_PENDSVCLR_Msk 199,10180
+#define SCB_ICSR_PENDSTSET_Pos 201,10306
+#define SCB_ICSR_PENDSTSET_Msk 202,10434
+#define SCB_ICSR_PENDSTCLR_Pos 204,10560
+#define SCB_ICSR_PENDSTCLR_Msk 205,10688
+#define SCB_ICSR_ISRPREEMPT_Pos 207,10814
+#define SCB_ICSR_ISRPREEMPT_Msk 208,10943
+#define SCB_ICSR_ISRPENDING_Pos 210,11070
+#define SCB_ICSR_ISRPENDING_Msk 211,11199
+#define SCB_ICSR_VECTPENDING_Pos 213,11326
+#define SCB_ICSR_VECTPENDING_Msk 214,11456
+#define SCB_ICSR_RETTOBASE_Pos 216,11584
+#define SCB_ICSR_RETTOBASE_Msk 217,11712
+#define SCB_ICSR_VECTACTIVE_Pos 219,11838
+#define SCB_ICSR_VECTACTIVE_Msk 220,11967
+#define SCB_VTOR_TBLBASE_Pos 223,12150
+#define SCB_VTOR_TBLBASE_Msk 224,12276
+#define SCB_VTOR_TBLOFF_Pos 226,12400
+#define SCB_VTOR_TBLOFF_Msk 227,12525
+#define SCB_AIRCR_VECTKEY_Pos 230,12720
+#define SCB_AIRCR_VECTKEY_Msk 231,12847
+#define SCB_AIRCR_VECTKEYSTAT_Pos 233,12972
+#define SCB_AIRCR_VECTKEYSTAT_Msk 234,13103
+#define SCB_AIRCR_ENDIANESS_Pos 236,13232
+#define SCB_AIRCR_ENDIANESS_Msk 237,13361
+#define SCB_AIRCR_PRIGROUP_Pos 239,13488
+#define SCB_AIRCR_PRIGROUP_Msk 240,13616
+#define SCB_AIRCR_SYSRESETREQ_Pos 242,13742
+#define SCB_AIRCR_SYSRESETREQ_Msk 243,13873
+#define SCB_AIRCR_VECTCLRACTIVE_Pos 245,14002
+#define SCB_AIRCR_VECTCLRACTIVE_Msk 246,14135
+#define SCB_AIRCR_VECTRESET_Pos 248,14266
+#define SCB_AIRCR_VECTRESET_Msk 249,14395
+#define SCB_SCR_SEVONPEND_Pos 252,14569
+#define SCB_SCR_SEVONPEND_Msk 253,14696
+#define SCB_SCR_SLEEPDEEP_Pos 255,14821
+#define SCB_SCR_SLEEPDEEP_Msk 256,14948
+#define SCB_SCR_SLEEPONEXIT_Pos 258,15073
+#define SCB_SCR_SLEEPONEXIT_Msk 259,15202
+#define SCB_CCR_STKALIGN_Pos 262,15383
+#define SCB_CCR_STKALIGN_Msk 263,15509
+#define SCB_CCR_BFHFNMIGN_Pos 265,15633
+#define SCB_CCR_BFHFNMIGN_Msk 266,15760
+#define SCB_CCR_DIV_0_TRP_Pos 268,15885
+#define SCB_CCR_DIV_0_TRP_Msk 269,16012
+#define SCB_CCR_UNALIGN_TRP_Pos 271,16137
+#define SCB_CCR_UNALIGN_TRP_Msk 272,16266
+#define SCB_CCR_USERSETMPEND_Pos 274,16393
+#define SCB_CCR_USERSETMPEND_Msk 275,16523
+#define SCB_CCR_NONBASETHRDENA_Pos 277,16651
+#define SCB_CCR_NONBASETHRDENA_Msk 278,16783
+#define SCB_SHCSR_USGFAULTENA_Pos 281,16978
+#define SCB_SHCSR_USGFAULTENA_Msk 282,17109
+#define SCB_SHCSR_BUSFAULTENA_Pos 284,17238
+#define SCB_SHCSR_BUSFAULTENA_Msk 285,17369
+#define SCB_SHCSR_MEMFAULTENA_Pos 287,17498
+#define SCB_SHCSR_MEMFAULTENA_Msk 288,17629
+#define SCB_SHCSR_SVCALLPENDED_Pos 290,17758
+#define SCB_SHCSR_SVCALLPENDED_Msk 291,17890
+#define SCB_SHCSR_BUSFAULTPENDED_Pos 293,18020
+#define SCB_SHCSR_BUSFAULTPENDED_Msk 294,18154
+#define SCB_SHCSR_MEMFAULTPENDED_Pos 296,18286
+#define SCB_SHCSR_MEMFAULTPENDED_Msk 297,18420
+#define SCB_SHCSR_USGFAULTPENDED_Pos 299,18552
+#define SCB_SHCSR_USGFAULTPENDED_Msk 300,18686
+#define SCB_SHCSR_SYSTICKACT_Pos 302,18818
+#define SCB_SHCSR_SYSTICKACT_Msk 303,18948
+#define SCB_SHCSR_PENDSVACT_Pos 305,19076
+#define SCB_SHCSR_PENDSVACT_Msk 306,19205
+#define SCB_SHCSR_MONITORACT_Pos 308,19332
+#define SCB_SHCSR_MONITORACT_Msk 309,19462
+#define SCB_SHCSR_SVCALLACT_Pos 311,19590
+#define SCB_SHCSR_SVCALLACT_Msk 312,19719
+#define SCB_SHCSR_USGFAULTACT_Pos 314,19883
+#define SCB_SHCSR_USGFAULTACT_Msk 315,20014
+#define SCB_SHCSR_BUSFAULTACT_Pos 317,20143
+#define SCB_SHCSR_BUSFAULTACT_Msk 318,20274
+#define SCB_SHCSR_MEMFAULTACT_Pos 320,20403
+#define SCB_SHCSR_MEMFAULTACT_Msk 321,20534
+#define SCB_CFSR_USGFAULTSR_Pos 324,20722
+#define SCB_CFSR_USGFAULTSR_Msk 325,20868
+#define SCB_CFSR_BUSFAULTSR_Pos 327,21012
+#define SCB_CFSR_BUSFAULTSR_Msk 328,21156
+#define SCB_CFSR_MEMFAULTSR_Pos 330,21298
+#define SCB_CFSR_MEMFAULTSR_Msk 331,21452
+#define SCB_HFSR_DEBUGEVT_Pos 334,21655
+#define SCB_HFSR_DEBUGEVT_Msk 335,21782
+#define SCB_HFSR_FORCED_Pos 337,21907
+#define SCB_HFSR_FORCED_Msk 338,22032
+#define SCB_HFSR_VECTTBL_Pos 340,22155
+#define SCB_HFSR_VECTTBL_Msk 341,22281
+#define SCB_DFSR_EXTERNAL_Pos 344,22456
+#define SCB_DFSR_EXTERNAL_Msk 345,22583
+#define SCB_DFSR_VCATCH_Pos 347,22708
+#define SCB_DFSR_VCATCH_Msk 348,22833
+#define SCB_DFSR_DWTTRAP_Pos 350,22956
+#define SCB_DFSR_DWTTRAP_Msk 351,23082
+#define SCB_DFSR_BKPT_Pos 353,23206
+#define SCB_DFSR_BKPT_Msk 354,23329
+#define SCB_DFSR_HALTED_Pos 356,23450
+#define SCB_DFSR_HALTED_Msk 357,23575
+  __IO uint32_t CTRL;367,23863
+  __IO uint32_t LOAD;368,23968
+  __IO uint32_t VAL;369,24073
+  __I  uint32_t CALIB;370,24178
+} SysTick_Type;371,24283
+#define SysTick_CTRL_COUNTFLAG_Pos 374,24355
+#define SysTick_CTRL_COUNTFLAG_Msk 375,24487
+#define SysTick_CTRL_CLKSOURCE_Pos 377,24617
+#define SysTick_CTRL_CLKSOURCE_Msk 378,24749
+#define SysTick_CTRL_TICKINT_Pos 380,24879
+#define SysTick_CTRL_TICKINT_Msk 381,25009
+#define SysTick_CTRL_ENABLE_Pos 383,25137
+#define SysTick_CTRL_ENABLE_Msk 384,25266
+#define SysTick_LOAD_RELOAD_Pos 387,25436
+#define SysTick_LOAD_RELOAD_Msk 388,25565
+#define SysTick_VAL_CURRENT_Pos 391,25736
+#define SysTick_VAL_CURRENT_Msk 392,25865
+#define SysTick_CALIB_NOREF_Pos 395,26040
+#define SysTick_CALIB_NOREF_Msk 396,26169
+#define SysTick_CALIB_SKEW_Pos 398,26296
+#define SysTick_CALIB_SKEW_Msk 399,26424
+#define SysTick_CALIB_TENMS_Pos 401,26550
+#define SysTick_CALIB_TENMS_Msk 402,26679
+    __O  uint8_t    u8;414,27018
+    __O  uint16_t   u16;415,27129
+    __O  uint32_t   u32;416,27240
+  }  PORT 417,27351
+       uint32_t RESERVED0[RESERVED0418,27462
+  __IO uint32_t TER;419,27528
+       uint32_t RESERVED1[RESERVED1420,27639
+  __IO uint32_t TPR;421,27705
+       uint32_t RESERVED2[RESERVED2422,27816
+  __IO uint32_t TCR;423,27882
+       uint32_t RESERVED3[RESERVED3424,27993
+  __IO uint32_t IWR;425,28059
+  __IO uint32_t IRR;426,28170
+  __IO uint32_t IMCR;427,28281
+       uint32_t RESERVED4[RESERVED4428,28392
+  __IO uint32_t LAR;429,28458
+  __IO uint32_t LSR;430,28569
+       uint32_t RESERVED5[RESERVED5431,28680
+  __I  uint32_t PID4;432,28746
+  __I  uint32_t PID5;433,28857
+  __I  uint32_t PID6;434,28968
+  __I  uint32_t PID7;435,29079
+  __I  uint32_t PID0;436,29190
+  __I  uint32_t PID1;437,29301
+  __I  uint32_t PID2;438,29412
+  __I  uint32_t PID3;439,29523
+  __I  uint32_t CID0;440,29634
+  __I  uint32_t CID1;441,29745
+  __I  uint32_t CID2;442,29856
+  __I  uint32_t CID3;443,29967
+} ITM_Type;444,30078
+#define ITM_TPR_PRIVMASK_Pos 447,30189
+#define ITM_TPR_PRIVMASK_Msk 448,30315
+#define ITM_TCR_BUSY_Pos 451,30485
+#define ITM_TCR_BUSY_Msk 452,30607
+#define ITM_TCR_ATBID_Pos 454,30727
+#define ITM_TCR_ATBID_Msk 455,30850
+#define ITM_TCR_TSPrescale_Pos 457,30971
+#define ITM_TCR_TSPrescale_Msk 458,31099
+#define ITM_TCR_SWOENA_Pos 460,31225
+#define ITM_TCR_SWOENA_Msk 461,31349
+#define ITM_TCR_DWTENA_Pos 463,31471
+#define ITM_TCR_DWTENA_Msk 464,31595
+#define ITM_TCR_SYNCENA_Pos 466,31717
+#define ITM_TCR_SYNCENA_Msk 467,31842
+#define ITM_TCR_TSENA_Pos 469,31965
+#define ITM_TCR_TSENA_Msk 470,32088
+#define ITM_TCR_ITMENA_Pos 472,32209
+#define ITM_TCR_ITMENA_Msk 473,32341
+#define ITM_IWR_ATVALIDM_Pos 476,32521
+#define ITM_IWR_ATVALIDM_Msk 477,32647
+#define ITM_IRR_ATREADYM_Pos 480,32820
+#define ITM_IRR_ATREADYM_Msk 481,32946
+#define ITM_IMCR_INTEGRATION_Pos 484,33127
+#define ITM_IMCR_INTEGRATION_Msk 485,33257
+#define ITM_LSR_ByteAcc_Pos 488,33429
+#define ITM_LSR_ByteAcc_Msk 489,33554
+#define ITM_LSR_Access_Pos 491,33677
+#define ITM_LSR_Access_Msk 492,33801
+#define ITM_LSR_Present_Pos 494,33923
+#define ITM_LSR_Present_Msk 495,34048
+       uint32_t RESERVED0;505,34356
+  __I  uint32_t ICTR;506,34384
+  __IO uint32_t ACTLR;508,34536
+       uint32_t RESERVED1;510,34644
+} InterruptType_Type;512,34680
+#define InterruptType_ICTR_INTLINESNUM_Pos 515,34759
+#define InterruptType_ICTR_INTLINESNUM_Msk 516,34899
+#define InterruptType_ACTLR_DISFOLD_Pos 519,35083
+#define InterruptType_ACTLR_DISFOLD_Msk 520,35220
+#define InterruptType_ACTLR_DISDEFWBUF_Pos 522,35355
+#define InterruptType_ACTLR_DISDEFWBUF_Msk 523,35495
+#define InterruptType_ACTLR_DISMCYCINT_Pos 525,35633
+#define InterruptType_ACTLR_DISMCYCINT_Msk 526,35773
+  __I  uint32_t TYPE;537,36152
+  __IO uint32_t CTRL;538,36268
+  __IO uint32_t RNR;539,36384
+  __IO uint32_t RBAR;540,36500
+  __IO uint32_t RASR;541,36616
+  __IO uint32_t RBAR_A1;542,36732
+  __IO uint32_t RASR_A1;543,36848
+  __IO uint32_t RBAR_A2;544,36964
+  __IO uint32_t RASR_A2;545,37080
+  __IO uint32_t RBAR_A3;546,37196
+  __IO uint32_t RASR_A3;547,37312
+} MPU_Type;548,37428
+#define MPU_TYPE_IREGION_Pos 551,37516
+#define MPU_TYPE_IREGION_Msk 552,37642
+#define MPU_TYPE_DREGION_Pos 554,37766
+#define MPU_TYPE_DREGION_Msk 555,37892
+#define MPU_TYPE_SEPARATE_Pos 557,38016
+#define MPU_TYPE_SEPARATE_Msk 558,38143
+#define MPU_CTRL_PRIVDEFENA_Pos 561,38296
+#define MPU_CTRL_PRIVDEFENA_Msk 562,38425
+#define MPU_CTRL_HFNMIENA_Pos 564,38552
+#define MPU_CTRL_HFNMIENA_Msk 565,38679
+#define MPU_CTRL_ENABLE_Pos 567,38804
+#define MPU_CTRL_ENABLE_Msk 568,38929
+#define MPU_RNR_REGION_Pos 571,39086
+#define MPU_RNR_REGION_Msk 572,39210
+#define MPU_RBAR_ADDR_Pos 575,39372
+#define MPU_RBAR_ADDR_Msk 576,39495
+#define MPU_RBAR_VALID_Pos 578,39616
+#define MPU_RBAR_VALID_Msk 579,39740
+#define MPU_RBAR_REGION_Pos 581,39862
+#define MPU_RBAR_REGION_Msk 582,39987
+#define MPU_RASR_XN_Pos 585,40156
+#define MPU_RASR_XN_Msk 586,40277
+#define MPU_RASR_AP_Pos 588,40396
+#define MPU_RASR_AP_Msk 589,40517
+#define MPU_RASR_TEX_Pos 591,40636
+#define MPU_RASR_TEX_Msk 592,40758
+#define MPU_RASR_S_Pos 594,40878
+#define MPU_RASR_S_Msk 595,41010
+#define MPU_RASR_C_Pos 597,41140
+#define MPU_RASR_C_Msk 598,41272
+#define MPU_RASR_B_Pos 600,41402
+#define MPU_RASR_B_Msk 601,41535
+#define MPU_RASR_SRD_Pos 603,41666
+#define MPU_RASR_SRD_Msk 604,41803
+#define MPU_RASR_SIZE_Pos 606,41938
+#define MPU_RASR_SIZE_Msk 607,42074
+#define MPU_RASR_ENA_Pos 609,42208
+#define MPU_RASR_ENA_Msk 610,42344
+  __IO uint32_t DHCSR;622,42678
+  __O  uint32_t DCRSR;623,42792
+  __IO uint32_t DCRDR;624,42906
+  __IO uint32_t DEMCR;625,43020
+} CoreDebug_Type;626,43134
+#define CoreDebug_DHCSR_DBGKEY_Pos 629,43204
+#define CoreDebug_DHCSR_DBGKEY_Msk 630,43336
+#define CoreDebug_DHCSR_S_RESET_ST_Pos 632,43466
+#define CoreDebug_DHCSR_S_RESET_ST_Msk 633,43602
+#define CoreDebug_DHCSR_S_RETIRE_ST_Pos 635,43736
+#define CoreDebug_DHCSR_S_RETIRE_ST_Msk 636,43873
+#define CoreDebug_DHCSR_S_LOCKUP_Pos 638,44008
+#define CoreDebug_DHCSR_S_LOCKUP_Msk 639,44142
+#define CoreDebug_DHCSR_S_SLEEP_Pos 641,44274
+#define CoreDebug_DHCSR_S_SLEEP_Msk 642,44407
+#define CoreDebug_DHCSR_S_HALT_Pos 644,44538
+#define CoreDebug_DHCSR_S_HALT_Msk 645,44670
+#define CoreDebug_DHCSR_S_REGRDY_Pos 647,44800
+#define CoreDebug_DHCSR_S_REGRDY_Msk 648,44934
+#define CoreDebug_DHCSR_C_SNAPSTALL_Pos 650,45066
+#define CoreDebug_DHCSR_C_SNAPSTALL_Msk 651,45203
+#define CoreDebug_DHCSR_C_MASKINTS_Pos 653,45338
+#define CoreDebug_DHCSR_C_MASKINTS_Msk 654,45474
+#define CoreDebug_DHCSR_C_STEP_Pos 656,45608
+#define CoreDebug_DHCSR_C_STEP_Msk 657,45740
+#define CoreDebug_DHCSR_C_HALT_Pos 659,45870
+#define CoreDebug_DHCSR_C_HALT_Msk 660,46002
+#define CoreDebug_DHCSR_C_DEBUGEN_Pos 662,46132
+#define CoreDebug_DHCSR_C_DEBUGEN_Msk 663,46267
+#define CoreDebug_DCRSR_REGWnR_Pos 666,46445
+#define CoreDebug_DCRSR_REGWnR_Msk 667,46577
+#define CoreDebug_DCRSR_REGSEL_Pos 669,46707
+#define CoreDebug_DCRSR_REGSEL_Msk 670,46839
+#define CoreDebug_DEMCR_TRCENA_Pos 673,47021
+#define CoreDebug_DEMCR_TRCENA_Msk 674,47153
+#define CoreDebug_DEMCR_MON_REQ_Pos 676,47283
+#define CoreDebug_DEMCR_MON_REQ_Msk 677,47416
+#define CoreDebug_DEMCR_MON_STEP_Pos 679,47547
+#define CoreDebug_DEMCR_MON_STEP_Msk 680,47681
+#define CoreDebug_DEMCR_MON_PEND_Pos 682,47813
+#define CoreDebug_DEMCR_MON_PEND_Msk 683,47947
+#define CoreDebug_DEMCR_MON_EN_Pos 685,48079
+#define CoreDebug_DEMCR_MON_EN_Msk 686,48211
+#define CoreDebug_DEMCR_VC_HARDERR_Pos 688,48341
+#define CoreDebug_DEMCR_VC_HARDERR_Msk 689,48477
+#define CoreDebug_DEMCR_VC_INTERR_Pos 691,48611
+#define CoreDebug_DEMCR_VC_INTERR_Msk 692,48746
+#define CoreDebug_DEMCR_VC_BUSERR_Pos 694,48879
+#define CoreDebug_DEMCR_VC_BUSERR_Msk 695,49014
+#define CoreDebug_DEMCR_VC_STATERR_Pos 697,49147
+#define CoreDebug_DEMCR_VC_STATERR_Msk 698,49283
+#define CoreDebug_DEMCR_VC_CHKERR_Pos 700,49417
+#define CoreDebug_DEMCR_VC_CHKERR_Msk 701,49552
+#define CoreDebug_DEMCR_VC_NOCPERR_Pos 703,49685
+#define CoreDebug_DEMCR_VC_NOCPERR_Msk 704,49821
+#define CoreDebug_DEMCR_VC_MMERR_Pos 706,49955
+#define CoreDebug_DEMCR_VC_MMERR_Msk 707,50089
+#define CoreDebug_DEMCR_VC_CORERESET_Pos 709,50221
+#define CoreDebug_DEMCR_VC_CORERESET_Msk 710,50359
+#define SCS_BASE 715,50588
+#define ITM_BASE 716,50701
+#define CoreDebug_BASE 717,50814
+#define SysTick_BASE 718,50927
+#define NVIC_BASE 719,51040
+#define SCB_BASE 720,51153
+#define InterruptType 722,51268
+#define SCB 723,51381
+#define SysTick 724,51494
+#define NVIC 725,51607
+#define ITM 726,51720
+#define CoreDebug 727,51833
+  #define MPU_BASE 730,52001
+  #define MPU 731,52114
+  #define __ASM 742,52532
+  #define __INLINE 743,52649
+  #define __ASM 746,52798
+  #define __INLINE 747,52915
+  #define __ASM 750,53102
+  #define __INLINE 751,53219
+  #define __ASM 754,53373
+  #define __INLINE 755,53490
+#define __enable_fault_irq 765,53833
+#define __disable_fault_irq 766,53889
+#define __NOP 768,53948
+#define __WFI 769,53997
+#define __WFE 770,54046
+#define __SEV 771,54095
+#define __ISB(772,54144
+#define __DSB(773,54196
+#define __DMB(774,54248
+#define __REV 775,54300
+#define __RBIT 776,54349
+#define __LDREXB(777,54399
+#define __LDREXH(778,54474
+#define __LDREXW(779,54549
+#define __STREXB(780,54624
+#define __STREXH(781,54687
+#define __STREXW(782,54750
+#define __CLREX 939,58299
+static __INLINE uint32_t  __get_BASEPRI(948,58491
+static __INLINE void __set_BASEPRI(961,58758
+static __INLINE uint32_t __get_PRIMASK(974,59071
+static __INLINE void __set_PRIMASK(987,59357
+static __INLINE uint32_t __get_FAULTMASK(1000,59638
+static __INLINE void __set_FAULTMASK(1013,59909
+static __INLINE uint32_t __get_CONTROL(1026,60212
+static __INLINE void __set_CONTROL(1039,60476
+#define __enable_irq 1052,60788
+#define __disable_irq 1053,60897
+static __INLINE void __enable_fault_irq(1055,61009
+static __INLINE void __disable_fault_irq(1056,61083
+#define __NOP 1058,61159
+static __INLINE  void __WFI(1059,61284
+static __INLINE  void __WFE(1060,61354
+static __INLINE  void __SEV(1061,61424
+static __INLINE  void __CLREX(1062,61494
+static __INLINE void __enable_irq(1204,65259
+static __INLINE void __disable_irq(1205,65342
+static __INLINE void __enable_fault_irq(1207,65427
+static __INLINE void __disable_fault_irq(1208,65510
+static __INLINE void __NOP(1210,65595
+static __INLINE void __WFI(1211,65674
+static __INLINE void __WFE(1212,65753
+static __INLINE void __SEV(1213,65832
+static __INLINE void __ISB(1214,65911
+static __INLINE void __DSB(1215,65990
+static __INLINE void __DMB(1216,66069
+static __INLINE void __CLREX(1217,66148
+static __INLINE void NVIC_SetPriorityGrouping(1468,72111
+static __INLINE uint32_t NVIC_GetPriorityGrouping(1489,73075
+static __INLINE void NVIC_EnableIRQ(1502,73530
+static __INLINE void NVIC_DisableIRQ(1515,73983
+static __INLINE uint32_t NVIC_GetPendingIRQ(1529,74482
+static __INLINE void NVIC_SetPendingIRQ(1542,74931
+static __INLINE void NVIC_ClearPendingIRQ(1555,75352
+static __INLINE uint32_t NVIC_GetActive(1569,75840
+static __INLINE void NVIC_SetPriority(1586,76478
+static __INLINE uint32_t NVIC_GetPriority(1609,77453
+static __INLINE uint32_t NVIC_EncodePriority 1634,78530
+static __INLINE void NVIC_DecodePriority 1665,79932
+static __INLINE uint32_t SysTick_Config(1694,81203
+static __INLINE void NVIC_SystemReset(1719,82267
+#define             ITM_RXBUFFER_EMPTY 1743,83269
+static __INLINE uint32_t ITM_SendChar 1756,83788
+static __INLINE int ITM_ReceiveChar 1778,84598
+static __INLINE int ITM_CheckChar 1798,85244
+
+rflpc17xx/config/config.h,141
+#define __RFLPC_CONFIG_H__17,726
+#define RFLPC_STACK_SIZE 58,1750
+#define RFLPC_IRQ_DEBUG_ENABLE67,1929
+#define RFLPC_IRQn_COUNT 70,2009
+
+rflpc17xx/config/config-options.h,730
+#define __RFLPC_CONFIG_OPTIONS_H__17,734
+#define RFLPC_CONFIG_ENABLE_ATOMIC_PRINTF18,769
+#define RFLPC_CONFIG_ENABLE_DMA19,811
+#define RFLPC_CONFIG_ENABLE_ETHERNET20,843
+#define RFLPC_CONFIG_ENABLE_IAP21,880
+#define RFLPC_CONFIG_ENABLE_MEMCPY22,912
+#define RFLPC_CONFIG_ENABLE_MEMSET23,947
+#define RFLPC_CONFIG_ENABLE_PRINTF24,982
+#define RFLPC_CONFIG_ENABLE_PROFILING25,1017
+#define RFLPC_CONFIG_ENABLE_PWM26,1055
+#define RFLPC_CONFIG_ENABLE_RAND27,1087
+#define RFLPC_CONFIG_ENABLE_RIT_TIMER28,1120
+#define RFLPC_CONFIG_ENABLE_SETJMP29,1158
+#define RFLPC_CONFIG_ENABLE_SPI30,1193
+#define RFLPC_CONFIG_ENABLE_SYS_TICK_TIMER31,1225
+#define RFLPC_CONFIG_ENABLE_TIMERS32,1268
+#define RFLPC_CONFIG_ENABLE_UART33,1303
+
+rflpc17xx/config/config-mbed.h,1588
+#define __RFLPC_CONFIG_MBED_H__31,1035
+#define RFLPC_CLOCK_USE_MAIN_OSCILLATOR66,2239
+#define RFLPC_CLOCK_MAIN_OSCILLATOR_FREQUENCY 71,2373
+#define RFLPC_CLOCK_INPUT_DIVIDER 75,2485
+#define RFLPC_CLOCK_PLL_MULTIPLIER 77,2591
+#define RFLPC_CLOCK_CPU_DIVIDER 79,2721
+#define MBED_DIP5 94,3132
+#define MBED_DIP6 95,3166
+#define MBED_DIP7 96,3200
+#define MBED_DIP8 97,3234
+#define MBED_DIP9 98,3268
+#define MBED_DIP10 99,3302
+#define MBED_DIP11 100,3336
+#define MBED_DIP12 101,3371
+#define MBED_DIP13 102,3406
+#define MBED_DIP14 103,3441
+#define MBED_DIP15 104,3476
+#define MBED_DIP16 105,3511
+#define MBED_DIP17 106,3546
+#define MBED_DIP18 107,3581
+#define MBED_DIP19 108,3616
+#define MBED_DIP20 109,3651
+#define MBED_DIP21 110,3686
+#define MBED_DIP22 111,3720
+#define MBED_DIP23 112,3754
+#define MBED_DIP24 113,3788
+#define MBED_DIP25 114,3822
+#define MBED_DIP26 115,3856
+#define MBED_DIP27 116,3890
+#define MBED_DIP28 117,3925
+#define MBED_DIP29 118,3960
+#define MBED_DIP30 119,3994
+#define RFLPC_LED_1_PIN 132,4240
+#define RFLPC_LED_2_PIN 134,4314
+#define RFLPC_LED_3_PIN 136,4388
+#define RFLPC_LED_4_PIN 138,4462
+#define RFLPC_ETH_PHY_ADDR 149,4723
+#define RFLPC_ETH_USE_EXTENDED_MII161,5213
+#define RFLPC_UART0_TXD_PIN 170,5344
+#define RFLPC_UART0_RXD_PIN 172,5407
+#define RFLPC_UART0_PIN_FUNCTION 173,5450
+#define RFLPC_UART2_TXD_PIN 177,5711
+#define RFLPC_UART2_RXD_PIN 179,5762
+#define RFLPC_UART2_PIN_FUNCTION 180,5793
+#define RFLPC_UART3_TXD_PIN 184,6054
+#define RFLPC_UART3_RXD_PIN 186,6104
+#define RFLPC_UART3_PIN_FUNCTION 187,6134
+
+rflpc17xx/debug.h,299
+#define __RFLPC_DEBUG_H__25,910
+#define RFLPC_DELAY(44,1260
+#define RFLPC_STOP(54,1593
+#define RFLPC_ARM_GET_REGISTER(68,2003
+#define RFLPC_DUMP_STACK(76,2232
+#define RFLPC_ASSERT(93,2708
+#define RFLPC_ADDR_IN(98,2831
+#define RFLPC_ADDR_IN_FLASH(100,2981
+#define RFLPC_ADDR_IN_RAM(101,3049
+
+rflpc17xx/tools.h,190
+#define __RFLPC_TOOLS_H__28,971
+#define TOKEN_PASTE2(31,1037
+#define TOKEN_PASTE(34,1145
+#define RFLPC_SET_BIT(38,1221
+#define RFLPC_CLR_BIT(40,1308
+#define RFLPC_SET_BITS_VAL(45,1514
+
+rflpc17xx/interrupt.c,346
+#undef RFLPC_IRQ_DEBUG_ENABLE 27,952
+static volatile rflpc_irq_handler_t _ram_interrupts[_ram_interrupts36,1178
+RFLPC_IRQ_HANDLER _default_exception_handler(41,1516
+RFLPC_IRQ_HANDLER _default_exception_handler(42,1588
+RFLPC_IRQ_HANDLER _default_peripheral_handler(114,5135
+void rflpc_irq_init(122,5339
+void rflpc_irq_set_handler(137,5704
+
+rflpc17xx/rflpc17xx.h,37
+#define __RFLPC_RFLPC17XX_H__22,849
