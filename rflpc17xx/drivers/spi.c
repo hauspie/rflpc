@@ -59,13 +59,17 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
       RFLPC_SET_BITS_VAL(LPC_SC->PCLKSEL0, 20, cpu_clock_divider, 2);
 
       rflpc_pin_set(SCK1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      /* rflpc_pin_set(MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0); */
       rflpc_pin_set(MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      rflpc_pin_set(SSEL1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+      /* rflpc_pin_set(SSEL1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0); */
    }
 
    /* user manual p. 422. Set the data transfert size */
    spi_base->CR0 = ((data_size_transfert - 1) & 0xF);
+
+   RFLPC_SET_BIT(spi_base->CR0, 6);
+   RFLPC_SET_BIT(spi_base->CR0, 7);
+
    /* No loop back, enable ssp controler */
    spi_base->CR1 = (1UL << 1);
    if (mode == RFLPC_SPI_SLAVE)
