@@ -22,11 +22,11 @@
 
 int main()
 {
-#ifdef RFLPC_ENABLE_UART
+#ifdef RFLPC_CONFIG_ENABLE_UART
     rflpc_uart_init(RFLPC_UART0);
 #endif
 
-#ifdef RFLPC_ENABLE_PRINTF
+#ifdef RFLPC_CONFIG_ENABLE_PRINTF
     printf("Hello World\r\n");
 #endif
     while (1);
