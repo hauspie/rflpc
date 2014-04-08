@@ -37,9 +37,25 @@
  * @{
  */
 
+#define DAC_BASE      ((LPC_DAC_TypeDef *) LPC_DAC_BASE)
 
+/**
+ * Initializes the Digital To Analog Converter.
+ *
+ * @param pin The desired pin for DAC.
+ * @param clock_divider The divider applied to CPU clock.
+ */
+extern void rflpc_dac_init(rflpc_pin_t pin, uint8_t clock_divider);
 
-
+/**
+ * Set the value of DAC register.
+ *
+ * @param value A 10-bits value to be converted.
+ */
+static inline void rflpc_dac_write(uint16_t value)
+{
+  RFLPC_SET_BITS_VAL (DAC_BASE->DACR, 6, (value & 0x3FF), 10);
+}
 
 #endif /* RFLPC_CONFIG_ENABLE_DAC */
 
