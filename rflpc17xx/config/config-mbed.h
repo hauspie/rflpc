@@ -188,6 +188,38 @@
 
 /** @} */
 
+/** @name I2C Configuration */
+/** @{ */
+/** I2C0 GPIO Port. 
+ * @warning This I2C port is not accessible on the MBED! (the pins are not connected to DIP pins)
+ */
+#define RFLPC_I2C0_PORT		0
+/** I2C0 SDA Pin */
+#define RFLPC_I2C0_SDA_PIN	27
+/** I2C0 SCL Pin */
+#define RFLPC_I2C0_SCL_PIN	28
+/** I2C0 Pin func */
+#define RFLPC_I2C0_PIN_FUNC	1
+
+/** I2C1 GPIO Port */
+#define RFLPC_I2C1_PORT 	0
+/** I2C1 SDA Pin */
+#define RFLPC_I2C1_SDA_PIN 	RFLPC_PIN_P0_0
+/** I2C1 SCL Pin */
+#define RFLPC_I2C1_SCL_PIN 	RFLPC_PIN_P0_1
+/** I2C1 Pin func */
+#define RFLPC_I2C1_PIN_FUNC 	3
+
+/** I2C2 GPIO Port */
+#define RFLPC_I2C2_PORT 	0
+/** I2C2 SDA Pin */
+#define RFLPC_I2C2_SDA_PIN	RFLPC_PIN_P0_10
+/** I2C2 SCL Pin */
+#define RFLPC_I2C2_SCL_PIN	RFLPC_PIN_P0_11
+/** I2C2 Pin func */
+#define RFLPC_I2C2_PIN_FUNC	2
+/** @} */
+
 /** @} */
 
 #endif

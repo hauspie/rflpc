@@ -20,15 +20,28 @@
 #include <rflpc17xx/rflpc17xx.h>
 #include <rflpc17xx/tinylibc/printf.h>
 
+#include <rflpc17xx/drivers/i2c.h>
+
 #include "c12832.h"
+
+#define THERMOMETER_I2C_SLAVE_ADDRESS 0x90
 
 int main()
 {
+  uint8_t r[2] = { 0 };
+
+  rflpc_led_init();
+  /* rflpc_led_set(RFLPC_LED_4); */
+
   lcd_init();
   rflpc_printf_set_putchar(&lcd_putchar);
 
-  printf("Hello World\n");
+  rflpc_i2c_init(RFLPC_I2C_PORT2, RFLPC_I2C_MODE_MASTER, 0);
+  rflpc_i2c_write(RFLPC_I2C_PORT2, THERMOMETER_I2C_SLAVE_ADDRESS, 0, 1, 0);
+  rflpc_i2c_read(RFLPC_I2C_PORT2, THERMOMETER_I2C_SLAVE_ADDRESS, &r, 2);
 
+  lcd_reset();
+  printf("%x %x\n", r[0], r[1]);
   lcd_refresh();
 
   while (1);
