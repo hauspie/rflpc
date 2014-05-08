@@ -21,7 +21,7 @@
   ADC driver for LPC.
 */
 
-#ifdef RLFPC_CONFIG_ENABLE_ADC
+#ifdef RFLPC_CONFIG_ENABLE_ADC
 
 #include "adc.h"
 #include "../tools.h"

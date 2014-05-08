@@ -33,7 +33,9 @@ int main()
   lcd_init();
   rflpc_printf_set_putchar(&lcd_putchar);
 
-  test_adc_burst_with_interruptions();
+  test_adc_simple();
+  /* test_adc_burst(); */
+  /* test_adc_burst_with_interruptions(); */
 
   return 0;
 }
