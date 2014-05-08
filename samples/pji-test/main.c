@@ -45,31 +45,44 @@ int main()
   step = 0x3FF / 10;
   flag = 0;
   i = 0;
+  flag = 0;
+
   while (1) {
+    /* __DELAY (320); */
+
+    /* if (flag) { */
+    /*   rflpc_dac_write(0); */
+    /* } */
+    /* else { */
+    /*   rflpc_dac_write(0x3FF); */
+    /* } */
+
+    /* flag = flag ^ 0xFF; */
+
     /* RFLPC_SET_BITS_VAL (DAC_BASE->DACR, 6, (i * step), 10); */
-    /* rflpc_dac_write(i * step); */
+    rflpc_dac_write(i * step);
 
     /* __DELAY(320); */
     
-    /* if (flag) { */
-    /*   if (--i == 0) */
-    /* 	flag = 0; */
-    /* } */
-    /* else { */
-    /*   if (++i == 10) */
-    /* 	flag = 1; */
-    /* } */
+    if (flag) {
+      if (--i == 0)
+    	flag = 0;
+    }
+    else {
+      if (++i == 10)
+    	flag = 1;
+    }
 
     /* if (flag) { */
     /*   rflpc_dac_write(0); */
     /*   flag = 0; */
     /* } */
     /* else { */
-    /*   rflpc_dac_write(0xF); */
+    /*   rflpc_dac_write(0x3FF); */
     /*   flag = 1; */
     /* } */
 
-    /* __DELAY (36000); */
+    __DELAY (360000);
   }
 
 
