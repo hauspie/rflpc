@@ -23,10 +23,31 @@
 
 #include "i2c.h"
 
+/* Useful flag for writing CONSET/CONCLR registers.For more informations, 
+ * please refer to the pages 441/442 of the user manual. */
+#define RFLPC_I2C_FLAG_AA    0x04
+#define RFLPC_I2C_FLAG_SI    0x08
+#define RFLPC_I2C_FLAG_STO   0x10
+#define RFLPC_I2C_FLAG_STA   0x20
+#define RFLPC_I2C_FLAG_I2EN  0x40
+
+/* Registers writing macros (I2DAT, I2CONSET, I2CONCLR) */
+#define RFLPC_I2C_WRITE_DAT(i2c, byte)    \
+  { i2c->conf_addr->I2DAT = ((byte) & 0xFF); }
+#define RFLPC_I2C_WRITE_CONSET(i2c, flag) \
+  { i2c->conf_addr->I2CONSET = ((flag) & 0x7C); }
+#define RFLPC_I2C_WRITE_CONCLR(i2c, flag) \
+  { i2c->conf_addr->I2CONCLR = ((flag) & 0x6C); }
+
+/* Registers reading macros (I2STAT, I2DAT) */ 
+#define RFLPC_I2C_READ_STAT(i2c)        (i2c->conf_addr->I2STAT & 0xFF)
+#define RFLPC_I2C_READ_DAT(i2c)         (i2c->conf_addr->I2DAT & 0xFF);
+
+/* Configuration data structure for I2C ports */
 typedef struct
 {
   struct {
-    /* port inutile maintenant ! TODO: Ajuster structure */
+    /* TODO: Update the structure model */
     unsigned char sda_pin:5;
     unsigned char scl_pin:5;
     unsigned char pin_function:2;
@@ -38,26 +59,26 @@ typedef struct
 } rflpc_i2c_config_t;
 
 static const rflpc_i2c_config_t _config[3] = {
-  { /* I2C0 */
+  { /* Configuration values for I2C0 */
     { RFLPC_I2C0_SDA_PIN, RFLPC_I2C0_SCL_PIN, RFLPC_I2C0_PIN_FUNC }, /* gpio */
-    &LPC_SC->PCLKSEL0,   	/* PCLKSEL register */
-    14, 			/* pclk_bit */
-    7,			/* pconp_bit */
-    LPC_I2C0,   		/* conf_addr */
+    &LPC_SC->PCLKSEL0,   	                         /* PCLKSEL register */
+    14, 			                                 /* pclk_bit */
+    7,                                  			/* pconp_bit */ 
+    LPC_I2C0,   		                                /* conf_addr */
   },    
-  { /* I2C1 */
+  { /* Configuration values for I2C1 */
     { RFLPC_I2C1_SDA_PIN, RFLPC_I2C1_SCL_PIN, RFLPC_I2C1_PIN_FUNC }, /* gpio */
-    &LPC_SC->PCLKSEL1,   	/* PCLKSEL register */
-    6, 			/* pclk_bit */
-    19,			/* pconp_bit */
-    LPC_I2C1,   		/* conf_addr */
+    &LPC_SC->PCLKSEL1,   	                         /* PCLKSEL register */
+    6, 		                                             	 /* pclk_bit */
+    19,			                                        /* pconp_bit */
+    LPC_I2C1,   		                                /* conf_addr */
   },
-  { /* I2C2 */
+  { /* Configuration values for I2C2 */
     { RFLPC_I2C2_SDA_PIN, RFLPC_I2C2_SCL_PIN, RFLPC_I2C2_PIN_FUNC }, /* gpio */
-    &LPC_SC->PCLKSEL1,   	/* PCLKSEL register */
-    20, 			/* pclk_bit */
-    26,			/* pconp_bit */
-    LPC_I2C2,   		/* conf_addr */
+    &LPC_SC->PCLKSEL1,   	                         /* PCLKSEL register */
+    20, 			                                 /* pclk_bit */
+    26,			                                        /* pconp_bit */
+    LPC_I2C2,   	                                     	/* conf_addr */
   },    
 };
 
@@ -84,41 +105,24 @@ int rflpc_i2c_init(rflpc_i2c_port_t port, rflpc_i2c_mode_t mode, uint8_t addr)
     
   /* Select appropriate pins. Documentation says that the pins should
      configured with neither pull-up nor pull-down and in opendrain */
-  /* SDA */
   rflpc_pin_set(i2c->gpio.sda_pin, i2c->gpio.pin_function, RFLPC_PIN_MODE_RESISTOR_NONE, 1);
-  /* SCL */
   rflpc_pin_set(i2c->gpio.scl_pin, i2c->gpio.pin_function, RFLPC_PIN_MODE_RESISTOR_NONE, 1);
     
-  /* Switch to wanted mode */
-  i2c->conf_addr->I2CONCLR = 0xFFFFFFFF; /* clear all config bits */
+ /*  Cleanup the full configuration register */
+  i2c->conf_addr->I2CONCLR = 0xFFFFFFFF;
+
+  /* Let's switch to wanted mode */
   if (mode == RFLPC_I2C_MODE_MASTER)
     i2c->conf_addr->I2CONSET = 0x40; /* p. 466, 450 */
-  else
-    {
+  else {
       i2c->conf_addr->I2CONSET = 0x44; /* p. 466, 454 */
       i2c->conf_addr->I2ADR0 = addr;
       i2c->conf_addr->I2MASK0 = 0;
-    }
+  }
+
   return 0;
 }
 
-#define RFLPC_I2C_WRITE_DAT(i2c, byte)    \
-  { i2c->conf_addr->I2DAT = ((byte) & 0xFF); }
-#define RFLPC_I2C_WRITE_CONSET(i2c, flag) \
-  { i2c->conf_addr->I2CONSET = ((flag) & 0x7C); }
-#define RFLPC_I2C_WRITE_CONCLR(i2c, flag) \
-  { i2c->conf_addr->I2CONCLR = ((flag) & 0x6C); }
-
-#define RFLPC_I2C_READ_STAT(i2c)        (i2c->conf_addr->I2STAT & 0xFF)
-#define RFLPC_I2C_READ_DAT(i2c)         (i2c->conf_addr->I2DAT & 0xFF);
-
-#define RFLPC_I2C_FLAG_AA    0x04
-#define RFLPC_I2C_FLAG_SI    0x08
-#define RFLPC_I2C_FLAG_STO   0x10
-#define RFLPC_I2C_FLAG_STA   0x20
-#define RFLPC_I2C_FLAG_I2EN  0x40
-
-/* int rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr, uint8_t byte) */
 int rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t nbytes, uint8_t stop)
 {
   const rflpc_i2c_config_t *i2c = &_config[port];
