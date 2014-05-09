@@ -41,11 +41,10 @@
 
 /* Registers reading macros (I2STAT, I2DAT) */ 
 #define RFLPC_I2C_READ_STAT(i2c)        (i2c->conf_addr->I2STAT & 0xFF)
-#define RFLPC_I2C_READ_DAT(i2c)         (i2c->conf_addr->I2DAT & 0xFF);
+#define RFLPC_I2C_READ_DAT(i2c)         (i2c->conf_addr->I2DAT & 0xFF)
 
 /* Configuration data structure for I2C ports */
-typedef struct
-{
+typedef struct {
   struct {
     /* TODO: Update the structure model */
     unsigned char sda_pin:5;
@@ -130,7 +129,7 @@ int rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t 
 
   while ((status = RFLPC_I2C_READ_STAT (i2c))) {
     /* Dump this status */
-    printf("0x%x ", status);
+    /* printf("0x%x ", status); */
     
     switch (status) {
       /*************************************************************************
@@ -243,14 +242,14 @@ int rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t 
   return -1;
 }
 
-int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t nbytes)
+int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t nbytes, uint8_t stop)
 {
   const rflpc_i2c_config_t *i2c = &_config[port];
   uint8_t status;
 
   while ((status = RFLPC_I2C_READ_STAT (i2c))) {
     /* Dump this status */
-    printf("0x%x ", status);
+    /* printf("0x%x ", status); */
 
     switch (status) {
       /*************************************************************************
@@ -309,7 +308,7 @@ int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t n
        */
     case 0x50:
       *data = RFLPC_I2C_READ_DAT (i2c);                 /* Read received data */
-      printf("[%x] ", *data);
+      /* printf("[%x] ", *data); */
       data += 1;                                       /* Update data pointer */
       nbytes -= 1;                                             /* Update size */
       
@@ -334,8 +333,17 @@ int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t n
       */
     case 0x58:
       *data = RFLPC_I2C_READ_DAT (i2c);                 /* Read received data */
-      printf("[%x] ", *data);
-      RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);       /* Set STO flag */
+      /* printf("[%x] ", *data); */
+
+      if (stop) {
+	/* Send a STOP condition */
+	RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);   /* Set STO flag */
+      }
+      else {
+	/* Send a repeated START condition */
+	RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);   /* Set STA flag */
+      }
+
       RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
       return 0;
     }

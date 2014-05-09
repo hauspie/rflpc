@@ -81,12 +81,15 @@ int rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr,
  * @param [in] addr The I2C address of the slave from which a message will be read.
  * @param [in] data A pointer to a data buffer when the message will be stored.
  * @param [in] nbytes The expected number of bytes to be received.
+ * @param [in] stop If equal to zero, the driver will send a RESTART condition
+ *                  instead of a STOP condition at the end of transmission.
  * @return There is three different return values for this function :
  *         - If the message has been successfully transmitted, returns 0.
  *         - If any known error has occured, returns the last state of I2C port.
  *         - If any unknown error has occured, returns -1.
  */
-int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t nbytes);
+int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, 
+		   uint8_t *data, uint8_t nbytes, uint8_t stop);
 
 /** DEVELOPMENT PURPOSE ONLY: Send back the status of specified i2c port.
  */
