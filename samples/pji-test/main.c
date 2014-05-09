@@ -72,6 +72,9 @@ int main()
 
   rflpc_led_init();
 
+  rflpc_led_set(RFLPC_LED_1);
+  while (1);
+
   lcd_init();
   rflpc_printf_set_putchar(&lcd_putchar);
 
