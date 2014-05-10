@@ -23,141 +23,137 @@
 #include <rflpc17xx/drivers/i2c.h>
 
 #include "c12832.h"
+#include "lm75b.h"
 
 #define __DELAY(d)      \
   { unsigned delay_i; for (delay_i = 0; delay_i < d; ++delay_i)	asm(""); }
 
-#define THERMOMETER_I2C_SLAVE_ADDRESS 0x90
+void sleep(uint32_t ms)
+{
+  uint32_t delay, counter;
+
+  for (delay = (16000 * ms), counter = 0; counter < delay; ++counter)
+    asm("");  
+}
+
+int main()
+{
+  int16_t temp = 0;
+
+  rflpc_led_init();
+  
+  lcd_init();
+  rflpc_printf_set_putchar(&lcd_putchar);
+
+  libboard_lm75b_init();
+
+  while (1) {
+    printf("Temp= %i C  \r", libboard_lm75b_get_temp());
+    lcd_refresh();
+    sleep(1000);
+  }
+
+  return 0;
+}
+
+/* #define ADDR 0x98 */
 
 /* int main() */
 /* { */
-/*   uint8_t r[2] = { 0 }; */
-/*   uint16_t temp = 0; */
+/*   uint8_t buffer[10] = { 0 }; */
+/*   uint8_t modreg_addr = 0x07; */
+/*   uint8_t outreg_addr = 0x00; */
+/*   uint8_t tiltreg_addr = 0x03; */
+/*   uint8_t samreg_addr = 0x04; */
 
 /*   rflpc_led_init(); */
-/*   /\* rflpc_led_set(RFLPC_LED_4); *\/ */
+
+/*   rflpc_led_set(RFLPC_LED_1); */
+/*   while (1); */
 
 /*   lcd_init(); */
 /*   rflpc_printf_set_putchar(&lcd_putchar); */
 
 /*   rflpc_i2c_init(RFLPC_I2C_PORT2, RFLPC_I2C_MODE_MASTER, 0); */
-/*   rflpc_i2c_write(RFLPC_I2C_PORT2, THERMOMETER_I2C_SLAVE_ADDRESS, 0, 1, 0); */
-/*   rflpc_i2c_read(RFLPC_I2C_PORT2, THERMOMETER_I2C_SLAVE_ADDRESS, &r, 2, 1); */
 
-/*   /\* Get the temperature value. *\/ */
-/*   temp = ((r[0] << 8) | (r[1] & ~(0x31))) >> 5; */
-/*   /\* Convert to celsius degrees, i.e. x0.125 *\/ */
-/*   temp = temp >> 3; */
+/*   buffer[0] = 0x07; */
+/*   buffer[1] = 0x19; /\* Active Mode *\/ */
+/*   buffer[2] = 0x00; */
+/*   buffer[3] = 0x00; */
 
-/*   lcd_reset(); */
-/*   printf("from i2c: 0x%x\n ", r[0]); */
-/*   printf("from i2c: 0x%x\n ", r[1]); */
-/*   printf("Temp= %i C\n", temp); */
-/*   lcd_refresh(); */
+/*   if (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, buffer, 2, 1) != 0) { */
+/*       /\* || rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &buffer[2], 2, 1)) { *\/ */
+/*     printf("Error at init"); */
+/*     while (1); */
+/*   } */
+/*   else { */
+/*     buffer[0] = 0; */
+/*     buffer[1] = 0; */
+/*     buffer[2] = 0; */
+/*     buffer[3] = 0; */
+/*   } */
+    
+/*   while (1) { */
+/*     if (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &outreg_addr, 1, 0) == 0 */
+/*   	&& rflpc_i2c_read(RFLPC_I2C_PORT2, ADDR, buffer, 3, 1) == 0) { */
+/*       buffer[0] = buffer[0] & 0x3F; */
+/*       buffer[1] = buffer[1] & 0x3F; */
+/*       buffer[2] = buffer[2] & 0x3F; */
+
+/*       if (buffer[0] & 0x40 || buffer[1] & 0x40 || buffer[2] & 0x40) */
+/* 	rflpc_led_set(RFLPC_LED_2); */
+
+/*       if (buffer[0] & 0x20) */
+/* 	printf("-%i ", buffer[0] & 0x1F); */
+/*       else */
+/* 	printf("%i ", buffer[0] & 0x1F); */
+
+/*       if (buffer[1] & 0x20) */
+/* 	printf("-%i ", buffer[1] & 0x1F); */
+/*       else */
+/* 	printf("%i ", buffer[1] & 0x1F); */
+
+/*       if (buffer[2] & 0x20) */
+/* 	printf("-%i  ", buffer[2] & 0x1F); */
+/*       else */
+/* 	printf("%i  ", buffer[2] & 0x1F); */
+
+/*       if (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &tiltreg_addr, 1, 0) == 0 */
+/* 	&& rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &buffer[3], 2, 1) == 0) { */
+/*         printf("%i %i    ", buffer[3], buffer[4]); */
+
+/* 	switch (buffer[3] & 0x03) { */
+/* 	case 0x00: */
+/* 	  rflpc_led_set(RFLPC_LED_1 | RFLPC_LED_4); */
+/* 	  break; */
+/* 	case 0x01: */
+/* 	  rflpc_led_clr(RFLPC_LED_4); */
+/* 	  rflpc_led_set(RFLPC_LED_1); */
+/* 	  break; */
+/* 	case 0x10: */
+/* 	  rflpc_led_clr(RFLPC_LED_1); */
+/* 	  rflpc_led_set(RFLPC_LED_4); */
+/* 	  break; */
+/* 	} */
+/*       } */
+/*       else { */
+/*         rflpc_led_set(RFLPC_LED_3); */
+/*         break; */
+/*       } */
+
+/*       printf("\r"); */
+/*       lcd_refresh(); */
+/*     } */
+/*     else { */
+/*       rflpc_led_set(RFLPC_LED_3); */
+/*       break; */
+/*     } */
+
+/*     __DELAY (320000); */
+/*   } */
 
 /*   while (1); */
 
 /*   return 0; */
+
 /* } */
-
-#define ADDR 0x98
-
-int main()
-{
-  uint8_t buffer[10] = { 0 };
-  uint8_t modreg_addr = 0x07;
-  uint8_t outreg_addr = 0x00;
-  uint8_t tiltreg_addr = 0x03;
-  uint8_t samreg_addr = 0x04;
-
-  rflpc_led_init();
-
-  rflpc_led_set(RFLPC_LED_1);
-  while (1);
-
-  lcd_init();
-  rflpc_printf_set_putchar(&lcd_putchar);
-
-  rflpc_i2c_init(RFLPC_I2C_PORT2, RFLPC_I2C_MODE_MASTER, 0);
-
-  buffer[0] = 0x07;
-  buffer[1] = 0x19; /* Active Mode */
-  buffer[2] = 0x00;
-  buffer[3] = 0x00;
-
-  if (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, buffer, 2, 1) != 0) {
-      /* || rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &buffer[2], 2, 1)) { */
-    printf("Error at init");
-    while (1);
-  }
-  else {
-    buffer[0] = 0;
-    buffer[1] = 0;
-    buffer[2] = 0;
-    buffer[3] = 0;
-  }
-    
-  while (1) {
-    if (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &outreg_addr, 1, 0) == 0
-  	&& rflpc_i2c_read(RFLPC_I2C_PORT2, ADDR, buffer, 3, 1) == 0) {
-      buffer[0] = buffer[0] & 0x3F;
-      buffer[1] = buffer[1] & 0x3F;
-      buffer[2] = buffer[2] & 0x3F;
-
-      if (buffer[0] & 0x40 || buffer[1] & 0x40 || buffer[2] & 0x40)
-	rflpc_led_set(RFLPC_LED_2);
-
-      if (buffer[0] & 0x20)
-	printf("-%i ", buffer[0] & 0x1F);
-      else
-	printf("%i ", buffer[0] & 0x1F);
-
-      if (buffer[1] & 0x20)
-	printf("-%i ", buffer[1] & 0x1F);
-      else
-	printf("%i ", buffer[1] & 0x1F);
-
-      if (buffer[2] & 0x20)
-	printf("-%i  ", buffer[2] & 0x1F);
-      else
-	printf("%i  ", buffer[2] & 0x1F);
-
-      if (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &tiltreg_addr, 1, 0) == 0
-	&& rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &buffer[3], 2, 1) == 0) {
-        printf("%i %i    ", buffer[3], buffer[4]);
-
-	switch (buffer[3] & 0x03) {
-	case 0x00:
-	  rflpc_led_set(RFLPC_LED_1 | RFLPC_LED_4);
-	  break;
-	case 0x01:
-	  rflpc_led_clr(RFLPC_LED_4);
-	  rflpc_led_set(RFLPC_LED_1);
-	  break;
-	case 0x10:
-	  rflpc_led_clr(RFLPC_LED_1);
-	  rflpc_led_set(RFLPC_LED_4);
-	  break;
-	}
-      }
-      else {
-        rflpc_led_set(RFLPC_LED_3);
-        break;
-      }
-
-      printf("\r");
-      lcd_refresh();
-    }
-    else {
-      rflpc_led_set(RFLPC_LED_3);
-      break;
-    }
-
-    __DELAY (320000);
-  }
-
-  while (1);
-
-  return 0;
-
-}
