@@ -7,3 +7,4 @@ makefile.dep
 *.kde*
 *.map
 rflpc17xx/config/config-options.h
+TAGS
