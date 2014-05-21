@@ -28,6 +28,8 @@
 uint8_t libboard_lm75b_init()
 {
   rflpc_i2c_init(LM75B_I2C_PORT, RFLPC_I2C_MODE_MASTER, 0);
+
+  return 0;
 }
 
 int16_t libboard_lm75b_get_temp()
@@ -36,7 +38,7 @@ int16_t libboard_lm75b_get_temp()
   uint8_t r[2] = { 0, 0 };
   uint16_t temp = 0;
 
-  if (rflpc_i2c_write(LM75B_I2C_PORT, LM75B_I2C_ADDR, addr, 1, 0))
+  if (rflpc_i2c_write(LM75B_I2C_PORT, LM75B_I2C_ADDR, &addr, 1, 0))
     return 0xFFFF;
   if (rflpc_i2c_read(LM75B_I2C_PORT, LM75B_I2C_ADDR, &r, 2, 1))
     return 0xFFFF;

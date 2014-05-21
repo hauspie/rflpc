@@ -36,23 +36,44 @@ void sleep(uint32_t ms)
     asm("");  
 }
 
+#define SLAVE
+
 int main()
 {
-  int16_t temp = 0;
+  uint8_t sla = 0x40;
+  uint8_t something = 13;
 
   rflpc_led_init();
-  
   lcd_init();
   rflpc_printf_set_putchar(&lcd_putchar);
 
-  libboard_lm75b_init();
+#ifdef MASTER
+  rflpc_i2c_init(RFLPC_I2C_PORT2, RFLPC_I2C_MODE_MASTER, 0);
+  
+  /* while (rflpc_i2c_write(RFLPC_I2C_PORT2, sla, &something, 1, 1)) { */
+  /*   rflpc_led_set(RFLPC_LED_1); */
+  /*   sleep(500); */
+  /*   rflpc_led_clr(RFLPC_LED_1); */
+  /*   sleep(500); */
+  /* } */
 
-  while (1) {
-    printf("Temp= %i C  \r", libboard_lm75b_get_temp());
-    lcd_refresh();
-    sleep(1000);
-  }
+  rflpc_i2c_write(RFLPC_I2C_PORT2, sla, &something, 1, 1);
+#endif
 
+#ifdef SLAVE
+  rflpc_i2c_init(RFLPC_I2C_PORT2, RFLPC_I2C_MODE_SLAVE, sla);
+
+  /* while (rflpc_i2c_read(RFLPC_I2C_PORT2, 0, &something, 1, 0)) { */
+  /*   rflpc_led_set(RFLPC_LED_1); */
+  /*   sleep(500); */
+  /*   rflpc_led_clr(RFLPC_LED_1); */
+  /*   sleep(500); */
+  /* } */
+  rflpc_i2c_read(RFLPC_I2C_PORT2, 0, &something, 1, 0);
+#endif
+
+  lcd_refresh();
+  while (1);
   return 0;
 }
 
@@ -68,9 +89,6 @@ int main()
 
 /*   rflpc_led_init(); */
 
-/*   rflpc_led_set(RFLPC_LED_1); */
-/*   while (1); */
-
 /*   lcd_init(); */
 /*   rflpc_printf_set_putchar(&lcd_putchar); */
 
@@ -81,8 +99,16 @@ int main()
 /*   buffer[2] = 0x00; */
 /*   buffer[3] = 0x00; */
 
+/*   /\* while (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, buffer, 2, 1) != 0) { *\/ */
+/*   /\*   rflpc_led_set(RFLPC_LED_1); *\/ */
+/*   /\*   sleep(500); *\/ */
+/*   /\*   rflpc_led_clr(RFLPC_LED_1); *\/ */
+/*   /\*   sleep(500); *\/ */
+/*   /\* } *\/ */
+
 /*   if (rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, buffer, 2, 1) != 0) { */
 /*       /\* || rflpc_i2c_write(RFLPC_I2C_PORT2, ADDR, &buffer[2], 2, 1)) { *\/ */
+/*     rflpc_led_set(RFLPC_LED_1); */
 /*     printf("Error at init"); */
 /*     while (1); */
 /*   } */
@@ -157,3 +183,24 @@ int main()
 /*   return 0; */
 
 /* } */
+
+/* int main() */
+/* { */
+/*   int16_t temp = 0; */
+
+/*   rflpc_led_init(); */
+  
+/*   lcd_init(); */
+/*   rflpc_printf_set_putchar(&lcd_putchar); */
+
+/*   libboard_lm75b_init(); */
+
+/*   while (1) { */
+/*     printf("Temp= %i C  \r", libboard_lm75b_get_temp()); */
+/*     lcd_refresh(); */
+/*     sleep(1000); */
+/*   } */
+
+/*   return 0; */
+/* } */
+

@@ -81,12 +81,16 @@ static const rflpc_i2c_config_t _config[3] = {
   },    
 };
 
+static rflpc_i2c_mode_t _mode;
+
 int rflpc_i2c_init(rflpc_i2c_port_t port, rflpc_i2c_mode_t mode, uint8_t addr)
 {
   const rflpc_i2c_config_t *i2c = &_config[port];
 
   if (rflpc_clock_get_system_clock() != 96000000)
     return -1;
+
+  _mode = mode;
 
   /* Power the port */
   LPC_SC->PCONP |= (1UL << i2c->pconp_bit);
@@ -111,12 +115,13 @@ int rflpc_i2c_init(rflpc_i2c_port_t port, rflpc_i2c_mode_t mode, uint8_t addr)
   i2c->conf_addr->I2CONCLR = 0xFFFFFFFF;
 
   /* Let's switch to wanted mode */
-  if (mode == RFLPC_I2C_MODE_MASTER)
+  if (_mode == RFLPC_I2C_MODE_MASTER) {
     i2c->conf_addr->I2CONSET = 0x40; /* p. 466, 450 */
+  }
   else {
-      i2c->conf_addr->I2CONSET = 0x44; /* p. 466, 454 */
-      i2c->conf_addr->I2ADR0 = addr;
-      i2c->conf_addr->I2MASK0 = 0;
+    i2c->conf_addr->I2CONSET = 0x44; /* p. 466, 454 */
+    i2c->conf_addr->I2ADR0 = addr;
+    i2c->conf_addr->I2MASK0 = 0;
   }
 
   return 0;
@@ -126,117 +131,122 @@ int rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t 
 {
   const rflpc_i2c_config_t *i2c = &_config[port];
   uint8_t status;
-
-  while ((status = RFLPC_I2C_READ_STAT (i2c))) {
-    /* Dump this status */
-    /* printf("0x%x ", status); */
+  
+  if (_mode == RFLPC_I2C_MODE_MASTER) {
+    while ((status = RFLPC_I2C_READ_STAT (i2c))) {
+      /* Dump this status */
+      /* printf("0x%x ", status); */
     
-    switch (status) {
-      /*************************************************************************
-       * Status 0xF8: The interrupt flag SI is not yet set. This occurs between
-       *              other states and when the I2C block is not involved in a 
-       *              transfer. For now, this only means that no transfer has 
-       *              been started yet.
-       */
-    case 0xF8:
-      RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);        /* Set STA bit */
-      break;
+      switch (status) {
+	/*************************************************************************
+	 * Status 0xF8: The interrupt flag SI is not yet set. This occurs between
+	 *              other states and when the I2C block is not involved in a 
+	 *              transfer. For now, this only means that no transfer has 
+	 *              been started yet.
+	 */
+      case 0xF8:
+	RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);        /* Set STA bit */
+	break;
 
-      /*************************************************************************
-       * Status 0x08: START condition has been transmitted. Slave address and W
-       *              bit will now be transmitted.
-       */
-    case 0x08:
-      RFLPC_I2C_WRITE_DAT (i2c, addr);                      /* Write to I2DAT */
-      RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
-      break;
+	/*************************************************************************
+	 * Status 0x08: START condition has been transmitted. Slave address and W
+	 *              bit will now be transmitted.
+	 */
+      case 0x08:
+	RFLPC_I2C_WRITE_DAT (i2c, addr);                      /* Write to I2DAT */
+	RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
+	break;
 
-      /*************************************************************************
-       * Status 0x10: Repeated START condition has been transmitted. Slave 
-       *       	      address and W bit will now be transmitted.
-       */
-    case 0x10:
-      RFLPC_I2C_WRITE_DAT (i2c, addr);                      /* Write to I2DAT */
-      RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
-      break;
+	/*************************************************************************
+	 * Status 0x10: Repeated START condition has been transmitted. Slave 
+	 *       	      address and W bit will now be transmitted.
+	 */
+      case 0x10:
+	RFLPC_I2C_WRITE_DAT (i2c, addr);                      /* Write to I2DAT */
+	RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
+	break;
 
-      /*************************************************************************
-       * Status 0x18: Previous state was 0x08 or 0x10. Slave address and W bit
-       *              has been transmitted, ACK has been received. The first
-       *              data byte will be transmitted.
-       */
-    case 0x18:
-      RFLPC_I2C_WRITE_DAT (i2c, *data);                /* Write byte to I2DAT */
-      nbytes -= 1;                                      /* Update bytes count */
-      data += 1;                                       /* Update data pointer */
-      RFLPC_I2C_WRITE_CONCLR (i2c,                   /* Clear STA and SI flag */
-			      (RFLPC_I2C_FLAG_STA | RFLPC_I2C_FLAG_SI));
-      break;
+	/*************************************************************************
+	 * Status 0x18: Previous state was 0x08 or 0x10. Slave address and W bit
+	 *              has been transmitted, ACK has been received. The first
+	 *              data byte will be transmitted.
+	 */
+      case 0x18:
+	RFLPC_I2C_WRITE_DAT (i2c, *data);                /* Write byte to I2DAT */
+	nbytes -= 1;                                      /* Update bytes count */
+	data += 1;                                       /* Update data pointer */
+	RFLPC_I2C_WRITE_CONCLR (i2c,                   /* Clear STA and SI flag */
+				(RFLPC_I2C_FLAG_STA | RFLPC_I2C_FLAG_SI));
+	break;
 
-      /*************************************************************************
-       * Status 0x20: Slave address and W bit has been transmitted. NOT ACK has
-       *              been received. A STOP condition will be transmitted.
-       */
-    case 0x20:
-      RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);       /* Set STO flag */
-      RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
-      return status;
+	/*************************************************************************
+	 * Status 0x20: Slave address and W bit has been transmitted. NOT ACK has
+	 *              been received. A STOP condition will be transmitted.
+	 */
+      case 0x20:
+	RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);       /* Set STO flag */
+	RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
+	return status;
 
-      /*************************************************************************
-       * Status 0x28: Data has been transmitted. ACK has been received. If the
-       *              transmitted data was the last data byte then transmit a
-       *              STOP condition, otherwise transmit the next data byte.
-       */
-    case 0x28:
-      if (nbytes > 0) { 
-	/* There is remaining bytes to be transmitted, then we need to send next
-	 * byte of data. */
-	RFLPC_I2C_WRITE_DAT (i2c, *data);              /* Write byte to I2DAT */
-	nbytes -= 1;                                    /* Update bytes count */
-	data += 1;                                     /* Update data pointer */
-	RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);     /* Clear SI flag */
-      }
-      else {
-	/* Last bytes just has been transmitted. Now, we need to know which 
-	   condition to transmit next. */
-	if (stop) {
-	  /* Send a STOP condition */
-	  RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);   /* Set STO flag */
+	/*************************************************************************
+	 * Status 0x28: Data has been transmitted. ACK has been received. If the
+	 *              transmitted data was the last data byte then transmit a
+	 *              STOP condition, otherwise transmit the next data byte.
+	 */
+      case 0x28:
+	if (nbytes > 0) { 
+	  /* There is remaining bytes to be transmitted, then we need to send next
+	   * byte of data. */
+	  RFLPC_I2C_WRITE_DAT (i2c, *data);              /* Write byte to I2DAT */
+	  nbytes -= 1;                                    /* Update bytes count */
+	  data += 1;                                     /* Update data pointer */
+	  RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);     /* Clear SI flag */
 	}
 	else {
-	  /* Send a repeated START condition */
-	  RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);   /* Set STA flag */
+	  /* Last bytes just has been transmitted. Now, we need to know which 
+	     condition to transmit next. */
+	  if (stop) {
+	    /* Send a STOP condition */
+	    RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);   /* Set STO flag */
+	  }
+	  else {
+	    /* Send a repeated START condition */
+	    RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);   /* Set STA flag */
+	  }
+
+	  RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);   /* Clear SI flag */
+
+	  return 0;
 	}
+	break;
 
-	RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);   /* Clear SI flag */
+	/*************************************************************************
+	 * Status 0x30: Data has been transmitted. NOT ACK has been received. A
+	 *    	      STOP condition will be transmitted.
+	 */
+      case 0x30:
+	RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);       /* Set STO flag */
+	RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
+	return status;
 
-	return 0;
+	/*************************************************************************
+	 * Status 0x38: Arbitration has been lost during Slave address + W or
+	 *   	      data. The bus has been released and not addressed Slave 
+	 *              mode is entered. A new START condition will be transmitted
+	 *              when the bus is free again.
+	 */
+      case 0x38:
+	RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);       /* Set STA flag */
+	RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
+	break;
       }
-      break;
 
-      /*************************************************************************
-       * Status 0x30: Data has been transmitted. NOT ACK has been received. A
-       *    	      STOP condition will be transmitted.
-       */
-    case 0x30:
-      RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);       /* Set STO flag */
-      RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
-      return status;
-
-      /*************************************************************************
-       * Status 0x38: Arbitration has been lost during Slave address + W or
-       *   	      data. The bus has been released and not addressed Slave 
-       *              mode is entered. A new START condition will be transmitted
-       *              when the bus is free again.
-       */
-    case 0x38:
-      RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);       /* Set STA flag */
-      RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
-      break;
+      /* Wait for SI flag to be set */
+      do { } while ((i2c->conf_addr->I2CONSET & RFLPC_I2C_FLAG_SI) == 0);
     }
-
-    /* Wait for SI flag to be set */
-    do { } while ((i2c->conf_addr->I2CONSET & RFLPC_I2C_FLAG_SI) == 0);
+  }
+  else {
+    
   }
 
   return -1;
@@ -249,8 +259,12 @@ int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t n
 
   while ((status = RFLPC_I2C_READ_STAT (i2c))) {
     /* Dump this status */
-    /* printf("0x%x ", status); */
+    printf("0x%x ", status);
+    lcd_refresh();
 
+    /* rflpc_led_binary_value(status & 0x0F); */
+    /* rflpc_led_binary_value(status & 0xF0); */
+    
     switch (status) {
       /*************************************************************************
        * Status 0xF8: The interrupt flag SI is not yet set. This occurs
@@ -259,8 +273,13 @@ int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t n
        *              transfer has been started yet.
        */
     case 0xF8:
-      RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);        /* Set STA bit */
+      if (_mode == RFLPC_I2C_MODE_MASTER)
+	RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STA);      /* Set STA bit */
       break;
+
+      /*************************************************************************
+       *                           MASTER MODE STATUS
+       ************************************************************************/
 
       /*************************************************************************
       * Status 0x08: START condition has been transmitted. Slave address and
@@ -272,9 +291,9 @@ int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t n
       break;
 
       /*************************************************************************
-      * Status 0x10: Repeated START condition has been transmitted. Slave
-      * 	     address and R bit will now be transmitted.
-      */
+       * Status 0x10: Repeated START condition has been transmitted. Slave
+       * 	     address and R bit will now be transmitted.
+       */
     case 0x10:
       RFLPC_I2C_WRITE_DAT (i2c, (addr | 1));                /* Write to I2DAT */
       RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
@@ -346,6 +365,29 @@ int rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, uint8_t *data, uint8_t n
 
       RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
       return 0;
+
+      /*************************************************************************
+       *                            SLAVE MODE STATUS
+       ************************************************************************/
+
+      /*************************************************************************
+      * Status 0x60: Own SLA+W has been received. ACK has been returned.
+      */
+    case 0x60:
+      printf("(0x%x) ", RFLPC_I2C_READ_DAT (i2c));
+      RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_AA);       /* Set AA flag */      
+      RFLPC_I2C_WRITE_CONCLR (i2c, RFLPC_I2C_FLAG_SI);       /* Clear SI flag */
+      break;
+
+    case 0x70:
+
+      return 0;
+
+    case 0x80:
+      printf("(0x%x) ", RFLPC_I2C_READ_DAT (i2c));
+      rflpc_led_binary_value(RFLPC_I2C_READ_DAT (i2c));
+      return 0;
+
     }
     
     /* Wait for SI flag to be set */

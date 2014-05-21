@@ -45,7 +45,7 @@ typedef enum {
 /** Defines the operating mode of the I2C bus. */
 typedef enum { 
   RFLPC_I2C_MODE_MASTER, 
-  /* RFLPC_I2C_MODE_SLAVE */
+  RFLPC_I2C_MODE_SLAVE
 } rflpc_i2c_mode_t;
 
 /** Inits a given I2C port on a given mode.
