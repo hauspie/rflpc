@@ -31,6 +31,7 @@
 #include <stdint.h>
 
 /** @addtogroup adc ADC
+ * Analog-To-Digital Converter driver
  * @ingroup drivers
  * @{
  */
