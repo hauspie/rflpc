@@ -618,11 +618,4 @@ void rflpc_i2c_set_slave_transmitter_config(uint8_t *data, uint8_t size)
   _slave_transmitter_config.size = size;
 }
 
-int rflpc_i2c_get_status(rflpc_i2c_port_t port)
-{
-  const rflpc_i2c_config_t *i2c = &_config[port];
-  return RFLPC_I2C_READ_STAT (i2c);
-}
-
-
 #endif

@@ -122,10 +122,6 @@ uint16_t rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr,
  */
 void rflpc_i2c_set_slave_transmitter_config(uint8_t *data, uint8_t size);
 
-/** DEVELOPMENT PURPOSE ONLY: Send back the status of specified i2c port.
- */
-int rflpc_i2c_get_status(rflpc_i2c_port_t port);
-
 /** @} */
 
 #endif /* ENABLE_I2C */
