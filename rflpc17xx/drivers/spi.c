@@ -38,7 +38,7 @@
 #define MISO1_PIN  RFLPC_PIN_P0_8
 #define MOSI1_PIN  RFLPC_PIN_P0_9
 
-void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t data_size_transfert, uint8_t clock_prescale, uint8_t serial_clock_rate)
+void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider_t cpu_clock_divider, uint8_t data_size_transfert, uint8_t clock_prescale, uint8_t serial_clock_rate, uint8_t clock_polarity_phase)
 {
    LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);
    
@@ -66,6 +66,14 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
 
    /* user manual p. 422. Set the data transfert size */
    spi_base->CR0 = ((data_size_transfert - 1) & 0xF);
+
+   /* Set CPHA = 1 if needed */
+   if (clock_polarity_phase & 0x01)
+     RFLPC_SET_BIT(spi_base->CR0, 7);
+   /* Set CPOL = 1 if needed */
+   if (clock_polarity_phase & 0x02)
+     RFLPC_SET_BIT(spi_base->CR0, 6);
+
    /* No loop back, enable ssp controler */
    spi_base->CR1 = (1UL << 1);
    if (mode == RFLPC_SPI_SLAVE)
