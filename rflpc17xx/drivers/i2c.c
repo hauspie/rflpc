@@ -401,6 +401,8 @@ uint16_t rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr,
       /*************************************************************************
        * Status 0x48: Slave address + R has been transmitted. NOT ACK has been
        *  	      received. A STOP condition will be transmitted.
+       *
+       * TODO: Handle case with STOP followed by START. User manual P.458
        */
     case 0x48:
       RFLPC_I2C_WRITE_CONSET (i2c, RFLPC_I2C_FLAG_STO);   /* Set the STO flag */
