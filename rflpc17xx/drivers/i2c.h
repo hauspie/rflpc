@@ -27,10 +27,10 @@
 
 #ifdef RFLPC_CONFIG_ENABLE_I2C
 
-#include <stddef.h> /* size_t */
 #include <stdint.h> /* uint8_t */
 
 /** @addtogroup i2c I2C
+ * Provides functions for I2C bus manipulation.
  * @ingroup drivers
  * @{
  */
@@ -59,21 +59,21 @@ typedef enum {
   RFLPC_I2C_SLAVE_TRANSMITTED_DATA,
   RFLPC_I2C_UNKNOWN_ERROR,
   RFLPC_I2C_NOT_YET_IMPLEMENTED
-} rflpc_i2c_status;
+} rflpc_i2c_status_t;
 
-/** Inits a given I2C port on a given mode.
+/** 
+ * Inits a given I2C port on a given mode.
+ *
  * @param port The I2C port to initialize (cf. ::rflpc_i2c_port_t)
  * @param mode The I2C mode to use (cf. ::rflpc_i2c_mode_t)
  * @param addr If Slave mode is requested, this parameter is the I2C address of 
- *             the initialized port. If the least significant bit is set, the
- *             device will answer to the general call address (0).
  * @return If initialization was successful, returns 0. Else, returns -1.
  * @note The port is configured to operate at 100kHz (standard mode).
  * @note At this time, ONLY MASTER MODE is allowed and functionnal.
  */
-int rflpc_i2c_init(rflpc_i2c_port_t port, rflpc_i2c_mode_t mode, uint8_t addr);
+extern int rflpc_i2c_init(rflpc_i2c_port_t port, rflpc_i2c_mode_t mode, uint8_t addr);
 
-/** Send bytes from data in Write mode on the I2C driver.
+/** Send bytes on the I2C bus.
  * @param [in] port The I2C port to write on.
  * @param [in] addr The I2C address of the slave to which the message will be sent.
  *                  This parameter has no effect if Slave mode is set.
@@ -84,13 +84,13 @@ int rflpc_i2c_init(rflpc_i2c_port_t port, rflpc_i2c_mode_t mode, uint8_t addr);
  * @return Returns a 16-bits value. The 8 MSBs store the final status of I2C
  *         action. The 8 LSBs store the effective number of bytes transmitted.
  */
-uint16_t rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr, 
-			 uint8_t *data, uint8_t nbytes, uint8_t stop);
+extern uint16_t rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr, 
+				uint8_t *data, uint8_t nbytes, uint8_t stop);
 
-/** Reads data buffer from i2c port.
+/** Reads data from the I2C bus.
  * @param [in] port The I2C port to read on.
  * @param [in] addr The I2C address of the slave from which a message will be read.
- * @param [in] data A pointer to a data buffer when the message will be stored.
+ * @param [in] data A pointer to a data buffer where the message will be stored.
  * @param [in] nbytes The expected number of bytes to be received.
  * @param [in] stop If equal to zero, the driver will send a RESTART condition
  *                  instead of a STOP condition at the end of transmission.
@@ -98,21 +98,21 @@ uint16_t rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr,
  *         action. The 8 LSBs store the effective number of bytes transmitted.
  *
  * @note In Slave mode, in case of receiving a Read command, this driver will
- *       automatically switch to rflpc_i2c_write to transmit data. Data to be
- *       transmitted can be set using the rflpc_i2c_set_slave_transmitter_config
+ *       automatically switch to ::rflpc_i2c_write to transmit data. Data to be
+ *       transmitted can be set using the ::rflpc_i2c_set_slave_transmitter_config
  *       function.
  *       If this Slave to Master transmission is successful, the 8 MSBs of the
  *       returned value will store the RFLPC_I2C_SLAVE_TRANSMITTED_DATA specific
  *       status, and the 8 LSBs of the returned value will store the number of
  *       bytes transmitted, matching the number of bytes to transmit as set with
- *       rflpc_i2c_set_slave_transmitter_config. 
+ *       ::rflpc_i2c_set_slave_transmitter_config. 
  *       If this Slave to Master transmission fails, the returned value will be
- *       the returned value of the internal call of rflpc_i2c_write, which is
- *       similar as an external call. See documentation of rflpc_i2c_status for
+ *       the returned value of the internal call of ::rflpc_i2c_write, which is
+ *       similar as an external call. See documentation of ::rflpc_i2c_status_t for
  *       more informations.
  */
-uint16_t rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, 
-			uint8_t *data, uint8_t nbytes, uint8_t stop);
+extern uint16_t rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr, 
+			       uint8_t *data, uint8_t nbytes, uint8_t stop);
 
 /** Set data's location and size to be transmitted as slave.
  * @param [in] data A pointer to the data to be transmitted.
@@ -120,9 +120,10 @@ uint16_t rflpc_i2c_read(rflpc_i2c_port_t port, uint8_t addr,
  *
  * @note Size must be greater than zero. If not, this function has no effect.
  */
-void rflpc_i2c_set_slave_transmitter_config(uint8_t *data, uint8_t size);
+extern void rflpc_i2c_set_slave_transmitter_config(uint8_t *data, uint8_t size);
 
 /** @} */
 
 #endif /* ENABLE_I2C */
+
 #endif
