@@ -16,9 +16,6 @@
 
 /*
   Author: Christophe Bacara <christophe.bacara@etudiant.univ-lille1.fr
-  Created: 2014-01-29
-
-  DAC driver for LPC.
 */
 
 #ifdef RFLPC_CONFIG_ENABLE_DAC

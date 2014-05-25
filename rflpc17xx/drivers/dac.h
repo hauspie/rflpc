@@ -23,9 +23,6 @@
 
 /*
   Author: Christophe Bacara <christophe.bacara@etudiant.univ-lille1.fr
-  Created: 2014-01-29
-
-  DAC driver for LPC.
 */
 
 #ifdef RFLPC_CONFIG_ENABLE_DAC
@@ -33,6 +30,7 @@
 #include <rflpc17xx/rflpc17xx.h>
 
 /** @addtogroup dac DAC
+ * Digital-To-Analog Converter driver
  * @ingroup drivers
  * @{
  */
@@ -54,7 +52,8 @@ extern void rflpc_dac_init(rflpc_pin_t pin, uint8_t clock_divider);
  */
 static inline void rflpc_dac_write(uint16_t value)
 {
-  RFLPC_SET_BITS_VAL (DAC_BASE->DACR, 6, (value & 0x3FF), 10);
+  LPC_DAC_TypeDef *dac_base = (LPC_DAC_TypeDef *)LPC_DAC_BASE;
+  RFLPC_SET_BITS_VAL (dac_base->DACR, 6, (value & 0x3FF), 10);
 }
 
 #endif /* RFLPC_CONFIG_ENABLE_DAC */
