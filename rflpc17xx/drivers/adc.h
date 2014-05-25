@@ -23,9 +23,6 @@
 
 /*
   Author: Christophe Bacara <christophe.bacara@etudiant.univ-lille1.fr
-  Created: 2014-01-27
-
-  ADC driver for LPC.
 */
 
 #ifdef RFLPC_CONFIG_ENABLE_ADC
@@ -38,26 +35,10 @@
  * @{
  */
 
-/* ADC Pins */
-#define RFLPC_ADC0_PIN     RFLPC_PIN_P0_23
-#define RFLPC_ADC1_PIN     RFLPC_PIN_P0_24
-#define RFLPC_ADC2_PIN     RFLPC_PIN_P0_25
-#define RFLPC_ADC3_PIN     RFLPC_PIN_P0_26
-#define RFLPC_ADC4_PIN     RFLPC_PIN_P1_30
-#define RFLPC_ADC5_PIN     RFLPC_PIN_P1_31
-#define RFLPC_ADC6_PIN     RFLPC_PIN_P0_3
-#define RFLPC_ADC7_PIN     RFLPC_PIN_P0_2
-
 /** Used to select which ADC port to use */
 typedef enum rflpc_adc_channel_e {
   AD0_0 = 0, AD0_1, AD0_2, AD0_3, AD0_4, AD0_5, AD0_6, AD0_7
 } rflpc_adc_channel_t;
-
-/* AD Data Register masks */
-#define ADC_ADDR_OVERRUN_FLAG 0x40000000
-#define ADC_ADDR_DONE_FLAG    0x80000000
-/* Base pointer to A/D Converter registers */
-#define ADC_BASE              ((LPC_ADC_TypeDef *) LPC_ADC_BASE)
 
 /**
  * Returns the ADC channel corresponding to the specified pin.
@@ -69,26 +50,22 @@ typedef enum rflpc_adc_channel_e {
 static inline rflpc_adc_channel_t rflpc_adc_get_pin_channel(rflpc_pin_t pin)
 {
   switch (pin) {
-  case RFLPC_ADC0_PIN:
+  case RFLPC_PIN_P0_23:
     return AD0_0;
-  case RFLPC_ADC1_PIN:
+  case RFLPC_PIN_P0_24:
     return AD0_1;
-  case RFLPC_ADC2_PIN:
+  case RFLPC_PIN_P0_25:
     return AD0_2;
-  case RFLPC_ADC3_PIN:
+  case RFLPC_PIN_P0_26:
     return AD0_3;
-  case RFLPC_ADC4_PIN:
+  case RFLPC_PIN_P1_30:
     return AD0_4;
-  case RFLPC_ADC5_PIN:
+  case RFLPC_PIN_P1_31:
     return AD0_5;
-  case RFLPC_ADC6_PIN:
+  case RFLPC_PIN_P0_3:
     return AD0_6;
-  case RFLPC_ADC7_PIN:
+  case RFLPC_PIN_P0_2:
     return AD0_7;
-
-    /* Error case (TODO: Find something better) */
-  default:
-    return AD0_0;
   }
 }
 
@@ -128,6 +105,10 @@ extern void rflpc_adc_burst_enable_channel(rflpc_pin_t pin,
 
 /**
  * Start ADC burst mode.
+ *
+ * @note This function actually starts the driver with burst mode enabled.
+ *       Please check you have previously enabled all the adc channels you want
+ *       to be sampled.
  */
 extern void rflpc_adc_burst_start();
 
@@ -140,7 +121,8 @@ extern void rflpc_adc_burst_start();
  */
 static inline void rflpc_adc_sample_channel(rflpc_adc_channel_t channel)
 {
-  RFLPC_SET_BITS_VAL (ADC_BASE->ADCR, 24, 0x01, 3);
+  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+  RFLPC_SET_BITS_VAL (adc_base->ADCR, 24, 0x01, 3);
 }
 
 /**
@@ -157,8 +139,10 @@ static inline void rflpc_adc_sample_channel(rflpc_adc_channel_t channel)
  */
 static inline uint16_t rflpc_adc_read_channel(rflpc_adc_channel_t channel)
 {
+  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+
   /* Shift our ADDR pointer according to channel */
-  const volatile uint32_t *addrp = &ADC_BASE->ADDR0 + channel;
+  const volatile uint32_t *addrp = &adc_base->ADDR0 + channel;
 
   uint32_t addr = 0;		/* Register value */
   uint16_t result = 0;		/* Returned result */
@@ -173,7 +157,7 @@ static inline uint16_t rflpc_adc_read_channel(rflpc_adc_channel_t channel)
   result = (addr >> 4) & 0xFFF;
 
   /* Store OVERRUN flag at MSB */
-  if (addr & ADC_ADDR_OVERRUN_FLAG)
+  if (addr & 0x40000000)
     RFLPC_SET_BIT (result, 15);
 
   return result;
@@ -181,8 +165,6 @@ static inline uint16_t rflpc_adc_read_channel(rflpc_adc_channel_t channel)
 
 /**
  * Read the last converted value of any ADC channel, using global data register.
- *
- * TODO: Handle channel value to return
  *
  * @return The last converted value by any channel.
  *
@@ -194,27 +176,27 @@ static inline uint16_t rflpc_adc_read_channel(rflpc_adc_channel_t channel)
  */
 static inline uint16_t rflpc_adc_read_global()
 {
+  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
   uint32_t adgdr = 0;		/* Register value */
   uint16_t result = 0;		/* Returned value */
 
   do { /* Wait until conversion done */
-  } while ((ADC_BASE->ADGDR & 0x80000000) != 0x80000000);
+  } while ((adc_base->ADGDR & 0x80000000) != 0x80000000);
 
   /* Read AD Global Data Register */
-  adgdr = ADC_BASE->ADGDR;
+  adgdr = adc_base->ADGDR;
 
   /* Result is stored on 12 bits */
   result = (adgdr >> 4) & 0xFFF;
 
-  /* /\* Store (3 bits) channel from which the value has been sampled *\/ */
-  /* result |= (adgdr >> 24) & 0x07; */
+  /* Store (3 bits) channel from which the value has been sampled */
+  result |= (adgdr >> 24) & 0x07;
 
-  /* /\* Store OVERRUN flag at MSB *\/ */
-  /* if (adgdr & ADC_ADDR_OVERRUN_FLAG) */
-  /*   RFLPC_SET_BIT (result, 15); */
+  /* Store OVERRUN flag at MSB */
+  if (adgdr & 0x40000000)
+    RFLPC_SET_BIT (result, 15);
 
   return result;
-
 }
 
 #endif /* RFLPC_CONFIG_ENABLE_ADC */

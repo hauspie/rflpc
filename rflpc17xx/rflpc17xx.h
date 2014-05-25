@@ -282,5 +282,6 @@
 #include "drivers/uart.h"
 #include "drivers/dma.h"
 #include "drivers/pwm.h"
+#include "drivers/adc.h"
 
 #endif

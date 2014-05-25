@@ -36,6 +36,8 @@ struct {
 
 void rflpc_adc_init(rflpc_pin_t pin, rflpc_adc_channel_t channel, uint8_t clock_divider)
 {
+  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+
   /* Pin initialization: ADC, pull-up, no open drain */
   rflpc_pin_set(pin, PINFUNC_ADC, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
 
@@ -45,17 +47,19 @@ void rflpc_adc_init(rflpc_pin_t pin, rflpc_adc_channel_t channel, uint8_t clock_
   /* Set APB clock down to 13Mhz */
   RFLPC_SET_BITS_VAL (LPC_SC->PCLKSEL0, 24, RFLPC_CCLK_8, 2);
   /* Set CLK divider to down clock if needed */
-  RFLPC_SET_BITS_VAL (ADC_BASE->ADCR, 8, clock_divider, 8);
+  RFLPC_SET_BITS_VAL (adc_base->ADCR, 8, clock_divider, 8);
 
   /* Select channel to be sampled */
-  RFLPC_SET_BIT (ADC_BASE->ADCR, channel);
+  RFLPC_SET_BIT (adc_base->ADCR, channel);
 
   /* Power up A/D Converter */
-  RFLPC_SET_BIT(ADC_BASE->ADCR, 21);
+  RFLPC_SET_BIT(adc_base->ADCR, 21);
 }
 
 void rflpc_adc_burst_init(uint8_t clock_divider, rflpc_irq_handler_t handler)
 {
+  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+
   /* Enable ADC support */
   RFLPC_SET_BIT (LPC_SC->PCONP, 12);
 
@@ -63,7 +67,7 @@ void rflpc_adc_burst_init(uint8_t clock_divider, rflpc_irq_handler_t handler)
   RFLPC_SET_BITS_VAL (LPC_SC->PCLKSEL0, 24, RFLPC_CCLK_8, 2);
 
   /* Set CLK divider to down clock if needed */
-  RFLPC_SET_BITS_VAL (ADC_BASE->ADCR, 8, clock_divider, 8);
+  RFLPC_SET_BITS_VAL (adc_base->ADCR, 8, clock_divider, 8);
 
   /* Enable interrupts if handler has been specified */
   if (handler != NULL) {
@@ -79,11 +83,13 @@ void rflpc_adc_burst_init(uint8_t clock_divider, rflpc_irq_handler_t handler)
 
 void rflpc_adc_burst_enable_channel(rflpc_pin_t pin, rflpc_adc_channel_t channel)
 {
+  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+  
   /* Initialize pin: ADC, Pull-up, no open drain */
   rflpc_pin_set(pin, PINFUNC_ADC, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
 
   /* Enable channel */
-  RFLPC_SET_BIT (ADC_BASE->ADCR, channel);
+  RFLPC_SET_BIT (adc_base->ADCR, channel);
 
   /* Add channel to burst control struct internal mask */
   rflpc_adc_burst_control.enabled_channels |= channel;
@@ -91,6 +97,8 @@ void rflpc_adc_burst_enable_channel(rflpc_pin_t pin, rflpc_adc_channel_t channel
 
 void rflpc_adc_burst_start()
 {
+  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+
   uint8_t mask = 0x80;
   int8_t channel = 7;
 
@@ -108,14 +116,14 @@ void rflpc_adc_burst_start()
     /* If at least one channel is enabled, enable interrupt on the one 
        previously found */
     if (channel >= 0)
-      RFLPC_SET_BIT (ADC_BASE->ADINTEN, channel);
+      RFLPC_SET_BIT (adc_base->ADINTEN, channel);
   }
 
   /* Power up A/D converter */
-  RFLPC_SET_BIT (ADC_BASE->ADCR, 21);
+  RFLPC_SET_BIT (adc_base->ADCR, 21);
 
   /* Set burst mode */
-  RFLPC_SET_BIT (ADC_BASE->ADCR, 16);
+  RFLPC_SET_BIT (adc_base->ADCR, 16);
 }
 
 #endif /* RFLPC_CONFIG_ENABLE_ADC */
