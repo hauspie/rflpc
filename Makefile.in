@@ -14,7 +14,7 @@ LDFLAGS=$(shell $(RFLPC_DIR)/rflpc-config --libs) $(ADD_LIBS)
 MBED_PATH=$(shell mount | grep MBED | cut -d\  -f3)
 # If your mount command is not completly compliant with the linux one, you can try to use awk instead of cut
 #MBED_PATH=$(shell mount | grep MBED | awk '{ print $$3 }')
-
+MBED_TTY=$(shell ls /dev/ttyACM*)
 ELF=$(OUTPUT_NAME).elf
 BIN=$(OUTPUT_NAME).bin
 
@@ -35,6 +35,9 @@ mrproper: clean
 
 program: $(BIN)
 	cp $+ $(MBED_PATH) && sync
+
+reset:
+	$(RFLPC_DIR)/tools/send_break $(MBED_TTY)
 
 dump: $(ELF)
 	$(OBJDUMP) -sSt $^
