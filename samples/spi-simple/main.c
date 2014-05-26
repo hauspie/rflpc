@@ -75,9 +75,9 @@ int main()
     configure_timer();
     printf("SPI simple sample build on %s %s\r\n", __DATE__, __TIME__);
     /* Init master SPI, set the SPI clock to 12 Mhz / (60*2) = 100 kHz */
-    rflpc_spi_init(MASTER_SPI, RFLPC_SPI_MASTER, RFLPC_CCLK_8, 8, 60, 2);
+    rflpc_spi_init(MASTER_SPI, RFLPC_SPI_MASTER, RFLPC_CCLK_8, 8, 60, 2, 0);
     /* Init slave SPI */
-    rflpc_spi_init(SLAVE_SPI, RFLPC_SPI_SLAVE, RFLPC_CCLK_8, 8, 0, 0);
+    rflpc_spi_init(SLAVE_SPI, RFLPC_SPI_SLAVE, RFLPC_CCLK_8, 8, 0, 0, 0);
     
     if (use_interrupt)
     {

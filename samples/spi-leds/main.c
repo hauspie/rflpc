@@ -61,7 +61,7 @@ void test_spi()
    needed_divider /= serial_clock_rate_divider;
    printf("Computed clock: %d (%d %d) \r\n", spi_peripheral_clock / (needed_divider * serial_clock_rate_divider), needed_divider, serial_clock_rate_divider);
 
-   rflpc_spi_init(SPI_PORT, RFLPC_SPI_MASTER, RFLPC_CCLK_8, 8, needed_divider, serial_clock_rate_divider);
+   rflpc_spi_init(SPI_PORT, RFLPC_SPI_MASTER, RFLPC_CCLK_8, 8, needed_divider, serial_clock_rate_divider, 0);
 
    
    for (i = 0 ; i < 64 ; ++i)
