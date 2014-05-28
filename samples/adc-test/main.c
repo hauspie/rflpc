@@ -37,9 +37,9 @@ void test_adc_burst_with_interruptions();
 int main()
 {
    rflpc_uart_init(RFLPC_UART0);
-   test_adc_simple();
+   /* test_adc_simple(); */
    /* test_adc_burst(); */
-   /* test_adc_burst_with_interruptions(); */
+   test_adc_burst_with_interruptions();
 
    return 0;
 }
@@ -52,8 +52,7 @@ void test_adc_simple()
 
    while (1) {
       rflpc_adc_sample_channel(channel);
-      if (rflpc_adc_read_channel(channel) == 0)
-         printf("0 on ADC\r\n");
+      printf("%d\r\n", rflpc_adc_read_channel(channel));
 
       /* Do something (binary value on leds, lcd dump ?) */
    }
@@ -83,8 +82,7 @@ void test_adc_burst()
       result2 = rflpc_adc_read_channel(channel2);
 
       /* Do something (binary value on leds, lcd dump ?) */
-      if (result1 > result2)
-         printf("ADC1 > ADC2\r\n");
+      printf("%d %d\r\n", result1, result2);
    }
 }
 
@@ -98,9 +96,7 @@ RFLPC_IRQ_HANDLER adc_burst_interrupt_handler(void)
    result1 = rflpc_adc_read_channel(test_channel1);
    result2 = rflpc_adc_read_channel(test_channel2);
 
-   /* Do something (binary value on leds, lcd dump ?) */
-   if (result1 > result2)
-      printf("ADC1 > ADC2\r\n");
+   printf("%d %d\r\n", result1, result2);
 }
 
 void test_adc_burst_with_interruptions()
