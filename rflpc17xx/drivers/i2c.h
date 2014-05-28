@@ -35,6 +35,7 @@
  * @{
  */
 
+
 /** These constants selects which port the driver functions manipulate. */
 typedef enum { 
    RFLPC_I2C_PORT0, 
