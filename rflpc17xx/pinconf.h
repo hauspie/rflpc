@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-19 16:05:24 (hauspie)>
+  Time-stamp: <2014-05-28 16:58:46 (hauspie)>
 
   Provides macro to set pin function and modes
 */
@@ -46,7 +46,9 @@ typedef uint8_t rflpc_pin_t;
 /** Can be used to create a rflpc_pin_t from a port index and a pin index */
 #define RFLPC_PIN_MAKE(port, pin) ((port) << 5 | (pin))
 
+/** Returns the X part of the PX_Y form pin description (i.e. GPIO PORT) */
 #define RFLPC_PIN_GET_PORT(pin) (((pin) >> 5) & 0x7)
+/** Returns the Y part of the PX_Y form pin description (i.e. the PIN number of a gpio port) */
 #define RFLPC_PIN_GET_PIN(pin) ((pin) & 0x1F)
 
 /** Shortcuts macro for all pins */
@@ -168,6 +170,6 @@ typedef enum
  * @param mode The pin mode (see ::rflpc_pin_mode_t)
  * @param opendrain Control the open drain mode for pins used as output. 0 for normal mode (no open drain), 1 for open drain.
  **/
-void rflpc_pin_set(rflpc_pin_t p, int function, rflpc_pin_mode_t mode, int opendrain);
+void rflpc_pin_set(rflpc_pin_t pin, int function, rflpc_pin_mode_t mode, int opendrain);
 /** @} */
 #endif

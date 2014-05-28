@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-03-01 13:29:36 (hauspie)>
+  Time-stamp: <2014-05-28 16:59:16 (hauspie)>
 */
 #ifndef __RFLPC_LEDS_H__
 #define __RFLPC_LEDS_H__
@@ -48,7 +48,7 @@
 /** @} */
 
 
-/** Inits the GPIO port to use the leds. Sets the ::RFLPC_LED_PORT led pins to output
+/** Inits the GPIO port to use the leds.
  * pins */
 static inline void rflpc_led_init()
 {

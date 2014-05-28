@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created:
- Time-stamp: <2014-05-28 15:22:35 (hauspie)>
+ Time-stamp: <2014-05-28 17:01:43 (hauspie)>
  */
 #ifndef __RFLPC_RFLPC17XX_H__
 #define __RFLPC_RFLPC17XX_H__
@@ -28,10 +28,12 @@
  * 
  * This library is hosted at github: http://github.com/hauspie/rflpc. It is released under GPL licence.
  * @section Authors
- * - Original author: Michael Hauspie <tt>\<michael.hauspie@lifl.fr\></tt>
+ * - Original author: Michael Hauspie <tt>\<michael DOT hauspie AT univ-lille1 DOT fr\></tt>
  * - Additional contributors:
  * 	- Thomas Soete (although not directly, some code parts are directly inspired by his)
  * 	- François Serman (did the refactored UART driver)
+ * 	- Gregory Guche (implemented the eeprom write functions)
+ * 	- Christophe Bacara (implemented the ADC, DAC and I2C drivers)
  * 
  * More documentation:
  * - @ref start

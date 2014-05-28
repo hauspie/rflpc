@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-12-20 12:38:52 (hauspie)>
+  Time-stamp: <2014-05-28 16:59:51 (hauspie)>
 */
 /** @file
  * Debug functions such as delay and stack dump.
@@ -64,6 +64,7 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
 
 /** Stores the content of a register in var
     @param var an uint32_t variable which will be used to store the register
+    @param reg the register to get
 */
 #define RFLPC_ARM_GET_REGISTER(reg, var) do {			\
 	__ASM volatile ("MOV %0, "#reg"\n" : "=r" ((var)));	\
