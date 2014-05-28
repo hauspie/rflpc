@@ -27,20 +27,19 @@
 
 uint8_t libboard_lm75b_init()
 {
+   uint8_t temp_register_pointer = 0;
    rflpc_i2c_init(LM75B_I2C_PORT, RFLPC_I2C_MODE_MASTER, 0);
+   /* Switch the pointer register of the lm75 to temperature register */
+   rflpc_i2c_write(LM75B_I2C_PORT, LM75B_I2C_ADDR, &temp_register_pointer, 1, 0);
    return 0;
 }
 
 int16_t libboard_lm75b_get_temp()
 {
-   uint8_t addr = LM75B_TEMP_ADDR;
    uint8_t r[2] = { 0, 0 };
    uint16_t temp = 0;
 
-   if (rflpc_i2c_write(LM75B_I2C_PORT, LM75B_I2C_ADDR, &addr, 1, 0))
-      return -250;
-   if (rflpc_i2c_read(LM75B_I2C_PORT, LM75B_I2C_ADDR, r, 2, 1))
-      return -251;
+   rflpc_i2c_read(LM75B_I2C_PORT, LM75B_I2C_ADDR, r, 2, 1);
 
    /* Temperature is 11 bits long, and stored at MSBs. We first need to shift
       the value, and then, apply the following formula :
@@ -49,9 +48,10 @@ int16_t libboard_lm75b_get_temp()
       else
       T(°C) = -(2's complement of temp) x 0.125
    */
-   temp = ((r[0] << 8) | (r[1] & ~(0x31))) >> 5;
-   if (temp & 0x400)
-      temp = ~temp + 1;
+   temp = (r[0] << 3) | (r[1] >> 5);
+   printf("%x %x %x\r\n", r[0], r[1], temp);
+   if (temp & 0x400) /* bit 11 is 1 -> negative value, extend the sign bits */
+      temp |= 0xF800;
    temp = temp >> 3; /* For now, just divide by 8 and store resulting integer */
    
    return temp;
