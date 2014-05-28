@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created:
- Time-stamp: <2014-05-28 14:55:07 (hauspie)>
+ Time-stamp: <2014-05-28 15:22:35 (hauspie)>
  */
 #ifndef __RFLPC_RFLPC17XX_H__
 #define __RFLPC_RFLPC17XX_H__
@@ -65,12 +65,12 @@
  *      - Repetitive Interrupt Timer
  *      - System Tick Timer
  *      - General purpose Timers
+ *      - I2C
  *      - UART
  * @subsection missing What is missing?
  *
  * A lot of stuff ! Mainly the remainder of drivers for the other devices such as
  * - CAN
- * - DAC/ADC
  * - PWM
  * - ...
  * @subsection use What is using this library ?
@@ -284,5 +284,6 @@
 #include "drivers/pwm.h"
 #include "drivers/adc.h"
 #include "drivers/dac.h"
+#include "drivers/i2c.h"
 
 #endif
