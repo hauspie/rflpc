@@ -27,7 +27,7 @@
 
 #ifdef RFLPC_CONFIG_ENABLE_DAC
 
-#include <rflpc17xx/rflpc17xx.h>
+#include "../rflpc17xx.h"
 
 /** @addtogroup dac DAC
  * Digital-To-Analog Converter driver
@@ -40,10 +40,12 @@
 /**
  * Initializes the Digital To Analog Converter.
  *
- * @param pin The desired pin for DAC.
  * @param clock_divider The divider applied to CPU clock.
+ *
+ * @note The DAC is only connected on pin P0.26, thus the init cannot
+ * change the pin. On the MBED it corresponds to the DIP18 pin
  */
-extern void rflpc_dac_init(rflpc_pin_t pin, uint8_t clock_divider);
+extern void rflpc_dac_init(uint8_t clock_divider);
 
 /**
  * Set the value of DAC register.
