@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created:
- Time-stamp: <2012-12-17 15:14:43 (hauspie)>
+ Time-stamp: <2014-05-28 14:55:07 (hauspie)>
  */
 #ifndef __RFLPC_RFLPC17XX_H__
 #define __RFLPC_RFLPC17XX_H__
@@ -283,5 +283,6 @@
 #include "drivers/dma.h"
 #include "drivers/pwm.h"
 #include "drivers/adc.h"
+#include "drivers/dac.h"
 
 #endif
