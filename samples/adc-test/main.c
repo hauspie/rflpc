@@ -36,87 +36,90 @@ void test_adc_burst_with_interruptions();
 
 int main()
 {
-  test_adc_simple();
-  /* test_adc_burst(); */
-  /* test_adc_burst_with_interruptions(); */
+   rflpc_uart_init(RFLPC_UART0);
+   test_adc_simple();
+   /* test_adc_burst(); */
+   /* test_adc_burst_with_interruptions(); */
 
-  return 0;
+   return 0;
 }
 void test_adc_simple()
 {
-  rflpc_adc_channel_t channel;
-  uint16_t result;
+   rflpc_adc_channel_t channel;
 
-  channel = rflpc_adc_get_pin_channel(ADC_TEST_PIN1);
-  rflpc_adc_init(ADC_TEST_PIN1, channel, RFLPC_CCLK);
+   channel = rflpc_adc_get_pin_channel(ADC_TEST_PIN1);
+   rflpc_adc_init(ADC_TEST_PIN1, channel, RFLPC_CCLK);
 
-  while (1) {
-    rflpc_adc_sample_channel(channel);
-    result = rflpc_adc_read_channel(channel);
+   while (1) {
+      rflpc_adc_sample_channel(channel);
+      if (rflpc_adc_read_channel(channel) == 0)
+         printf("0 on ADC\r\n");
 
-    /* Do something (binary value on leds, lcd dump ?) */
-  }
+      /* Do something (binary value on leds, lcd dump ?) */
+   }
 }
 
 
 void test_adc_burst()
 {
-  rflpc_adc_channel_t channel1, channel2;
-  uint16_t result1 = 0, result2 = 0;
+   rflpc_adc_channel_t channel1, channel2;
 
-  /* Initialize burst mode WITHOUT interruptions generation */
-  rflpc_adc_burst_init(RFLPC_CCLK, NULL);
+   /* Initialize burst mode WITHOUT interruptions generation */
+   rflpc_adc_burst_init(RFLPC_CCLK, NULL);
 
-  channel1 = rflpc_adc_get_pin_channel(ADC_TEST_PIN1);
-  channel2 = rflpc_adc_get_pin_channel(ADC_TEST_PIN2);
+   channel1 = rflpc_adc_get_pin_channel(ADC_TEST_PIN1);
+   channel2 = rflpc_adc_get_pin_channel(ADC_TEST_PIN2);
 
-  /* Enable the two tests channels to be sampled in burst mode */
-  rflpc_adc_burst_enable_channel(ADC_TEST_PIN1, channel1);
-  rflpc_adc_burst_enable_channel(ADC_TEST_PIN2, channel2);
+   /* Enable the two tests channels to be sampled in burst mode */
+   rflpc_adc_burst_enable_channel(ADC_TEST_PIN1, channel1);
+   rflpc_adc_burst_enable_channel(ADC_TEST_PIN2, channel2);
 
-  /* Start burst conversions */
-  rflpc_adc_burst_start();
+   /* Start burst conversions */
+   rflpc_adc_burst_start();
 
-  while (1) {
-    result1 = rflpc_adc_read_channel(channel1);
-    result2 = rflpc_adc_read_channel(channel2);
+   while (1) {
+      uint16_t result1, result2;
+      result1 = rflpc_adc_read_channel(channel1);
+      result2 = rflpc_adc_read_channel(channel2);
 
-  /* Do something (binary value on leds, lcd dump ?) */
-  }
+      /* Do something (binary value on leds, lcd dump ?) */
+      if (result1 > result2)
+         printf("ADC1 > ADC2\r\n");
+   }
 }
 
 
 static rflpc_adc_channel_t test_channel1, test_channel2;
 
-void adc_burst_interrupt_handler()
+void adc_burst_interrupt_handler(void)
 {
-  uint16_t result1 = 0, result2 = 0;
+   uint16_t result1 = 0, result2 = 0;
 
-  result1 = rflpc_adc_read_channel(test_channel1);
-  result2 = rflpc_adc_read_channel(test_channel2);
+   result1 = rflpc_adc_read_channel(test_channel1);
+   result2 = rflpc_adc_read_channel(test_channel2);
 
-  /* Do something (binary value on leds, lcd dump ?) */
+   /* Do something (binary value on leds, lcd dump ?) */
+   if (result1 > result2)
+      printf("ADC1 > ADC2\r\n");
 }
 
 void test_adc_burst_with_interruptions()
 {
-  uint16_t result1 = 0, result2 = 0;
+   /* Initialize burst mode with interruptions generation */
+   rflpc_adc_burst_init(RFLPC_CCLK, adc_burst_interrupt_handler);
 
-  /* Initialize burst mode with interruptions generation */
-  rflpc_adc_burst_init(RFLPC_CCLK, &adc_burst_interrupt_handler);
+   test_channel1 = rflpc_adc_get_pin_channel(ADC_TEST_PIN1);
+   test_channel2 = rflpc_adc_get_pin_channel(ADC_TEST_PIN2);
 
-  test_channel1 = rflpc_adc_get_pin_channel(ADC_TEST_PIN1);
-  test_channel2 = rflpc_adc_get_pin_channel(ADC_TEST_PIN2);
+   /* Enable the two tests channels to be sampled in burst mode */
+   rflpc_adc_burst_enable_channel(ADC_TEST_PIN1, test_channel1);
+   rflpc_adc_burst_enable_channel(ADC_TEST_PIN2, test_channel2);
 
-  /* Enable the two tests channels to be sampled in burst mode */
-  rflpc_adc_burst_enable_channel(ADC_TEST_PIN1, test_channel1);
-  rflpc_adc_burst_enable_channel(ADC_TEST_PIN2, test_channel2);
+   /* Start burst conversions */
+   rflpc_adc_burst_start();
 
-  /* Start burst conversions */
-  rflpc_adc_burst_start();
-
-  while (1) {
-    /* Wait for interruptions */
-    asm("wfi");
-  }
+   while (1) {
+      /* Wait for interruptions */
+      asm("wfi");
+   }
 }
