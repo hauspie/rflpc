@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-28 16:59:51 (hauspie)>
+  Time-stamp: <2014-05-29 00:50:31 (mickey)>
 */
 /** @file
  * Debug functions such as delay and stack dump.
@@ -37,18 +37,22 @@ extern unsigned char _stack[RFLPC_STACK_SIZE];
  * Useful macro to use for debuggin purpose.
  * @{ */
 
+
 /** wait until a counter reaches c.
- *  Used to wait some time.
+ *  Used to wait some time. Each loop step needs 3 clock cycle to execute.
+ *  At 96Mhz, a delay of 32 loops is 1 microseconds.
  * @note Depends on CPU frequency
  */
-#define RFLPC_DELAY(c) do {     \
-   int i;uint32_t j;            \
-   for (i=0 ; i < (c) ; ++i)    \
-      j = LPC_SC->SCS;          \
-   /* avoids an unused variable 'j' warning */	\
-   if (j == (c))		\
-       break;			\
-   } while (0)
+#define RFLPC_DELAY(c) do {                     \
+   int i;                                       \
+   for (i=0 ; i < (c) ; ++i)                    \
+      __ASM volatile ("nop");                   \
+} while (0)
+
+/** Wait c micro seconds. 
+    @note This only works at 96Mhz.
+*/
+#define RFLPC_DELAY_MICROSECS(c) RFLPC_DELAY(32*(c))
 
 /** Stops execution by an infinite loop, switching between led pattern l and its opposite. */
 #define RFLPC_STOP(l,c) do {    \

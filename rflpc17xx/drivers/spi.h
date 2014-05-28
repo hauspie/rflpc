@@ -21,7 +21,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-21 09:28:14 (hauspie)>
+  Time-stamp: <2014-05-28 23:41:47 (mickey)>
 */
 
 #ifdef RFLPC_CONFIG_ENABLE_SPI
@@ -48,6 +48,18 @@ typedef enum
     RFLPC_SPI_SLAVE,  /**< Use the SPI as slave */
 } rflpc_spi_mode_t;
 
+/** Configure SCL to generate a rising edge clock @see: ::rflpc_spi_init */
+#define RFLPC_SPI_CPOL_RISING_EDGE 0
+/** Configure SCL to generate a falling edge clock @see: ::rflpc_spi_init */
+#define RFLPC_SPI_CPOL_FALLING_EDGE 2
+
+/** Transmit data before first clock edge @see: ::rflpc_spi_init */
+#define RFLPC_SPI_CPHA_PHASE_PIOR_TO_FIRST_EDGE 0
+
+/** Transmit data at first clock edge @see: ::rflpc_spi_init */
+#define RFLPC_SPI_CPHA_PHASE_FIRST_EDGE 1
+
+
 /**
  * Inits the SPI interface in master mode.
  *
@@ -57,7 +69,7 @@ typedef enum
  * @param data_size_transfert the number of bits that are transfered in each frame (only values between 4 and 16bits are supported)
  * @param clock_prescale Factor by which the prescaler divide the peripheral clock. Between 2 and 254. Bit 0 is always read as 0 (only even numbers). Used only for master mode
  * @param serial_clock_rate Number of prescaler-outputs ber bit. This allows to set the SPI tranfert clock. Used only for master mode. 
- * @param clock_polarity_phase Clock polarity and phase. CPOL is bit 1, CPHA is bit 0. Other bits are ignored.
+ * @param clock_polarity_phase Clock polarity and phase. polarity is bit 1, phase is bit 0. Other bits are ignored. Can be constructed as a ORed combination of RFLPC_SPI_CPOL_* and RFLPC_SPI_CPHA_* values
  *
  * @note The final clock used as SCK is then \f[\frac{CPU Clock}{CPUDivider \times ClockPrescale \times SerialClockRate}\f]
  *       In slave mode, the clock_prescale and serial_clock_rate parameters are not used. The clock sent by the master must not exceed 1/12 of the frequency used to clock the SPI peripheral
