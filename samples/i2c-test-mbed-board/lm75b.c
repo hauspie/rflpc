@@ -23,37 +23,36 @@
 
   S = Start condition, D = Slave device address, (N)A = (Not) Acknowledge
   R = Restart condition, SP = Stop condition, r/w = Read/Write bit.
- */
+*/
 
 uint8_t libboard_lm75b_init()
 {
-  rflpc_i2c_init(LM75B_I2C_PORT, RFLPC_I2C_MODE_MASTER, 0);
-
-  return 0;
+   rflpc_i2c_init(LM75B_I2C_PORT, RFLPC_I2C_MODE_MASTER, 0);
+   return 0;
 }
 
 int16_t libboard_lm75b_get_temp()
 {
-  uint8_t addr = LM75B_TEMP_ADDR;
-  uint8_t r[2] = { 0, 0 };
-  uint16_t temp = 0;
+   uint8_t addr = LM75B_TEMP_ADDR;
+   uint8_t r[2] = { 0, 0 };
+   uint16_t temp = 0;
 
-  if (rflpc_i2c_write(LM75B_I2C_PORT, LM75B_I2C_ADDR, &addr, 1, 0))
-    return 0xFFFF;
-  if (rflpc_i2c_read(LM75B_I2C_PORT, LM75B_I2C_ADDR, &r, 2, 1))
-    return 0xFFFF;
+   if (rflpc_i2c_write(LM75B_I2C_PORT, LM75B_I2C_ADDR, &addr, 1, 0))
+      return -250;
+   if (rflpc_i2c_read(LM75B_I2C_PORT, LM75B_I2C_ADDR, r, 2, 1))
+      return -251;
 
-  /* Temperature is 11 bits long, and stored at MSBs. We first need to shift
-     the value, and then, apply the following formula :
-         If temp MSB (bit 11) = 0,
-	    T(°C) = temp x 0.125
-	 else
-	    T(°C) = -(2's complement of temp) x 0.125
-  */
-  temp = ((r[0] << 8) | (r[1] & ~(0x31))) >> 5;
-  if (temp & 0x400)
-    temp = ~temp + 1;
-  temp = temp >> 3; /* For now, just divide by 8 and store resulting integer */
-
-  return temp;
+   /* Temperature is 11 bits long, and stored at MSBs. We first need to shift
+      the value, and then, apply the following formula :
+      If temp MSB (bit 11) = 0,
+      T(°C) = temp x 0.125
+      else
+      T(°C) = -(2's complement of temp) x 0.125
+   */
+   temp = ((r[0] << 8) | (r[1] & ~(0x31))) >> 5;
+   if (temp & 0x400)
+      temp = ~temp + 1;
+   temp = temp >> 3; /* For now, just divide by 8 and store resulting integer */
+   
+   return temp;
 }
