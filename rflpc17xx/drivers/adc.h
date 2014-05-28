@@ -1,4 +1,4 @@
- /* This file is part of rflpc. Copyright 2010-2014 Michael Hauspie
+/* This file is part of rflpc. Copyright 2010-2014 Michael Hauspie
  *
  * rflpc is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@
 
 /** Used to select which ADC port to use */
 typedef enum rflpc_adc_channel_e {
-  AD0_0 = 0, AD0_1, AD0_2, AD0_3, AD0_4, AD0_5, AD0_6, AD0_7
+   AD0_0 = 0, AD0_1, AD0_2, AD0_3, AD0_4, AD0_5, AD0_6, AD0_7, ADC_INVALID_CHANNEL
 } rflpc_adc_channel_t;
 
 /**
@@ -50,24 +50,25 @@ typedef enum rflpc_adc_channel_e {
  */
 static inline rflpc_adc_channel_t rflpc_adc_get_pin_channel(rflpc_pin_t pin)
 {
-  switch (pin) {
-  case RFLPC_PIN_P0_23:
-    return AD0_0;
-  case RFLPC_PIN_P0_24:
-    return AD0_1;
-  case RFLPC_PIN_P0_25:
-    return AD0_2;
-  case RFLPC_PIN_P0_26:
-    return AD0_3;
-  case RFLPC_PIN_P1_30:
-    return AD0_4;
-  case RFLPC_PIN_P1_31:
-    return AD0_5;
-  case RFLPC_PIN_P0_3:
-    return AD0_6;
-  case RFLPC_PIN_P0_2:
-    return AD0_7;
-  }
+   switch (pin) {
+      case RFLPC_PIN_P0_23:
+         return AD0_0;
+      case RFLPC_PIN_P0_24:
+         return AD0_1;
+      case RFLPC_PIN_P0_25:
+         return AD0_2;
+      case RFLPC_PIN_P0_26:
+         return AD0_3;
+      case RFLPC_PIN_P1_30:
+         return AD0_4;
+      case RFLPC_PIN_P1_31:
+         return AD0_5;
+      case RFLPC_PIN_P0_3:
+         return AD0_6;
+      case RFLPC_PIN_P0_2:
+         return AD0_7;
+   }
+   return ADC_INVALID_CHANNEL;
 }
 
 /**
@@ -122,8 +123,8 @@ extern void rflpc_adc_burst_start();
  */
 static inline void rflpc_adc_sample_channel(rflpc_adc_channel_t channel)
 {
-  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
-  RFLPC_SET_BITS_VAL (adc_base->ADCR, 24, 0x01, 3);
+   LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+   RFLPC_SET_BITS_VAL (adc_base->ADCR, 24, 0x01, 3);
 }
 
 /**
@@ -140,28 +141,28 @@ static inline void rflpc_adc_sample_channel(rflpc_adc_channel_t channel)
  */
 static inline uint16_t rflpc_adc_read_channel(rflpc_adc_channel_t channel)
 {
-  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+   LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
 
-  /* Shift our ADDR pointer according to channel */
-  const volatile uint32_t *addrp = &adc_base->ADDR0 + channel;
+   /* Shift our ADDR pointer according to channel */
+   const volatile uint32_t *addrp = &adc_base->ADDR0 + channel;
 
-  uint32_t addr = 0;		/* Register value */
-  uint16_t result = 0;		/* Returned result */
+   uint32_t addr = 0;		/* Register value */
+   uint16_t result = 0;		/* Returned result */
 
-  do { /* Wait until conversion done */
-  } while ((*addrp & 0x80000000) != 0x80000000);
+   do { /* Wait until conversion done */
+   } while ((*addrp & 0x80000000) != 0x80000000);
 
-  /* Read AD Data Register */
-  addr = *addrp;
+   /* Read AD Data Register */
+   addr = *addrp;
 
-  /* Result is stored on 12 bits */
-  result = (addr >> 4) & 0xFFF;
+   /* Result is stored on 12 bits */
+   result = (addr >> 4) & 0xFFF;
 
-  /* Store OVERRUN flag at MSB */
-  if (addr & 0x40000000)
-    RFLPC_SET_BIT (result, 15);
+   /* Store OVERRUN flag at MSB */
+   if (addr & 0x40000000)
+      RFLPC_SET_BIT (result, 15);
 
-  return result;
+   return result;
 }
 
 /**
@@ -177,27 +178,27 @@ static inline uint16_t rflpc_adc_read_channel(rflpc_adc_channel_t channel)
  */
 static inline uint16_t rflpc_adc_read_global()
 {
-  LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
-  uint32_t adgdr = 0;		/* Register value */
-  uint16_t result = 0;		/* Returned value */
+   LPC_ADC_TypeDef *adc_base = (LPC_ADC_TypeDef *)LPC_ADC_BASE;
+   uint32_t adgdr = 0;		/* Register value */
+   uint16_t result = 0;		/* Returned value */
 
-  do { /* Wait until conversion done */
-  } while ((adc_base->ADGDR & 0x80000000) != 0x80000000);
+   do { /* Wait until conversion done */
+   } while ((adc_base->ADGDR & 0x80000000) != 0x80000000);
 
-  /* Read AD Global Data Register */
-  adgdr = adc_base->ADGDR;
+   /* Read AD Global Data Register */
+   adgdr = adc_base->ADGDR;
 
-  /* Result is stored on 12 bits */
-  result = (adgdr >> 4) & 0xFFF;
+   /* Result is stored on 12 bits */
+   result = (adgdr >> 4) & 0xFFF;
 
-  /* Store (3 bits) channel from which the value has been sampled */
-  result |= (adgdr >> 24) & 0x07;
+   /* Store (3 bits) channel from which the value has been sampled */
+   result |= (adgdr >> 24) & 0x07;
 
-  /* Store OVERRUN flag at MSB */
-  if (adgdr & 0x40000000)
-    RFLPC_SET_BIT (result, 15);
+   /* Store OVERRUN flag at MSB */
+   if (adgdr & 0x40000000)
+      RFLPC_SET_BIT (result, 15);
 
-  return result;
+   return result;
 }
 
 #endif /* RFLPC_CONFIG_ENABLE_ADC */
