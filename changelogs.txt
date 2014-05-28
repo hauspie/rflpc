@@ -1,3 +1,5 @@
+Next release:
+	- Adds ADC driver
 0.13:
 	- Fixes some ethernet drivers issues
 0.12:
