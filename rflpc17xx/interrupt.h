@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:35:39 (hauspie)>
+  Time-stamp: <2014-05-28 14:20:01 (hauspie)>
 */
 
 /** @file
@@ -59,7 +59,7 @@ static inline void rflpc_irq_disable(IRQn_Type irq)
 }
 
 /** Interrupt handler type */
-typedef void (*rflpc_irq_handler_t)();
+typedef void (*rflpc_irq_handler_t)(void);
 
 /** Define to use to declare a IRQ handler */
 #define RFLPC_IRQ_HANDLER void __attribute__((interrupt("IRQ")))
