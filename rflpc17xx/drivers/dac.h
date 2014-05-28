@@ -52,8 +52,8 @@ extern void rflpc_dac_init(rflpc_pin_t pin, uint8_t clock_divider);
  */
 static inline void rflpc_dac_write(uint16_t value)
 {
-  LPC_DAC_TypeDef *dac_base = (LPC_DAC_TypeDef *)LPC_DAC_BASE;
-  RFLPC_SET_BITS_VAL (dac_base->DACR, 6, (value & 0x3FF), 10);
+   LPC_DAC_TypeDef *dac_base = (LPC_DAC_TypeDef *)LPC_DAC_BASE;
+   RFLPC_SET_BITS_VAL (dac_base->DACR, 6, (value & 0x3FF), 10);
 }
 
 #endif /* RFLPC_CONFIG_ENABLE_DAC */

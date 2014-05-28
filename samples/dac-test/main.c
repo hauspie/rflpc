@@ -23,32 +23,32 @@
 
 void sleep_us(uint32_t us)
 {
-  uint32_t delay, counter;
+   uint32_t delay, counter;
 
-  for (delay = (16 * us), counter = 0; counter < delay; ++counter)
-    asm("");  
+   for (delay = (16 * us), counter = 0; counter < delay; ++counter)
+      asm("");  
 }
 
 int main()
 {
-  /* Plug-in a pair of earphones ! */
+   /* Plug-in a pair of earphones ! */
 
-  uint8_t flag;
+   uint8_t flag;
 
-  while (1) {
-    if (flag) {
-      rflpc_dac_write(0);
-      flag = 0;
-    }
-    else {
-      rflpc_dac_write(2048);
-      flag = 1;
-    }
+   while (1) {
+      if (flag) {
+         rflpc_dac_write(0);
+         flag = 0;
+      }
+      else {
+         rflpc_dac_write(2048);
+         flag = 1;
+      }
 
-    sleep_us(2272); /* Some 440 Hz */
-  }
+      sleep_us(2272); /* Some 440 Hz */
+   }
 
-  while (1);
+   while (1);
 
-  return 0;
+   return 0;
 }

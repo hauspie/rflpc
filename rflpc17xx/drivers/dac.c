@@ -29,8 +29,8 @@
 
 void rflpc_dac_init(rflpc_pin_t pin, uint8_t clock_divider)
 {
-  rflpc_pin_set(MBED_DIP18, PINFUNC_DAC, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-  RFLPC_SET_BITS_VAL (LPC_SC->PCLKSEL0, 22, clock_divider, 2);
+   rflpc_pin_set(MBED_DIP18, PINFUNC_DAC, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+   RFLPC_SET_BITS_VAL (LPC_SC->PCLKSEL0, 22, clock_divider, 2);
 }
 
 #endif /* RFLPC_CONFIG_ENABLE_DAC */
