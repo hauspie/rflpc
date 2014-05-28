@@ -79,11 +79,11 @@ static inline rflpc_adc_channel_t rflpc_adc_get_pin_channel(rflpc_pin_t pin)
  * @param clock_divider The divider applied to APB peripheral clock.
  *
  * @note This function actually starts the driver.
- * @note APB peripheral clock is set by default at 13MHz.
+ * @note APB peripheral clock is set by default at 13MHz, because the maximum sample clock is 13Mhz anyway.
  */
 extern void rflpc_adc_init(rflpc_pin_t pin,
 			   rflpc_adc_channel_t channel,
-			   uint8_t clock_divider);
+			   rflpc_clock_divider_t clock_divider);
 
 /**
  * Initializes the Analog/Digital converter for Burst Mode. 
@@ -94,7 +94,7 @@ extern void rflpc_adc_init(rflpc_pin_t pin,
  * @note This function DOES NOT actually starts the driver 
  *       (see rflpc_adc_burst_start()).
  */
-extern void rflpc_adc_burst_init(uint8_t clock_divider, rflpc_irq_handler_t handler);
+extern void rflpc_adc_burst_init(rflpc_clock_divider_t clock_divider, rflpc_irq_handler_t handler);
 
 /**
  * Enable an ADC channel to be sampled in burst mode.
