@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import sys,termios
 
@@ -6,10 +6,10 @@ if len(sys.argv) < 2:
     sys.stderr.write("Usage: {} <tty_file>\n".format(sys.argv[0]))
     sys.exit(1)
 
-
 for tty in sys.argv[1:]:
     try:
-    	fd = open(tty)
+        fd = open(tty)
+        print("Reseting MBED on {0}".format(tty))
         termios.tcsendbreak(fd,0)
     except IOError as e:
         sys.stderr.write("Cannot open " + tty + ": " + e.strerror + "\n")
