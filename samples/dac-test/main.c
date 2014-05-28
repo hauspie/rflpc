@@ -19,8 +19,6 @@
 
 #include <rflpc17xx/rflpc17xx.h>
 
-#include <rflpc17xx/drivers/dac.h>
-
 void sleep_us(uint32_t us)
 {
    uint32_t delay, counter;
@@ -32,8 +30,9 @@ void sleep_us(uint32_t us)
 int main()
 {
    /* Plug-in a pair of earphones ! */
+   uint8_t flag = 0;
+   rflpc_dac_init(RFLPC_CCLK_8);
 
-   uint8_t flag;
 
    while (1) {
       if (flag) {
@@ -41,7 +40,7 @@ int main()
          flag = 0;
       }
       else {
-         rflpc_dac_write(2048);
+         rflpc_dac_write(0x3ff);
          flag = 1;
       }
 
