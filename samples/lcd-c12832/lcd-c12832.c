@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 01:05:37 (mickey)>
+  Time-stamp: <2014-05-29 01:25:54 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -31,14 +31,18 @@ static rflpc_spi_t _spi_port;
 
 static int _get_pre_scale_value(void)
 {
-   int pre_scale = 1;
+   int pre_scale = 12;
    /* The LCD display can be driven using an SPI clock of maximum 20Mhz (min period 50ns, see datasheet). 
       To make things easier, we set the serial clock rate at 1, so that 1 bit is transmited for each clock edge.
       We clock the SPI at full speed to ensure calculations are good, but it should be make better to avoid
       clocking to much.
+
+      We start at 12 because, according to LPC datasheet, clock sent
+      by master must not exceed 1/12 of the spi clock
     */
    while ((rflpc_clock_get_system_clock() / pre_scale) > 20000000)
-      pre_scale++;
+      pre_scale+=2;
+   printf("pre_scale: %d\r\n", pre_scale);
    return pre_scale;
 }
 
