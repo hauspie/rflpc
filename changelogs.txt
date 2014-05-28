@@ -1,4 +1,5 @@
 Next release:
+	- Adds DAC driver
 	- Adds ADC driver
 0.13:
 	- Fixes some ethernet drivers issues
