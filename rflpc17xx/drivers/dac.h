@@ -35,8 +35,6 @@
  * @{
  */
 
-#define DAC_BASE      ((LPC_DAC_TypeDef *) LPC_DAC_BASE)
-
 /**
  * Initializes the Digital To Analog Converter.
  *
@@ -54,8 +52,7 @@ extern void rflpc_dac_init(uint8_t clock_divider);
  */
 static inline void rflpc_dac_write(uint16_t value)
 {
-   LPC_DAC_TypeDef *dac_base = (LPC_DAC_TypeDef *)LPC_DAC_BASE;
-   RFLPC_SET_BITS_VAL (dac_base->DACR, 6, (value & 0x3FF), 10);
+   RFLPC_SET_BITS_VAL (LPC_DAC->DACR, 6, (value & 0x3FF), 10);
 }
 
 #endif /* RFLPC_CONFIG_ENABLE_DAC */
