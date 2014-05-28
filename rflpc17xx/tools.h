@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-12-17 10:28:30 (hauspie)>
+  Time-stamp: <2014-05-28 23:10:09 (mickey)>
 
   This file contains some macro tools used in rflpc
 
@@ -48,5 +48,10 @@
     (val) &= ~mask;							\
     (val) |= ((bit_val) << (bit_pos)) & mask;				\
 } while(0)
+
+/** Switch the CM3 to wait for interrupt mode (wfi asm instruction).
+    This allow the CM3 to 'sleep' while waiting for interrupt instead waiting with a b .
+*/
+#define rflpc_idle asm volatile ("wfi")
 
 #endif
