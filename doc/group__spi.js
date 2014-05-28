@@ -9,7 +9,7 @@ var group__spi =
       [ "RFLPC_SPI1", "group__spi.html#ggacd0981a3c68e5b6af8c07d7638cb9156a741648e677756a1b0a630b3d6944a384", null ]
     ] ],
     [ "rflpc_spi_get_base_addr", "group__spi.html#gaafcca6b7f7909fff39ba58b75c701e57", null ],
-    [ "rflpc_spi_init", "group__spi.html#gabd4125872b2ec4da410f8f0446e3f47a", null ],
+    [ "rflpc_spi_init", "group__spi.html#gaf687030edb3b815769eccdfedabc7f30", null ],
     [ "rflpc_spi_read", "group__spi.html#ga976b4ee1c4153eab4f477257371998a1", null ],
     [ "rflpc_spi_rx_fifo_empty", "group__spi.html#ga0080a0144c29fba657836ed20916ee9f", null ],
     [ "rflpc_spi_set_rx_callback", "group__spi.html#ga1054c25b01b178e15055f90667199a8e", null ],

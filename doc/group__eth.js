@@ -1,15 +1,15 @@
 var group__eth =
 [
     [ "rflpc_eth_descriptor_t", "structrflpc__eth__descriptor__t.html", [
-      [ "control", "structrflpc__eth__descriptor__t.html#ae45a50fb32e3ce25a5802290397dfe7e", null ],
+      [ "control", "structrflpc__eth__descriptor__t.html#aa7c7d070bda7fd6412e54e38aa72cd67", null ],
       [ "packet", "structrflpc__eth__descriptor__t.html#ac93c678c8423af948096ac5e5c8085fd", null ]
     ] ],
     [ "rflpc_eth_rx_status_t", "structrflpc__eth__rx__status__t.html", [
-      [ "status_hash_crc", "structrflpc__eth__rx__status__t.html#a8bce302027e1fd2343ef971783807b3f", null ],
-      [ "status_info", "structrflpc__eth__rx__status__t.html#acb6cbccb75a46eae2026c704e4c7d2d2", null ]
+      [ "status_hash_crc", "structrflpc__eth__rx__status__t.html#ab10e3f40acb25fb22a82ce717bade9b5", null ],
+      [ "status_info", "structrflpc__eth__rx__status__t.html#a8bc80ca890c92891bdd76181a724c889", null ]
     ] ],
     [ "rflpc_eth_tx_status_t", "structrflpc__eth__tx__status__t.html", [
-      [ "status_info", "structrflpc__eth__tx__status__t.html#a5d75e6895fd2c1fcd82972bd2b044d20", null ]
+      [ "status_info", "structrflpc__eth__tx__status__t.html#ae458e5c57cca05938a3f4b13abf7d679", null ]
     ] ],
     [ "RFLPC_ETH_LINK_MODE_100FD", "group__eth.html#ga250b55f95bb7d9c45f813c1f6275577a", null ],
     [ "RFLPC_ETH_LINK_MODE_100HD", "group__eth.html#ga27a5eb1d19d3122a7bdbc1babf84511d", null ],
@@ -81,5 +81,5 @@ var group__eth =
     [ "rflpc_eth_set_mac_address", "group__eth.html#ga2633bf7b80203a508a27023ca48ec075", null ],
     [ "rflpc_eth_set_rx_base_addresses", "group__eth.html#ga47f9acbab027c73f5f672caeb8343871", null ],
     [ "rflpc_eth_set_tx_base_addresses", "group__eth.html#ga582b528c504ffe38890f4c655b2084cb", null ],
-    [ "rflpc_eth_set_tx_control_word", "group__eth.html#gad8f2bfd64ec7401b1d19df89bd34ecfb", null ]
+    [ "rflpc_eth_set_tx_control_word", "group__eth.html#ga95b90b3dc333549210c5959b8e0f7fac", null ]
 ];

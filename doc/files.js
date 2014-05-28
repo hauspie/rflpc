@@ -1,14 +1,16 @@
 var files =
 [
+    [ "adc.h", "adc_8h.html", "adc_8h" ],
     [ "clock.h", "clock_8h.html", "clock_8h" ],
     [ "config-mbed.h", "config-mbed_8h.html", "config-mbed_8h" ],
-    [ "config-options.h", "config-options_8h_source.html", null ],
     [ "config.h", "config_8h.html", "config_8h" ],
+    [ "dac.h", "dac_8h.html", "dac_8h" ],
     [ "debug.h", "debug_8h.html", "debug_8h" ],
     [ "dma.h", "dma_8h.html", "dma_8h" ],
     [ "eth_const.h", "eth__const_8h.html", "eth__const_8h" ],
     [ "ethernet.h", "ethernet_8h.html", "ethernet_8h" ],
     [ "gpio.h", "gpio_8h.html", "gpio_8h" ],
+    [ "i2c.h", "i2c_8h.html", "i2c_8h" ],
     [ "iap.h", "iap_8h.html", "iap_8h" ],
     [ "interrupt.h", "interrupt_8h.html", "interrupt_8h" ],
     [ "leds.h", "leds_8h.html", "leds_8h" ],
