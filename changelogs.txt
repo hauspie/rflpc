@@ -1,4 +1,5 @@
 Next release:
+	- Adds I2C driver
 	- Adds DAC driver
 	- Adds ADC driver
 0.13:
