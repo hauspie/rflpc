@@ -49,7 +49,6 @@ int16_t libboard_lm75b_get_temp()
       T(°C) = -(2's complement of temp) x 0.125
    */
    temp = (r[0] << 3) | (r[1] >> 5);
-   printf("%x %x %x\r\n", r[0], r[1], temp);
    if (temp & 0x400) /* bit 11 is 1 -> negative value, extend the sign bits */
       temp |= 0xF800;
    temp = temp >> 3; /* For now, just divide by 8 and store resulting integer */
