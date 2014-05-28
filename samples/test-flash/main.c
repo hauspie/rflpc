@@ -16,7 +16,7 @@
 /*
   Author: Gregory Guche <gregory.guche@lifl.fr>
   Created:
-  Time-stamp: <2013-12-17 11:32:32 (hauspie)>
+  Time-stamp: <2014-05-28 22:58:52 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -303,7 +303,7 @@ int main() {
 
 
     /* Sector is 8. @see NXP's user manual to set the sector accordingly with the address */
-    address = 0x9000/*(uint8_t*)(&_text_end + (&_data_end - &_data_start))*/;
+    address = (uint8_t*)0x9000/*(uint8_t*)(&_text_end + (&_data_end - &_data_start))*/;
     sector  = rflpc_iap_get_sector_from_address(address);
     printf("Address is %p Sector is %d\r\n", address, sector);
 

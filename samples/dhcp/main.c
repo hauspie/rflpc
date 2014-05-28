@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2013-02-25 15:07:06 (hauspie)>
+  Time-stamp: <2014-05-28 22:58:09 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -24,7 +24,6 @@
 #include "protocols.h"
 #include "dhcp.h"
 
-static uint8_t ip[4];
 const static uint8_t _bmac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 #define IP_OFFSET PROTO_MAC_HLEN
