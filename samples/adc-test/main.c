@@ -91,7 +91,7 @@ void test_adc_burst()
 
 static rflpc_adc_channel_t test_channel1, test_channel2;
 
-void adc_burst_interrupt_handler(void)
+RFLPC_IRQ_HANDLER adc_burst_interrupt_handler(void)
 {
    uint16_t result1 = 0, result2 = 0;
 
