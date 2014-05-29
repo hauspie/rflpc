@@ -16,18 +16,36 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 01:25:54 (mickey)>
+  Time-stamp: <2014-05-29 15:07:25 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
 
-/* Data sheet available at: http://www.newhavendisplay.com/specs/NHD-C12832A1Z-FSW-FBW-3V3.pdf for 'easy' interface
+/* Data sheet available at: http://www.newhavendisplay.com/specs/NHD-C12832A1Z-FSW-FBW-3V3.pdf for spi interface
    http://www.newhavendisplay.com/app_notes/ST7565R.pdf for full controller */
 
 
 static rflpc_pin_t _reset_pin;
 static rflpc_pin_t _a0_pin;
+static rflpc_pin_t _cs_pin;
 static rflpc_spi_t _spi_port;
+
+/** Controler commands */
+#define LCD_TURN_OFF() _lcd_cmd(0xAE)
+#define LCD_TURN_ON()  _lcd_cmd(0xAF)
+
+/* Selectss a page, but do not change the column */
+#define LCD_SELECT_PAGE(p) _lcd_cmd((0xB0 | ((p) & 0xf)))
+/* Selects a column */
+#define LCD_SELECT_COLUMN(c) do { _lcd_cmd(0x10 | (((c) >> 4) &0xf)); _lcd_cmd((c) & 0xf); } while(0)
+/* Starts a page. Selects the page AND switch to column 0 */
+#define LCD_START_PAGE(p) do {LCD_SELECT_PAGE((p)); LCD_SELECT_COLUMN(0); } while (0)
+
+/* Select power mode */
+#define LCD_POWER_MODE(booster, regulator, follower) _lcd_cmd(0x28 | (((booster) & 1) << 2) | (((regulator) & 1) << 1) | (((follower) & 1)))
+
+#define LCD_ALL_PIXELS_ON() _lcd_cmd(0xA5)
+#define LCD_ALL_PIXELS_OFF() _lcd_cmd(0xA4)
 
 static int _get_pre_scale_value(void)
 {
@@ -50,43 +68,82 @@ static int _get_pre_scale_value(void)
 static void _lcd_cmd(uint8_t cmd)
 {
    rflpc_gpio_clr_pin(_a0_pin);
+   rflpc_gpio_clr_pin(_cs_pin);
    rflpc_spi_write(_spi_port, cmd);
    /* Wait for command to be send */
-   while (! rflpc_spi_rx_fifo_empty(_spi_port));
+   while (! rflpc_spi_idle(_spi_port));
+   rflpc_gpio_set_pin(_cs_pin);
 }
 
-void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_spi_t port)
+static void _lcd_data(uint8_t *data, uint16_t size)
+{
+   rflpc_gpio_set_pin(_a0_pin);
+   rflpc_gpio_clr_pin(_cs_pin);
+   while (size--)
+      rflpc_spi_write(_spi_port, *data++);
+   while (!rflpc_spi_idle(_spi_port));
+   rflpc_gpio_set_pin(_cs_pin);
+}
+
+void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t port)
 {
    
    _reset_pin = reset_pin;
    _a0_pin = a0;
    _spi_port = port;
+   _cs_pin = cs;
 
    /* Inits SPI port */
    /* The LCD needs a falling edge clock and expect transmission to start at the edge, not prior */
    rflpc_spi_init(_spi_port, RFLPC_SPI_MASTER, RFLPC_CCLK, 8, _get_pre_scale_value(), 1, RFLPC_SPI_CPOL_FALLING_EDGE | RFLPC_SPI_CPHA_PHASE_FIRST_EDGE);
    
+   /* The application board is a complete mess regarding the pin connections...
+      They use SPI port 1 for clock and MOSI (fine) but...
+      They use 
+         - p6 for reset which is... MISO of SPI1 (not that bad, but strange anyway)
+         - p11 for SPI CS which is the hardware controled CS of SPI port... 0 ! bingo (grrrrrr). This will force us
+         to manage CS by hand... pffff
+   */
+      
+
+
    /* Inits GPIO pins */
-   rflpc_gpio_set_pin_mode_output(_reset_pin, 0);
-   rflpc_gpio_set_pin_mode_output(_a0_pin,0 );
-   
-   rflpc_gpio_clr_pin(_a0_pin);
-   
+   rflpc_gpio_set_pin_mode_output(_reset_pin, 1);
+   rflpc_gpio_set_pin_mode_output(_a0_pin, 0);
+   rflpc_gpio_set_pin_mode_output(_cs_pin, 1);
+      
 /* Perform a reset, reset is active on low */
    rflpc_gpio_clr_pin(_reset_pin);
-   RFLPC_DELAY_MICROSECS(50); /* trigger reset */
+   RFLPC_DELAY_MICROSECS(10); /* trigger reset, must be low for at least 1 µs, use 10 µs to be sure (ST7565R datasheet, p65) */
    rflpc_gpio_set_pin(_reset_pin);
-   RFLPC_DELAY_MICROSECS(5000); /* 5 ms should be enough for reset to be effective */
+   RFLPC_DELAY_MICROSECS(10); /* Reset time is 1 µs max. Wait for 10 to be sure */
    
-   _lcd_cmd(0xAE); /* Turn LCD off */
-   _lcd_cmd(0xA2); /* Voltage bias ratio to 1/9 */
-   _lcd_cmd(0xA0); /* Set display RAM address SEG output to normal */
-   _lcd_cmd(0xC8); /* Common output mode: normal */
-   _lcd_cmd(0x22); /* Resistace ratio to set 3.5V (p34, table 11 of the ST7565R datasheet) */
-   _lcd_cmd(0x2F); /* Internal power supply operating mode (p31, table 8 of the ST7565R datasheet)*/
-   _lcd_cmd(0x40); /* Set display RAM start line address to 0 */
-   _lcd_cmd(0xAF); /* LCD On */
-   _lcd_cmd(0x81); /* V0 output voltage select */
-   _lcd_cmd(0x17); /* MSB of display RAM column 111 */
-   _lcd_cmd(0xA4); /* Display all point off */
+   /* After hard reset (i.e. with the reset pin, what we just did), the controler is in the following state:
+      1. Display OFF
+      2. Normal display
+      3. ADC select: Normal (ADC command D0 = “L”)
+      4. Power control register: (D2, D1, D0) = (0, 0, 0)
+      5. 4-line SPI interface internal register data clear
+      6. LCD power supply bias rate:
+         1/65 DUTY = 1/9 bias
+         1/49,1/55,1/53 DUTY = 1/8 bias
+         1/33 DUTY = 1/6 bias
+      7. Power saving clear
+      8. V0 voltage regulator internal resistors Ra and Rb separation
+      9. Output conditions of SEG and COM terminals
+         SEG=VSS, COM=VSS
+      10. Read modify write OFF
+      11. Display start line set to first line
+      12. Column address set to Address 0
+      13. Page address set to Page 0
+      14. Common output status normal
+      15. V0 voltage regulator internal resistor ratio set mode clear
+      16. Electronic volume register set mode clear Electronic volume register :
+          (D5, D4, D3, D2, D1, D0) = (1, 0. 0, 0, 0,0)
+      17. Test mode clear 
+   */
+   LCD_POWER_MODE(1,1,1); /* booster on, regulator on, follower on */
+   LCD_START_PAGE(0);
+   LCD_TURN_ON();
+   LCD_ALL_PIXELS_ON();
 }

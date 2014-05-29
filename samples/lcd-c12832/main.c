@@ -16,11 +16,11 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 00:50:08 (mickey)>
+  Time-stamp: <2014-05-29 14:51:46 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
-extern void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_spi_t port);
+extern void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0,rflpc_pin_t cs, rflpc_spi_t port);
     
 int main()
 {
@@ -32,7 +32,7 @@ int main()
     printf("Hello World\r\n");
 #endif
     
-    lcd_init(MBED_DIP6, MBED_DIP8, RFLPC_SPI1);
+    lcd_init(MBED_DIP6, MBED_DIP8, MBED_DIP11, RFLPC_SPI1);
     
 
     while (1)
