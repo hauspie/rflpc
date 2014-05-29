@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created: 2011-10-06
- Time-stamp: <2014-05-28 14:08:47 (hauspie)>
+ Time-stamp: <2014-05-29 14:37:59 (mickey)>
 */
 #ifdef RFLPC_CONFIG_ENABLE_SPI
 
@@ -59,9 +59,9 @@ void rflpc_spi_init(rflpc_spi_t port, rflpc_spi_mode_t mode, rflpc_clock_divider
       RFLPC_SET_BITS_VAL(LPC_SC->PCLKSEL0, 20, cpu_clock_divider, 2);
 
       rflpc_pin_set(SCK1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      /* rflpc_pin_set(MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0); */
+      rflpc_pin_set(MISO1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
       rflpc_pin_set(MOSI1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
-      /* rflpc_pin_set(SSEL1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0); */
+      rflpc_pin_set(SSEL1_PIN, PINFUNC_SPI, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
    }
 
    /* user manual p. 422. Set the data transfert size */

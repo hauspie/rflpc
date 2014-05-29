@@ -21,7 +21,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-28 23:41:47 (mickey)>
+  Time-stamp: <2014-05-29 15:05:59 (mickey)>
 */
 
 #ifdef RFLPC_CONFIG_ENABLE_SPI
@@ -99,6 +99,19 @@ static inline int rflpc_spi_tx_fifo_empty(rflpc_spi_t port)
    LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);
    return spi_base->SR & 1;
 }
+
+/** 
+ * Test if the spi is idle (nor transmiting neither receiving)
+ * This is useful when you need to handle CS by hand
+ * @param port The SPI port to test
+ * @return true if the spi port is idle
+ **/
+static inline int rflpc_spi_idle(rflpc_spi_t port)
+{
+   LPC_SSP_TypeDef *spi_base = rflpc_spi_get_base_addr(port);
+   return ((spi_base->SR & 0x10) == 0);
+}
+
 
 /**
  * Tests if the transmition FIFO is full
