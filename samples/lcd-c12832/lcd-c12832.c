@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 15:07:25 (mickey)>
+  Time-stamp: <2014-05-29 18:30:27 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -36,10 +36,13 @@ static rflpc_spi_t _spi_port;
 
 /* Selectss a page, but do not change the column */
 #define LCD_SELECT_PAGE(p) _lcd_cmd((0xB0 | ((p) & 0xf)))
-/* Selects a column */
+/* Selects start column */
 #define LCD_SELECT_COLUMN(c) do { _lcd_cmd(0x10 | (((c) >> 4) &0xf)); _lcd_cmd((c) & 0xf); } while(0)
+/* Select start line */
+#define LCD_SELECT_LINE(l) _lcd_cmd(0x40 | ((l) & 0x3f))
+
 /* Starts a page. Selects the page AND switch to column 0 */
-#define LCD_START_PAGE(p) do {LCD_SELECT_PAGE((p)); LCD_SELECT_COLUMN(0); } while (0)
+#define LCD_START_PAGE(p) do {LCD_SELECT_PAGE((p)); LCD_SELECT_COLUMN(0); LCD_SELECT_LINE(0); } while (0)
 
 /* Select power mode */
 #define LCD_POWER_MODE(booster, regulator, follower) _lcd_cmd(0x28 | (((booster) & 1) << 2) | (((regulator) & 1) << 1) | (((follower) & 1)))
@@ -47,20 +50,25 @@ static rflpc_spi_t _spi_port;
 #define LCD_ALL_PIXELS_ON() _lcd_cmd(0xA5)
 #define LCD_ALL_PIXELS_OFF() _lcd_cmd(0xA4)
 
+#define LCD_BRIGHTNESS(b) do {   _lcd_cmd(0x81); _lcd_cmd((b) & 0x3f); } while (0)
+
+#define LCD_SOFT_RESET() _lcd_cmd(0xE2)
+
+#define LCD_NOP() _lcd_cmd(0xE3)
+
 static int _get_pre_scale_value(void)
 {
-   int pre_scale = 12;
+   int pre_scale = 6;
    /* The LCD display can be driven using an SPI clock of maximum 20Mhz (min period 50ns, see datasheet). 
       To make things easier, we set the serial clock rate at 1, so that 1 bit is transmited for each clock edge.
       We clock the SPI at full speed to ensure calculations are good, but it should be make better to avoid
       clocking to much.
 
-      We start at 12 because, according to LPC datasheet, clock sent
+      We start at 6 because, according to LPC datasheet, clock sent
       by master must not exceed 1/12 of the spi clock
     */
-   while ((rflpc_clock_get_system_clock() / pre_scale) > 20000000)
+   while ((rflpc_clock_get_system_clock() / (pre_scale*2)) > 20000000)
       pre_scale+=2;
-   printf("pre_scale: %d\r\n", pre_scale);
    return pre_scale;
 }
 
@@ -75,7 +83,7 @@ static void _lcd_cmd(uint8_t cmd)
    rflpc_gpio_set_pin(_cs_pin);
 }
 
-static void _lcd_data(uint8_t *data, uint16_t size)
+static void _lcd_multiple_data(uint8_t *data, uint16_t size)
 {
    rflpc_gpio_set_pin(_a0_pin);
    rflpc_gpio_clr_pin(_cs_pin);
@@ -84,6 +92,16 @@ static void _lcd_data(uint8_t *data, uint16_t size)
    while (!rflpc_spi_idle(_spi_port));
    rflpc_gpio_set_pin(_cs_pin);
 }
+
+static void _lcd_single_data(uint8_t data)
+{
+   rflpc_gpio_set_pin(_a0_pin);
+   rflpc_gpio_clr_pin(_cs_pin);
+   rflpc_spi_write(_spi_port, data);
+   while (!rflpc_spi_idle(_spi_port));
+   rflpc_gpio_set_pin(_cs_pin);
+}
+
 
 void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t port)
 {
@@ -94,8 +112,8 @@ void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t
    _cs_pin = cs;
 
    /* Inits SPI port */
-   /* The LCD needs a falling edge clock and expect transmission to start at the edge, not prior */
-   rflpc_spi_init(_spi_port, RFLPC_SPI_MASTER, RFLPC_CCLK, 8, _get_pre_scale_value(), 1, RFLPC_SPI_CPOL_FALLING_EDGE | RFLPC_SPI_CPHA_PHASE_FIRST_EDGE);
+   /* The LCD needs a falling edge first clock and expect transmission to start at the edge, not prior */
+   rflpc_spi_init(_spi_port, RFLPC_SPI_MASTER, RFLPC_CCLK, 8, _get_pre_scale_value(), 2, RFLPC_SPI_CPOL_FALLING_EDGE | RFLPC_SPI_CPHA_PHASE_FIRST_EDGE);
    
    /* The application board is a complete mess regarding the pin connections...
       They use SPI port 1 for clock and MOSI (fine) but...
@@ -114,9 +132,9 @@ void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t
       
 /* Perform a reset, reset is active on low */
    rflpc_gpio_clr_pin(_reset_pin);
-   RFLPC_DELAY_MICROSECS(10); /* trigger reset, must be low for at least 1 µs, use 10 µs to be sure (ST7565R datasheet, p65) */
+   RFLPC_DELAY_MICROSECS(100); /* trigger reset, must be low for at least 1 µs, use 10 µs to be sure (ST7565R datasheet, p65) */
    rflpc_gpio_set_pin(_reset_pin);
-   RFLPC_DELAY_MICROSECS(10); /* Reset time is 1 µs max. Wait for 10 to be sure */
+   RFLPC_DELAY_MICROSECS(100); /* Reset time is 1 µs max. Wait for 10 to be sure */
    
    /* After hard reset (i.e. with the reset pin, what we just did), the controler is in the following state:
       1. Display OFF
@@ -142,8 +160,12 @@ void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t
           (D5, D4, D3, D2, D1, D0) = (1, 0. 0, 0, 0,0)
       17. Test mode clear 
    */
+   LCD_TURN_OFF();
+   _lcd_cmd(0x22); /* Internal voltage regulator resistance ratio set to have 4V V0 */
    LCD_POWER_MODE(1,1,1); /* booster on, regulator on, follower on */
-   LCD_START_PAGE(0);
    LCD_TURN_ON();
-   LCD_ALL_PIXELS_ON();
+   LCD_ALL_PIXELS_OFF();
+   LCD_START_PAGE(0);
 }
+
+

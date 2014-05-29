@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 14:51:46 (mickey)>
+  Time-stamp: <2014-05-29 18:01:24 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -32,8 +32,11 @@ int main()
     printf("Hello World\r\n");
 #endif
     
+    printf("Start LCD Initialization\r\n");
+
     lcd_init(MBED_DIP6, MBED_DIP8, MBED_DIP11, RFLPC_SPI1);
     
+    printf("LCD Initialized\r\n");
 
     while (1)
        rflpc_idle;
