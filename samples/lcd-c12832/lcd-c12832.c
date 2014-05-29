@@ -16,9 +16,9 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 18:30:27 (mickey)>
+  Time-stamp: <2014-05-29 19:38:48 (mickey)>
 */
-#include <rflpc17xx/rflpc17xx.h>
+#include "lcd-c12832.h"
 
 
 /* Data sheet available at: http://www.newhavendisplay.com/specs/NHD-C12832A1Z-FSW-FBW-3V3.pdf for spi interface
@@ -162,10 +162,37 @@ void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t
    */
    LCD_TURN_OFF();
    _lcd_cmd(0x22); /* Internal voltage regulator resistance ratio set to have 4V V0 */
+   _lcd_cmd(0xc8); /* reverse column fill direction. With this setting, fill is from left to right */
    LCD_POWER_MODE(1,1,1); /* booster on, regulator on, follower on */
    LCD_TURN_ON();
    LCD_ALL_PIXELS_OFF();
    LCD_START_PAGE(0);
 }
 
+void lcd_clear()
+{
+   int i;
+   LCD_START_PAGE(0);
+   for (i = 0 ; i < 128 ; ++i)
+      _lcd_single_data(0);
+   LCD_START_PAGE(1);
+   for (i = 0 ; i < 128 ; ++i)
+      _lcd_single_data(0);
+   LCD_START_PAGE(2);
+   for (i = 0 ; i < 128 ; ++i)
+      _lcd_single_data(0);
+   LCD_START_PAGE(3);
+   for (i = 0 ; i < 128 ; ++i)
+      _lcd_single_data(0);
+}
 
+void lcd_display_buffer(uint8_t *buffer)
+{
+   _lcd_multiple_data(buffer, 128);
+   LCD_START_PAGE(1);
+   _lcd_multiple_data(buffer+128, 128);
+   LCD_START_PAGE(2);
+   _lcd_multiple_data(buffer+256, 128);
+   LCD_START_PAGE(3);
+   _lcd_multiple_data(buffer+384, 128);
+}
