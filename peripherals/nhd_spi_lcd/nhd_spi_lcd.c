@@ -16,9 +16,9 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 19:38:48 (mickey)>
+  Time-stamp: <2014-05-30 09:34:26 (mickey)>
 */
-#include "lcd-c12832.h"
+#include "nhd_spi_lcd.h"
 
 
 /* Data sheet available at: http://www.newhavendisplay.com/specs/NHD-C12832A1Z-FSW-FBW-3V3.pdf for spi interface
@@ -29,6 +29,7 @@ static rflpc_pin_t _reset_pin;
 static rflpc_pin_t _a0_pin;
 static rflpc_pin_t _cs_pin;
 static rflpc_spi_t _spi_port;
+static nhd_display_size_t _display_size;
 
 /** Controler commands */
 #define LCD_TURN_OFF() _lcd_cmd(0xAE)
@@ -103,13 +104,14 @@ static void _lcd_single_data(uint8_t data)
 }
 
 
-void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t port)
+void nhd_spi_lcd_init(nhd_display_size_t display_size, rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t port)
 {
    
    _reset_pin = reset_pin;
    _a0_pin = a0;
    _spi_port = port;
    _cs_pin = cs;
+   _display_size = display_size;
 
    /* Inits SPI port */
    /* The LCD needs a falling edge first clock and expect transmission to start at the edge, not prior */
@@ -169,30 +171,27 @@ void lcd_init(rflpc_pin_t reset_pin, rflpc_pin_t a0, rflpc_pin_t cs, rflpc_spi_t
    LCD_START_PAGE(0);
 }
 
-void lcd_clear()
+#define DISPLAY_SIZE_HEIGHT(d) (((d) >> 8) & 0xff)
+#define DISPLAY_SIZE_WIDTH(d) ((d) & 0xff)
+#define DISPLAY_PAGE_COUNT(d) (DISPLAY_SIZE_HEIGHT((d)) >> 3)
+void nhd_spi_lcd_clear(void)
 {
-   int i;
-   LCD_START_PAGE(0);
-   for (i = 0 ; i < 128 ; ++i)
-      _lcd_single_data(0);
-   LCD_START_PAGE(1);
-   for (i = 0 ; i < 128 ; ++i)
-      _lcd_single_data(0);
-   LCD_START_PAGE(2);
-   for (i = 0 ; i < 128 ; ++i)
-      _lcd_single_data(0);
-   LCD_START_PAGE(3);
-   for (i = 0 ; i < 128 ; ++i)
-      _lcd_single_data(0);
+   int p,i;
+   
+   for (p = 0 ; p < DISPLAY_PAGE_COUNT(_display_size) ; ++p)
+   {
+      LCD_START_PAGE(p);
+      for (i = 0 ; i < DISPLAY_SIZE_WIDTH(_display_size) ; ++i)
+         _lcd_single_data(0);
+   }
 }
 
-void lcd_display_buffer(uint8_t *buffer)
+void nhd_spi_lcd_display_buffer(uint8_t *buffer)
 {
-   _lcd_multiple_data(buffer, 128);
-   LCD_START_PAGE(1);
-   _lcd_multiple_data(buffer+128, 128);
-   LCD_START_PAGE(2);
-   _lcd_multiple_data(buffer+256, 128);
-   LCD_START_PAGE(3);
-   _lcd_multiple_data(buffer+384, 128);
+   int p;
+   for (p = 0 ; p < DISPLAY_PAGE_COUNT(_display_size) ; ++p)
+   {
+      LCD_START_PAGE(p);
+      _lcd_multiple_data(buffer + p*DISPLAY_SIZE_WIDTH(_display_size), DISPLAY_SIZE_WIDTH(_display_size));
+   }
 }
