@@ -1,5 +1,5 @@
 Next release:
-	- Adds a peripherals folder for everything that is not directly included in a LPC17xx
+	- Adds an external_libs folder for everything that is not directly included in a LPC17xx
 	- Adds a peripheral driver for graphic SPI LCD display from NHD
 0.14a:
 	- Fix forgotten one shot patch in SPI driver
