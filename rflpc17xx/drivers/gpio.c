@@ -16,10 +16,10 @@
 #include "gpio.h"
 #include "../tools.h"
 
-void rflpc_gpio_use_pin(rflpc_pin_t pin)
+void rflpc_gpio_use_pin(rflpc_pin_t pin, rflpc_pin_mode_t mode)
 {
     /* Use GPIO function for pin */
-    rflpc_pin_set(pin, 0, 0, 0);
+    rflpc_pin_set(pin, 0, mode, 0);
 }
 
 /* The pointers are const, not what is pointed, hence the const AFTER the '*' */
@@ -36,18 +36,18 @@ static LPC_GPIO_TypeDef * const _gpio_ports[] =
 #define RFLPC_GPIO_BASE(pin) _gpio_ports[RFLPC_PIN_GET_PORT((pin))]
 
 /** Sets a pin to input mode */
-void rflpc_gpio_set_pin_mode_input(rflpc_pin_t pin)
+void rflpc_gpio_set_pin_mode_input(rflpc_pin_t pin, rflpc_pin_mode_t mode)
 {
-    rflpc_gpio_use_pin(pin);
-    RFLPC_CLR_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
+   rflpc_gpio_use_pin(pin, mode);
+   RFLPC_CLR_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
 }
 
 /** Sets a pin to output mode */
 void rflpc_gpio_set_pin_mode_output(rflpc_pin_t pin, uint8_t val)
 {
-    rflpc_gpio_use_pin(pin);
-    rflpc_gpio_set_pin_val(pin, val);
-    RFLPC_SET_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
+   rflpc_gpio_use_pin(pin, RFLPC_PIN_MODE_RESISTOR_PULL_UP);
+   rflpc_gpio_set_pin_val(pin, val);
+   RFLPC_SET_BIT(RFLPC_GPIO_BASE(pin)->FIODIR, RFLPC_PIN_GET_PIN(pin));
 }
 
 /** Set a pin (put a logical 1 on it) */
