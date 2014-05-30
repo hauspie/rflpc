@@ -58,7 +58,7 @@ int main()
   }
 #endif
 
-#ifdef SLAVE
+#ifdef MAKE_SLAVE
   /* Initialize I2C driver */
   rflpc_i2c_init(RFLPC_I2C_PORT2, RFLPC_I2C_MODE_SLAVE, sla);
   /* Set up slave data transmit buffer */
