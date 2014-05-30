@@ -16,15 +16,20 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-29 21:03:48 (mickey)>
+  Time-stamp: <2014-05-30 09:55:41 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
-#include "lcd-c12832.h"
+#include <nhd_spi_lcd.h>
 
 
-uint8_t buffer[512];
+#define WIDTH 128
+#define HEIGHT 32
 
-#define COORD_TO_BYTE(x,y) ((((y)>>3) << 7) + (x))
+#define BUFFER_SIZE (WIDTH * (HEIGHT >> 3))
+
+uint8_t buffer[BUFFER_SIZE];
+
+#define COORD_TO_BYTE(x,y) ((((y)>>3) * WIDTH) + (x))
 #define COORD_TO_BIT(x,y) (((y) & 7))
 
 void set_pixel(uint8_t x, uint8_t y)
@@ -40,8 +45,7 @@ void clr_pixel(uint8_t x, uint8_t y)
 
 void clr_buffer(void)
 {
-   int i;
-   memset(buffer, 0, 512);
+   memset(buffer, 0, BUFFER_SIZE);
 }
 
 int main()
@@ -56,16 +60,16 @@ int main()
     
     printf("Start LCD Initialization\r\n");
 
-    lcd_init(MBED_DIP6, MBED_DIP8, MBED_DIP11, RFLPC_SPI1);
+    nhd_spi_lcd_init(NHD_MAKE_SIZE(WIDTH,HEIGHT), MBED_DIP6, MBED_DIP8, MBED_DIP11, RFLPC_SPI1);
     clr_buffer();
     printf("LCD Initialized\r\n");
 
     {
        int x,y,toggle = 0;
-       for (y = 0 ; y < 32 ; ++y)
+       for (y = 0 ; y < HEIGHT ; ++y)
        {
           toggle = !toggle;
-          for (x = 0 ; x < 128 ; ++x)
+          for (x = 0 ; x < WIDTH ; ++x)
           {
              if ((x%32) == y)
                 set_pixel(x,y);
@@ -75,7 +79,7 @@ int main()
           }
        }
     }
-    lcd_display_buffer(buffer);
+    nhd_spi_lcd_display_buffer(buffer);
 
     while (1)
        rflpc_idle;

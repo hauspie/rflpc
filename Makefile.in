@@ -18,6 +18,10 @@ MBED_TTY=$(shell ls /dev/ttyACM*)
 ELF=$(OUTPUT_NAME).elf
 BIN=$(OUTPUT_NAME).bin
 
+PERIPHERALS_SOURCE=$(foreach peripheral, $(PERIPHERALS), $(wildcard $(RFLPC_DIR)/peripherals/$(peripheral)/*.c))
+CFLAGS+=$(foreach peripheral, $(PERIPHERALS), -I$(RFLPC_DIR)/peripherals/$(peripheral))
+OBJS+=$(PERIPHERALS_SOURCE:.c=.o)
+
 ## Common rules
 all:	$(BIN)
 
@@ -28,7 +32,7 @@ $(ELF): $(OBJS)
 	$(LD) -o $@ $(OBJS) $(LDFLAGS)
 
 clean:
-	$(RM) *.o *~ rflpc.map
+	$(RM) $(OBJS) *~ rflpc.map
 
 mrproper: clean
 	$(RM) $(ELF) $(BIN)
