@@ -1,3 +1,5 @@
+0.14a:
+	- Fix forgotten one shot patch in SPI driver
 0.14:
 	- Adds I2C driver
 	- Adds DAC driver
