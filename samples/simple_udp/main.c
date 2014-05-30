@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-02-14 17:12:19 (hauspie)>
+  Time-stamp: <2014-05-30 09:59:44 (mickey)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 #include "protocol.h"
@@ -56,7 +56,7 @@ void process_packet(uint8_t *buffer, uint16_t buffer_size)
     rflpc_eth_descriptor_t *txd;
     rflpc_eth_tx_status_t *txs;
     uint8_t *ptr, *ptr2;
-    int i;
+
     if (eth_get_type(buffer) != 0x0800)
 	return;
     if (ip4_get_dst(buffer) != my_ip)
@@ -158,8 +158,8 @@ void ethernet_init()
 
 RFLPC_IRQ_HANDLER uart_handler()
 {
-    char c = rflpc_uart_getchar(RFLPC_UART0);
-    rflpc_eth_dump_internals();
+   rflpc_uart_getchar(RFLPC_UART0);
+   rflpc_eth_dump_internals();
 }
 
 int main()
