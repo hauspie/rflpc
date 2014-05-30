@@ -145,8 +145,6 @@ uint16_t rflpc_i2c_write(rflpc_i2c_port_t port, uint8_t addr,
   uint8_t state;                             /* The state of the I2C automata */
   
   while ((state = RFLPC_I2C_READ_STAT (i2c))) {
-    lcd_refresh();
-
     switch (state) {
       /*************************************************************************
        * Status 0xF8: The interrupt flag SI is not yet set. This occurs between
