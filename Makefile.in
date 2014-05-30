@@ -18,9 +18,9 @@ MBED_TTY=$(shell ls /dev/ttyACM*)
 ELF=$(OUTPUT_NAME).elf
 BIN=$(OUTPUT_NAME).bin
 
-PERIPHERALS_SOURCE=$(foreach peripheral, $(PERIPHERALS), $(wildcard $(RFLPC_DIR)/peripherals/$(peripheral)/*.c))
-CFLAGS+=$(foreach peripheral, $(PERIPHERALS), -I$(RFLPC_DIR)/peripherals/$(peripheral))
-OBJS+=$(PERIPHERALS_SOURCE:.c=.o)
+EXTERNAL_LIBS_SOURCE=$(foreach external_lib, $(EXTERNAL_LIBS), $(wildcard $(RFLPC_DIR)/external_libs/$(external_lib)/*.c))
+CFLAGS+=$(foreach external_lib, $(EXTERNAL_LIBS), -I$(RFLPC_DIR)/external_libs/$(external_lib))
+OBJS+=$(EXTERNAL_LIBS_SOURCE:.c=.o)
 
 ## Common rules
 all:	$(BIN)
