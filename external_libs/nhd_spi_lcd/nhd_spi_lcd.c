@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2014-05-30 09:34:26 (mickey)>
+  Time-stamp: <2014-06-02 23:30:39 (mickey)>
 */
 #include "nhd_spi_lcd.h"
 
@@ -61,7 +61,7 @@ static int _get_pre_scale_value(void)
 {
    int pre_scale = 6;
    /* The LCD display can be driven using an SPI clock of maximum 20Mhz (min period 50ns, see datasheet). 
-      To make things easier, we set the serial clock rate at 1, so that 1 bit is transmited for each clock edge.
+      To make things easier, we set the serial clock rate at 2, so that 1 bit is transmited every two clock edge.
       We clock the SPI at full speed to ensure calculations are good, but it should be make better to avoid
       clocking to much.
 
