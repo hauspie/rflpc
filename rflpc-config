@@ -60,7 +60,7 @@ then
     exit 1
 fi
 
-CFLAGS="-mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR "
+CFLAGS="-mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR -ffunction-sections -fdata-sections "
 CFLAGS="$CFLAGS `generate_compile_flags_from_config`"
 
 for arg in $*
@@ -70,7 +70,7 @@ do
 	    echo -n $CFLAGS
 	    ;;
 	--ldflags)
-	    echo -n "-nostdlib -L$RFLPC_DIR/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map "
+	    echo -n "-nostdlib -L$RFLPC_DIR/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map  -Wl,--gc-sections "
 	    ;;
 	--lib)
 	    echo -n "-lrflpc17xx "
