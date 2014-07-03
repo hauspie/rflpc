@@ -1,6 +1,6 @@
 DIRS=config rflpc17xx $(wildcard samples/*)
 
-.PHONY: all doc $(DIRS)
+.PHONY: all doc full_config $(DIRS)
 
 all: $(patsubst %, _all_%, $(DIRS))
 clean: $(patsubst %, _clean_%, $(DIRS))
@@ -21,6 +21,8 @@ $(patsubst %, _mrproper_%, $(DIRS)):
 $(patsubst %, _dump_%, $(DIRS)):
 	make -C $(patsubst _dump_%, %, $@) dump
 
+full_config:
+	make -C config full_config
 doc:
 	make -C doc
 tags:
