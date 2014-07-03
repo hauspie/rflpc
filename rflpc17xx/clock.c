@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2011-07-13 14:18:07 (hauspie)>
+  Time-stamp: <2014-07-03 17:02:11 (hauspie)>
 */
 
 
@@ -104,6 +104,19 @@ void rflpc_clock_init(void)
 #else
     _rflpc_system_clock = (2*RFLPC_CLOCK_PLL_MULTIPLIER*(RFLPC_CLOCK_INTERNAL_OSCILLATOR_FREQUENCY/RFLPC_CLOCK_INPUT_DIVIDER))/RFLPC_CLOCK_CPU_DIVIDER;
 #endif
+
+    /* Configure flash accelerator according to CPU clock (p. 70) */
+    if ( _rflpc_system_clock <= 20000000)
+       LPC_SC->FLASHCFG = 0x3A;
+    else if (_rflpc_system_clock <= 40000000)
+       LPC_SC->FLASHCFG = (1 << 12) | 0x3A;
+    else if (_rflpc_system_clock <= 60000000)
+       LPC_SC->FLASHCFG = (2 << 12) | 0x3A;
+    else if (_rflpc_system_clock <= 80000000)
+       LPC_SC->FLASHCFG = (3 << 12) | 0x3A;
+    else if (_rflpc_system_clock <= 100000000)
+       LPC_SC->FLASHCFG = (4 << 12) | 0x3A;
+
     /* system is now working on PLL0 */
     /* Enables the IRQs */
     rflpc_irq_global_enable();
