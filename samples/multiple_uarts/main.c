@@ -16,27 +16,28 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2015-03-31 11:01:19 (hauspie)>
+  Time-stamp: <2015-03-31 13:34:45 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
 
+#define UART RFLPC_UART2
 
 int main()
 {
    rflpc_uart_init(RFLPC_UART0);
-   rflpc_uart_init(RFLPC_UART3);
+   rflpc_uart_init(UART);
    
    while (1)
    {
       RFLPC_DELAY(1000);
-      printf("Check UART3 (DIP9/10)\r\n");
-      rflpc_uart_putchar(RFLPC_UART3, 'a');
-      rflpc_uart_putchar(RFLPC_UART3, '\r');
-      rflpc_uart_putchar(RFLPC_UART3, '\n');
-      rflpc_uart_putchar(RFLPC_UART3, 'b');
-      rflpc_uart_putchar(RFLPC_UART3, '\r');
-      rflpc_uart_putchar(RFLPC_UART3, '\n');
+      printf("Check UART2 (DIP27/28)\r\n");
+      rflpc_uart_putchar(UART, 'a');
+      rflpc_uart_putchar(UART, '\r');
+      rflpc_uart_putchar(UART, '\n');
+      rflpc_uart_putchar(UART, 'b');
+      rflpc_uart_putchar(UART, '\r');
+      rflpc_uart_putchar(UART, '\n');
    }
    return 0;
 }
