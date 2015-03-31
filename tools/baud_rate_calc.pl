@@ -93,7 +93,7 @@ if ($pclk % (16 * $br))
     } while ($fr < 1.1 || $fr > 1.9);
     foreach my $k (keys(%div))
     {
-        if (abs($fr-$k) < 0.01)
+        if (abs($fr-$k) < 0.005)
         {
             print("DIVADD/MULVAL = " . $div{$k}." (computed fr: $fr)\n");
             last;
