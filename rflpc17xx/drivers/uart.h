@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2012-03-21 09:10:57 (hauspie)>
+  Time-stamp: <2015-03-31 16:52:13 (hauspie)>
 */
 #ifndef __RFLPC_UART_H__
 #define __RFLPC_UART_H__
@@ -56,6 +56,19 @@ typedef enum {
  * @note at the moment, -1 is returned if the CPU is not clocked at 96Mhz
  **/
 extern int rflpc_uart_init(rflpc_uart_t uart_num);
+
+
+/**
+ * Inits the UART e, using 8 bits data, no parity and 1 stop bit.
+ * The baud rate is computed from dll, dlm, divadd and mulval.
+ * you can use the baud_rate_calc.pl script in the tools folder to generate
+ * the values for the desired baud rate
+ *
+ * @return 0 if init is successful, -1 otherwise
+ * @note at the moment, -1 is returned if the CPU is not clocked at 96Mhz
+ **/
+extern int rflpc_uart_init_ex(rflpc_uart_t uart_num, int dll, int dlm, int divadd, int mulval);
+
 
 /** Sends a byte to the uart.
  *  @param uart_num the uart to use

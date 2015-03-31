@@ -96,7 +96,7 @@ char rflpc_uart_getchar(rflpc_uart_t uart_num)
    UART rate will then be set to 115384
 */
 
-int _rflpc_uart_init(uart_pin_conf_t *uart)
+static int _rflpc_uart_init(uart_pin_conf_t *uart, int dll, int dlm, int divadd, int mulval)
 {
    
   /* Set line control values (p. 306) */
@@ -105,11 +105,11 @@ int _rflpc_uart_init(uart_pin_conf_t *uart)
   uart->base_address->LCR = (3 | (1 << 7));
 
   /* Set DLL=4, DLM=0 (p. 315) */
-  uart->base_address->DLL = 4;
-  uart->base_address->DLM = 0;
+  uart->base_address->DLL = dll;
+  uart->base_address->DLM = dlm;
 
   /* Set DIVADDVAL = 5 and MULVAL = 8 (p. 315) */
-  uart->base_address->FDR = 5 | (8 << 4);
+  uart->base_address->FDR = divadd | (mulval << 4);
 
   /* Enable Fifo and clear TX & RX (p. 305) */
   uart->base_address->FCR = 7;
@@ -126,7 +126,7 @@ int _rflpc_uart_init(uart_pin_conf_t *uart)
   return 0;
 }
 
-int rflpc_uart_init(rflpc_uart_t uart_num)
+int rflpc_uart_init_ex(rflpc_uart_t uart_num, int dll, int dlm, int divadd, int mulval)
 {
 
   /* Set the peripheral clock to 12 Mhz */
@@ -161,7 +161,13 @@ int rflpc_uart_init(rflpc_uart_t uart_num)
       return -1;
   }
 
-  return _rflpc_uart_init(&_rflpc_uart_config[uart_num]);
+  return _rflpc_uart_init(&_rflpc_uart_config[uart_num], dll, dlm, divadd, mulval);
+}
+
+int rflpc_uart_init(rflpc_uart_t uart_num)
+{
+   /* default config for 115200 bauds */
+   return rflpc_uart_init_ex(uart_num, 4, 0, 5, 8);
 }
 
 

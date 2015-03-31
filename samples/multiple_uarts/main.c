@@ -16,7 +16,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2015-03-31 13:34:45 (hauspie)>
+  Time-stamp: <2015-03-31 16:53:38 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 
@@ -26,7 +26,7 @@
 int main()
 {
    rflpc_uart_init(RFLPC_UART0);
-   rflpc_uart_init(UART);
+   rflpc_uart_init_ex(UART, 52, 0, 1, 2); /* use this UART at 9600 bauds */
    
    while (1)
    {
