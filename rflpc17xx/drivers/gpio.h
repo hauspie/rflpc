@@ -19,7 +19,7 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created: 2011-07-04
-  Time-stamp: <2014-05-30 14:20:37 (mickey)>
+  Time-stamp: <2015-05-19 10:42:32 (hauspie)>
 
   GPIO driver for LPC.
 */
@@ -38,6 +38,7 @@
 
 /** @brief Configures the multi-purpose pins of the CM3 so that it uses a given GPIO pin
     @param pin the pin to activate
+    @param mode the mode to set for the pin (pull-up, pull-down,...) see ::rflpc_pin_mode_t
  */
 extern void rflpc_gpio_use_pin(rflpc_pin_t pin, rflpc_pin_mode_t mode);
 
