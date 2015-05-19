@@ -1,63 +1,3 @@
-var NAVTREE =
-[
-  [ "rfLPC", "index.html", [
-    [ "rfLPC : a small C library for LPC17xx SoC by NXP", "index.html", [
-      [ "Authors", "index.html#Authors", null ]
-    ] ],
-    [ "Getting started in 10 minutes", "start.html", [
-      [ "Small FAQ", "start.html#faq", [
-        [ "What is this library?", "start.html#description", null ],
-        [ "What is needed to use rfLPC?", "start.html#needs", null ],
-        [ "What is provided?", "start.html#inside", null ],
-        [ "What is missing?", "start.html#missing", null ],
-        [ "What is using this library ?", "start.html#use", null ]
-      ] ],
-      [ "Environment configuration and building the library", "start.html#how", null ],
-      [ "Your first program", "start.html#first-program", null ],
-      [ "Fine tuning the library", "start.html#config", [
-        [ "Automatic generation of the configuration file", "start.html#config-file", null ],
-        [ "Fine tuning the configuration file", "start.html#fine-tune", null ],
-        [ "Common configuration mistakes", "start.html#warnings", null ]
-      ] ]
-    ] ],
-    [ "Developer guidelines", "guidelines.html", [
-      [ "How to contribute", "guidelines.html#contribute", null ],
-      [ "Coding conventions", "guidelines.html#conventions", null ]
-    ] ],
-    [ "Todo List", "todo.html", null ],
-    [ "Modules", "modules.html", "modules" ],
-    [ "Data Structures", null, [
-      [ "Data Structures", "annotated.html", "annotated" ],
-      [ "Data Structure Index", "classes.html", null ],
-      [ "Data Fields", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Variables", "functions_vars.html", null ]
-      ] ]
-    ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
-      [ "Globals", "globals.html", [
-        [ "All", "globals.html", "globals_dup" ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
-        [ "Macros", "globals_defs.html", null ]
-      ] ]
-    ] ]
-  ] ]
-];
-
-var NAVTREEINDEX =
-[
-"adc_8h.html",
-"group__eth.html#ga3416ab0daad7feb2651e2609bbab702e",
-"group__iap.html#ga950ac621f4400ec4176d102c89ba8ee7",
-"group__timer.html#ga27a36ed651c7899a0635d224fd7ad21e"
-];
-
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
 var navTreeSubIndices = new Array();
 
 function getData(varName)
@@ -165,7 +105,7 @@ function createIndent(o,domNode,node,level)
     node.expandToggle.onclick = function() {
       if (node.expanded) {
         $(node.getChildrenUL()).slideUp("fast");
-        node.plus_img.src = node.relpath+"ftv2pnode.png";
+        node.plus_img.src = node.relpath+"arrowright.png";
         node.expanded = false;
       } else {
         expandNode(o, node, false, false);
@@ -173,7 +113,7 @@ function createIndent(o,domNode,node,level)
     }
     node.expandToggle.appendChild(imgNode);
     domNode.appendChild(node.expandToggle);
-    imgNode.src = node.relpath+"ftv2pnode.png";
+    imgNode.src = node.relpath+"arrowright.png";
   } else {
     var span = document.createElement("span");
     span.style.display = 'inline-block';
@@ -329,9 +269,9 @@ function expandNode(o, node, imm, showRoot)
         $(node.getChildrenUL()).slideDown("fast");
       }
       if (node.isLast) {
-        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
+        node.plus_img.src = node.relpath+"arrowdown.png";
       } else {
-        node.plus_img.src = node.relpath+"ftv2mnode.png";
+        node.plus_img.src = node.relpath+"arrowdown.png";
       }
       node.expanded = true;
     }
@@ -401,11 +341,7 @@ function showNode(o, node, index, hash)
         getNode(o, node);
       }
       $(node.getChildrenUL()).css({'display':'block'});
-      if (node.isLast) {
-        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
-      } else {
-        node.plus_img.src = node.relpath+"ftv2mnode.png";
-      }
+      node.plus_img.src = node.relpath+"arrowdown.png";
       node.expanded = true;
       var n = node.children[o.breadcrumbs[index]];
       if (index+1<o.breadcrumbs.length) {
@@ -543,7 +479,7 @@ function initNavTree(toroot,relpath)
   o.node.expanded = false;
   o.node.isLast = true;
   o.node.plus_img = document.createElement("img");
-  o.node.plus_img.src = relpath+"ftv2pnode.png";
+  o.node.plus_img.src = relpath+"arrowright.png";
   o.node.plus_img.width = 16;
   o.node.plus_img.height = 22;
 

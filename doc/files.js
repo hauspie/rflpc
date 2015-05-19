@@ -3,6 +3,7 @@ var files =
     [ "adc.h", "adc_8h.html", "adc_8h" ],
     [ "clock.h", "clock_8h.html", "clock_8h" ],
     [ "config-mbed.h", "config-mbed_8h.html", "config-mbed_8h" ],
+    [ "config-options.h", "config-options_8h_source.html", null ],
     [ "config.h", "config_8h.html", "config_8h" ],
     [ "dac.h", "dac_8h.html", "dac_8h" ],
     [ "debug.h", "debug_8h.html", "debug_8h" ],

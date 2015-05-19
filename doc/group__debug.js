@@ -4,6 +4,7 @@ var group__debug =
     [ "RFLPC_ARM_GET_REGISTER", "group__debug.html#ga4da86c4fab38c46d492ebdc02fd8af6d", null ],
     [ "RFLPC_ASSERT", "group__debug.html#ga7a517cb585da0af34947fe3d3f110bbd", null ],
     [ "RFLPC_DELAY", "group__debug.html#ga2b98f7579cc73b6458ee0c28aa2a1cee", null ],
+    [ "RFLPC_DELAY_MICROSECS", "group__debug.html#gad72ea78e9dc286bb1d46cd4b3de364ba", null ],
     [ "RFLPC_DUMP_STACK", "group__debug.html#ga3ee7c50e6c59df3b77eaab8a6731cb64", null ],
     [ "RFLPC_PROFILE_DECLARE_COUNTER", "group__debug.html#gaf3dad1b7a2e3f333b1d176ec392127d8", null ],
     [ "RFLPC_PROFILE_DECLARE_EXTERN_COUNTER", "group__debug.html#ga80914dfeedd73b1ac4eedc24df91d4f5", null ],
