@@ -23,9 +23,9 @@
 # This script makes writing of makefiles easier by giving cflags and ldflags
 
 RFLPC_DIR=`cd \`dirname $0\` && pwd`
-RFLPC_LIB_DIR=$RFLPC_DIR/rflpc17xx
-CONFIG_OPTIONS_FILE=$RFLPC_LIB_DIR/config/config-options.h
-CONFIG_FILE=$RFLPC_LIB_DIR/config/config.h
+RFLPC_LIB_DIR="$RFLPC_DIR/rflpc17xx"
+CONFIG_OPTIONS_FILE="$RFLPC_LIB_DIR/config/config-options.h"
+CONFIG_FILE="$RFLPC_LIB_DIR/config/config.h"
 
 usage()
 {
@@ -45,13 +45,13 @@ EOF
 
 generate_compile_flags_from_config()
 {
-    if ! test -f $CONFIG_OPTIONS_FILE
+    if ! test -f "$CONFIG_OPTIONS_FILE"
     then
 	echo -n "-DRFLPC_CONFIG_PLATFORM_MBED"
 	make -C config empty_config >& /dev/null
     fi
-    grep -q PLATFORM $CONFIG_OPTIONS_FILE || echo -n " -DRFLPC_CONFIG_PLATFORM_MBED"
-    echo -n " -include $CONFIG_FILE"
+    grep -q PLATFORM "$CONFIG_OPTIONS_FILE" || echo -n " -DRFLPC_CONFIG_PLATFORM_MBED"
+    echo -n " -include \"$CONFIG_FILE\""
 }
 
 if [ $# -eq 0 ]
@@ -60,7 +60,7 @@ then
     exit 1
 fi
 
-CFLAGS="-mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I$RFLPC_DIR -ffunction-sections -fdata-sections "
+CFLAGS="-mthumb -mcpu=cortex-m3 -fno-builtin -ffreestanding -Wall -Winline -O1 -I\"$RFLPC_DIR\" -ffunction-sections -fdata-sections "
 CFLAGS="$CFLAGS `generate_compile_flags_from_config`"
 
 for arg in $*
@@ -70,7 +70,7 @@ do
 	    echo -n $CFLAGS
 	    ;;
 	--ldflags)
-	    echo -n "-nostdlib -L$RFLPC_DIR/rflpc17xx -Wl,-T,rflpc17xx.ld,-Map=rflpc.map  -Wl,--gc-sections "
+	    echo -n "-nostdlib \"-L$RFLPC_DIR/rflpc17xx\" -Wl,-T,rflpc17xx.ld,-Map=rflpc.map  -Wl,--gc-sections "
 	    ;;
 	--lib)
 	    echo -n "-lrflpc17xx "
