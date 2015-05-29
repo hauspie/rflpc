@@ -1,3 +1,5 @@
+next:
+	- Fixes a variable expantion bug in rflpc-config preventing the use of space character in library path
 0.16:
 	- Changes UART API to allow selection of UART speed
 	- Adds a perl helper script to calculate values for UART configuration
