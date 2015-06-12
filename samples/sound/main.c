@@ -16,10 +16,11 @@
 /*
   Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
   Created:
-  Time-stamp: <2015-06-12 17:18:27 (hauspie)>
+  Time-stamp: <2015-06-12 17:52:41 (hauspie)>
 */
 #include <rflpc17xx/rflpc17xx.h>
 #include "sound.h"
+#include "notes.h"
 
 int main()
 {
@@ -29,7 +30,14 @@ int main()
     
     while (1)
     {
-//       sound_play(MBED_DIP26, 440000, 1000);
+       sound_play_note(MBED_DIP26, NOTE_C4, 1000);
+       sound_play_note(MBED_DIP26, NOTE_D4, 1000);
+       sound_play_note(MBED_DIP26, NOTE_E4, 1000);
+       sound_play_note(MBED_DIP26, NOTE_F4, 1000);
+       sound_play_note(MBED_DIP26, NOTE_G4, 1000);
+       sound_play_note(MBED_DIP26, NOTE_A4, 1000);
+       sound_play_note(MBED_DIP26, NOTE_B4, 1000);
+       sound_play_note(MBED_DIP26, NOTE_C5, 1000);
        RFLPC_DELAY_MICROSECS(1000000);
     }
     return 0;

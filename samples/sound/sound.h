@@ -36,7 +36,7 @@ void sound_play(rflpc_pin_t pin, uint32_t frequency_by_1000, int timems);
     @param note the note to play (uses MIDI encoding, 60 is middle C)
     @param timems the length of the note in millisecond
 */
-void sound_play_note(rflpc_pin_t pin, int note, int timems);
+void sound_play_note(rflpc_pin_t pin, uint8_t note, int timems);
 
 
 #endif

@@ -15,6 +15,7 @@
  */
 #include <rflpc17xx/rflpc17xx.h>
 #include "sound.h"
+#include "notes.h"
 
 void sound_init_pin(rflpc_pin_t pin)
 {
@@ -37,8 +38,11 @@ void sound_play(rflpc_pin_t pin, uint32_t frequency_by_1000, int timems)
 }
 
 
-void sound_play_note(rflpc_pin_t pin, int note, int timems)
+void sound_play_note(rflpc_pin_t pin, uint8_t note, int timems)
 {
+   if (note >= note_count)
+      return;
+   sound_play(pin, note_to_freq[note], timems);
 }
 
 
