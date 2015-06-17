@@ -16,7 +16,7 @@
 /*
  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
  Created:
- Time-stamp: <2014-05-28 17:01:43 (hauspie)>
+ Time-stamp: <2015-06-17 14:23:57 (hauspie)>
  */
 #ifndef __RFLPC_RFLPC17XX_H__
 #define __RFLPC_RFLPC17XX_H__
@@ -209,8 +209,8 @@
  * 
  * @section contribute How to contribute
  * 
- * - Use your github account to fork the @p hauspie/rflpc repository and push your contribution to your fork. Then, send me a pull-request for integration to the @p develop branch
- * - Always do your development based on the @p develop branch, except if you want to submit me a hotfix of a released version. In the later case, based your work on the master branch, I will take care of integrating the hotfix in the @p develop branch.
+ * - Use your github account to fork the @p hauspie/rflpc repository and push your contribution to your fork. Then, send me a pull-request for integration to the @p master branch
+ * - Always do your development based on the @p master branch, except if you want to submit me a hotfix of a released version. In the later case, base your work on the last released tag, I will take care of integrating the hotfix in the @p master branch.
  * - Try to do some extensive tests on your code, and, if you can, a bit of code review (which I'll do with you anyway before integrating your patch)
  * 
  * @section conventions Coding conventions
