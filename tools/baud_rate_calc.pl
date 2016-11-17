@@ -2,6 +2,9 @@
 use strict;
 
 
+die "usage: $0 <peripheral_clock_in_Hz> <desired_baud_rate>\n" if (@ARGV !=2 );
+
+
 my $pclk = shift;
 my $br = shift;
 
