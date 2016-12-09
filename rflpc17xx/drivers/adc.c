@@ -23,9 +23,6 @@
 #include "adc.h"
 #include "../tools.h"
 
-/* Pin configuration value for ADC */
-#define PINFUNC_ADC    0x03
-
 
 /** Used to select which ADC port to use */
 typedef enum rflpc_adc_channel_e {
@@ -63,6 +60,32 @@ static rflpc_adc_channel_t _pin_to_channel(rflpc_pin_t pin)
 }
 
 
+/**
+ * Returns the pin configuration value for ADC corresponding to the specified pin.
+ *
+ * @param pin The desired pin for ADC.
+ *
+ * @return Corresponding pin configuration value.
+ */
+static int _pin_to_adc_function(rflpc_pin_t pin)
+{
+   switch (pin) {
+      case RFLPC_PIN_P0_23:
+      case RFLPC_PIN_P0_24:
+      case RFLPC_PIN_P0_25:
+      case RFLPC_PIN_P0_26:
+         return 0x01;
+      case RFLPC_PIN_P0_3:
+      case RFLPC_PIN_P0_2:
+         return 0x02;
+      case RFLPC_PIN_P1_30:
+      case RFLPC_PIN_P1_31:
+      default:
+         return 0x03;
+   }
+}
+
+
 struct {
    rflpc_irq_handler_t interrupt_handler;
    uint8_t enabled_channels;
@@ -71,7 +94,7 @@ struct {
 void rflpc_adc_init(rflpc_pin_t pin, rflpc_clock_divider_t clock_divider)
 {
    /* Pin initialization: ADC, pull-up, no open drain */
-   rflpc_pin_set(pin, PINFUNC_ADC, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+   rflpc_pin_set(pin, _pin_to_adc_function(pin), RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
 
    /* Enable ADC support */
    RFLPC_SET_BIT (LPC_SC->PCONP, 12);
@@ -115,7 +138,7 @@ void rflpc_adc_burst_init(rflpc_clock_divider_t clock_divider, rflpc_irq_handler
 void rflpc_adc_burst_enable(rflpc_pin_t pin)
 {
    /* Initialize pin: ADC, Pull-up, no open drain */
-   rflpc_pin_set(pin, PINFUNC_ADC, RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
+   rflpc_pin_set(pin, _pin_to_adc_function(pin), RFLPC_PIN_MODE_RESISTOR_PULL_UP, 0);
 
    /* Enable channel */
    RFLPC_SET_BIT (LPC_ADC->ADCR, _pin_to_channel(pin));
@@ -140,7 +163,7 @@ void rflpc_adc_burst_start()
          channel -= 1;
       }
 
-      /* If at least one channel is enabled, enable interrupt on the one 
+      /* If at least one channel is enabled, enable interrupt on the one
          previously found */
       if (channel >= 0)
          RFLPC_SET_BIT (LPC_ADC->ADINTEN, channel);
@@ -203,4 +226,3 @@ uint16_t rflpc_adc_read_global()
 
 
 #endif /* RFLPC_CONFIG_ENABLE_ADC */
-
